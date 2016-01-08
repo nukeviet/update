@@ -1,4 +1,4 @@
-Ghi chú Nâng cấp  NukeViet 4.0.24
+# Ghi chú Nâng cấp từ NukeViet 4.0.23 lên NukeViet 4.0.24
 
 NukeViet 4.0.24 chỉ chạy được từ PHP >5.4. (Nếu bạn có ép nó xuống chạy ở PHP 5.3 sẽ phát sinh rất nhiều lỗi, và cũng không dùng được).
 
