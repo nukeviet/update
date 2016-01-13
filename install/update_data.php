@@ -28,11 +28,11 @@ $nv_update_config['author'] = "VINADES.,JSC (contact@vinades.vn)";
 $nv_update_config['support_website'] = "http://forum.nukeviet.vn/";
 $nv_update_config['to_version'] = "4.0.24";
 $nv_update_config['allow_old_version'] = array(
-    "4.0.23"
+    "4.0.23", "4.0.24 Not release"
 );
 
 // 0:Nang cap bang tay, 1:Nang cap tu dong, 2:Nang cap nua tu dong
-$nv_update_config['update_auto_type'] = 2;
+$nv_update_config['update_auto_type'] = 1;
 
 $nv_update_config['lang'] = array();
 $nv_update_config['lang']['vi'] = array();
