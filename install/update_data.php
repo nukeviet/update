@@ -32,7 +32,7 @@ $nv_update_config['allow_old_version'] = array(
 );
 
 // 0:Nang cap bang tay, 1:Nang cap tu dong, 2:Nang cap nua tu dong
-$nv_update_config['update_auto_type'] = 1;
+$nv_update_config['update_auto_type'] = 2;
 
 $nv_update_config['lang'] = array();
 $nv_update_config['lang']['vi'] = array();
