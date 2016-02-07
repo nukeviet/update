@@ -1,4 +1,4 @@
-<?php
+q<?php
 
 /**
  * @Project NUKEVIET 4.x
@@ -17,18 +17,19 @@ $nv_update_config = array();
 $nv_update_config['type'] = 1;
 
 // ID goi cap nhat
-$nv_update_config['packageID'] = 'NVUD4025';
+$nv_update_config['packageID'] = 'NVUD4026';
 
 // Cap nhat cho module nao, de trong neu la cap nhat NukeViet, ten thu muc module neu la cap nhat module
 $nv_update_config['formodule'] = "";
 
 // Thong tin phien ban, tac gia, ho tro
-$nv_update_config['release_date'] = 1453362921;
+$nv_update_config['release_date'] = 1454861293;
 $nv_update_config['author'] = "VINADES.,JSC (contact@vinades.vn)";
 $nv_update_config['support_website'] = "http://forum.nukeviet.vn/";
-$nv_update_config['to_version'] = "4.0.25";
+$nv_update_config['to_version'] = "4.0.26";
 $nv_update_config['allow_old_version'] = array(
-    "4.0.24"
+    "4.0.24",
+    "4.0.25"
 );
 
 // 0:Nang cap bang tay, 1:Nang cap tu dong, 2:Nang cap nua tu dong
@@ -60,7 +61,7 @@ $nv_update_config['tasklist'][] = array(
 function nv_up_finish()
 {
     global $nv_update_baseurl, $db, $db_config, $nv_Cache;
-
+    
     $return = array(
         'status' => 1,
         'complete' => 1,
@@ -69,7 +70,7 @@ function nv_up_finish()
         'lang' => 'NO',
         'message' => ''
     );
-
+    
     // Duyệt tất cả các ngôn ngữ
     $language_query = $db->query("SELECT lang FROM " . $db_config['prefix'] . "_setup_language WHERE setup = 1");
     while (list ($lang) = $language_query->fetch(3)) {
@@ -78,7 +79,7 @@ function nv_up_finish()
         } catch (PDOException $e) {
             //
         }
-
+        
         // Lấy tất cả các module và module ảo của nó
         $mquery = $db->query("SELECT title, module_data FROM " . $db_config['prefix'] . "_" . $lang . "_modules WHERE module_file = 'news'");
         while (list ($mod, $mod_data) = $mquery->fetch(3)) {
@@ -87,7 +88,7 @@ function nv_up_finish()
             } catch (PDOException $e) {
                 //
             }
-
+            
             // Duyệt các chủ đề của News
             $mquery_cat = $db->query("SELECT catid FROM " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . "_cat");
             while (list ($_catid) = $mquery_cat->fetch(3)) {
@@ -110,8 +111,31 @@ function nv_up_finish()
     } catch (PDOException $e) {
         //
     }
-
-    $db->query("UPDATE " . NV_CONFIG_GLOBALTABLE . " SET config_value = '4.0.25' WHERE lang = 'sys' AND module = 'global' AND config_name = 'version'");
+    
+    //Cập nhật lại ID các ứng dụng hệ thống
+    $db->query("UPDATE " . $db_config['prefix'] . "_setup_extensions SET id = 312 WHERE type = 'module' AND title = 'freecontent'");
+    $db->query("UPDATE " . $db_config['prefix'] . "_setup_extensions SET id = 307 WHERE type = 'theme' AND title = 'default'");
+    $db->query("UPDATE " . $db_config['prefix'] . "_setup_extensions SET id = 311 WHERE type = 'theme' AND title = 'mobile_default'");
+    
+    //Bảng nhóm
+    $db->query("ALTER TABLE " . NV_GROUPS_GLOBALTABLE . " ADD group_type tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '0:Sys, 1:approval, 2:public' AFTER content");
+    $db->query("ALTER TABLE " . NV_GROUPS_GLOBALTABLE . " ADD group_color varchar(10) NOT NULL AFTER group_type");
+    $db->query("ALTER TABLE " . NV_GROUPS_GLOBALTABLE . " ADD group_avatar varchar(255) NOT NULL AFTER group_color");
+    $db->query("ALTER TABLE " . NV_GROUPS_GLOBALTABLE . " ADD is_default tinyint(1) unsigned NOT NULL DEFAULT '0' AFTER group_avatar");
+    $db->query("UPDATE " . NV_GROUPS_GLOBALTABLE . " SET group_type = 2 WHERE group_id > 9 AND publics = '1'");
+    
+    //Bảng thành viên của nhóm
+    $db->query("ALTER TABLE " . NV_GROUPS_GLOBALTABLE . "_users ADD is_leader tinyint(1) unsigned NOT NULL DEFAULT '0' AFTER userid");
+    $db->query("ALTER TABLE " . NV_GROUPS_GLOBALTABLE . "_users ADD approved tinyint(1) unsigned NOT NULL DEFAULT '0' AFTER is_leader");
+    
+    // Bảng thành viên
+    $db->query("ALTER TABLE " . NV_USERS_GLOBALTABLE . " ADD group_id smallint(5) unsigned NOT NULL DEFAULT '0' AFTER userid");
+    
+    $db->query("UPDATE " . NV_CONFIG_GLOBALTABLE . " SET config_value = '4.0.26' WHERE lang = 'sys' AND module = 'global' AND config_name = 'version'");
+    $db->query("ALTER TABLE " . NV_GROUPS_GLOBALTABLE . " DROP publics");
+    
+    nv_mkdir(NV_UPLOADS_REAL_DIR . '/users', 'groups');
     $nv_Cache->delAll();
+    nv_save_file_config_global();
     return $return;
 }
