@@ -1,4 +1,4 @@
-q<?php
+<?php
 
 /**
  * @Project NUKEVIET 4.x
@@ -20,16 +20,16 @@ $nv_update_config['type'] = 1;
 $nv_update_config['packageID'] = 'NVUD4026';
 
 // Cap nhat cho module nao, de trong neu la cap nhat NukeViet, ten thu muc module neu la cap nhat module
-$nv_update_config['formodule'] = "";
+$nv_update_config['formodule'] = '';
 
 // Thong tin phien ban, tac gia, ho tro
-$nv_update_config['release_date'] = 1454861293;
-$nv_update_config['author'] = "VINADES.,JSC (contact@vinades.vn)";
-$nv_update_config['support_website'] = "http://forum.nukeviet.vn/";
-$nv_update_config['to_version'] = "4.0.26";
+$nv_update_config['release_date'] = 1454983235;
+$nv_update_config['author'] = 'VINADES.,JSC (contact@vinades.vn)';
+$nv_update_config['support_website'] = 'http://forum.nukeviet.vn/';
+$nv_update_config['to_version'] = '4.0.26';
 $nv_update_config['allow_old_version'] = array(
-    "4.0.24",
-    "4.0.25"
+    '4.0.24',
+    '4.0.25'
 );
 
 // 0:Nang cap bang tay, 1:Nang cap tu dong, 2:Nang cap nua tu dong
@@ -46,7 +46,7 @@ $nv_update_config['lang']['en']['nv_up_finish'] = 'Update new version';
 
 $nv_update_config['tasklist'] = array();
 $nv_update_config['tasklist'][] = array(
-    'r' => '4.0.25',
+    'r' => '4.0.26',
     'rq' => 1,
     'l' => 'nv_up_finish',
     'f' => 'nv_up_finish'
@@ -72,7 +72,7 @@ function nv_up_finish()
     );
     
     // Duyệt tất cả các ngôn ngữ
-    $language_query = $db->query("SELECT lang FROM " . $db_config['prefix'] . "_setup_language WHERE setup = 1");
+    $language_query = $db->query('SELECT lang FROM ' . $db_config['prefix'] . '_setup_language WHERE setup = 1');
     while (list ($lang) = $language_query->fetch(3)) {
         try {
             $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_searchkeys CHANGE skey skey VARCHAR(250) NOT NULL DEFAULT ''");

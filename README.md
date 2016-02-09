@@ -2,14 +2,14 @@
 
 Download gói nâng cấp tại: https://github.com/nukeviet/update/archive/to-4.0.26.zip
 
-Giải nén và Upload các file trong gói nâng cấp với cấu túc của NukeKeViet, sau đó vào admin để tiến hành nâng cấp.
+Giải nén và Upload các file trong gói nâng cấp với cấu túc của NukeViet, sau đó vào admin để tiến hành nâng cấp.
 
-# Sau khi nâng cấp xong, Xóa cache của hệ thống. và sửa thêm như sau:
+## Sau khi nâng cấp xong, 
 
-Kiểm tra lại nhóm thành viên, hiện tại đã bổ sung thêm các loai nhóm thành viên cần trưởng nhóm xác nhận.
+Xóa cache của hệ thống. và sửa thêm như sau: Kiểm tra lại nhóm thành viên, hiện tại đã bổ sung thêm các loai nhóm thành viên cần trưởng nhóm xác nhận.
 
 
-## Module contact: Sửa lỗi hiển thị thông tin người gửi
+### Module contact: Sửa lỗi hiển thị thông tin người gửi
 Mở **themes/ten-theme/modules/contact/sendcontact.tpl**
 
 Tìm
@@ -47,7 +47,7 @@ Thay bằng
 <a href="{URL_VIEW}" title="" target="_blank">{LANG.view_website}</a>
 ```
 
-## Module contact: Thêm tùy chọn gửi bản sao vào mail người gửi
+### Module contact: Thêm tùy chọn gửi bản sao vào mail người gửi
 Mở **themes/ten-theme/modules/contact/form.tpl**
 
 Tìm
@@ -121,7 +121,7 @@ function contact_sendcontact($row_id, $fcat, $ftitle, $fname, $femail, $fphone, 
 }
 ```
 
-## Cập nhật danh sách nhóm thành viên
+### Cập nhật danh sách nhóm thành viên
 Mở **theme/ten-theme/modules/users/info.tpl**
 
 Tìm
