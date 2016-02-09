@@ -2,7 +2,7 @@
 
 Download gói nâng cấp tại: https://github.com/nukeviet/update/archive/to-4.0.26.zip
 
-Giải nén và Upload các file trong gói nâng cấp với cấu túc của NukeViet, sau đó vào admin để tiến hành nâng cấp.
+Giải nén và Upload các file trong gói nâng cấp với cấu trúc của NukeViet, sau đó vào admin để tiến hành nâng cấp.
 
 ## Sau khi nâng cấp xong, 
 
