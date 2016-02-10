@@ -8,7 +8,7 @@ Giải nén và Upload các file trong gói nâng cấp với cấu trúc của 
 
 Xóa cache của hệ thống. và sửa thêm như sau: Kiểm tra lại nhóm thành viên, hiện tại đã bổ sung thêm các loai nhóm thành viên cần trưởng nhóm xác nhận.
 
-
+# Với các giao diện không phải là giao diện mặc định, cần sửa thêm như sau:
 ### Module contact: Sửa lỗi hiển thị thông tin người gửi
 Mở **themes/ten-theme/modules/contact/sendcontact.tpl**
 
