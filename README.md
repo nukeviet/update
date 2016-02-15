@@ -1,14 +1,14 @@
 # Hướng dẫn Nâng cấp từ NukeViet 4.0.24, 4.0.25 lên NukeViet 4 RC2
-
+## Hướng dẫn nâng cấp tự động cho bản NukeViet mặc định:
+### Bước 1:
 Download gói nâng cấp tại: https://github.com/nukeviet/update/archive/to-4.0.26.zip
+### Bước 2: Giải nén và Upload các file trong gói nâng cấp với cấu trúc của NukeViet, sau đó vào admin để tiến hành nâng cấp.
+### Bước 3: Sau khi nâng cấp xong, cần làm các thao tác:
+- Xóa cache của hệ thống. 
+- Kiểm tra lại từng nhóm thành viên, hiện tại đã bổ sung thêm các loại nhóm thành viên cần trưởng nhóm xác nhận.
 
-Giải nén và Upload các file trong gói nâng cấp với cấu trúc của NukeViet, sau đó vào admin để tiến hành nâng cấp.
-
-## Sau khi nâng cấp xong, 
-
-Xóa cache của hệ thống. và sửa thêm như sau: Kiểm tra lại nhóm thành viên, hiện tại đã bổ sung thêm các loai nhóm thành viên cần trưởng nhóm xác nhận.
-
-# Với các giao diện không phải là giao diện mặc định, cần sửa thêm như sau:
+## hướng dẫn nâng cấp các giao diện không phải là giao diện mặc định:
+Các giao diện khác giao diện mặc định đã được làm cho NukeViet 4.0 RC1 cần sửa thêm như sau để có thể sử dụng cho NukeViet 4.0 RC2:
 ### Module contact: Sửa lỗi hiển thị thông tin người gửi
 Mở **themes/ten-theme/modules/contact/sendcontact.tpl**
 
