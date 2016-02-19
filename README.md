@@ -124,47 +124,6 @@ function contact_sendcontact($row_id, $fcat, $ftitle, $fname, $femail, $fphone, 
 }
 ```
 
-### Cập nhật danh sách nhóm thành viên
-Mở **theme/ten-theme/modules/users/info.tpl**
-
-Tìm
-```
-{GROUP_LIST.title}
-```
-Thêm sau
-```
-<em class="show text-success">{GROUP_LIST.group_type}</em>
-```
-Tìm
-```
-<td class="text-uppercase text-center">{LANG.group_userr}</td>
-```
-Thêm dưới
-```
-<td class="text-uppercase"></td>
-```
-Tìm
-```
-<td class="text-right">{GROUP_LIST.numbers}</td>
-```
-Thêm dưới
-```
-<td class="text-center">{GROUP_LIST.status}</td>
-```
-
-Nếu tồn tại **theme/ten-theme/modules/users/theme.php**
-
-Trong hàm **user_info**
-
-Tìm
-```
-foreach ($groups as $group) {
-```
-Thêm dưới
-```
-$group['status'] = $lang_module['group_status_' . $group['status']];
-$group['group_type'] = $lang_module['group_type_' . $group['group_type']];
-```
 
 ## Module news: Thêm cấu hình giới hạn ký tự tiêu đề của tin khác cho block_newscenter
 Mở **theme/ten-theme/modules/news/block_newscenter.tpl**
@@ -254,3 +213,11 @@ Thay bằng
     	}
     }
 ```
+
+## Module Users
+
+Do module này sửa chức năng nhóm thành viên rất nhiều.
+
+Nếu tồn tại thư mục: themes/ten-theme/modules/users, cần xóa thư mục này, sau đó copy lại từ thư mục themes/default/modules/users
+
+Nếu tồn tại file: themes/ten-theme/js/users.js, cần xóa thư mục này, sau đó copy lại từ thư mục themes/default/js/users.js

@@ -26,7 +26,7 @@ $nv_update_config['formodule'] = '';
 $nv_update_config['release_date'] = 1455865605;
 $nv_update_config['author'] = 'VINADES.,JSC (contact@vinades.vn)';
 $nv_update_config['support_website'] = 'http://nukeviet.vn';
-$nv_update_config['to_version'] = '4.0.26';
+$nv_update_config['to_version'] = '4.0.27';
 $nv_update_config['allow_old_version'] = array(
     '4.0.24',
     '4.0.25',
@@ -128,25 +128,29 @@ function nv_up_v4026()
     $db->query("UPDATE " . $db_config['prefix'] . "_setup_extensions SET id = 311 WHERE type = 'theme' AND title = 'mobile_default'");
     
     //Bảng nhóm
-    $db->query("ALTER TABLE " . NV_GROUPS_GLOBALTABLE . " ADD group_type tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '0:Sys, 1:approval, 2:public' AFTER content");
-    $db->query("ALTER TABLE " . NV_GROUPS_GLOBALTABLE . " ADD group_color varchar(10) NOT NULL AFTER group_type");
-    $db->query("ALTER TABLE " . NV_GROUPS_GLOBALTABLE . " ADD group_avatar varchar(255) NOT NULL AFTER group_color");
-    $db->query("ALTER TABLE " . NV_GROUPS_GLOBALTABLE . " ADD is_default tinyint(1) unsigned NOT NULL DEFAULT '0' AFTER group_avatar");
-    $db->query("UPDATE " . NV_GROUPS_GLOBALTABLE . " SET group_type = 2 WHERE group_id > 9 AND publics = '1'");
+    try {
+        $db->query("ALTER TABLE " . NV_GROUPS_GLOBALTABLE . " ADD group_type tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '0:Sys, 1:approval, 2:public' AFTER content");
+        $db->query("ALTER TABLE " . NV_GROUPS_GLOBALTABLE . " ADD group_color varchar(10) NOT NULL AFTER group_type");
+        $db->query("ALTER TABLE " . NV_GROUPS_GLOBALTABLE . " ADD group_avatar varchar(255) NOT NULL AFTER group_color");
+        $db->query("ALTER TABLE " . NV_GROUPS_GLOBALTABLE . " ADD is_default tinyint(1) unsigned NOT NULL DEFAULT '0' AFTER group_avatar");
+        $db->query("UPDATE " . NV_GROUPS_GLOBALTABLE . " SET group_type = 2 WHERE group_id > 9 AND publics = '1'");
+        
+        //Bảng thành viên của nhóm
+        $db->query("ALTER TABLE " . NV_GROUPS_GLOBALTABLE . "_users ADD is_leader tinyint(1) unsigned NOT NULL DEFAULT '0' AFTER userid");
+        $db->query("ALTER TABLE " . NV_GROUPS_GLOBALTABLE . "_users ADD approved tinyint(1) unsigned NOT NULL DEFAULT '0' AFTER is_leader");
     
-    //Bảng thành viên của nhóm
-    $db->query("ALTER TABLE " . NV_GROUPS_GLOBALTABLE . "_users ADD is_leader tinyint(1) unsigned NOT NULL DEFAULT '0' AFTER userid");
-    $db->query("ALTER TABLE " . NV_GROUPS_GLOBALTABLE . "_users ADD approved tinyint(1) unsigned NOT NULL DEFAULT '0' AFTER is_leader");
-
-    //Chạy lệnh cập nhật approved=1 cho tất cả các row hiện tại.
-    $db->query("UPDATE " . NV_GROUPS_GLOBALTABLE . "_users SET approved = 1");
-    
-    // Bảng thành viên
-    $db->query("ALTER TABLE " . NV_USERS_GLOBALTABLE . " ADD group_id smallint(5) unsigned NOT NULL DEFAULT '0' AFTER userid");
+        //Chạy lệnh cập nhật approved=1 cho tất cả các row hiện tại.
+        $db->query("UPDATE " . NV_GROUPS_GLOBALTABLE . "_users SET approved = 1");
+        
+        // Bảng thành viên
+        $db->query("ALTER TABLE " . NV_USERS_GLOBALTABLE . " ADD group_id smallint(5) unsigned NOT NULL DEFAULT '0' AFTER userid");
+        
+        $db->query("ALTER TABLE " . NV_GROUPS_GLOBALTABLE . " DROP publics");
+    } catch (PDOException $e) {
+        //
+    }
     
     $db->query("UPDATE " . NV_CONFIG_GLOBALTABLE . " SET config_value = '4.0.26' WHERE lang = 'sys' AND module = 'global' AND config_name = 'version'");
-    $db->query("ALTER TABLE " . NV_GROUPS_GLOBALTABLE . " DROP publics");
-    
     nv_mkdir(NV_UPLOADS_REAL_DIR . '/users', 'groups');
     $nv_Cache->delAll();
     nv_save_file_config_global();
