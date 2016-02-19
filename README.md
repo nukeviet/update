@@ -216,8 +216,8 @@ Thay bằng
 
 ## Module Users
 
-Do module này sửa chức năng nhóm thành viên rất nhiều.
+Do giao diện của module Users sửa các file của chức năng nhóm thành viên rất nhiều.
 
 Nếu tồn tại thư mục: themes/ten-theme/modules/users, cần xóa thư mục này, sau đó copy lại từ thư mục themes/default/modules/users
 
-Nếu tồn tại file: themes/ten-theme/js/users.js, cần xóa thư mục này, sau đó copy lại từ thư mục themes/default/js/users.js
+Nếu tồn tại file: themes/ten-theme/js/users.js, cần xóa file mục này, sau đó copy lại từ thư mục themes/default/js/users.js
