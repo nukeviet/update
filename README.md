@@ -1,13 +1,14 @@
-# Hướng dẫn Nâng cấp từ NukeViet 4.0.24, 4.0.25 lên NukeViet 4 RC2
+# Hướng dẫn Nâng cấp từ NukeViet 4.0.24, 4.0.25, 4.0.26 lên NukeViet 4 RC2 (4.0.27)
 ## Hướng dẫn nâng cấp tự động cho bản NukeViet mặc định:
 ### Bước 1: Tải về
-Download gói nâng cấp tại: https://github.com/nukeviet/update/archive/to-4.0.26.zip
+Download gói nâng cấp tại: https://github.com/nukeviet/update/archive/to-4.0.27.zip
 ### Bước 2: Cài đặt
 Giải nén và Upload các file trong gói nâng cấp với cấu trúc của NukeViet, sau đó vào admin để tiến hành nâng cấp.
 ### Bước 3: Xử lý sau nâng cấp:
 Sau khi nâng cấp xong, cần làm các thao tác:
 - Xóa cache của hệ thống. 
 - Kiểm tra lại từng nhóm thành viên, hiện tại đã bổ sung thêm các loại nhóm thành viên cần trưởng nhóm xác nhận.
+- Nếu đang kích hoạt block_newscenter của module news, tiến hành xóa block và thêm lại.
 
 ## Hướng dẫn nâng cấp các giao diện không phải là giao diện mặc định:
 Các giao diện khác giao diện mặc định đã được làm cho NukeViet 4.0 RC1 cần sửa thêm như sau để có thể sử dụng cho NukeViet 4.0 RC2:
@@ -163,4 +164,93 @@ Thêm dưới
 ```
 $group['status'] = $lang_module['group_status_' . $group['status']];
 $group['group_type'] = $lang_module['group_type_' . $group['group_type']];
+```
+
+## Module news: Thêm cấu hình giới hạn ký tự tiêu đề của tin khác cho block_newscenter
+Mở **theme/ten-theme/modules/news/block_newscenter.tpl**
+
+Tìm
+```
+<a href="{main.link}" title="{main.title}">{main.title}</a>
+```
+Thay bằng
+```
+<a href="{main.link}" title="{main.title}">{main.titleclean60}</a>
+```
+Tìm
+```
+{othernews.title}</a>
+```
+Thay bằng
+```
+{othernews.titleclean60}</a>
+```
+
+
+## Module page: Thêm phương án hiển thị ảnh minh họa
+Mở **themes/ten-theme/modules/page/main.tpl**
+
+Tìm
+```
+        <!-- BEGIN: description -->
+        <div class="hometext margin-bottom-lg">{CONTENT.description}</div>
+        <!-- END: description -->
+    	<!-- BEGIN: image -->
+        <figure class="article center pointer" onclick="modalShowByObj(this);">
+    			<p class="text-center"><img alt="{CONTENT.title}" src="{CONTENT.image}" width="{CONTENT.imageWidth}" class="img-thumbnail" /></p>
+    			<!-- BEGIN: alt --><figcaption>{CONTENT.imagealt}</figcaption><!-- END: alt -->
+   		</figure>
+    	<!-- END: image -->
+```
+Thay bằng
+```
+        <!-- BEGIN: imageleft -->
+        <figure class="article left noncaption pointer" style="width:100px" onclick="modalShow('', '<img src={CONTENT.image} />');">
+                <img alt="{CONTENT.title}" src="{CONTENT.image}" width="{CONTENT.imageWidth}" class="img-thumbnail" />
+                <!-- BEGIN: alt --><figcaption>{CONTENT.imagealt}</figcaption><!-- END: alt -->
+        </figure>
+        <!-- END: imageleft -->
+
+        <!-- BEGIN: description -->
+        <div class="hometext margin-bottom-lg">{CONTENT.description}</div>
+        <!-- END: description -->
+
+    	<!-- BEGIN: imagecenter -->
+        <figure class="article center pointer" onclick="modalShowByObj(this);">
+    			<p class="text-center"><img alt="{CONTENT.title}" src="{CONTENT.image}" width="{CONTENT.imageWidth}" class="img-thumbnail" /></p>
+    			<!-- BEGIN: alt --><figcaption>{CONTENT.imagealt}</figcaption><!-- END: alt -->
+   		</figure>
+    	<!-- END: imagecenter -->
+
+    	<div class="clear"></div>
+```
+
+Nếu tồn tại **themes/ten-theme/modules/page/theme.php**
+
+Tìm
+```
+    if (! empty($row['image'])) {
+        if (! empty($row['imagealt'])) {
+            $xtpl->parse('main.image.alt');
+        }
+        $xtpl->parse('main.image');
+    }
+```
+Thay bằng
+```
+    if (! empty($row['image'])) {
+    	if ($row['imageposition'] > 0) {
+    		if ($row['imageposition'] == 1) {
+		        if (! empty($row['imagealt'])) {
+		            $xtpl->parse('main.imageleft.alt');
+		        }
+    			$xtpl->parse('main.imageleft');
+    		} else {
+		        if (! empty($row['imagealt'])) {
+		            $xtpl->parse('main.imagecenter.alt');
+		        }
+    			$xtpl->parse('main.imagecenter');
+    		}
+    	}
+    }
 ```
