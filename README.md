@@ -8,6 +8,7 @@ Giải nén và Upload các file trong gói nâng cấp với cấu trúc của 
 Sau khi nâng cấp xong, cần làm các thao tác:
 - Xóa cache của hệ thống. 
 - Kiểm tra lại từng nhóm thành viên, hiện tại đã bổ sung thêm các loại nhóm thành viên cần trưởng nhóm xác nhận.
+- Truy cập ACP/Quản lý module, click vào tên module users để cập nhật func mới
 - Nếu đang kích hoạt block_newscenter của module news, tiến hành xóa block và thêm lại.
 
 ## Hướng dẫn nâng cấp các giao diện không phải là giao diện mặc định:
