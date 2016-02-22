@@ -6,7 +6,7 @@ Thêm vào cuối file config.php ở thư mục gốc của site dòng sau:
 $global_config['extension_setup'] = 3;//0: No, 1: Upload, 2: NukeViet Store, 3: Upload + NukeViet Store
 ```
 
-(Mục đích để site sau khi làm xong, có thể cấu hình không cho cài đặt, muốn cài đặt phải vào hosting sửa lại file cấu hình)
+(Mục đích để site sau khi làm xong, có thể cấu hình không cho cài đặt extension, muốn cài đặt extension phải vào hosting sửa lại file cấu hình)
 
 ### Bước 2: Cài đặt
 Download gói nâng cấp tại: https://github.com/nukeviet/update/archive/to-4.0.27.zip
