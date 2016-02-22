@@ -1,9 +1,18 @@
 # Hướng dẫn Nâng cấp từ NukeViet 4.0.24, 4.0.25, 4.0.26 lên NukeViet 4 RC2 (4.0.27)
 ## Hướng dẫn nâng cấp tự động cho bản NukeViet mặc định:
-### Bước 1: Tải về
-Download gói nâng cấp tại: https://github.com/nukeviet/update/archive/to-4.0.27.zip
+### Bước 1: Chuẩn bị.
+Thêm vào cuối file config.php ở thư mục gốc của site dòng sau:
+```
+$global_config['extension_setup'] = 3;//0: No, 1: Upload, 2: NukeViet Store, 3: Upload + NukeViet Store
+```
+
+(Mục đích để site sau khi làm xong, có thể cấu hình không cho cài đặt, muốn cài đặt phải vào hosting sửa lại file cấu hình)
+
 ### Bước 2: Cài đặt
+Download gói nâng cấp tại: https://github.com/nukeviet/update/archive/to-4.0.27.zip
+
 Giải nén và Upload các file trong gói nâng cấp với cấu trúc của NukeViet, sau đó vào admin để tiến hành nâng cấp.
+
 ### Bước 3: Xử lý sau nâng cấp:
 Sau khi nâng cấp xong, cần làm các thao tác:
 - Xóa cache của hệ thống. 
@@ -222,3 +231,5 @@ Do giao diện của module Users sửa các file của chức năng nhóm thàn
 Nếu tồn tại thư mục: themes/ten-theme/modules/users, cần xóa thư mục này, sau đó copy lại từ thư mục themes/default/modules/users
 
 Nếu tồn tại file: themes/ten-theme/js/users.js, cần xóa file mục này, sau đó copy lại từ thư mục themes/default/js/users.js
+
+Tương tự với giao diện mobile của module users.
