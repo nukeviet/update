@@ -182,7 +182,7 @@ function nv_up_finish()
         $mquery = $db->query("SELECT title, module_data FROM " . $db_config['prefix'] . "_" . $lang . "_modules WHERE module_file = 'page'");
         while (list ($mod, $mod_data) = $mquery->fetch(3)) {
             try {
-                $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . "_rows  ADD `imageposition` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `imagealt`");
+                $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . " ADD `imageposition` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `imagealt`");
             } catch (PDOException $e) {
                 //
             }
