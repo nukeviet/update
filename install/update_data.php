@@ -39,10 +39,12 @@ $nv_update_config['lang']['en'] = array();
 // Tiếng Việt
 $nv_update_config['lang']['vi']['nv_up_modnews'] = 'Cập nhật module news';
 $nv_update_config['lang']['vi']['nv_up_modusers'] = 'Cập nhật module users';
+$nv_update_config['lang']['vi']['nv_up_delunuse_files'] = 'Xóa các file thừa';
 $nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản 4.0.28';
 // English
 $nv_update_config['lang']['en']['nv_up_modnews'] = 'Update module news';
 $nv_update_config['lang']['en']['nv_up_modusers'] = 'Update module users';
+$nv_update_config['lang']['en']['nv_up_delunuse_files'] = 'Delete unuse files';
 $nv_update_config['lang']['en']['nv_up_finish'] = 'Update new version 4.0.28';
 
 $nv_update_config['tasklist'] = array();
@@ -57,6 +59,12 @@ $nv_update_config['tasklist'][] = array(
     'rq' => 1,
     'l' => 'nv_up_modusers',
     'f' => 'nv_up_modusers'
+);
+$nv_update_config['tasklist'][] = array(
+    'r' => '4.0.28',
+    'rq' => 1,
+    'l' => 'nv_up_delunuse_files',
+    'f' => 'nv_up_delunuse_files'
 );
 $nv_update_config['tasklist'][] = array(
     'r' => '4.0.28',
@@ -134,6 +142,35 @@ function nv_up_modusers()
 }
 
 /**
+ * nv_up_delunuse_files()
+ *
+ * @return
+ *
+ */
+function nv_up_delunuse_files()
+{
+    global $nv_update_baseurl, $db, $db_config;
+    
+    $return = array(
+        'status' => 1,
+        'complete' => 1,
+        'next' => 1,
+        'link' => 'NO',
+        'lang' => 'NO',
+        'message' => ''
+    );
+    
+    nv_deletefile(NV_ROOTDIR . '/admin/seotools/siteDiagnostic.php', false);
+    nv_deletefile(NV_ROOTDIR . '/includes/cronjobs/siteDiagnostic_update.php', false);
+    nv_deletefile(NV_ROOTDIR . '/themes/admin_default/modules/seotools/siteDiagnostic.tpl', false);
+    nv_deletefile(NV_ROOTDIR . '/themes/default/system/dump.tpl', false);
+    nv_deletefile(NV_ROOTDIR . '/assets/js/jquery/jquery.lazyload.js', false);
+    nv_deletefile(NV_ROOTDIR . '/assets/js/ui', true);
+
+    return $return;
+}
+
+/**
  * nv_up_finish()
  *
  * @return
@@ -151,7 +188,9 @@ function nv_up_finish()
         'message' => ''
     );
     
+    $db->query("DELETE FROM " . NV_CRONJOBS_GLOBALTABLE . " WHERE run_file = 'siteDiagnostic_update.php'");
     $db->query("UPDATE " . NV_CONFIG_GLOBALTABLE . " SET config_value = '4.0.28' WHERE lang = 'sys' AND module = 'global' AND config_name = 'version'");
+    
     $nv_Cache->delAll();
     nv_save_file_config_global();
     
