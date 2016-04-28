@@ -133,6 +133,8 @@ function nv_up_modusers()
         $db->query("RENAME TABLE " . $db_config['prefix'] . "_groups TO " . $db_config['prefix'] . "_users_groups");
         $db->query("RENAME TABLE " . $db_config['prefix'] . "_groups_users TO " . $db_config['prefix'] . "_users_groups_users");
         $db->query("UPDATE " . $db_config['prefix'] . "_setup_extensions SET is_virtual = '1' WHERE type = 'module' AND title = 'users'");
+        $db->query("ALTER TABLE " . $db_config['prefix'] . "_users_groups ADD email varchar(100) DEFAULT '' AFTER title");
+        $db->query("ALTER TABLE " . $db_config['prefix'] . "_users_groups ADD config varchar(250) DEFAULT '' AFTER siteus");      
     } catch (PDOException $e) {
         $return['status'] = $return['complete'] = 0;
         $return['message'] = $e->getMessage();
