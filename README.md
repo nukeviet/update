@@ -50,6 +50,23 @@ Thêm lên trên
 <!-- END: block_topcat -->
 ```
 
+Tìm đến đoạn
+```html
+</div>
+<!-- END: listcat -->
+<!-- END: main -->
+```
+
+Thêm lên trên đoạn sau:
+```html
+	<!-- BEGIN: block_bottomcat -->
+	<div class="bottom-cat clear">
+		{BLOCK_BOTTOMCAT}
+	</div>
+	<!-- END: block_bottomcat -->
+```
+
+
 Mở viewcat_main_left.tpl
 
 Tìm 
@@ -69,6 +86,23 @@ Thêm lên trên
 </div>
 <!-- END: block_topcat -->
 ```
+
+Tìm đến đoạn
+```html
+</div>
+<!-- END: listcat -->
+<!-- END: main -->
+```
+
+Thêm lên trên đoạn sau:
+```html
+	<!-- BEGIN: block_bottomcat -->
+	<div class="bottom-cat clear">
+		{BLOCK_BOTTOMCAT}
+	</div>
+	<!-- END: block_bottomcat -->
+```
+
 
 Mở viewcat_main_right.tpl
 
@@ -91,7 +125,21 @@ Thêm lên trên
 </div>
 <!-- END: block_topcat -->
 ```
+Tìm đến đoạn
+```html
+</div>
+<!-- END: listcat -->
+<!-- END: main -->
+```
 
+Thêm lên trên đoạn sau:
+```html
+	<!-- BEGIN: block_bottomcat -->
+	<div class="bottom-cat clear">
+		{BLOCK_BOTTOMCAT}
+	</div>
+	<!-- END: block_bottomcat -->
+```
 ### Cập nhật giao diện module users
 Nếu giao diện của bạn có thư mục themes/ten-theme/modules/users cần đối chiếu block block.login.tpl để cập nhật vì block này có nhiều thay đổi lớn
 Mở themes/ten-theme/modules/users/login_form.tpl 
