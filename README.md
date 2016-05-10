@@ -15,7 +15,7 @@ $global_config['name_show'] = 0;
 $global_config['cached'] = 'files';
 ```
 
-## 2. Upload file nâng 
+## 2. Upload file nâng cấp
 
 Download gói nâng cấp tại: https://github.com/nukeviet/update/files/88516/NukeViet_4.0.23_4.0.24.zip
 
