@@ -25,7 +25,7 @@ $nv_update_config['formodule'] = '';
 // Thong tin phien ban, tac gia, ho tro
 $nv_update_config['release_date'] = 1463504400;
 $nv_update_config['author'] = 'VINADES.,JSC (contact@vinades.vn)';
-$nv_update_config['support_website'] = 'http://nukeviet.vn';
+$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.0.29';
 $nv_update_config['to_version'] = '4.0.29';
 $nv_update_config['allow_old_version'] = array('4.0.27', '4.0.28');
 
