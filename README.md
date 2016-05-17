@@ -310,6 +310,93 @@ Sửa thành
         <!-- BEGIN: edit_safemode --><li class="{SAFEMODE_ACTIVE}"><a data-toggle="tab" data-location="{EDITINFO_FORM}/safemode" href="#edit_safemode">{LANG.safe_mode}</a></li><!-- END: edit_safemode -->
 ```
 
+Tìm
+
+```html
+<div id="edit_avatar" class="tab-pane fade {TAB_AVATAR_ACTIVE}">
+```
+
+Thêm lên trên
+
+```html
+<!-- BEGIN: tab_edit_avatar -->
+```
+
+Tìm
+
+```html
+<!-- BEGIN: tab_edit_username -->
+```
+
+Thêm lên trên
+
+```html
+<!-- END: tab_edit_avatar -->
+```
+
+Tìm 
+
+```html
+<div id="edit_password" class="tab-pane fade {TAB_PASSWORD_ACTIVE}">
+```
+
+Thêm lên trên
+
+```html
+<!-- BEGIN: tab_edit_password -->
+```
+
+Tìm
+
+```html
+<div id="edit_question" class="tab-pane fade {TAB_QUESTION_ACTIVE}">
+```
+
+Thêm lên trên
+
+```html
+<!-- END: tab_edit_password -->
+<!-- BEGIN: tab_edit_question -->
+```
+
+Tìm
+
+```html
+<!-- BEGIN: tab_edit_openid -->
+```
+
+Thêm lên trên
+
+```html
+<!-- END: tab_edit_question -->
+```
+
+Tìm
+
+```html
+<div id="edit_safemode" class="tab-pane fade {TAB_SAFEMODE_ACTIVE}">
+```
+
+Thêm lên trên
+
+```html
+<!-- BEGIN: tab_edit_safemode -->
+```
+
+Tìm
+
+```html
+    </div>
+
+    <ul class="nav navbar-nav">
+```
+
+Thêm lên trên
+
+```html
+        <!-- END: tab_edit_safemode -->
+```
+
 Nếu có file themes/ten-theme/modules/users/groups.tpl cần kiểm tra thay thế lại do có rất nhiều thay đổi
 
 Nếu giao diện của bạn có file themes/ten-theme/modules/users/theme.php, mở
