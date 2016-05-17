@@ -360,6 +360,12 @@ function nv_up_finish()
         $global_config['whoviewuser'] = '2';
     }
     
+    try {
+        $db->query("INSERT INTO " . $db_config['prefix'] . "_counter VALUES ('browser', 'coccoc', 0, 0, 0)");
+    } catch (PDOException $e) {
+        // Nothing
+    }
+    
     $db->query("UPDATE " . NV_CONFIG_GLOBALTABLE . " SET config_value='" . $global_config['whoviewuser'] . "' WHERE lang='sys' AND module='global' AND config_name='whoviewuser'");
     $db->query("UPDATE " . NV_CONFIG_GLOBALTABLE . " SET config_value='4.0.29' WHERE lang='sys' AND module='global' AND config_name='version'");
     
