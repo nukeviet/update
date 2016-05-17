@@ -272,46 +272,23 @@ function nv_up_modnews29()
             return $return;
         }
         
-        $limit_row = 10000; // Số tin thực hiện 1 lần chạy (10 nghìn tin)
-        
-        $db->sqlreset()->select("*")->from($html_table)->order("id ASC")->limit($limit_row)->offset(0);
-        $sql = $db->sql();
-        $result = $db->query($sql);
-        $num_row = $result->rowCount();
-        $last_id = 0;
-        
-        while ($row = $result->fetch()) {
-            $last_id = $row['id'];
-            
-            try {
-                $sql = "INSERT INTO " . $array_tbprefix_update[$request['umodkey']] . "_detail (
-                    id, bodyhtml, sourcetext, imgposition, copyright, allowed_send, allowed_print, allowed_save, gid
-                ) VALUES (
-                    " . $row['id'] . ", " . $db->quote($row['bodyhtml']) . ", " . $db->quote($row['sourcetext']) . ", 
-                    " . $row['imgposition'] . ", " . $row['copyright'] . ", " . $row['allowed_send'] . ", " . $row['allowed_print'] . ", " . $row['allowed_save'] . ", " . $row['gid'] . " 
-                )";
-                $db->query($sql);
-            } catch (PDOException $e) {
-                $return['status'] = 0;
-                $return['message'] = $e->getMessage();
-                return $return;
-            }
+        // Copy dữ liệu
+        try {
+            $sql = "INSERT INTO " . $array_tbprefix_update[$request['umodkey']] . "_detail SELECT * FROM " . $html_table;
+            $db->query($sql);
+        } catch (PDOException $e) {
+            $return['status'] = 0;
+            $return['message'] = $e->getMessage();
+            return $return;
         }
         
-        // Xóa các bài viết
-        if ($last_id > 0) {
-            $db->query("DELETE FROM " . $html_table . " WHERE id<=" . $last_id);
-        }
-        
-        // Hết dữ liệu của bảng thì xóa bảng
-        if ($num_row < $limit_row) {
-            try {
-                $db->query("DROP TABLE " . $html_table);
-            } catch (PDOException $e) {
-                $return['status'] = 0;
-                $return['message'] = $e->getMessage();
-                return $return;
-            }
+        // Xóa bảng
+        try {
+            $db->query("DROP TABLE " . $html_table);
+        } catch (PDOException $e) {
+            $return['status'] = 0;
+            $return['message'] = $e->getMessage();
+            return $return;
         }
         
         // Tiếp tục lặp lại bước này
