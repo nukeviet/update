@@ -4,6 +4,7 @@
 ### Bước 1: Thực hiện cập nhật:
 Download gói cập nhật tại: https://github.com/nukeviet/update/archive/to-4.0.29.zip
 Giải nén và Upload các file trong gói cập nhật với cấu trúc của NukeViet, sau đó vào admin để tiến hành cập nhật.
+
 Chú ý: cần thực hiện việc backup CSDL và các file thay đổi theo yêu cầu tại trang nâng cấp, tránh tình trạng có vấn đề phát sinh site không hoạt động được sau update.
 
 ### Bước 2: Xử lý sau cập nhật:
