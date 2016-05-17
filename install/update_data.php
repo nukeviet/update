@@ -272,7 +272,7 @@ function nv_up_modnews29()
             return $return;
         }
         
-        $limit_row = 1; // Số tin thực hiện 1 lần chạy
+        $limit_row = 10000; // Số tin thực hiện 1 lần chạy (10 nghìn tin)
         
         $db->sqlreset()->select("*")->from($html_table)->order("id ASC")->limit($limit_row)->offset(0);
         $sql = $db->sql();
