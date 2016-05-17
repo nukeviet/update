@@ -211,6 +211,20 @@ Nếu có thay bằng
 $mobile_theme = empty($module_info['mobile']) ? $global_config['mobile_theme'] : (($module_info['mobile'] != ':pcmod' and $module_info['mobile'] != ':pcsite') ? $module_info['mobile'] : '');
 ```
 
+Tìm
+
+```php
+    foreach ($html_links as $links) {
+```
+
+Thêm lên trên
+```php
+    
+    if (file_exists(NV_ROOTDIR . '/themes/' . $global_config['module_theme'] . '/colorOpt.php')) {
+        include(NV_ROOTDIR . '/themes/' . $global_config['module_theme'] . '/colorOpt.php');
+    }
+```
+
 ### Cập nhật giao diện module news
 
 Sửa file /themes/ten-theme/modules/news/detail.tpl
