@@ -328,8 +328,17 @@ function nv_up_delunuse_files29()
         'message' => ''
     );
     
-    // Chỗ này sẽ cập nhật sau
-    //nv_deletefile(NV_ROOTDIR . '/admin/seotools/siteDiagnostic.php', false);
+    nv_deletefile(NV_ROOTDIR . '/themes/default/images/hbg.jpg', false);
+    nv_deletefile(NV_ROOTDIR . '/themes/default/images/hbg2.jpg', false);
+    nv_deletefile(NV_ROOTDIR . '/themes/default/layout/layout.body-left-right.tpl', false);
+    nv_deletefile(NV_ROOTDIR . '/themes/default/layout/layout.body-right.tpl', false);
+    nv_deletefile(NV_ROOTDIR . '/themes/default/layout/layout.body.tpl', false);
+    nv_deletefile(NV_ROOTDIR . '/themes/default/layout/layout.left-body-right.tpl', false);
+    nv_deletefile(NV_ROOTDIR . '/themes/default/layout/layout.left-body.tpl', false);
+    nv_deletefile(NV_ROOTDIR . '/themes/default/layout/layout.left-right-body.tpl', false);
+    nv_deletefile(NV_ROOTDIR . '/themes/mobile_default/layout/layout.body.tpl', false);
+    nv_deletefile(NV_ROOTDIR . '/vendor/phpmailer/phpmailer/src/OAuthProvider/Google.php', false);
+    nv_deletefile(NV_ROOTDIR . '/vendor/phpmailer/phpmailer/src/PHPMailerOAuth.php', false);
 
     return $return;
 }
