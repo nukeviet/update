@@ -159,11 +159,11 @@ function nv_up_modusers()
     }
 
     try {
+        // Sửa bảng _extensions nếu các phiên bản trước chưa sửa
         $db->query("ALTER TABLE " . $db_config['prefix'] . "_setup_extensions CHANGE virtual is_virtual TINYINT(1) NOT NULL DEFAULT '0'");
         $db->query("UPDATE " . $db_config['prefix'] . "_setup_extensions SET is_virtual = '1' WHERE type = 'module' AND title = 'users'");
     } catch (PDOException $e) {
-        $return['status'] = $return['complete'] = 0;
-        $return['message'] = $e->getMessage();
+        // Nothing
     }
 
     return $return;
