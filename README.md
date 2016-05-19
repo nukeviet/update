@@ -200,31 +200,52 @@ Nếu giao diện hiện tại đang sử dụng cho NukeViet 4.0 RC3 cần:
 
 ### Cập nhật giao diện chính
 Mở themes/ten-theme/theme.php tìm
-
 ```php
-// Change theme types
-$mobile_theme = empty($module_info['mobile']) ? $global_config['mobile_theme'] : $module_info['mobile'];
+    $html_links[] = array( 'rel' => 'StyleSheet', 'href' => NV_BASE_SITEURL . 'themes/default/css/font-awesome.min.css' );
+```
+
+Thay bằng
+```php
+    $html_links[] = array( 'rel' => 'StyleSheet', 'href' => NV_BASE_SITEURL . NV_ASSETS_DIR . '/css/font-awesome.min.css' );
+```
+
+Tìm kiếm đoạn sau nếu có
+```php
+	// Change theme types
+        $mobile_theme = empty($module_info['mobile']) ? $global_config['mobile_theme'] : $module_info['mobile'];
+        .....(khoảng 15 dòng)......
+        $xtpl->parse('main.theme_type');
 ```
 
 Nếu có thay bằng
 
 ```php
-// Change theme types
-$mobile_theme = empty($module_info['mobile']) ? $global_config['mobile_theme'] : (($module_info['mobile'] != ':pcmod' and $module_info['mobile'] != ':pcsite') ? $module_info['mobile'] : '');
-```
+        // Change theme types
+        if (sizeof($global_config['array_theme_type']) > 1) {
+            $mobile_theme = empty($module_info['mobile']) ? $global_config['mobile_theme'] : (($module_info['mobile'] != ':pcmod' and $module_info['mobile'] != ':pcsite') ? $module_info['mobile'] : '');
+            if (empty($mobile_theme) or empty($global_config['switch_mobi_des'])) {
+                $array_theme_type = array_diff($global_config['array_theme_type'], array( 'm' ));
+            } else {
+                $array_theme_type = $global_config['array_theme_type'];
+            }
+            $icons = array('r' => 'random', 'd' => 'desktop', 'm' => 'mobile');
+            $current_theme_type = (isset($global_config['current_theme_type']) and ! empty($global_config['current_theme_type']) and in_array($global_config['current_theme_type'], array_keys($icons))) ? $global_config['current_theme_type'] : 'd';
+            foreach ($array_theme_type as $theme_type) {
+                $xtpl->assign('STHEME_TYPE', NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;nv' . NV_LANG_DATA . 'themever=' . $theme_type . '&amp;nv_redirect=' . nv_redirect_encrypt($client_info['selfurl']));
+                $xtpl->assign('STHEME_TITLE', $lang_global['theme_type_' . $theme_type]);
+                $xtpl->assign('STHEME_INFO', sprintf($lang_global['theme_type_chose'], $lang_global['theme_type_' . $theme_type]));
+                $xtpl->assign('STHEME_ICON', $icons[$theme_type]);
 
-Tìm
+                if ($theme_type == $current_theme_type) {
+                    $xtpl->parse('main.theme_type.loop.current');
+                } else {
+                    $xtpl->parse('main.theme_type.loop.other');
+                }
 
-```php
-    foreach ($html_links as $links) {
-```
-
-Thêm lên trên
-```php
-    
-    if (file_exists(NV_ROOTDIR . '/themes/' . $global_config['module_theme'] . '/colorOpt.php')) {
-        include(NV_ROOTDIR . '/themes/' . $global_config['module_theme'] . '/colorOpt.php');
-    }
+                $xtpl->parse('main.theme_type.loop');
+            }
+            $xtpl->parse('main.theme_type');
+        }
 ```
 
 ### Cập nhật giao diện module news
