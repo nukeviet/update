@@ -384,7 +384,7 @@ function nv_up_finish()
         'lang' => 'NO',
         'message' => ''
     );
-    $db->query("DELETE FROM nv4_config WHERE config_name='adminrelogin_max' AND module='global'");
+    $db->query("DELETE FROM " . $db_config['prefix'] . "_config WHERE config_name='adminrelogin_max' AND module='global'");
 
     $language_query = $db->query('SELECT lang FROM ' . $db_config['prefix'] . '_setup_language WHERE setup = 1');
     while (list ($lang) = $language_query->fetch(3)) {
@@ -432,8 +432,8 @@ function nv_up_finish()
 
     // Cập nhật phiên bản
     $db->query("UPDATE " . NV_CONFIG_GLOBALTABLE . " SET config_value='4.0.29' WHERE lang='sys' AND module='global' AND config_name='version'");
-    $db->query("UPDATE nv4_setup_extensions SET  version='4.0.29 1463652000' WHERE type='module' and basename IN ('banners', 'comment','contact','feeds','freecontent','menu','news','page','seek','statistics','users','voting')");
-    $db->query("UPDATE nv4_setup_extensions SET  version='4.0.29 1463652000' WHERE type='theme' and basename IN ('default', 'mobile_default')");
+    $db->query("UPDATE " . $db_config['prefix'] . "_setup_extensions SET  version='4.0.29 1463652000' WHERE type='module' and basename IN ('banners', 'comment','contact','feeds','freecontent','menu','news','page','seek','statistics','users','voting')");
+    $db->query("UPDATE " . $db_config['prefix'] . "_setup_extensions SET  version='4.0.29 1463652000' WHERE type='theme' and basename IN ('default', 'mobile_default')");
     $nv_Cache->delAll();
     nv_save_file_config_global();
 
