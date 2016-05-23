@@ -1,10 +1,12 @@
 # Hướng dẫn cập nhật từ NukeViet 4 RC2 (4.0.27), NukeViet 4 RC3 (4.0.28) lên NukeViet 4 Official (4.0.29)
 
+Nếu phiên bản NukeViet 4 của bạn nhỏ hơn 4.0.27 bạn cần tìm hướng dẫn nâng cấp lên phiên bản 4.0.27 trước khi tiến hành các bước tiếp theo.
+
 ## Nâng cấp hệ thống:
 Chú ý: cần thực hiện việc backup toàn bộ CSDL và các file code, tránh tình trạng có vấn đề phát sinh site không hoạt động được sau update.
 
 ### Bước 1: Thực hiện cập nhật:
-Download gói cập nhật tại: https://github.com/nukeviet/update/archive/to-4.0.29.zip
+Download gói cập nhật tại: https://github.com/nukeviet/update/releases/download/to-4.0.29/update-to-4.0.29.zip
 Giải nén và Upload các file trong gói cập nhật với cấu trúc của NukeViet, sau đó vào admin để tiến hành cập nhật.
 
 ### Bước 2: Xử lý sau cập nhật:
