@@ -44,15 +44,15 @@ $nv_update_config['lang']['vi']['nv_up_modnews'] = 'Cập nhật module news lê
 $nv_update_config['lang']['vi']['nv_up_modusers'] = 'Cập nhật module users lên 4.0.28';
 $nv_update_config['lang']['vi']['nv_up_delunuse_files'] = 'Xóa các file thừa bản 4.0.27';
 $nv_update_config['lang']['vi']['nv_up_modnews29'] = 'Cập nhật module news lên 4.0.29';
-$nv_update_config['lang']['vi']['nv_up_delunuse_files29'] = 'Xóa các file thừa bản 4.0.28';
-$nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản 4.0.28';
+$nv_update_config['lang']['vi']['nv_up_delunuse_files29'] = 'Xóa các file thừa bản 4.0.29';
+$nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản 4.0.29';
 // English
 $nv_update_config['lang']['en']['nv_up_modnews'] = 'Update module news to 4.0.28';
 $nv_update_config['lang']['en']['nv_up_modusers'] = 'Update module users to 4.0.28';
 $nv_update_config['lang']['en']['nv_up_delunuse_files'] = 'Delete unuse files 4.0.27';
 $nv_update_config['lang']['en']['nv_up_modnews29'] = 'Update module news to 4.0.29';
-$nv_update_config['lang']['en']['nv_up_delunuse_files29'] = 'Delete unuse files 4.0.28';
-$nv_update_config['lang']['en']['nv_up_finish'] = 'Update new version 4.0.28';
+$nv_update_config['lang']['en']['nv_up_delunuse_files29'] = 'Delete unuse files 4.0.29';
+$nv_update_config['lang']['en']['nv_up_finish'] = 'Update new version 4.0.29';
 
 $nv_update_config['tasklist'] = array();
 $nv_update_config['tasklist'][] = array(
