@@ -190,13 +190,25 @@ function nv_up_finish()
     }
     
     // Cập nhật chức năng thành viên mới đăng ký
-    $db->query("INSERT INTO " . NV_GROUPS_GLOBALTABLE . " (group_id, title, description, content, group_type, group_color, group_avatar, is_default, add_time, exp_time, weight, act, idsite, numbers, siteus) VALUES (7, 'New Users', 'New Users', '', 0, '', '', 0, " . NV_CURRENTTIME . ", 0, 5, 1, 0, 0, 0)");
+    try {
+        $db->query("INSERT INTO " . NV_GROUPS_GLOBALTABLE . " (group_id, title, description, content, group_type, group_color, group_avatar, is_default, add_time, exp_time, weight, act, idsite, numbers, siteus) VALUES (7, 'New Users', 'New Users', '', 0, '', '', 0, " . NV_CURRENTTIME . ", 0, 5, 1, 0, 0, 0)");
+    } catch (PDOException $e) {
+        // Nothing
+    }
     
     // Cập nhật weight bảng NV_GROUPS_GLOBALTABLE
-    $db->query("INSERT INTO " . NV_USERS_GLOBALTABLE . "_config (config, content, edit_time) VALUES ('active_group_newusers', '0', " . NV_CURRENTTIME . ")");
+    try {
+        $db->query("INSERT INTO " . NV_USERS_GLOBALTABLE . "_config (config, content, edit_time) VALUES ('active_group_newusers', '0', " . NV_CURRENTTIME . ")");
+    } catch (PDOException $e) {
+        // Nothing
+    }
     
     //  Fix setup for webserver Apache 8.1.0 
-    $db->query("ALTER TABLE " . $db_config['prefix'] . "_setup_extensions CHANGE `virtual` is_virtual TINYINT(1) NOT NULL DEFAULT '0'");
+    try {
+        $db->query("ALTER TABLE " . $db_config['prefix'] . "_setup_extensions CHANGE `virtual` is_virtual TINYINT(1) NOT NULL DEFAULT '0'");
+    } catch (PDOException $e) {
+        // Nothing
+    }
     
     $db->query("UPDATE " . NV_CONFIG_GLOBALTABLE . " SET config_value = '4.0.27' WHERE lang = 'sys' AND module = 'global' AND config_name = 'version'");
     $nv_Cache->delAll();
