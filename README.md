@@ -171,7 +171,7 @@ Thêm lên trên
 
 Nếu giao diện của bạn tồn tại `themes/ten-theme/js/voting.js` cần đối chiếu với `themes/default/js/voting.js` để chỉnh sửa phù hợp với chức năng mới (thêm captcha)
 
-### Chỉnh sửa giao diện module voting
+### Chỉnh sửa giao diện module news
 
 Nếu giao diện của bạn tồn tại `themes/ten-theme/modules/news`:
 
@@ -271,7 +271,7 @@ Thay lại thành
 data-content="{RELATED.hometext_clean}"
 ```
 
-Mở `themes/ten-theme/modules/news/detail.tpl` tìm 
+Mở `themes/ten-theme/modules/news/viewcat_list.tpl` tìm 
 
 ```html
 data-content="{CONTENT.hometext}"
@@ -283,3 +283,191 @@ Thay lại thành
 data-content="{CONTENT.hometext_clean}"
 ```
 
+Mở `themes/ten-theme/modules/news/viewcat_main_bottom.tpl` tìm 
+
+```html
+data-content="{OTHER.hometext}"
+```
+
+Thay lại thành
+
+```html
+data-content="{OTHER.hometext_clean}"
+```
+
+Mở `themes/ten-theme/modules/news/viewcat_main_left.tpl` tìm 
+
+```html
+data-content="{OTHER.hometext}"
+```
+
+Thay lại thành
+
+```html
+data-content="{OTHER.hometext_clean}"
+```
+
+Mở `themes/ten-theme/modules/news/viewcat_main_right.tpl` tìm 
+
+```html
+data-content="{OTHER.hometext}"
+```
+
+Thay lại hành
+
+```html
+data-content="{OTHER.hometext_clean}"
+```
+
+Mở `themes/ten-theme/modules/news/viewcat_two_column.tpl` tìm 
+
+```html
+data-content="{CONTENT.hometext}"
+```
+
+Thay lại thành
+
+```html
+data-content="{CONTENT.hometext_clean}"
+```
+
+### Chỉnh sửa giao diện module users
+
+Nếu giao diện của bạn tồn tại `themes/ten-theme/modules/users`:
+
+Mở `themes/ten-theme/modules/users/confirm.tpl` tìm 
+
+```html
+<input name="openid_account_confirm" value="1" type="hidden" />
+```
+
+Thêm vào sau
+
+```html
+<!-- BEGIN: redirect --><input name="nv_redirect" value="{REDIRECT}" type="hidden" /><!-- END: redirect -->
+```
+
+Mở `themes/ten-theme/modules/users/info.tpl` tìm 
+
+```html
+<!-- BEGIN: edit_password --><li class="{PASSWORD_ACTIVE}"><a data-toggle="tab" data-location="{EDITINFO_FORM}/password" href="#edit_password">{LANG.edit_password}</a></li><!-- END: edit_password -->
+```
+
+Thêm vào sau
+
+
+```html
+<!-- BEGIN: 2step --><li><a href="{URL_2STEP}">{LANG.2step_status}</a></li><!-- END: 2step -->
+```
+
+Mở `themes/ten-theme/modules/users/login_form.tpl` đối chiếu với `themes/default/modules/users/login_form.tpl` để chỉnh sửa phù hợp do có nhiều thay đổi.
+Có thể tóm lược như sau:
+
+Thêm vào thành phần chứa hai nút nhập mật khẩu và tên đăng nhập class `loginstep1` ví dụ
+
+```html
+<div class="form-group">
+    <div class="input-group">
+        <span class="input-group-addon"><em class="fa fa-user fa-lg"></em></span>
+        <input type="text" class="required form-control" placeholder="{GLANG.username_email}" value="" name="nv_login" maxlength="100" data-pattern="/^(.){3,}$/" onkeypress="validErrorHidden(this);" data-mess="{GLANG.username_empty}">
+    </div>
+</div>
+```
+
+Thay lại thành
+
+```html
+<div class="form-group loginstep1">
+    <div class="input-group">
+        <span class="input-group-addon"><em class="fa fa-user fa-lg"></em></span>
+        <input type="text" class="required form-control" placeholder="{GLANG.username_email}" value="" name="nv_login" maxlength="100" data-pattern="/^(.){3,}$/" onkeypress="validErrorHidden(this);" data-mess="{GLANG.username_empty}">
+    </div>
+</div>
+```
+
+Bên dưới thành phần chứa ô nhập tên đăng nhập và mật khẩu thêm vào thành phần xác thực hai bước
+
+```html
+<div class="form-group loginstep2 hidden">
+    <label class="margin-bottom">{GLANG.2teplogin_totppin_label}</label>
+    <div class="input-group margin-bottom">
+        <span class="input-group-addon"><em class="fa fa-key fa-lg fa-fix"></em></span>
+        <input type="text" class="required form-control" placeholder="{GLANG.2teplogin_totppin_placeholder}" value="" name="nv_totppin" maxlength="6" data-pattern="/^(.){6,}$/" onkeypress="validErrorHidden(this);" data-mess="{GLANG.2teplogin_totppin_placeholder}">
+    </div>
+    <div class="text-center">
+        <a href="#" onclick="login2step_change(this);">{GLANG.2teplogin_other_menthod}</a>
+    </div>
+</div>
+
+<div class="form-group loginstep3 hidden">
+    <label class="margin-bottom">{GLANG.2teplogin_code_label}</label>
+    <div class="input-group margin-bottom">
+        <span class="input-group-addon"><em class="fa fa-key fa-lg fa-fix"></em></span>
+        <input type="text" class="required form-control" placeholder="{GLANG.2teplogin_code_placeholder}" value="" name="nv_backupcodepin" maxlength="8" data-pattern="/^(.){8,}$/" onkeypress="validErrorHidden(this);" data-mess="{GLANG.2teplogin_code_placeholder}">
+    </div>
+    <div class="text-center">
+        <a href="#" onclick="login2step_change(this);">{GLANG.2teplogin_other_menthod}</a>
+    </div>
+</div>
+```
+
+Thêm vào thành phần chứa mã xác nhận (captcha) class `loginCaptcha` ví dụ
+
+```html
+<div class="form-group">
+    <div class="middle text-center clearfix">
+        <img class="captchaImg display-inline-block" src="{SRC_CAPTCHA}" width="{GFX_WIDTH}" height="{GFX_HEIGHT}" alt="{N_CAPTCHA}" title="{N_CAPTCHA}" /><em class="fa fa-pointer fa-refresh margin-left margin-right" title="{CAPTCHA_REFRESH}" onclick="change_captcha('.bsec');"></em><input type="text" style="width:100px;" class="bsec required form-control display-inline-block" name="nv_seccode" value="" maxlength="{GFX_MAXLENGTH}" placeholder="{GLANG.securitycode}" data-pattern="/^(.){{GFX_MAXLENGTH},{GFX_MAXLENGTH}}$/" onkeypress="validErrorHidden(this);" data-mess="{GLANG.securitycodeincorrect}" />
+    </div>
+</div>
+```
+
+Thay lại thành
+
+```html
+<div class="form-group loginCaptcha">
+    <div class="middle text-center clearfix">
+        <img class="captchaImg display-inline-block" src="{SRC_CAPTCHA}" width="{GFX_WIDTH}" height="{GFX_HEIGHT}" alt="{N_CAPTCHA}" title="{N_CAPTCHA}" /><em class="fa fa-pointer fa-refresh margin-left margin-right" title="{CAPTCHA_REFRESH}" onclick="change_captcha('.bsec');"></em><input type="text" style="width:100px;" class="bsec required form-control display-inline-block" name="nv_seccode" value="" maxlength="{GFX_MAXLENGTH}" placeholder="{GLANG.securitycode}" data-pattern="/^(.){{GFX_MAXLENGTH},{GFX_MAXLENGTH}}$/" onkeypress="validErrorHidden(this);" data-mess="{GLANG.securitycodeincorrect}" />
+    </div>
+</div>
+```
+
+Mở `themes/ten-theme/modules/users/userinfo.tpl` tìm 
+
+```html
+<tr>
+    <td>{LANG.st_login2}</td>
+    <td>{USER.st_login}</td>
+</tr>
+```
+
+Thêm vào bên dưới
+
+```html
+<tr>
+    <td>{LANG.2step_status}</td>
+    <td>{USER.active2step} (<a href="{URL_2STEP}">{LANG.2step_link}</a>)</td>
+</tr>
+```
+
+Mở `themes/ten-theme/modules/users/viewdetailusers.tpl` tìm 
+
+```html
+<div class="table-responsive">
+	<table class="table table-bordered table-striped">
+```
+
+Thêm lên trên
+
+```html
+
+<!-- BEGIN: for_admin -->
+<div class="m-bottom clearfix">
+    <div class="pull-right">
+        {LANG.for_admin}: 
+        <!-- BEGIN: edit --><a href="{USER.link_edit}" class="btn btn-info btn-xs"><i class="fa fa-edit"></i> {GLANG.edit}</a><!-- END: edit -->
+        <!-- BEGIN: delete --><a href="#" class="btn btn-danger btn-xs" data-toggle="admindeluser" data-userid="{USER.userid}" data-link="{USER.link_delete}" data-back="{USER.link_delete_callback}"><i class="fa fa-trash-o"></i> {GLANG.delete}</a><!-- END: delete -->
+    </div>
+</div>
+<!-- END: for_admin -->
+
+```
