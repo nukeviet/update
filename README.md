@@ -35,6 +35,20 @@ Sau khi cập nhật xong, cần làm các thao tác:
 
 Các giao diện khác giao diện mặc định đã được làm cho NukeViet 4.0 Official cần sửa thêm như sau để có thể sử dụng cho NukeViet 4.1 Beta:
 
+### Chỉnh sửa tương thích Jquery 3
+
+Kiểm tra lại javascript của giao diện để tương thích với Jquery 3. Hiện tại chúng tôi kiểm tra với NukeViet cơ bản cần phải tìm các đoạn có dạng
+
+```js
+$(window).load(function () {
+```
+
+Thay lại thành
+
+```js
+$(window).on('load', function() {
+```
+
 ### Bổ sung giao diện module xác thực hai bước (two-step-verification)
 
 Nếu bạn cần chỉnh sửa giao diện module two-step-verification theo phong cách riêng hãy bổ sung giao diện này vào giao diện bạn sử dụng.
@@ -154,4 +168,118 @@ Thêm lên trên
 </div>
 <!-- END: captcha -->
 ````
+
+Nếu giao diện của bạn tồn tại `themes/ten-theme/js/voting.js` cần đối chiếu với `themes/default/js/voting.js` để chỉnh sửa phù hợp với chức năng mới (thêm captcha)
+
+### Chỉnh sửa giao diện module voting
+
+Nếu giao diện của bạn tồn tại `themes/ten-theme/modules/news`:
+
+Mở `themes/ten-theme/modules/news/block_groups.tpl` tìm 
+
+```html
+<a {TITLE} class="show" href="{ROW.link}" data-content="{ROW.hometext}" data-img="{ROW.thumb}" data-rel="block_tooltip">{ROW.title}</a>
+```
+
+Thay lại thành
+
+```html
+<a {TITLE} class="show" href="{ROW.link}" data-content="{ROW.hometext_clean}" data-img="{ROW.thumb}" data-rel="block_tooltip">{ROW.title_clean}</a>
+```
+
+Mở `themes/ten-theme/modules/news/block_headline.tpl` tìm 
+
+```html
+<a {TITLE} class="show" href="{LASTEST.link}" data-content="{LASTEST.hometext}" data-img="{LASTEST.homeimgfile}" data-rel="block_headline_tooltip">{LASTEST.title}</a>
+```
+
+Thay lại thành
+
+```html
+<a {TITLE} class="show" href="{LASTEST.link}" data-content="{LASTEST.hometext_clean}" data-img="{LASTEST.homeimgfile}" data-rel="block_headline_tooltip">{LASTEST.title}</a>
+```
+
+Mở `themes/ten-theme/modules/news/block_news.tpl` tìm 
+
+```html
+<a {TITLE} class="show" href="{blocknews.link}" data-content="{blocknews.hometext}" data-img="{blocknews.imgurl}" data-rel="block_news_tooltip">{blocknews.title}</a>
+```
+
+Thay lại thành
+
+```html
+<a {TITLE} class="show" href="{blocknews.link}" data-content="{blocknews.hometext_clean}" data-img="{blocknews.imgurl}" data-rel="block_news_tooltip">{blocknews.title}</a>
+```
+
+Mở `themes/ten-theme/modules/news/block_newscenter.tpl` tìm 
+
+```html
+<a class="show black h4" href="{othernews.link}" <!-- BEGIN: tooltip -->data-placement="{TOOLTIP_POSITION}" data-content="{othernews.hometext}" data-img="{othernews.imgsource}" data-rel="tooltip"<!-- END: tooltip --> title="{othernews.title}" ><img src="{othernews.imgsource}" alt="{othernews.title}" class="img-thumbnail pull-right margin-left-sm" style="width:65px;"/>{othernews.titleclean60}</a>
+```
+
+Thay lại thành
+
+```html
+<a class="show black h4" href="{othernews.link}" <!-- BEGIN: tooltip -->data-placement="{TOOLTIP_POSITION}" data-content="{othernews.hometext_clean}" data-img="{othernews.imgsource}" data-rel="tooltip"<!-- END: tooltip --> title="{othernews.title}" ><img src="{othernews.imgsource}" alt="{othernews.title}" class="img-thumbnail pull-right margin-left-sm" style="width:65px;"/>{othernews.titleclean60}</a>
+```
+
+Mở `themes/ten-theme/modules/news/block_tophits.tpl` tìm 
+
+```html
+<a {TITLE} class="show" href="{blocknews.link}" data-content="{blocknews.hometext}" data-img="{blocknews.imgurl}" data-rel="block_news_tooltip">{blocknews.title}</a>
+```
+
+Thay lại thành
+
+```html
+<a {TITLE} class="show" href="{blocknews.link}" data-content="{blocknews.hometext_clean}" data-img="{blocknews.imgurl}" data-rel="block_news_tooltip">{blocknews.title}</a>
+```
+
+Mở `themes/ten-theme/modules/news/detail.tpl` tìm 
+
+```html
+data-content="{TOPIC.hometext}"
+```
+
+Thay lại thành
+
+```html
+data-content="{TOPIC.hometext_clean}"
+```
+
+Tìm
+
+```html
+data-content="{RELATED_NEW.hometext}"
+```
+
+Thay lại thành
+
+```html
+data-content="{RELATED_NEW.hometext_clean}"
+```
+
+Tìm
+
+```html
+data-content="{RELATED.hometext}"
+```
+
+Thay lại thành
+
+```html
+data-content="{RELATED.hometext_clean}"
+```
+
+Mở `themes/ten-theme/modules/news/detail.tpl` tìm 
+
+```html
+data-content="{CONTENT.hometext}"
+```
+
+Thay lại thành
+
+```html
+data-content="{CONTENT.hometext_clean}"
+```
 
