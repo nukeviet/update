@@ -331,6 +331,110 @@ Thay lại thành
 data-content="{CONTENT.hometext_clean}"
 ```
 
+Nếu giao diện của bạn tồn tại `themes/ten-theme/modules/news/theme.php` mở nó
+
+Tìm các đoạn có dạng (khoảng 2)
+
+```php
+$array_row_i['hometext'] = nv_clean60($array_row_i['hometext'], $module_config[$module_name]['tooltip_length'], true);
+```
+
+Thay lại thành
+
+```php
+$array_row_i['hometext_clean'] = nv_clean60(strip_tags($array_row_i['hometext']), $module_config[$module_name]['tooltip_length'], true);
+```
+
+Tìm
+
+```php
+$array_content_i['hometext'] = nv_clean60($array_content_i['hometext'], 200);
+```
+
+Thay lại thành
+
+```php
+$array_content_i['hometext'] = nv_clean60(strip_tags($array_content_i['hometext']), 200);
+```
+
+Tìm 
+
+```php
+if ($module_config[$module_name]['showtooltip']) {
+    $xtpl->assign('TOOLTIP_POSITION', $module_config[$module_name]['tooltip_position']);
+    $array_catpage_i['content'][$index]['hometext'] = nv_clean60($array_catpage_i['content'][$index]['hometext'], $module_config[$module_name]['tooltip_length'], true);
+    $xtpl->parse('main.loopcat.other.tooltip');
+}
+```
+
+Trong đoạn đó xóa
+
+```php
+$array_catpage_i['content'][$index]['hometext'] = nv_clean60($array_catpage_i['content'][$index]['hometext'], $module_config[$module_name]['tooltip_length'], true);
+```
+
+Thêm vào bên dưới đoạn đó
+
+```php
+$xtpl->assign('CONTENT', $array_catpage_i['content'][$index]);
+```
+
+Thêm lên trên đoạn đó
+
+```
+
+$array_catpage_i['content'][$index]['hometext_clean'] = nv_clean60(strip_tags($array_catpage_i['content'][$index]['hometext']), $module_config[$module_name]['tooltip_length'], true);
+$xtpl->assign('CONTENT', $array_catpage_i['content'][$index]);
+```
+
+Tìm
+
+```php
+$related_new_array_i['hometext'] = nv_clean60($related_new_array_i['hometext'], $module_config[$module_name]['tooltip_length'], true);
+```
+
+Thay lại thành
+
+```php
+$related_new_array_i['hometext_clean'] = nv_clean60(strip_tags($related_new_array_i['hometext']), $module_config[$module_name]['tooltip_length'], true);
+```
+
+Tìm
+
+```php
+$related_array_i['hometext'] = nv_clean60($related_array_i['hometext'], $module_config[$module_name]['tooltip_length'], true);
+```
+
+Thanh lại thành
+
+```php
+$related_array_i['hometext_clean'] = nv_clean60(strip_tags($related_array_i['hometext']), $module_config[$module_name]['tooltip_length'], true);
+```
+
+Tìm 
+
+```php
+$topic_array_i['hometext'] = nv_clean60($topic_array_i['hometext'], $module_config[$module_name]['tooltip_length'], true);
+```
+
+Thay lại thành
+
+```php
+$topic_array_i['hometext_clean'] = nv_clean60(strip_tags($topic_array_i['hometext']), $module_config[$module_name]['tooltip_length'], true);
+```
+
+Tìm
+
+```php
+$xtpl->assign('CONTENT', BoldKeywordInStr($value['hometext'], $key) . "...");
+```
+
+Thay lại thành
+
+```php
+$xtpl->assign('CONTENT', BoldKeywordInStr(strip_tags($value['hometext']), $key) . "...");
+```
+
 ### Chỉnh sửa giao diện module users
 
 Nếu giao diện của bạn tồn tại `themes/ten-theme/modules/users`:
@@ -558,4 +662,168 @@ $(document).ready(function() {
         }
     });
 });
+```
+
+Nếu giao diện của bạn tồn tại `themes/ten-theme/modules/users.php`, mở nó:
+
+Tìm
+
+```php
+$xtpl = new XTemplate('register.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
+```
+
+Bên dưới xác định và xóa
+
+```php
+$xtpl->assign('USER_REGISTER', NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=register');
+```
+
+Tìm  
+
+```php
+if ($group_id != 0) {
+	$xtpl->assign('USER_REGISTER', NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=register/' . $group_id);
+}
+```
+
+Thêm vào sau đó
+
+```php
+ else {
+    $xtpl->assign('USER_REGISTER', NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=register');
+    $xtpl->parse('main.agreecheck');
+}
+```
+
+Tìm
+
+```php
+    $xtpl->parse('main.edit_password');
+    $xtpl->parse('main.tab_edit_password');
+}
+```
+
+Thêm vào sau
+
+```php
+
+if (in_array('2step', $types)) {
+    $xtpl->assign('URL_2STEP', nv_url_rewrite(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=two-step-verification', true));
+    $xtpl->parse('main.2step');
+}
+```
+
+Tìm và xóa (Chú ý có hai đoạn như thế, nếu có 2 doạn thì xóa đi một đoạn)
+
+```php
+if (in_array('avatar', $types)) {
+	$xtpl->parse('main.edit_avatar');
+    $xtpl->parse('main.tab_edit_avatar');
+}
+```
+
+Tìm thấy hàm
+
+```php
+function user_welcome()
+```
+
+Bên dưới xác định
+
+```php
+$xtpl->assign('URL_GROUPS', nv_url_rewrite(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=groups', true));
+```
+
+Thêm xuống dưới
+
+```php
+$xtpl->assign('URL_2STEP', nv_url_rewrite(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=two-step-verification', true));
+```
+
+Tìm
+
+```php
+$_user_info['st_login'] = ! empty($user_info['st_login']) ? $lang_module['yes'] : $lang_module['no'];
+```
+
+Thêm xuống dưới
+
+```php
+$_user_info['active2step'] = ! empty($user_info['active2step']) ? $lang_global['on'] : $lang_global['off'];
+```
+
+Tìm
+
+```php
+function openid_account_confirm($gfx_chk, $attribs)
+```
+
+Thay lại thành
+
+```php
+function openid_account_confirm($gfx_chk, $attribs, $user)
+```
+
+Tìm
+
+```php
+$xtpl = new XTemplate('confirm.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
+```
+
+Thêm xuống dưới
+
+```php
+
+$lang_module['openid_confirm_info'] = sprintf($lang_module['openid_confirm_info'], $attribs['contact/email'], $user['username']);
+
+```
+
+Vẫn trong hàm `openid_account_confirm` tìm
+
+```php
+$xtpl->parse('main');
+return $xtpl->text('main');
+```
+
+Thêm lên trên
+
+```php
+if (!empty($nv_redirect)) {
+    $xtpl->assign('REDIRECT', $nv_redirect);
+    $xtpl->parse('main.redirect');
+}
+```
+
+Tìm 
+
+```php
+function nv_memberslist_detail_theme($item, $array_field_config, $custom_fields)
+```
+
+Thêm xuống dưới `$xtpl->assign('LANG', $lang_module);`
+
+```php
+$xtpl->assign('GLANG', $lang_global);
+```
+
+Bên dưới tìm
+
+```php
+$xtpl->assign('USER', $item);
+```
+
+Thêm xuống dưới
+
+```php
+
+if ($item['is_admin']) {
+    if ($item['allow_edit']) {
+        $xtpl->assign('LINK_EDIT', $item['link_edit']);
+        $xtpl->parse('main.for_admin.edit');
+    }
+    if ($item['allow_delete']) {
+        $xtpl->parse('main.for_admin.delete');
+    }
+    $xtpl->parse('main.for_admin');
+}
 ```
