@@ -471,3 +471,91 @@ Thêm lên trên
 <!-- END: for_admin -->
 
 ```
+
+Nếu giao diện của bạn tồn tại file `themes/ten-theme/js/users.js` cần đối chiếu với `themes/default/js/users.js` để chỉnh sửa phù hợp. Ví dụ:
+
+Tìm 
+
+```js
+function login_validForm(a) {
+```
+
+Bên trong hàm đó, trong phần thực thi sau khi login thành công `success: function(d) {` thay toàn bộ giá trị thành
+
+```js
+success: function(d) {
+    var b = $("[onclick*='change_captcha']", a);
+    b && b.click();
+    if (d.status == "error") {
+        $("input,button", a).not("[type=submit]").prop("disabled", !1), 
+        $(".tooltip-current", a).removeClass("tooltip-current"), 
+        "" != d.input ? $(a).find("[name=\"" + d.input + "\"]").each(function() {
+            $(this).addClass("tooltip-current").attr("data-current-mess", d.mess);
+            validErrorShow(this)
+        }) : $(".nv-info", a).html(d.mess).addClass("error").show(), setTimeout(function() {
+            $("[type=submit]", a).prop("disabled", !1)
+        }, 1E3)
+    } else if (d.status == "ok") {
+        $(".nv-info", a).html(d.mess + '<span class="load-bar"></span>').removeClass("error").addClass("success").show(), 
+        $(".form-detail", a).hide(), $("#other_form").hide(), setTimeout(function() {
+            if( "undefined" != typeof d.redirect && "" != d.redirect){
+                 window.location.href = d.redirect;
+            }else{
+                 $('#sitemodal').modal('hide');
+                 window.location.href = window.location.href;
+            }
+        }, 3E3)
+    } else if (d.status == "2steprequire") {
+        $(".form-detail", a).hide(), $("#other_form").hide();
+        $(".nv-info", a).html("<a href=\"" + d.input + "\">" + d.mess + "</a>").removeClass("error").removeClass("success").addClass("info").show();
+    } else {
+        $("input,button", a).prop("disabled", !1);
+        $('.loginstep1, .loginstep2, .loginCaptcha', a).toggleClass('hidden');
+    }
+}
+```
+
+Mổ sung thêm hàm
+
+```js
+function login2step_change(ele) {
+    var ele = $(ele), form = ele, i = 0;
+    while (!form.is('form')) {
+        if (i++ > 10) {
+            break;
+        }
+        form = form.parent();
+    }
+    if (form.is('form')) {
+        $('.loginstep2 input,.loginstep3 input', form).val('');
+        $('.loginstep2,.loginstep3', form).toggleClass('hidden');
+    }
+    return false;
+}
+```
+
+Bổ sung thêm lệnh xử lý cho admin
+
+```js
+$(document).ready(function() {
+    // Delete user handler
+    $('[data-toggle="admindeluser"]').click(function(e) {
+        e.preventDefault();
+        var data = $(this).data();
+        if (confirm(nv_is_del_confirm[0])) {
+            $.post(data.link, 'userid=' + data.userid, function(res) {
+                if (res == 'OK') {
+                    window.location.href = data.back;
+                } else {
+                    var r_split = res.split("_");
+                    if (r_split[0] == 'ERROR') {
+                        alert(r_split[1]);
+                    } else {
+                        alert(nv_is_del_confirm[2]);
+                    }
+                }
+            });
+        }
+    });
+});
+```
