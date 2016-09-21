@@ -17,7 +17,7 @@ $nv_update_config = array();
 $nv_update_config['type'] = 1;
 
 // ID goi cap nhat
-$nv_update_config['packageID'] = 'NVUD4029';
+$nv_update_config['packageID'] = 'NVUD4100';
 
 // Cap nhat cho module nao, de trong neu la cap nhat NukeViet, ten thu muc module neu la cap nhat module
 $nv_update_config['formodule'] = '';
@@ -25,12 +25,9 @@ $nv_update_config['formodule'] = '';
 // Thong tin phien ban, tac gia, ho tro
 $nv_update_config['release_date'] = 1463504400;
 $nv_update_config['author'] = 'VINADES.,JSC (contact@vinades.vn)';
-$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.0.29';
-$nv_update_config['to_version'] = '4.0.29';
-$nv_update_config['allow_old_version'] = array(
-    '4.0.27',
-    '4.0.28'
-);
+$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.1.00';
+$nv_update_config['to_version'] = '4.1.00';
+$nv_update_config['allow_old_version'] = array('4.0.29');
 
 // 0:Nang cap bang tay, 1:Nang cap tu dong, 2:Nang cap nua tu dong
 $nv_update_config['update_auto_type'] = 1;
@@ -40,65 +37,73 @@ $nv_update_config['lang']['vi'] = array();
 $nv_update_config['lang']['en'] = array();
 
 // Tiếng Việt
-$nv_update_config['lang']['vi']['nv_up_modnews'] = 'Cập nhật module news lên 4.0.28';
-$nv_update_config['lang']['vi']['nv_up_modusers'] = 'Cập nhật module users lên 4.0.28';
-$nv_update_config['lang']['vi']['nv_up_delunuse_files'] = 'Xóa các file thừa bản 4.0.27';
-$nv_update_config['lang']['vi']['nv_up_modnews29'] = 'Cập nhật module news lên 4.0.29';
-$nv_update_config['lang']['vi']['nv_up_delunuse_files29'] = 'Xóa các file thừa bản 4.0.29';
-$nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản 4.0.29';
+$nv_update_config['lang']['vi']['nv_up_modcomment'] = 'Cập nhật module comment lên 4.1.00';
+$nv_update_config['lang']['vi']['nv_up_modnews'] = 'Cập nhật module news lên 4.1.00';
+$nv_update_config['lang']['vi']['nv_up_modvoting'] = 'Cập nhật module voting lên 4.1.00';
+$nv_update_config['lang']['vi']['nv_up_modusers'] = 'Cập nhật module users lên 4.1.00';
+$nv_update_config['lang']['vi']['nv_up_mod2step'] = 'Thêm module xác thực hai bước';
+$nv_update_config['lang']['vi']['nv_up_fucsys'] = 'Cập nhật các chức năng hệ thống';
+$nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản 4.1.00';
 // English
-$nv_update_config['lang']['en']['nv_up_modnews'] = 'Update module news to 4.0.28';
-$nv_update_config['lang']['en']['nv_up_modusers'] = 'Update module users to 4.0.28';
-$nv_update_config['lang']['en']['nv_up_delunuse_files'] = 'Delete unuse files 4.0.27';
-$nv_update_config['lang']['en']['nv_up_modnews29'] = 'Update module news to 4.0.29';
-$nv_update_config['lang']['en']['nv_up_delunuse_files29'] = 'Delete unuse files 4.0.29';
-$nv_update_config['lang']['en']['nv_up_finish'] = 'Update new version 4.0.29';
+$nv_update_config['lang']['en']['nv_up_modcomment'] = 'Update module comment to 4.1.00';
+$nv_update_config['lang']['en']['nv_up_modnews'] = 'Update module news to 4.1.00';
+$nv_update_config['lang']['en']['nv_up_modvoting'] = 'Update module voting to 4.1.00';
+$nv_update_config['lang']['en']['nv_up_modusers'] = 'Update module users to 4.1.00';
+$nv_update_config['lang']['en']['nv_up_mod2step'] = 'Add module two-step-verification';
+$nv_update_config['lang']['en']['nv_up_fucsys'] = 'Update system functions';
+$nv_update_config['lang']['en']['nv_up_finish'] = 'Update new version 4.1.00';
 
 $nv_update_config['tasklist'] = array();
 $nv_update_config['tasklist'][] = array(
-    'r' => '4.0.28',
-    'rq' => 2,
+    'r' => '4.1.00',
+    'rq' => 1,
+    'l' => 'nv_up_modcomment',
+    'f' => 'nv_up_modcomment'
+);
+$nv_update_config['tasklist'][] = array(
+    'r' => '4.1.00',
+    'rq' => 1,
     'l' => 'nv_up_modnews',
     'f' => 'nv_up_modnews'
 );
 $nv_update_config['tasklist'][] = array(
-    'r' => '4.0.28',
-    'rq' => 2,
+    'r' => '4.1.00',
+    'rq' => 1,
+    'l' => 'nv_up_modvoting',
+    'f' => 'nv_up_modvoting'
+);
+$nv_update_config['tasklist'][] = array(
+    'r' => '4.1.00',
+    'rq' => 1,
     'l' => 'nv_up_modusers',
     'f' => 'nv_up_modusers'
 );
 $nv_update_config['tasklist'][] = array(
-    'r' => '4.0.28',
+    'r' => '4.1.00',
     'rq' => 1,
-    'l' => 'nv_up_delunuse_files',
-    'f' => 'nv_up_delunuse_files'
+    'l' => 'nv_up_mod2step',
+    'f' => 'nv_up_mod2step'
 );
 $nv_update_config['tasklist'][] = array(
-    'r' => '4.0.29',
-    'rq' => 2,
-    'l' => 'nv_up_modnews29',
-    'f' => 'nv_up_modnews29'
-);
-$nv_update_config['tasklist'][] = array(
-    'r' => '4.0.29',
+    'r' => '4.1.00',
     'rq' => 1,
-    'l' => 'nv_up_delunuse_files29',
-    'f' => 'nv_up_delunuse_files29'
+    'l' => 'nv_up_fucsys',
+    'f' => 'nv_up_fucsys'
 );
 $nv_update_config['tasklist'][] = array(
-    'r' => '4.0.29',
+    'r' => '4.1.00',
     'rq' => 2,
     'l' => 'nv_up_finish',
     'f' => 'nv_up_finish'
 );
 
 /**
- * nv_up_modnews()
+ * nv_up_modcomment()
  *
  * @return
  *
  */
-function nv_up_modnews()
+function nv_up_modcomment()
 {
     global $nv_update_baseurl, $db, $db_config;
 
@@ -130,6 +135,89 @@ function nv_up_modnews()
 }
 
 /**
+ * nv_up_modnews()
+ *
+ * @return
+ *
+ */
+function nv_up_modnews()
+{
+    global $nv_update_baseurl, $db, $db_config;
+
+    $return = array(
+        'status' => 1,
+        'complete' => 1,
+        'next' => 1,
+        'link' => 'NO',
+        'lang' => 'NO',
+        'message' => ''
+    );
+
+    // Duyệt tất cả các ngôn ngữ
+    $language_query = $db->query('SELECT lang FROM ' . $db_config['prefix'] . '_setup_language WHERE setup = 1');
+    while (list ($lang) = $language_query->fetch(3)) {
+        // Lấy tất cả các module và module ảo của nó
+        $mquery = $db->query("SELECT title, module_data FROM " . $db_config['prefix'] . "_" . $lang . "_modules WHERE module_file = 'news'");
+        while (list ($mod, $mod_data) = $mquery->fetch(3)) {
+            try {
+                $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . "_detail 
+                ADD titlesite varchar(255) NOT NULL DEFAULT '' AFTER id,
+                ADD description text NOT NULL AFTER titlesite;");
+            } catch (PDOException $e) {
+                $return['status'] = $return['complete'] = 0;
+                $return['message'] = $e->getMessage();
+            }
+            
+            try {
+                $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', '" . $mod . "', 'htmlhometext', '0')");
+            } catch (PDOException $e) {
+                $return['status'] = $return['complete'] = 0;
+                $return['message'] = $e->getMessage();
+            }
+        }
+    }
+
+    return $return;
+}
+
+/**
+ * nv_up_modvoting()
+ *
+ * @return
+ *
+ */
+function nv_up_modvoting()
+{
+    global $nv_update_baseurl, $db, $db_config;
+
+    $return = array(
+        'status' => 1,
+        'complete' => 1,
+        'next' => 1,
+        'link' => 'NO',
+        'lang' => 'NO',
+        'message' => ''
+    );
+
+    // Duyệt tất cả các ngôn ngữ
+    $language_query = $db->query('SELECT lang FROM ' . $db_config['prefix'] . '_setup_language WHERE setup = 1');
+    while (list ($lang) = $language_query->fetch(3)) {
+        // Lấy tất cả các module và module ảo của nó
+        $mquery = $db->query("SELECT title, module_data FROM " . $db_config['prefix'] . "_" . $lang . "_modules WHERE module_file = 'voting'");
+        while (list ($mod, $mod_data) = $mquery->fetch(3)) {
+            try {
+                $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . " ADD active_captcha tinyint(1) UNSIGNED NOT NULL DEFAULT '0' AFTER  acceptcm;");
+            } catch (PDOException $e) {
+                $return['status'] = $return['complete'] = 0;
+                $return['message'] = $e->getMessage();
+            }
+        }
+    }
+
+    return $return;
+}
+
+/**
  * nv_up_modusers()
  *
  * @return
@@ -148,222 +236,111 @@ function nv_up_modusers()
         'message' => ''
     );
 
+    // Duyệt tất cả các ngôn ngữ
+    $language_query = $db->query('SELECT lang FROM ' . $db_config['prefix'] . '_setup_language WHERE setup = 1');
+    while (list ($lang) = $language_query->fetch(3)) {
+        // Lấy tất cả các module và module ảo của nó
+        $mquery = $db->query("SELECT title, module_data FROM " . $db_config['prefix'] . "_" . $lang . "_modules WHERE module_file = 'users'");
+        while (list ($mod, $mod_data) = $mquery->fetch(3)) {
+            try {
+                $db->query("CREATE TABLE IF NOT EXISTS " . $db_config['prefix'] . "_" . $mod_data . "_backupcodes (
+                    userid mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+                    code varchar(20) NOT NULL,
+                    is_used tinyint(1) unsigned NOT NULL DEFAULT '0',
+                    time_used int(11) unsigned NOT NULL DEFAULT '0',
+                    time_creat int(11) unsigned NOT NULL DEFAULT '0',
+                    UNIQUE KEY userid (userid, code)
+                ) ENGINE=MyISAM");
+            } catch (PDOException $e) {
+                $return['status'] = $return['complete'] = 0;
+                $return['message'] = $e->getMessage();
+            }
+            
+            try {
+                $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $mod_data . "  
+                ADD active2step tinyint(1) unsigned NOT NULL DEFAULT '0' AFTER active, 
+                ADD secretkey varchar(20) DEFAULT '' AFTER active2step;");
+            } catch (PDOException $e) {
+                $return['status'] = $return['complete'] = 0;
+                $return['message'] = $e->getMessage();
+            }
+        }
+    }
+
+    return $return;
+}
+
+/**
+ * nv_up_fucsys()
+ *
+ * @return
+ *
+ */
+function nv_up_fucsys()
+{
+    global $nv_update_baseurl, $db, $db_config;
+
+    $return = array(
+        'status' => 1,
+        'complete' => 1,
+        'next' => 1,
+        'link' => 'NO',
+        'lang' => 'NO',
+        'message' => ''
+    );
+
     try {
-        $db->query("RENAME TABLE " . $db_config['prefix'] . "_groups TO " . $db_config['prefix'] . "_users_groups");
-        $db->query("RENAME TABLE " . $db_config['prefix'] . "_groups_users TO " . $db_config['prefix'] . "_users_groups_users");
-        $db->query("ALTER TABLE " . $db_config['prefix'] . "_users_groups ADD email varchar(100) DEFAULT '' AFTER title");
-        $db->query("ALTER TABLE " . $db_config['prefix'] . "_users_groups ADD config varchar(250) DEFAULT '' AFTER siteus");
+        $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'global', 'is_login_blocker', '1')");
+    } catch (PDOException $e) {
+        $return['status'] = $return['complete'] = 0;
+        $return['message'] = $e->getMessage();
+    }
+    
+    try {
+        $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'global', 'login_number_tracking', '5')");
+    } catch (PDOException $e) {
+        $return['status'] = $return['complete'] = 0;
+        $return['message'] = $e->getMessage();
+    }
+    
+    try {
+        $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'global', 'login_time_tracking', '5')");
+    } catch (PDOException $e) {
+        $return['status'] = $return['complete'] = 0;
+        $return['message'] = $e->getMessage();
+    }
+    
+    try {
+        $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'global', 'login_time_ban', '1440')");
     } catch (PDOException $e) {
         $return['status'] = $return['complete'] = 0;
         $return['message'] = $e->getMessage();
     }
 
     try {
-        // Sửa bảng _extensions nếu các phiên bản trước chưa sửa
-        $db->query("ALTER TABLE " . $db_config['prefix'] . "_setup_extensions CHANGE virtual is_virtual TINYINT(1) NOT NULL DEFAULT '0'");
-        $db->query("UPDATE " . $db_config['prefix'] . "_setup_extensions SET is_virtual = '1' WHERE type = 'module' AND title = 'users'");
+        $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'global', 'two_step_verification', '0')");
     } catch (PDOException $e) {
-        // Nothing
+        $return['status'] = $return['complete'] = 0;
+        $return['message'] = $e->getMessage();
     }
-
-    return $return;
-}
-
-/**
- * nv_up_delunuse_files()
- *
- * @return
- *
- */
-function nv_up_delunuse_files()
-{
-    global $nv_update_baseurl, $db, $db_config;
-
-    $return = array(
-        'status' => 1,
-        'complete' => 1,
-        'next' => 1,
-        'link' => 'NO',
-        'lang' => 'NO',
-        'message' => ''
-    );
-
-    nv_deletefile(NV_ROOTDIR . '/admin/seotools/siteDiagnostic.php', false);
-    nv_deletefile(NV_ROOTDIR . '/includes/cronjobs/siteDiagnostic_update.php', false);
-    nv_deletefile(NV_ROOTDIR . '/themes/admin_default/modules/seotools/siteDiagnostic.tpl', false);
-    nv_deletefile(NV_ROOTDIR . '/themes/default/system/dump.tpl', false);
-    nv_deletefile(NV_ROOTDIR . '/assets/js/jquery/jquery.lazyload.js', false);
-    nv_deletefile(NV_ROOTDIR . '/assets/js/ui', true);
-
-    return $return;
-}
-
-/**
- * nv_up_modnews29()
- *
- * @return
- *
- */
-function nv_up_modnews29()
-{
-    global $nv_update_baseurl, $db, $db_config, $nv_Request;
-
-    $return = array(
-        'status' => 1, // Trạng thái hoàn thành 1 lần chạy
-        'complete' => 1, // Trạng thái hoàn thành cả công việc
-        'next' => 1, // Qua bước tiếp theo hay tiếp tục bước này
-        'link' => 'NO', // Link tiếp tục nếu có
-        'lang' => 'NO', // Ngôn ngữ có vấn đề
-        'message' => ''
-    ); // Vấn đề cụ thể
-
-
-    // Tất cả các bảng cần update
-    $array_tbprefix_update = array();
-
-    $language_query = $db->query('SELECT lang FROM ' . $db_config['prefix'] . '_setup_language WHERE setup = 1');
-    while (list ($lang) = $language_query->fetch(3)) {
-        // Lấy tất cả các module và module ảo của news
-        $mquery = $db->query("SELECT title, module_data FROM " . $db_config['prefix'] . "_" . $lang . "_modules WHERE module_file = 'news'");
-        while (list ($mod, $mod_data) = $mquery->fetch(3)) {
-            $array_tbprefix_update[] = $db_config['prefix'] . "_" . $lang . "_" . $mod_data;
-        }
+    
+    try {
+        $db->query("ALTER TABLE " . $db_config['prefix'] . "_setup_language ADD weight smallint(4) UNSIGNED NOT NULL DEFAULT '0' AFTER setup ;");
+    } catch (PDOException $e) {
+        $return['status'] = $return['complete'] = 0;
+        $return['message'] = $e->getMessage();
     }
-
-    // Kết thúc nếu không có module news
-    if (empty($array_tbprefix_update)) {
-        return $return;
+    
+    // Cập nhật lại thứ tự
+    $weight = 0;
+    $sql = "SELECT * FROM " . $db_config['prefix'] . "_setup_language";
+    $result = $db->query($sql);
+    
+    while ($row = $result->fetch()) {
+        $weight++;
+        $db->query("UPDATE " . $db_config['prefix'] . "_setup_language SET weight=" . $weight . " WHERE lang='" . $row['lang'] . "'");
     }
-
-    $request = array();
-    $request['umodkey'] = $nv_Request->get_int('umodkey', 'get,post', 0); // Cập nhật cho module nào
-    $request['ustep'] = $nv_Request->get_int('ustep', 'get,post', 0); // Bước 0: RENAME, 1: COPY AND DELETE TABLE, 2: DELETE bodytext
-
-
-    // Kết thúc quá trình nếu hết bảng update
-    if (!isset($array_tbprefix_update[$request['umodkey']])) {
-        return $return;
-    }
-
-    $return['complete'] = 0;
-    $return['next'] = 0;
-
-    // Rename bảng bodyhtml_1
-    if ($request['ustep'] == 0) {
-        try {
-            $db->query("RENAME TABLE " . $array_tbprefix_update[$request['umodkey']] . "_bodyhtml_1 TO " . $array_tbprefix_update[$request['umodkey']] . "_detail");
-        } catch (PDOException $e) {
-            // Xem như bảng detail đã tồn tại
-        }
-
-        // Chuyển sang bước 2
-        $request['ustep']++;
-        $return['link'] = $nv_update_baseurl . '&umodkey=' . $request['umodkey'] . '&ustep=' . $request['ustep'];
-    } elseif ($request['ustep'] == 1) {
-        $result = $db->query('SHOW TABLE STATUS LIKE ' . $db->quote($array_tbprefix_update[$request['umodkey']] . '_bodyhtml_%'));
-        $html_table = "";
-        while ($item = $result->fetch()) {
-            if (preg_match("/^" . preg_quote($array_tbprefix_update[$request['umodkey']]) . "\_bodyhtml\_([0-9]+)$/", $item['name']) and $item['name'] != ($array_tbprefix_update[$request['umodkey']] . '_bodyhtml_1')) {
-                $html_table = $item['name'];
-                break;
-            }
-        }
-
-        // Hết bảng HTML thì chuyển bước tiếp
-        if (empty($html_table)) {
-            $request['ustep']++;
-            $return['link'] = $nv_update_baseurl . '&umodkey=' . $request['umodkey'] . '&ustep=' . $request['ustep'];
-            return $return;
-        }
-
-        // Copy dữ liệu
-        try {
-            $sql = "INSERT INTO " . $array_tbprefix_update[$request['umodkey']] . "_detail SELECT * FROM " . $html_table;
-            $db->query($sql);
-        } catch (PDOException $e) {
-            $return['status'] = 0;
-            $return['message'] = $e->getMessage();
-            return $return;
-        }
-
-        // Xóa bảng
-        try {
-            $db->query("DROP TABLE " . $html_table);
-        } catch (PDOException $e) {
-            $return['status'] = 0;
-            $return['message'] = $e->getMessage();
-            return $return;
-        }
-
-        // Tiếp tục lặp lại bước này
-        $return['link'] = $nv_update_baseurl . '&umodkey=' . $request['umodkey'] . '&ustep=' . $request['ustep'];
-        return $return;
-    } else {
-        try {
-            $db->query("DROP TABLE " . $array_tbprefix_update[$request['umodkey']] . "_bodytext");
-        } catch (PDOException $e) {
-            // Nothing
-        }
-
-        $request['umodkey']++;
-        $request['ustep'] = 0;
-        $return['link'] = $nv_update_baseurl . '&umodkey=' . $request['umodkey'] . '&ustep=' . $request['ustep'];
-    }
-
-    return $return;
-}
-
-/**
- * nv_up_delunuse_files29()
- *
- * @return
- *
- */
-function nv_up_delunuse_files29()
-{
-    global $nv_update_baseurl, $db, $db_config;
-
-    $return = array(
-        'status' => 1,
-        'complete' => 1,
-        'next' => 1,
-        'link' => 'NO',
-        'lang' => 'NO',
-        'message' => ''
-    );
-
-    nv_deletefile(NV_ROOTDIR . '/themes/default/images/hbg.jpg', false);
-    nv_deletefile(NV_ROOTDIR . '/themes/default/images/hbg2.jpg', false);
-    nv_deletefile(NV_ROOTDIR . '/themes/default/layout/layout.body-left-right.tpl', false);
-    nv_deletefile(NV_ROOTDIR . '/themes/default/layout/layout.body-right.tpl', false);
-    nv_deletefile(NV_ROOTDIR . '/themes/default/layout/layout.body.tpl', false);
-    nv_deletefile(NV_ROOTDIR . '/themes/default/layout/layout.left-body-right.tpl', false);
-    nv_deletefile(NV_ROOTDIR . '/themes/default/layout/layout.left-body.tpl', false);
-    nv_deletefile(NV_ROOTDIR . '/themes/default/layout/layout.left-right-body.tpl', false);
-    nv_deletefile(NV_ROOTDIR . '/themes/mobile_default/layout/layout.body.tpl', false);
-    nv_deletefile(NV_ROOTDIR . '/vendor/phpmailer/phpmailer/src/OAuthProvider/Google.php', false);
-    nv_deletefile(NV_ROOTDIR . '/vendor/phpmailer/phpmailer/src/PHPMailerOAuth.php', false);
-
-    nv_deletefile(NV_ROOTDIR . '/includes/core/admin_relogin.php', false);
-    nv_deletefile(NV_ROOTDIR . '/themes/admin_default/system/relogin.tpl', false);
-    nv_deletefile(NV_ROOTDIR . '/themes/default/css/font-awesome.min.css', false);
-    nv_deletefile(NV_ROOTDIR . '/themes/default/css/rss.xsl', false);
-    nv_deletefile(NV_ROOTDIR . '/themes/default/css/sitemap.xsl', false);
-    nv_deletefile(NV_ROOTDIR . '/themes/default/css/sitemapindex.xsl', false);
-    nv_deletefile(NV_ROOTDIR . '/themes/default/fonts/FontAwesome.otf', false);
-    nv_deletefile(NV_ROOTDIR . '/themes/default/fonts/fontawesome-webfont.eot', false);
-    nv_deletefile(NV_ROOTDIR . '/themes/default/fonts/fontawesome-webfont.svg', false);
-    nv_deletefile(NV_ROOTDIR . '/themes/default/fonts/fontawesome-webfont.ttf', false);
-    nv_deletefile(NV_ROOTDIR . '/themes/default/fonts/fontawesome-webfont.woff', false);
-    nv_deletefile(NV_ROOTDIR . '/themes/default/fonts/fontawesome-webfont.woff2', false);
-    nv_deletefile(NV_ROOTDIR . '/themes/default/layout/rss.tpl', false);
-    nv_deletefile(NV_ROOTDIR . '/themes/default/system/dump.tpl', false);
-    nv_deletefile(NV_ROOTDIR . '/themes/default/system/flood_blocker.tpl', false);
-    nv_deletefile(NV_ROOTDIR . '/themes/mobile_default/css/sitemap.xsl', false);
-    nv_deletefile(NV_ROOTDIR . '/themes/mobile_default/css/sitemapindex.xsl', false);
-    nv_deletefile(NV_ROOTDIR . '/themes/mobile_default/layout/rss.tpl', false);
-    nv_deletefile(NV_ROOTDIR . '/themes/mobile_default/system/flood_blocker.tpl', false);
-    nv_deletefile(NV_ROOTDIR . '/vendor/vinades/nukeviet/Client/Diagnostic.php', false);
+    
     return $return;
 }
 
@@ -375,7 +352,7 @@ function nv_up_delunuse_files29()
  */
 function nv_up_finish()
 {
-    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config;
+    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config;
     $return = array(
         'status' => 1,
         'complete' => 1,
@@ -384,57 +361,15 @@ function nv_up_finish()
         'lang' => 'NO',
         'message' => ''
     );
-    $db->query("DELETE FROM " . $db_config['prefix'] . "_config WHERE config_name='adminrelogin_max' AND module='global'");
-
-    $language_query = $db->query('SELECT lang FROM ' . $db_config['prefix'] . '_setup_language WHERE setup = 1');
-    while (list ($lang) = $language_query->fetch(3)) {
-        try {
-            $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', 'global', 'theme_type', 'r,d,m')");
-        } catch (PDOException $e) {
-            // Nothing
-        }
-
-        try {
-            $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', 'global', 'theme_type', 'r,d,m')");
-        } catch (PDOException $e) {
-            // Nothing
-        }
-
-        // Cập nhật giao diện layout cho giao diện mặc định
-        try {
-            $db->query("UPDATE " . $db_config['prefix'] . "_" . $lang . "_modthemes SET layout = 'left-main-right' WHERE layout = 'left-body-right' AND theme = 'default'");
-            $db->query("UPDATE " . $db_config['prefix'] . "_" . $lang . "_modthemes SET layout = 'left-main' WHERE layout = 'left-body' AND theme = 'default'");
-            $db->query("UPDATE " . $db_config['prefix'] . "_" . $lang . "_modthemes SET layout = 'left-right-main' WHERE layout = 'left-right-body' AND theme = 'default'");
-            $db->query("UPDATE " . $db_config['prefix'] . "_" . $lang . "_modthemes SET layout = 'main-left-right' WHERE layout = 'body-left-right' AND theme = 'default'");
-            $db->query("UPDATE " . $db_config['prefix'] . "_" . $lang . "_modthemes SET layout = 'main-right' WHERE layout = 'body-right' AND theme = 'default'");
-            $db->query("UPDATE " . $db_config['prefix'] . "_" . $lang . "_modthemes SET layout = 'main' WHERE layout = 'body' AND theme = 'default'");
-            $db->query("UPDATE " . $db_config['prefix'] . "_" . $lang . "_modthemes SET layout = 'main' WHERE layout = 'body' AND theme = 'mobile_default'");
-        } catch (PDOException $e) {
-            // Nothing
-        }
-    }
-
-    if ($global_config['whoviewuser'] == 0) {
-        $global_config['whoviewuser'] = '6';
-    } elseif ($global_config['whoviewuser'] == 1) {
-        $global_config['whoviewuser'] = '4';
-    } else {
-        $global_config['whoviewuser'] = '2';
-    }
-
-    try {
-        $db->query("INSERT INTO " . $db_config['prefix'] . "_counter VALUES ('browser', 'coccoc', 0, 0, 0)");
-    } catch (PDOException $e) {
-        // Nothing
-    }
-
-    $db->query("UPDATE " . NV_CONFIG_GLOBALTABLE . " SET config_value='" . $global_config['whoviewuser'] . "' WHERE lang='sys' AND module='global' AND config_name='whoviewuser'");
 
     // Cập nhật phiên bản
-    $db->query("UPDATE " . NV_CONFIG_GLOBALTABLE . " SET config_value='4.0.29' WHERE lang='sys' AND module='global' AND config_name='version'");
-    $db->query("UPDATE " . $db_config['prefix'] . "_setup_extensions SET  version='4.0.29 1463652000' WHERE type='module' and basename IN ('banners', 'comment','contact','feeds','freecontent','menu','news','page','seek','statistics','users','voting')");
-    $db->query("UPDATE " . $db_config['prefix'] . "_setup_extensions SET  version='4.0.29 1463652000' WHERE type='theme' and basename IN ('default', 'mobile_default')");
+    $db->query("UPDATE " . NV_CONFIG_GLOBALTABLE . " SET config_value='4.1.00' WHERE lang='sys' AND module='global' AND config_name='version'");
+    $db->query("UPDATE " . $db_config['prefix'] . "_setup_extensions SET  version='4.1.00 " . $nv_update_config['release_date'] . "' WHERE type='module' and basename IN ('banners', 'comment','contact','feeds','freecontent','menu','news','page','seek','statistics','users','voting')");
+    $db->query("UPDATE " . $db_config['prefix'] . "_setup_extensions SET  version='4.1.00 " . $nv_update_config['release_date'] . "' WHERE type='theme' and basename IN ('default', 'mobile_default')");
+    
     $nv_Cache->delAll();
+    
+    nv_rewrite_change($global_config);
     nv_save_file_config_global();
 
     return $return;

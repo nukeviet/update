@@ -28,7 +28,11 @@ Giải nén và Upload các file trong gói cập nhật với cấu trúc của
 
 ### Bước 3: Xử lý sau cập nhật:
 
-Sau khi cập nhật xong, cần làm các thao tác:
+Sau khi cập nhật xong, cần chú ý:
+- Truy cập khu vực Cấu hình => Ngôn ngữ để sắp xếp các ngôn ngữ nếu bạn sử dụng nhiều hơn một ngôn ngữ.
+- Có thể thêm mã xác nhận cho các bình chọn ở module voting.
+- Truy cập khu vực Cấu hình => Thiết lập an ninh để tùy chỉnh chức năng xác thực hai bước và chặn đăng nhập sai nhiều lần nếu cần thiết.
+- Kiểm tra lại tương thích của các module không phải mặc định của hệ thống.
 - Nếu site sử dụng giao diện không phải mặc định, cần cập nhật giao diện theo hướng dẫn bên dưới.
 
 ## Hướng dẫn cập nhật các giao diện không phải là giao diện mặc định:
