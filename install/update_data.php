@@ -119,14 +119,32 @@ function nv_up_modcomment()
     // Duyệt tất cả các ngôn ngữ
     $language_query = $db->query('SELECT lang FROM ' . $db_config['prefix'] . '_setup_language WHERE setup = 1');
     while (list ($lang) = $language_query->fetch(3)) {
-        // Lấy tất cả các module và module ảo của nó
-        $mquery = $db->query("SELECT title, module_data FROM " . $db_config['prefix'] . "_" . $lang . "_modules WHERE module_file = 'news'");
-        while (list ($mod, $mod_data) = $mquery->fetch(3)) {
-            try {
-                $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . "_cat ADD ad_block_cat varchar(250) NOT NULL default '' AFTER featured");
-            } catch (PDOException $e) {
-                $return['status'] = $return['complete'] = 0;
-                $return['message'] = $e->getMessage();
+        $result = $db->query('SELECT * FROM ' . $db_config['prefix'] . '_' . $lang . '_modules ORDER BY weight');
+        while ($row = $result->fetch()) {
+            $module_name = $row['title'];
+            $sql = "SELECT * FROM " . NV_CONFIG_GLOBALTABLE . " WHERE lang='" . $lang . "' AND module='" . $module_name . "'";
+            $result1 = $db->query($sql);
+            
+            $array_config_module = array();
+            while ($cfg = $result1->fetch()) {
+                $array_config_module[$cfg['config_name']] = $cfg['config_value'];
+            }
+            
+            if (isset($array_config_module['activecomm'])) {
+                if (!isset($array_config_module['perpagecomm'])) {
+                    try {
+                        $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', '" . $module_name . "', 'perpagecomm', '5')");
+                    } catch (Exception $e) {
+                        //
+                    }
+                }
+                if (!isset($array_config_module['timeoutcomm'])) {
+                    try {
+                        $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', '" . $module_name . "', 'timeoutcomm', '360')");
+                    } catch (Exception $e) {
+                        //
+                    }
+                }
             }
         }
     }
