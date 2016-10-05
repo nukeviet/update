@@ -23,7 +23,7 @@ $nv_update_config['packageID'] = 'NVUD4100';
 $nv_update_config['formodule'] = '';
 
 // Thong tin phien ban, tac gia, ho tro
-$nv_update_config['release_date'] = 1463504400;
+$nv_update_config['release_date'] = 1475686800;
 $nv_update_config['author'] = 'VINADES.,JSC (contact@vinades.vn)';
 $nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.1.00';
 $nv_update_config['to_version'] = '4.1.00';
@@ -761,6 +761,13 @@ function nv_up_fucsys()
     while ($row = $result->fetch()) {
         $weight++;
         $db->query("UPDATE " . $db_config['prefix'] . "_setup_language SET weight=" . $weight . " WHERE lang='" . $row['lang'] . "'");
+    }
+
+    try {
+        $db->query("UPDATE " . $db_config['prefix'] . "_setup_extensions SET is_virtual=1 WHERE type='module' AND title='freecontent'");
+    } catch (PDOException $e) {
+        $return['status'] = $return['complete'] = 0;
+        $return['message'] = $e->getMessage();
     }
     
     return $return;
