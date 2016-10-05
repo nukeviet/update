@@ -791,6 +791,11 @@ function nv_up_finish()
         'message' => ''
     );
 
+    // Xóa file thừa
+    @nv_deletefile(NV_ROOTDIR . '/admin/siteinfo/notification_load.php');
+    @nv_deletefile(NV_ROOTDIR . '/themes/admin_default/modules/siteinfo/notification_load.tpl');
+    @nv_deletefile(NV_ROOTDIR . '/vendor/vinades/nukeviet/Core/FloodBlocker.php');
+
     // Cập nhật phiên bản
     $db->query("UPDATE " . NV_CONFIG_GLOBALTABLE . " SET config_value='4.1.00' WHERE lang='sys' AND module='global' AND config_name='version'");
     $db->query("UPDATE " . $db_config['prefix'] . "_setup_extensions SET  version='4.1.00 " . $nv_update_config['release_date'] . "' WHERE type='module' and basename IN ('banners', 'comment','contact','feeds','freecontent','menu','news','page','seek','statistics','users','voting', 'two-step-verification')");
