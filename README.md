@@ -53,6 +53,8 @@ Thay lại thành
 $(window).on('load', function() {
 ```
 
+Nếu giao diện sử dụng Bootstrap riêng cần cập nhật tối thiểu lên bản 3.3.6 để tương thích với Jquery 3.
+
 ### Bổ sung giao diện module xác thực hai bước (two-step-verification)
 
 Nếu bạn cần chỉnh sửa giao diện module two-step-verification theo phong cách riêng hãy bổ sung giao diện này vào giao diện bạn sử dụng.
