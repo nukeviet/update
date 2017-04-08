@@ -196,6 +196,92 @@ Thêm xuống dưới
 
 ### Cập nhật giao diện module news
 
+Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/news` thì thực hiện các bước dưới đây:
+
+#### Cập nhật block_groups.tpl
+
+Mở themes/ten-giao-dien/modules/news/block_groups.tpl:
+
+Tìm:
+
+```html
+		<a href="{ROW.link}" title="{ROW.title}"><img src="{ROW.thumb}" alt="{ROW.title}" width="{ROW.blockwidth}" class="img-thumbnail pull-left"/></a>
+```
+
+Thay lại thành:
+
+```html
+		<a href="{ROW.link}" title="{ROW.title}" {ROW.target_blank} ><img src="{ROW.thumb}" alt="{ROW.title}" width="{ROW.blockwidth}" class="img-thumbnail pull-left"/></a>
+```
+
+Tìm:
+
+```html
+		<a {TITLE} class="show" href="{ROW.link}" data-content="{ROW.hometext_clean}" data-img="{ROW.thumb}" data-rel="block_tooltip">{ROW.title_clean}</a>
+```
+
+Thay lại thành:
+
+```html
+		<a {TITLE} class="show" href="{ROW.link}" {ROW.target_blank} data-content="{ROW.hometext_clean}" data-img="{ROW.thumb}" data-rel="block_tooltip">{ROW.title_clean}</a>
+```
+
+#### Cập nhật block_headline.tpl
+
+Mở themes/ten-giao-dien/modules/news/block_headline.tpl:
+
+Tìm:
+
+```html
+					<a title="{HOTSNEWS.title}" href="{HOTSNEWS.link}"><img class="img-responsive" id="slImg{HOTSNEWS.imgID}" src="{PIX_IMG}" alt="{HOTSNEWS.image_alt}" /></a><h3><a title="{HOTSNEWS.title}" href="{HOTSNEWS.link}">{HOTSNEWS.title}</a></h3>
+```
+
+Thay lại thành
+
+```html
+					<a title="{HOTSNEWS.title}" href="{HOTSNEWS.link}" {HOTSNEWS.target_blank}><img class="img-responsive" id="slImg{HOTSNEWS.imgID}" src="{PIX_IMG}" alt="{HOTSNEWS.image_alt}" /></a><h3><a title="{HOTSNEWS.title}" href="{HOTSNEWS.link}" {HOTSNEWS.target_blank}>{HOTSNEWS.title}</a></h3>
+```
+
+Tìm:
+
+```html
+						<a {TITLE} class="show" href="{LASTEST.link}" data-content="{LASTEST.hometext_clean}" data-img="{LASTEST.homeimgfile}" data-rel="block_headline_tooltip">{LASTEST.title}</a>
+```
+
+Thay lại thành:
+
+```html
+						<a {TITLE} class="show" href="{LASTEST.link}" {LASTEST.target_blank} data-content="{LASTEST.hometext_clean}" data-img="{LASTEST.homeimgfile}" data-rel="block_headline_tooltip">{LASTEST.title}</a>
+```
+
+#### Cập nhật block_news.tpl
+
+Mở themes/ten-giao-dien/modules/news/block_news.tpl:
+
+Tìm:
+
+```html
+		<a title="{blocknews.title}" href="{blocknews.link}"><img src="{blocknews.imgurl}" alt="{blocknews.title}" width="{blocknews.width}" class="img-thumbnail pull-left"/></a>
+```
+
+Thay lại thành
+
+```html
+		<a title="{blocknews.title}" href="{blocknews.link}" {blocknews.target_blank}><img src="{blocknews.imgurl}" alt="{blocknews.title}" width="{blocknews.width}" class="img-thumbnail pull-left"/></a>
+```
+
+Tìm:
+
+```html
+		<a {TITLE} class="show" href="{blocknews.link}" data-content="{blocknews.hometext_clean}" data-img="{blocknews.imgurl}" data-rel="block_news_tooltip">{blocknews.title}</a>
+```
+
+Thay lại thành:
+
+```html
+		<a {TITLE} class="show" href="{blocknews.link}" {blocknews.target_blank} data-content="{blocknews.hometext_clean}" data-img="{blocknews.imgurl}" data-rel="block_news_tooltip">{blocknews.title}</a>
+```
+
 ### Cập nhật giao diện module seek
 
 ### Cập nhật giao diện module users
