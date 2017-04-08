@@ -29,4 +29,175 @@ Sau khi cập nhật xong, cần chú ý:
 
 Các giao diện khác giao diện mặc định đã được làm cho NukeViet 4.1.00 cần sửa thêm như sau để có thể sử dụng cho NukeViet 4.1 Beta 2:
 
+### Cập nhật giao diện module banners
 
+Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/banners` thì thực hiện các bước dưới đây:
+
+#### Cập nhật global.banners.tpl
+
+Mở themes/ten-giao-dien/modules/banners/global.banners.tpl:
+
+Tìm:
+
+```html
+    <!-- END: type_image -->
+```
+
+Thêm xuống dưới:
+
+```html
+    <!-- BEGIN: bannerhtml -->
+    <div class="clearfix text-left">
+        {DATA.bannerhtml}
+    </div>
+    <!-- END: bannerhtml -->
+```
+
+#### Cập nhật logininfo.tpl
+
+Mở themes/ten-giao-dien/modules/banners/logininfo.tpl:
+
+Tìm:
+
+```html
+		<!-- END: captcha -->
+```
+
+Thêm xuống dưới:
+
+```html
+        <!-- BEGIN: recaptcha -->
+        <div class="form-group">
+            <label class="col-sm-6 control-label">{N_CAPTCHA}:</label>
+            <div class="col-xs-24">
+                <div class="nv-recaptcha-default"><div id="{RECAPTCHA_ELEMENT}"></div></div>
+                <script type="text/javascript">
+                nv_recaptcha_elements.push({
+                    id: "{RECAPTCHA_ELEMENT}",
+                    btn: $('[type="button"]', $('#{RECAPTCHA_ELEMENT}').parent().parent().parent().parent().parent())
+                })
+                </script>
+            </div>
+        </div>
+        <!-- END: recaptcha -->
+```
+
+### Cập nhật giao diện module comment
+
+Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/comment` thì thực hiện các bước dưới đây:
+
+#### Cập nhật main.tpl
+
+Mở themes/ten-giao-dien/modules/comment/main.tpl:
+
+Tìm:
+
+```html
+			<!-- END: captcha -->
+```
+
+Thêm xuống dưới:
+
+```html
+            <!-- BEGIN: recaptcha -->
+            <div class="form-group clearfix">
+                <div class="nv-recaptcha-default"><div id="{RECAPTCHA_ELEMENT}"></div></div>
+                <script type="text/javascript">
+                nv_recaptcha_elements.push({
+                    id: "{RECAPTCHA_ELEMENT}",
+                    btn: $("#buttoncontent", $('#{RECAPTCHA_ELEMENT}').parent().parent().parent())
+                })
+                </script>
+            </div>
+            <!-- END: recaptcha -->
+```
+
+Tìm:
+
+```html
+				<input id="buttoncontent" type="button" value="{LANG.comment_submit}" onclick="sendcommment('{MODULE_COMM}', '{MODULE_DATA}_commentcontent', '{AREA_COMM}', '{ID_COMM}', '{ALLOWED_COMM}', '{CHECKSS_COMM}', {GFX_NUM});" class="btn btn-primary" />
+```
+
+Thay lại thành:
+
+```html
+				<input id="buttoncontent" type="button" value="{LANG.comment_submit}" onclick="sendcommment(this, '{MODULE_COMM}', '{MODULE_DATA}_commentcontent', '{AREA_COMM}', '{ID_COMM}', '{ALLOWED_COMM}', '{CHECKSS_COMM}', {GFX_NUM});" class="btn btn-primary" />
+```
+
+### Cập nhật giao diện module contact
+
+Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/contact` thì thực hiện các bước dưới đây:
+
+#### Cập nhật form.tpl
+
+Mở themes/ten-giao-dien/modules/contact/form.tpl:
+
+Tìm:
+
+```html
+                <input type="text" maxlength="60" value="{CONTENT.fphone}" name="fphone" class="form-control" placeholder="{LANG.phone}" />
+            </div>
+        </div>
+```
+
+Thêm xuống dưới:
+
+```html
+        <div class="form-group">
+			<div class="input-group">
+				<span class="input-group-addon">
+					<em class="fa fa-home fa-lg fa-horizon"></em>
+				</span>
+                <input type="text" maxlength="60" value="{CONTENT.faddress}" name="faddress" class="form-control" placeholder="{LANG.address}" />
+            </div>
+        </div>
+```
+
+Tìm:
+
+```html
+        <div class="form-group">
+            <label><input type="checkbox" name="sendcopy" value="1" checked="checked" /><span>{LANG.sendcopy}</span></label>
+        </div>
+```
+
+Thêm xuống dưới:
+
+```html
+        <!-- BEGIN: captcha -->
+```
+
+Tìm:
+
+```html
+                <input type="text" placeholder="{LANG.captcha}" maxlength="{NV_GFX_NUM}" value="" name="fcode" class="fcode required form-control display-inline-block" style="width:100px;" data-pattern="/^(.){{NV_GFX_NUM},{NV_GFX_NUM}}$/" onkeypress="nv_validErrorHidden(this);" data-mess="{LANG.error_captcha}"/>
+            </div>
+		</div>
+```
+
+Thêm xuống dưới
+
+```html
+        <!-- END: captcha -->
+        <!-- BEGIN: recaptcha -->
+        <div class="form-group">
+            <div class="middle text-center clearfix">
+                <div class="nv-recaptcha-default"><div id="{RECAPTCHA_ELEMENT}"></div></div>
+                <script type="text/javascript">
+                nv_recaptcha_elements.push({
+                    id: "{RECAPTCHA_ELEMENT}",
+                    btn: $('[type="submit"]', $('#{RECAPTCHA_ELEMENT}').parent().parent().parent().parent())
+                })
+                </script>
+            </div>
+        </div>
+        <!-- END: recaptcha -->
+```
+
+### Cập nhật giao diện module news
+
+### Cập nhật giao diện module seek
+
+### Cập nhật giao diện module users
+
+### Cập nhật giao diện module voting
