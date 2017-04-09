@@ -569,9 +569,8 @@ function nv_up_systemcfg()
         }
     }
     
-    // Thêm cấu hình số điện thoại, googleMapsAPI
+    // Thêm cấu hình googleMapsAPI
     try {
-        $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'site', 'site_phone', '')"); 
         $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'site', 'googleMapsAPI', '')"); 
     } catch (PDOException $e) {
         trigger_error($e->getMessage());
@@ -593,7 +592,7 @@ function nv_up_systemcfg()
     
     // Thay đổi cấu hình cho module users
     try {
-        $db->query("UPDATE " . NV_CONFIG_GLOBALTABLE . " SET  module='site' WHERE lang = 'sys' AND module='global' AND config_name IN ('nv_upass_type', 'nv_unick_type', 'allowmailchange', 'allowuserpublic', 'allowquestion', 'allowloginchange', 'allowuserlogin', 'allowuserloginmulti', 'allowuserreg', 'is_user_forum', 'openid_servers', 'openid_processing', 'user_check_pass_time', 'auto_login_after_reg', 'whoviewuser')");
+        $db->query("UPDATE " . NV_CONFIG_GLOBALTABLE . " SET  module='site' WHERE lang = 'sys' AND module='global' AND config_name IN ('site_phone', 'nv_upass_type', 'nv_unick_type', 'allowmailchange', 'allowuserpublic', 'allowquestion', 'allowloginchange', 'allowuserlogin', 'allowuserloginmulti', 'allowuserreg', 'is_user_forum', 'openid_servers', 'openid_processing', 'user_check_pass_time', 'auto_login_after_reg', 'whoviewuser')");
         $db->query("UPDATE " . NV_CONFIG_GLOBALTABLE . " SET  module='site' WHERE lang = 'sys' AND module='define' AND config_name IN ('dir_forum','nv_unickmin','nv_unickmax','nv_upassmin','nv_upassmax')");
     } catch (PDOException $e) {
         trigger_error($e->getMessage());
