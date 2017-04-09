@@ -43,7 +43,6 @@ $nv_update_config['lang']['vi']['nv_up_modbanners'] = 'Cập nhật module banne
 $nv_update_config['lang']['vi']['nv_up_modpage'] = 'Cập nhật module page';
 $nv_update_config['lang']['vi']['nv_up_modcontact'] = 'Cập nhật module contact';
 $nv_update_config['lang']['vi']['nv_up_modmenu'] = 'Cập nhật module menu';
-$nv_update_config['lang']['vi']['nv_up_modvoting'] = 'Cập nhật module voting';
 $nv_update_config['lang']['vi']['nv_up_systemcfg'] = 'Cập nhật các cấu hình hệ thống';
 $nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản 4.1.01';
 // English
@@ -54,7 +53,6 @@ $nv_update_config['lang']['en']['nv_up_modbanners'] = 'Update module banners';
 $nv_update_config['lang']['en']['nv_up_modpage'] = 'Update module page';
 $nv_update_config['lang']['en']['nv_up_modcontact'] = 'Update module contact';
 $nv_update_config['lang']['en']['nv_up_modmenu'] = 'Update module menu';
-$nv_update_config['lang']['en']['nv_up_modvoting'] = 'Update module voting';
 $nv_update_config['lang']['en']['nv_up_systemcfg'] = 'Update system config';
 $nv_update_config['lang']['en']['nv_up_finish'] = 'Update new version 4.1.01';
 
@@ -100,12 +98,6 @@ $nv_update_config['tasklist'][] = array(
     'rq' => 1,
     'l' => 'nv_up_modmenu',
     'f' => 'nv_up_modmenu'
-);
-$nv_update_config['tasklist'][] = array(
-    'r' => '4.1.01',
-    'rq' => 1,
-    'l' => 'nv_up_modvoting',
-    'f' => 'nv_up_modvoting'
 );
 $nv_update_config['tasklist'][] = array(
     'r' => '4.1.01',
@@ -460,44 +452,6 @@ function nv_up_modmenu()
         while (list ($mod, $mod_data) = $mquery->fetch(3)) {
             try {
                 $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . "_rows ADD image VARCHAR(255) NULL DEFAULT '' AFTER icon;");
-            } catch (PDOException $e) {
-                trigger_error($e->getMessage());
-            }
-        }
-    }
-
-    return $return;
-}
-
-/**
- * nv_up_modvoting()
- *
- * @return
- *
- */
-function nv_up_modvoting()
-{
-    global $nv_update_baseurl, $db, $db_config;
-
-    $return = array(
-        'status' => 1,
-        'complete' => 1,
-        'next' => 1,
-        'link' => 'NO',
-        'lang' => 'NO',
-        'message' => ''
-    );
-
-    // Duyệt tất cả các ngôn ngữ
-    $language_query = $db->query('SELECT lang FROM ' . $db_config['prefix'] . '_setup_language WHERE setup = 1');
-    while (list ($lang) = $language_query->fetch(3)) {
-        // Lấy tất cả các module và module ảo của nó
-        $mquery = $db->query("SELECT title, module_data FROM " . $db_config['prefix'] . "_" . $lang . "_modules WHERE module_file = 'voting'");
-        while (list ($mod, $mod_data) = $mquery->fetch(3)) {
-            try {
-                $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . " ADD alias VARCHAR(250) NOT NULL AFTER question;");
-                $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . " ADD weight smallint(4) NOT NULL DEFAULT '0' AFTER act;");
-                $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . " ADD hot_post tinyint(1) NOT NULL DEFAULT '0' AFTER weight;");
             } catch (PDOException $e) {
                 trigger_error($e->getMessage());
             }
