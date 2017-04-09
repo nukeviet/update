@@ -282,8 +282,1143 @@ Thay lại thành:
 		<a {TITLE} class="show" href="{blocknews.link}" {blocknews.target_blank} data-content="{blocknews.hometext_clean}" data-img="{blocknews.imgurl}" data-rel="block_news_tooltip">{blocknews.title}</a>
 ```
 
+#### Cập nhật block_newscenter.tpl
+
+Mở themes/ten-giao-dien/modules/news/block_newscenter.tpl:
+
+Tìm:
+
+```html
+                    <div class="margin-bottom text-center"><a href="{main.link}"><img src="{main.imgsource}" alt="{main.title}" width="{main.width}" class="img-thumbnail"/></a></div>
+                    <h2 class="margin-bottom-sm"><a href="{main.link}" title="{main.title}">{main.titleclean60}</a></h2>
+```
+
+Thay lại thành:
+
+```html
+                    <div class="margin-bottom text-center"><a href="{main.link}" title="{main.link}" {main.target_blank}><img src="{main.imgsource}" alt="{main.title}" width="{main.width}" class="img-thumbnail"/></a></div>
+                    <h2 class="margin-bottom-sm"><a href="{main.link}" title="{main.title}" {main.target_blank}>{main.titleclean60}</a></h2>
+```
+
+Tìm:
+
+```html
+                            <a class="show black h4" href="{othernews.link}" <!-- BEGIN: tooltip -->data-placement="{TOOLTIP_POSITION}" data-content="{othernews.hometext_clean}" data-img="{othernews.imgsource}" data-rel="tooltip"<!-- END: tooltip --> title="{othernews.title}" ><img src="{othernews.imgsource}" alt="{othernews.title}" class="img-thumbnail pull-right margin-left-sm" style="width:65px;"/>{othernews.titleclean60}</a>
+```
+
+Thay lại thành
+
+```html
+                            <a class="show black h4" href="{othernews.link}" {othernews.target_blank} <!-- BEGIN: tooltip -->data-placement="{TOOLTIP_POSITION}" data-content="{othernews.hometext_clean}" data-img="{othernews.imgsource}" data-rel="tooltip"<!-- END: tooltip --> title="{othernews.title}" ><img src="{othernews.imgsource}" alt="{othernews.title}" class="img-thumbnail pull-right margin-left-sm" style="width:65px;"/>{othernews.titleclean60}</a>
+```
+
+#### Cập nhật block_tophits.tpl
+
+Mở themes/ten-giao-dien/modules/news/block_tophits.tpl:
+
+Tìm:
+
+```html
+		<a title="{blocknews.title}" href="{blocknews.link}"><img src="{blocknews.imgurl}" alt="{blocknews.title}" width="{blocknews.width}" class="img-thumbnail pull-left"/></a>
+		<!-- END: imgblock -->
+		<a {TITLE} class="show" href="{blocknews.link}" data-content="{blocknews.hometext_clean}" data-img="{blocknews.imgurl}" data-rel="block_news_tooltip">{blocknews.title}</a>
+```
+
+Thay lại thành:
+
+```html
+		<a title="{blocknews.title}" href="{blocknews.link}" {blocknews.target_blank}><img src="{blocknews.imgurl}" alt="{blocknews.title}" width="{blocknews.width}" class="img-thumbnail pull-left"/></a>
+		<!-- END: imgblock -->
+		<a {TITLE} class="show" href="{blocknews.link}" {blocknews.target_blank} data-content="{blocknews.hometext_clean}" data-img="{blocknews.imgurl}" data-rel="block_news_tooltip">{blocknews.title}</a>
+```
+
+#### Cập nhật content.tpl
+
+Mở themes/ten-giao-dien/modules/news/content.tpl:
+
+Tìm:
+
+```html
+	<div class="form-group">
+		<label class="col-sm-4 control-label">{LANG.captcha} <span class="txtrequired">(*)</span></label>
+```
+
+Thêm lên trên
+
+```html
+    <!-- BEGIN: captcha -->
+```
+
+Tìm:
+
+```html
+            <img alt="{CAPTCHA_REFRESH}" src="{CAPTCHA_REFR_SRC}" width="16" height="16" class="refresh" onclick="change_captcha('#fcode_iavim');" />
+		</div>
+	</div>
+```
+
+Thêm xuống dưới:
+
+```html
+    <!-- END: captcha -->
+    
+    <!-- BEGIN: recaptcha -->
+    <div class="form-group">
+        <label class="col-sm-4 control-label">{N_CAPTCHA} <span class="txtrequired">(*)</span></label>
+        <div class="col-sm-20">
+            <div class="nv-recaptcha-default"><div id="{RECAPTCHA_ELEMENT}"></div></div>
+            <script type="text/javascript">
+            nv_recaptcha_elements.push({
+                id: "{RECAPTCHA_ELEMENT}",
+                btn: $('[type="submit"]', $('#{RECAPTCHA_ELEMENT}').parent().parent().parent().parent())
+            })
+            </script>
+        </div>
+    </div>
+    <!-- END: recaptcha -->
+    
+```
+
+#### Cập nhật detail.tpl
+
+Mở themes/ten-giao-dien/modules/news/detail.tpl:
+
+Tìm:
+
+```html
+            			<a href="{TOPIC.link}" <!-- BEGIN: tooltip -->data-placement="{TOOLTIP_POSITION}" data-content="{TOPIC.hometext_clean}" data-img="{TOPIC.imghome}" data-rel="tooltip"<!-- END: tooltip --> title="{TOPIC.title}">{TOPIC.title}</a>
+```
+
+Thay lại thành:
+
+```html
+            			<a href="{TOPIC.link}" {TOPIC.target_blank} <!-- BEGIN: tooltip -->data-placement="{TOOLTIP_POSITION}" data-content="{TOPIC.hometext_clean}" data-img="{TOPIC.imghome}" data-rel="tooltip"<!-- END: tooltip --> title="{TOPIC.title}"><h4>{TOPIC.title}</h4></a>
+```
+
+Tìm:
+
+```html
+        			<a href="{RELATED_NEW.link}" <!-- BEGIN: tooltip -->data-placement="{TOOLTIP_POSITION}" data-content="{RELATED_NEW.hometext_clean}" data-img="{RELATED_NEW.imghome}" data-rel="tooltip"<!-- END: tooltip --> title="{RELATED_NEW.title}">{RELATED_NEW.title}</a>
+```
+
+Thay lại thành:
+
+```html
+        			<a href="{RELATED_NEW.link}" {RELATED_NEW.target_blank} <!-- BEGIN: tooltip -->data-placement="{TOOLTIP_POSITION}" data-content="{RELATED_NEW.hometext_clean}" data-img="{RELATED_NEW.imghome}" data-rel="tooltip"<!-- END: tooltip --> title="{RELATED_NEW.title}"><h4>{RELATED_NEW.title}</h4></a>
+```
+
+Tìm:
+
+```html
+        			<a class="list-inline" href="{RELATED.link}"<!-- BEGIN: tooltip --> data-placement="{TOOLTIP_POSITION}" data-content="{RELATED.hometext_clean}" data-img="{RELATED.imghome}" data-rel="tooltip"<!-- END: tooltip --> title="{RELATED.title}">{RELATED.title}</a>
+```
+
+Thay lại thành:
+
+```html
+        			<a href="{RELATED.link}" {RELATED.target_blank} <!-- BEGIN: tooltip --> data-placement="{TOOLTIP_POSITION}" data-content="{RELATED.hometext_clean}" data-img="{RELATED.imghome}" data-rel="tooltip"<!-- END: tooltip --> title="{RELATED.title}"><h4>{RELATED.title}</h4></a>
+```
+
+#### Cập nhật search.tpl
+
+Mở themes/ten-giao-dien/modules/news/search.tpl:
+
+Tìm:
+
+```html
+			<h3><a href="{LINK}">{TITLEROW}</a></h3>
+```
+
+Thay lại thành:
+
+```html
+			<h3><a href="{LINK}" title="{TITLEROW}" {TARGET_BLANK}>{TITLEROW}</a></h3>
+```
+
+#### Cập nhật sendmail.tpl
+
+Mở themes/ten-giao-dien/modules/news/sendmail.tpl:
+
+Tìm:
+
+```html
+					<!-- END: captcha -->
+```
+
+Thêm xuống dưới:
+
+```html
+                    
+                    <!-- BEGIN: recaptcha -->
+                    <div class="form-group">
+                        <label for="semail" class="col-sm-4 control-label">{N_CAPTCHA}<em>*</em></label>
+                        <div class="col-sm-20">
+                            <div class="nv-recaptcha-default"><div id="{RECAPTCHA_ELEMENT}"></div></div>
+                            <script type="text/javascript">
+                            nv_recaptcha_elements.push({
+                                id: "{RECAPTCHA_ELEMENT}",
+                                btn: $('[type="submit"]', $('#{RECAPTCHA_ELEMENT}').parent().parent().parent().parent())
+                            })
+                            </script>
+                        </div>
+                    </div>
+                    <!-- END: recaptcha -->
+```
+
+#### Cập nhật topic.tpl
+
+Mở themes/ten-giao-dien/modules/news/topic.tpl:
+
+Tìm:
+
+```html
+		<a href="{TOPIC.link}" title="{TOPIC.title}"><img alt="{TOPIC.alt}" src="{TOPIC.src}" width="{TOPIC.width}" class="img-thumbnail pull-left imghome" /></a>
+		<!-- END: homethumb -->
+		<h3><a href="{TOPIC.link}" title="{TOPIC.title}">{TOPIC.title}</a></h3>
+```
+
+Thay lại thành:
+
+```html
+		<a href="{TOPIC.link}" title="{TOPIC.title}" {TOPIC.target_blank}><img alt="{TOPIC.alt}" src="{TOPIC.src}" width="{TOPIC.width}" class="img-thumbnail pull-left imghome" /></a>
+		<!-- END: homethumb -->
+		<h3><a href="{TOPIC.link}" title="{TOPIC.title}" {TOPIC.target_blank}>{TOPIC.title}</a></h3>
+```
+
+Tìm:
+
+```html
+		<a title="{TOPIC_OTHER.title}" href="{TOPIC_OTHER.link}">{TOPIC_OTHER.title}</a>
+```
+
+Thay lại thành:
+
+```html
+		<a title="{TOPIC_OTHER.title}" href="{TOPIC_OTHER.link}" {TOPIC_OTHER.target_blank}>{TOPIC_OTHER.title}</a>
+```
+
+#### Cập nhật viewcat_grid.tpl
+
+Mở themes/ten-giao-dien/modules/news/viewcat_grid.tpl:
+
+Tìm:
+
+```html
+			<a href="{CONTENT.link}" title="{CONTENT.title}"><img  alt="{HOMEIMGALT1}" src="{HOMEIMG1}" width="150px" class="img-thumbnail pull-left imghome" /></a>
+```
+
+Thay lại thành
+
+```html
+			<a href="{CONTENT.link}" title="{CONTENT.title}" {CONTENT.target_blank}><img  alt="{HOMEIMGALT1}" src="{HOMEIMG1}" width="150px" class="img-thumbnail pull-left imghome" /></a>
+```
+
+Tìm:
+
+```html
+				<a href="{CONTENT.link}" title="{CONTENT.title}">{CONTENT.title}</a>
+```
+
+Thay lại thành:
+
+```html
+				<a href="{CONTENT.link}" title="{CONTENT.title}" {CONTENT.target_blank}>{CONTENT.title}</a>
+```
+
+Tìm:
+
+```html
+		<a title="{CONTENT.title}" href="{CONTENT.link}"><img alt="{HOMEIMGALT1}" src="{HOMEIMG1}" width="{IMGWIDTH1}" class="img-thumbnail"/></a>
+```
+
+Thay lại thành:
+
+```html
+		<a title="{CONTENT.title}" href="{CONTENT.link}" {CONTENT.target_blank}><img alt="{HOMEIMGALT1}" src="{HOMEIMG1}" width="{IMGWIDTH1}" class="img-thumbnail"/></a>
+```
+
+Tìm:
+
+```html
+			<h4><a class="show" href="{CONTENT.link}" <!-- BEGIN: tooltip -->data-content="{CONTENT.hometext_clean}" data-img="" data-rel="tooltip" data-placement="{TOOLTIP_POSITION}"<!-- END: tooltip --> title="{CONTENT.title}">{CONTENT.title}</a></h4>
+```
+
+Thay lại thành:
+
+```html
+			<h4><a class="show" href="{CONTENT.link}" {CONTENT.target_blank} <!-- BEGIN: tooltip -->data-content="{CONTENT.hometext_clean}" data-img="" data-rel="tooltip" data-placement="{TOOLTIP_POSITION}"<!-- END: tooltip --> title="{CONTENT.title}">{CONTENT.title}</a></h4>
+```
+
+#### Cập nhật viewcat_list.tpl
+
+Mở themes/ten-giao-dien/modules/news/viewcat_list.tpl:
+
+Tìm:
+
+```html
+	<a class="show h4" href="{CONTENT.link}" <!-- BEGIN: tooltip -->data-content="{CONTENT.hometext_clean}" data-img="{CONTENT.imghome}" data-rel="tooltip" data-placement="{TOOLTIP_POSITION}"<!-- END: tooltip --> title="{CONTENT.title}">
+```
+
+Thay lại thành:
+
+```html
+	<a class="show h4" href="{CONTENT.link}" {CONTENT.target_blank} <!-- BEGIN: tooltip -->data-content="{CONTENT.hometext_clean}" data-img="{CONTENT.imghome}" data-rel="tooltip" data-placement="{TOOLTIP_POSITION}"<!-- END: tooltip --> title="{CONTENT.title}">
+```
+
+#### Cập nhật viewcat_main_bottom.tpl
+
+Mở themes/ten-giao-dien/modules/news/viewcat_main_bottom.tpl:
+
+Tìm:
+
+```html
+			<a href="{CONTENT.link}" title="{CONTENT.title}"><img alt="{HOMEIMGALT}" src="{HOMEIMG}" width="{IMGWIDTH}" class="img-thumbnail pull-left imghome" /></a>
+```
+
+Thay lại thành:
+
+```html
+			<a href="{CONTENT.link}" title="{CONTENT.title}" {CONTENT.target_blank}><img alt="{HOMEIMGALT}" src="{HOMEIMG}" width="{IMGWIDTH}" class="img-thumbnail pull-left imghome" /></a>
+```
+
+Tìm:
+
+```html
+				<a href="{CONTENT.link}" title="{CONTENT.title}">{CONTENT.title}</a>
+```
+
+Thay lại thành
+
+```html
+				<a href="{CONTENT.link}" title="{CONTENT.title}" {CONTENT.target_blank}>{CONTENT.title}</a>
+```
+
+Tìm:
+
+```html
+					<a class="show h4" href="{OTHER.link}" <!-- BEGIN: tooltip -->data-content="{OTHER.hometext_clean}" data-img="{OTHER.imghome}" data-rel="tooltip" data-placement="{TOOLTIP_POSITION}"<!-- END: tooltip --> title="{OTHER.title}">{OTHER.title}</a>
+```
+
+Thay lại thành:
+
+```html
+					<a class="show h4" href="{OTHER.link}" {OTHER.target_blank} <!-- BEGIN: tooltip -->data-content="{OTHER.hometext_clean}" data-img="{OTHER.imghome}" data-rel="tooltip" data-placement="{TOOLTIP_POSITION}"<!-- END: tooltip --> title="{OTHER.title}">{OTHER.title}</a>
+```
+
+#### Cập nhật viewcat_main_left.tpl
+
+Mở themes/ten-giao-dien/modules/news/viewcat_main_left.tpl:
+
+Tìm:
+
+```html
+							<a class="show h4" href="{OTHER.link}" <!-- BEGIN: tooltip -->data-content="{OTHER.hometext_clean}" data-img="{OTHER.imghome}" data-rel="tooltip" data-placement="{TOOLTIP_POSITION}"<!-- END: tooltip --> title="{OTHER.title}">{OTHER.title}</a>
+```
+
+Thay lại thành:
+
+```html
+							<a class="show h4" href="{OTHER.link}" {OTHER.target_blank} <!-- BEGIN: tooltip -->data-content="{OTHER.hometext_clean}" data-img="{OTHER.imghome}" data-rel="tooltip" data-placement="{TOOLTIP_POSITION}"<!-- END: tooltip --> title="{OTHER.title}">{OTHER.title}</a>
+```
+
+Tìm:
+
+```html
+					<a title="{CONTENT.title}" href="{CONTENT.link}"><img src="{HOMEIMG}" alt="{HOMEIMGALT}" width="{IMGWIDTH}" class="img-thumbnail pull-left imghome" /></a>
+```
+
+Thay lại thành:
+
+```html
+					<a title="{CONTENT.title}" href="{CONTENT.link}" {CONTENT.target_blank}><img src="{HOMEIMG}" alt="{HOMEIMGALT}" width="{IMGWIDTH}" class="img-thumbnail pull-left imghome" /></a>
+```
+
+Tìm:
+
+```html
+						<a title="{CONTENT.title}" href="{CONTENT.link}">{CONTENT.title}</a>
+```
+
+Thay lại thành:
+
+```html
+						<a title="{CONTENT.title}" href="{CONTENT.link}" {CONTENT.target_blank}>{CONTENT.title}</a>
+```
+
+#### Cập nhật viewcat_main_right.tpl
+
+Mở themes/ten-giao-dien/modules/news/viewcat_main_right.tpl:
+
+Tìm:
+
+```html
+					<a title="{CONTENT.title}" href="{CONTENT.link}"><img src="{HOMEIMG}" alt="{HOMEIMGALT}" width="{IMGWIDTH}" class="img-thumbnail pull-left imghome" /></a>
+```
+
+Thay lại thành:
+
+```html
+					<a title="{CONTENT.title}" href="{CONTENT.link}" {CONTENT.target_blank}><img src="{HOMEIMG}" alt="{HOMEIMGALT}" width="{IMGWIDTH}" class="img-thumbnail pull-left imghome" /></a>
+```
+
+Tìm:
+
+```html
+						<a title="{CONTENT.title}" href="{CONTENT.link}">{CONTENT.title}</a>
+```
+
+Thay lại thành:
+
+```html
+						<a title="{CONTENT.title}" href="{CONTENT.link}" {CONTENT.target_blank}>{CONTENT.title}</a>
+```
+
+Tìm:
+
+```html
+							<a class="show h4" href="{OTHER.link}" title="{OTHER.title}" <!-- BEGIN: tooltip -->data-content="{OTHER.hometext_clean}" data-img="{OTHER.imghome}" data-rel="tooltip" data-placement="{TOOLTIP_POSITION}"<!-- END: tooltip -->>{OTHER.title}</a>
+```
+
+Thay lại thành:
+
+```html
+							<a class="show h4" href="{OTHER.link}" title="{OTHER.title}" {OTHER.target_blank} <!-- BEGIN: tooltip -->data-content="{OTHER.hometext_clean}" data-img="{OTHER.imghome}" data-rel="tooltip" data-placement="{TOOLTIP_POSITION}"<!-- END: tooltip --> >{OTHER.title}</a>
+```
+
+#### Cập nhật viewcat_page.tpl
+
+Mở themes/ten-giao-dien/modules/news/viewcat_page.tpl:
+
+Tìm:
+
+```html
+			<a href="{CONTENT.link}" title="{CONTENT.title}"><img  alt="{HOMEIMGALT1}" src="{HOMEIMG1}" width="{IMGWIDTH1}" class="img-thumbnail pull-left imghome" /></a>
+			<!-- END: image -->
+			<h2>
+				<a href="{CONTENT.link}" title="{CONTENT.title}">{CONTENT.title}</a>
+```
+
+Thay lại thành:
+
+```html
+			<a href="{CONTENT.link}" title="{CONTENT.title}" {CONTENT.target_blank}><img  alt="{HOMEIMGALT1}" src="{HOMEIMG1}" width="{IMGWIDTH1}" class="img-thumbnail pull-left imghome" /></a>
+			<!-- END: image -->
+			<h2>
+				<a href="{CONTENT.link}" title="{CONTENT.title}" {CONTENT.target_blank}>{CONTENT.title}</a>
+```
+
+Tìm:
+
+```html
+			<a href="{CONTENT.link}" title="{CONTENT.title}"><img  alt="{HOMEIMGALT1}" src="{HOMEIMG1}" width="{IMGWIDTH1}" class="img-thumbnail pull-left imghome" /></a>
+			<!-- END: image -->
+			<h3>
+				<a href="{CONTENT.link}" title="{CONTENT.title}">{CONTENT.title}</a>
+```
+
+Thay lại thành:
+
+```html
+			<a href="{CONTENT.link}" title="{CONTENT.title}" {CONTENT.target_blank}><img  alt="{HOMEIMGALT1}" src="{HOMEIMG1}" width="{IMGWIDTH1}" class="img-thumbnail pull-left imghome" /></a>
+			<!-- END: image -->
+			<h3>
+				<a href="{CONTENT.link}" title="{CONTENT.title}" {CONTENT.target_blank}>{CONTENT.title}</a>
+```
+
+Tìm:
+
+```html
+		<em class="fa fa-angle-right">&nbsp;</em><a href="{RELATED.link}" title="{RELATED.title}">{RELATED.title} <em>({RELATED.publtime}) </em></a>
+```
+
+Thay lại thành:
+
+```html
+		<em class="fa fa-angle-right">&nbsp;</em><a href="{RELATED.link}" title="{RELATED.title}" {EXTLINK}>{RELATED.title} <em>({RELATED.publtime}) </em></a>
+```
+
+#### Cập nhật viewcat_top.tpl
+
+Mở themes/ten-giao-dien/modules/news/viewcat_top.tpl:
+
+Tìm:
+
+```html
+				<a href="{CONTENT.link}" title="{CONTENT.title}"><img id="imghome" alt="{HOMEIMGALT0}" src="{HOMEIMG0}" width="{IMGWIDTH0}" class="img-thumbnail pull-left imghome" /></a>
+				<!-- END: image -->
+				<h2>
+					<a href="{CONTENT.link}" title="{CONTENT.title}">{CONTENT.title}</a>
+```
+
+Thay lại thành:
+
+```html
+				<a href="{CONTENT.link}" title="{CONTENT.title}" {CONTENT.target_blank}><img id="imghome" alt="{HOMEIMGALT0}" src="{HOMEIMG0}" width="{IMGWIDTH0}" class="img-thumbnail pull-left imghome" /></a>
+				<!-- END: image -->
+				<h2>
+					<a href="{CONTENT.link}" title="{CONTENT.title}" {CONTENT.target_blank}>{CONTENT.title}</a>
+```
+
+Tìm:
+
+```html
+					<em class="fa fa-angle-right">&nbsp;</em><a title="{CONTENT.title}" href="{CONTENT.link}">{CONTENT.title}</a>
+```
+
+Thay lại thành:
+
+```html
+					<em class="fa fa-angle-right">&nbsp;</em><a title="{CONTENT.title}" href="{CONTENT.link}" {CONTENT.target_blank}>{CONTENT.title}</a>
+```
+
+#### Cập nhật viewcat_two_column.tpl
+
+Mở themes/ten-giao-dien/modules/news/viewcat_two_column.tpl:
+
+Tìm:
+
+```html
+            <a href="{NEWSTOP.link}" title="{NEWSTOP.title}"><img alt="{HOMEIMGALT0}" src="{HOMEIMG0}" width="{IMGWIDTH0}" class="img-thumbnail pull-left imghome" /></a>
+            <!-- END: image -->
+            <h3>
+                <a href="{NEWSTOP.link}" title="{NEWSTOP.title}">{NEWSTOP.title}</a>
+```
+
+Thay lại thành:
+
+```html
+            <a href="{NEWSTOP.link}" title="{NEWSTOP.title}" {NEWSTOP.target_blank}><img alt="{HOMEIMGALT0}" src="{HOMEIMG0}" width="{IMGWIDTH0}" class="img-thumbnail pull-left imghome" /></a>
+            <!-- END: image -->
+            <h3>
+                <a href="{NEWSTOP.link}" title="{NEWSTOP.title}" {NEWSTOP.target_blank}>{NEWSTOP.title}</a>
+```
+
+Tìm:
+
+```html
+                <a class="show h4" href="{NEWSTOP.link}" <!-- BEGIN: tooltip -->data-content="{NEWSTOP.hometext_clean}" data-img="{NEWSTOP.imghome}" data-placement="{TOOLTIP_POSITION}" data-rel="tooltip"<!-- END: tooltip --> title="{NEWSTOP.title}">{NEWSTOP.title}</a>
+```
+
+Thay lại thành:
+
+```html
+                <a class="show h4" href="{NEWSTOP.link}" {NEWSTOP.target_blank} <!-- BEGIN: tooltip -->data-content="{NEWSTOP.hometext_clean}" data-img="{NEWSTOP.imghome}" data-placement="{TOOLTIP_POSITION}" data-rel="tooltip"<!-- END: tooltip --> title="{NEWSTOP.title}">{NEWSTOP.title}</a>
+```
+
+Tìm:
+
+```html
+                    <a href="{CONTENT.link}" title="{CONTENT.title}">{CONTENT.title}</a>
+```
+
+Thay lại thành:
+
+```html
+                    <a href="{CONTENT.link}" title="{CONTENT.title}" {CONTENT.target_blank}>{CONTENT.title}</a>
+```
+
+Tìm:
+
+```html
+                <a href="{CONTENT.link}" title="{CONTENT.title}"><img alt="{HOMEIMGALT01}" src="{HOMEIMG01}" width="{IMGWIDTH0}" class="img-thumbnail pull-left imghome" /></a>
+```
+
+Thay lại thành:
+
+```html
+                <a href="{CONTENT.link}" title="{CONTENT.title}" {CONTENT.target_blank}><img alt="{HOMEIMGALT01}" src="{HOMEIMG01}" width="{IMGWIDTH0}" class="img-thumbnail pull-left imghome" /></a>
+```
+
+Tìm:
+
+```html
+                        <a class="show h4" href="{CONTENT.link}" <!-- BEGIN: tooltip -->data-content="{CONTENT.hometext_clean}" data-img="{CONTENT.imghome}" data-rel="tooltip" data-placement="{TOOLTIP_POSITION}"<!-- END: tooltip --> title="{CONTENT.title}">{CONTENT.title}</a>
+```
+
+Thay lại thành:
+
+```html
+                        <a class="show h4" href="{CONTENT.link}" {CONTENT.target_blank} <!-- BEGIN: tooltip -->data-content="{CONTENT.hometext_clean}" data-img="{CONTENT.imghome}" data-rel="tooltip" data-placement="{TOOLTIP_POSITION}"<!-- END: tooltip --> title="{CONTENT.title}">{CONTENT.title}</a>
+```
+
 ### Cập nhật giao diện module seek
+
+Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/seek` thì thực hiện các bước dưới đây:
+
+#### Cập nhật form.tpl
+
+Mở themes/ten-giao-dien/modules/seek/form.tpl:
+
+Tìm:
+
+```html
+        	<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+```
+
+Thay lại thành:
+
+```html
+        	<script src="//www.google.com/jsapi" type="text/javascript"></script>
+```
+
+Tìm:
+
+```html
+        	<link rel="stylesheet" href="http://www.google.com/cse/style/look/default.css" type="text/css" />
+```
+
+Thay lại thành:
+
+```html
+        	<link rel="stylesheet" href="//www.google.com/cse/style/look/default.css" type="text/css" />
+```
 
 ### Cập nhật giao diện module users
 
+Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/users` thì thực hiện các bước dưới đây:
+
+#### Cập nhật avatar.tpl
+
+Mở themes/ten-giao-dien/modules/users/avatar.tpl:
+
+Tìm:
+
+```html
+<script src="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/jquery/jquery.Jcrop.min.js" type="text/javascript"></script>
+<link href="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/jquery/jquery.Jcrop.min.css" rel="stylesheet" type="text/css" />
+```
+
+Thay lại thành:
+
+```html
+<link  type="text/css"href="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/cropper/cropper.min.css" rel="stylesheet" />
+<script type="text/javascript" src="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/cropper/cropper.min.js"></script>
+```
+
+Tìm:
+
+```html
+        <input type="hidden" id="x1" name="x1"/>
+        <input type="hidden" id="y1" name="y1"/>
+        <input type="hidden" id="x2" name="x2"/>
+        <input type="hidden" id="y2" name="y2"/>
+        <input type="hidden" id="w" name="w"/>
+        <input type="hidden" id="h" name="h"/>
+```
+
+Thay lại thành:
+
+```html
+        <input type="hidden" id="crop_x" name="crop_x"/>
+        <input type="hidden" id="crop_y" name="crop_y"/>
+        <input type="hidden" id="crop_width" name="crop_width"/>
+        <input type="hidden" id="crop_height" name="crop_height"/>
+```
+
+#### Cập nhật block.login.tpl
+
+Mở themes/ten-giao-dien/modules/users/block.login.tpl:
+
+```html
+	<button type="button" class="login btn btn-success btn-sm" onclick="modalShowByObj('#guestLogin_{BLOCKID}')">
+```
+
+Thay lại thành
+
+```html
+	<button type="button" class="login btn btn-success btn-sm" onclick="modalShowByObj('#guestLogin_{BLOCKID}', 'recaptchareset')">
+```
+
+Tìm:
+
+```html
+	<button type="button" class="register btn btn-primary btn-sm" onclick="modalShowByObj('#guestReg_{BLOCKID}')">
+```
+
+Thay lại thành:
+
+```html
+	<button type="button" class="register btn btn-primary btn-sm" onclick="modalShowByObj('#guestReg_{BLOCKID}', 'recaptchareset')">
+```
+
+#### Cập nhật block.user_button.tpl
+
+Mở themes/ten-giao-dien/modules/users/block.user_button.tpl:
+
+Tìm:
+
+```html
+<span><a title="{GLANG.signin} - {GLANG.register}" class="pa pointer button" data-toggle="tip" data-target="#guestBlock_{BLOCKID}" data-click="y"><em class="fa fa-user fa-lg"></em><span class="hidden">{GLANG.signin}</span></a></span>
+```
+
+Thay lại thành:
+
+```html
+<span><a title="{GLANG.signin} - {GLANG.register}" class="pa pointer button" data-toggle="tip" data-target="#guestBlock_{BLOCKID}" data-click="y" data-callback="recaptchareset"><em class="fa fa-user fa-lg"></em><span class="hidden">{GLANG.signin}</span></a></span>
+```
+
+#### Cập nhật confirm.tpl
+
+Mở themes/ten-giao-dien/modules/users/confirm.tpl:
+
+Tìm:
+
+```html
+				<!-- END: captcha -->
+```
+
+Thêm xuống dưới:
+
+```html
+                <!-- BEGIN: recaptcha -->
+                <div class="form-group">
+                    <div class="middle text-center clearfix">
+                        <div class="nv-recaptcha-default"><div id="{RECAPTCHA_ELEMENT}"></div></div>
+                        <script type="text/javascript">
+                        nv_recaptcha_elements.push({
+                            id: "{RECAPTCHA_ELEMENT}",
+                            btn: $('[type="submit"]', $('#{RECAPTCHA_ELEMENT}').parent().parent().parent().parent())
+                        })
+                        </script>
+                    </div>
+                </div>
+                <!-- END: recaptcha -->
+```
+
+#### Cập nhật login_form.tpl
+
+Mở themes/ten-giao-dien/modules/users/login_form.tpl:
+
+Tìm:
+
+```html
+        <!-- END: captcha -->
+        
+```
+
+Thêm xuống dưới:
+
+```html
+        <!-- BEGIN: recaptcha -->
+        <div class="form-group loginCaptcha">
+            <div class="middle text-center clearfix">
+                <!-- BEGIN: default --><div class="nv-recaptcha-default"><div id="{RECAPTCHA_ELEMENT}" data-toggle="recaptcha"></div></div><!-- END: default -->
+                <!-- BEGIN: compact --><div class="nv-recaptcha-compact"><div id="{RECAPTCHA_ELEMENT}" data-toggle="recaptcha"></div></div><!-- END: compact -->
+                <script type="text/javascript">
+                nv_recaptcha_elements.push({
+                    id: "{RECAPTCHA_ELEMENT}",
+                    <!-- BEGIN: smallbtn -->size: "compact",<!-- END: smallbtn -->
+                    btn: $('[type="submit"]', $('#{RECAPTCHA_ELEMENT}').parent().parent().parent().parent()),
+                    pnum: 4,
+                    btnselector: '[type="submit"]'
+                })
+                </script>
+            </div>
+        </div>
+        <!-- END: recaptcha -->
+        
+```
+
+#### Cập nhật lostactivelink.tpl
+
+Mở themes/ten-giao-dien/modules/users/lostactivelink.tpl:
+
+Tìm:
+
+```html
+                <div class="form-group">
+                    <div class="middle text-right clearfix">
+                        <img class="captchaImg display-inline-block" src="{SRC_CAPTCHA}" width="{GFX_WIDTH}" height="{GFX_HEIGHT}" alt="{N_CAPTCHA}" title="{N_CAPTCHA}" /><em class="fa fa-pointer fa-refresh margin-left margin-right" title="{CAPTCHA_REFRESH}" onclick="change_captcha('.bsec');"></em><input type="text" style="width:100px;" class="bsec required form-control display-inline-block" name="nv_seccode" value="" maxlength="{GFX_MAXLENGTH}" placeholder="{GLANG.securitycode}" data-pattern="/^(.){{GFX_MAXLENGTH},{GFX_MAXLENGTH}}$/" onkeypress="validErrorHidden(this);" data-mess="{GLANG.securitycodeincorrect}" />
+                    </div>
+                </div>
+```
+
+Thêm lên trên:
+
+```html
+                <!-- BEGIN: captcha -->
+```
+
+Thêm xuống dưới:
+
+```html
+                <!-- END: captcha -->
+                
+                <!-- BEGIN: recaptcha -->
+                <div class="form-group">
+                    <div class="middle text-center clearfix">
+                        <div class="nv-recaptcha-default"><div id="{RECAPTCHA_ELEMENT}"></div></div>
+                        <script type="text/javascript">
+                        nv_recaptcha_elements.push({
+                            id: "{RECAPTCHA_ELEMENT}",
+                            btn: $('[type="submit"]', $('#{RECAPTCHA_ELEMENT}').parent().parent().parent().parent())
+                        })
+                        </script>
+                    </div>
+                </div>
+                <!-- END: recaptcha -->
+```
+
+#### Cập nhật lostpass_form.tpl
+
+Mở themes/ten-giao-dien/modules/users/lostpass_form.tpl:
+
+Tìm:
+
+```html
+            <div class="form-group">
+                <div class="middle text-right clearfix">
+                    <img class="captchaImg display-inline-block" src="{SRC_CAPTCHA}" width="{GFX_WIDTH}" height="{GFX_HEIGHT}" alt="{N_CAPTCHA}" title="{N_CAPTCHA}" /><em class="fa fa-pointer fa-refresh margin-left margin-right" title="{CAPTCHA_REFRESH}" onclick="change_captcha('.bsec');"></em><input type="text" style="width:100px;" class="bsec required form-control display-inline-block" name="nv_seccode" value="" maxlength="{GFX_MAXLENGTH}" placeholder="{GLANG.securitycode}" data-pattern="/^(.){{GFX_MAXLENGTH},{GFX_MAXLENGTH}}$/" onkeypress="validErrorHidden(this);" data-mess="{GLANG.securitycodeincorrect}" />
+                </div>
+            </div>
+```
+
+Thêm lên trên:
+
+```html
+            <!-- BEGIN: captcha -->
+```
+
+Thêm xuống dưới
+
+```html
+            <!-- END: captcha -->
+            
+            <!-- BEGIN: recaptcha -->
+            <div class="form-group">
+                <div class="middle text-right clearfix">
+                    <div class="nv-recaptcha-default"><div id="{RECAPTCHA_ELEMENT}"></div></div>
+                    <script type="text/javascript">
+                    nv_recaptcha_elements.push({
+                        id: "{RECAPTCHA_ELEMENT}",
+                        btn: $('[type="submit"]', $('#{RECAPTCHA_ELEMENT}').parent().parent().parent().parent().parent())
+                    })
+                    </script>
+                </div>
+            </div>
+            <!-- END: recaptcha -->
+```
+
+#### Cập nhật openid_login.tpl
+
+Mở themes/ten-giao-dien/modules/users/openid_login.tpl:
+
+Tìm:
+
+```html
+				<!-- END: captcha -->
+```
+
+Thêm xuống dưới:
+
+```html
+                <!-- BEGIN: recaptcha -->
+                <div class="form-group">
+                    <div class="middle text-center clearfix">
+                        <div class="nv-recaptcha-default"><div id="{RECAPTCHA_ELEMENT}"></div></div>
+                        <script type="text/javascript">
+                        nv_recaptcha_elements.push({
+                            id: "{RECAPTCHA_ELEMENT}",
+                            btn: $('[type="submit"]', $('#{RECAPTCHA_ELEMENT}').parent().parent().parent().parent())
+                        })
+                        </script>
+                    </div>
+                </div>
+                <!-- END: recaptcha -->
+```
+
+#### Cập nhật register_form.tpl
+
+Mở themes/ten-giao-dien/modules/users/register_form.tpl:
+
+Tìm:
+
+```html
+    	<!-- BEGIN: agreecheck -->
+        <div>
+            <div>
+                <div class="form-group text-center check-box required" data-mess="">
+                    <input type="checkbox" name="agreecheck" value="1" class="fix-box" onclick="validErrorHidden(this,3);"/>{LANG.accept2} <a onclick="usageTermsShow('{LANG.usage_terms}');" href="javascript:void(0);"><span class="btn btn-default btn-xs">{LANG.usage_terms}</span></a>
+                </div>
+            </div>
+        </div>
+        <!-- END: agreecheck -->
+```
+
+Di chuyển lên trên thành phần:
+
+```html
+    	<!-- BEGIN:reg_captcha -->
+        <div class="form-group">
+            <div class="middle text-center clearfix">
+                <img class="captchaImg display-inline-block" src="{SRC_CAPTCHA}" width="{GFX_WIDTH}" height="{GFX_HEIGHT}" alt="{N_CAPTCHA}" title="{N_CAPTCHA}" />
+				<em class="fa fa-pointer fa-refresh margin-left margin-right" title="{CAPTCHA_REFRESH}" onclick="change_captcha('.rsec');"></em>
+				<input type="text" style="width:100px;" class="rsec required form-control display-inline-block" name="nv_seccode" value="" maxlength="{GFX_MAXLENGTH}" placeholder="{GLANG.securitycode}" data-pattern="/^(.){{GFX_MAXLENGTH},{GFX_MAXLENGTH}}$/" onkeypress="validErrorHidden(this);" data-mess="{GLANG.securitycodeincorrect}" />
+            </div>
+        </div>
+    	<!-- END: reg_captcha -->
+```
+
+Tìm:
+
+```html
+    	<!-- END: reg_captcha -->
+```
+
+Thêm xuống dưới:
+
+```html
+        <!-- BEGIN: reg_recaptcha -->
+        <div class="form-group">
+            <div class="middle text-center clearfix">
+                <div class="nv-recaptcha-default"><div id="{RECAPTCHA_ELEMENT}" data-toggle="recaptcha"></div></div>
+                <script type="text/javascript">
+                nv_recaptcha_elements.push({
+                    id: "{RECAPTCHA_ELEMENT}",
+                    btn: $('[type="submit"]', $('#{RECAPTCHA_ELEMENT}').parent().parent().parent().parent()),
+                    pnum: 4,
+                    btnselector: '[type="submit"]'
+                })
+                </script>
+            </div>
+        </div>
+        <!-- END: reg_recaptcha -->
+```
+
 ### Cập nhật giao diện module voting
+
+Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/voting` thì thực hiện các bước dưới đây:
+
+#### Cập nhật global.voting.tpl
+
+Mở themes/ten-giao-dien/modules/voting/global.voting.tpl:
+
+Tìm:
+
+```html
+			<input class="btn btn-success btn-sm" type="button" value="{VOTING.langsubmit}" onclick="nv_sendvoting(this.form, '{VOTING.vid}', '{VOTING.accept}', '{VOTING.checkss}', '{VOTING.errsm}', '{VOTING.active_captcha}');" />
+			<input class="btn btn-primary btn-sm" value="{VOTING.langresult}" type="button" onclick="nv_sendvoting(this.form, '{VOTING.vid}', 0, '{VOTING.checkss}', '', '{VOTING.active_captcha}');" />
+```
+
+Thay lại thành:
+
+```html
+			<input class="btn btn-success btn-sm" type="button" value="{VOTING.langsubmit}" onclick="nv_sendvoting(this.form, '{VOTING.vid}', '{VOTING.accept}', '{VOTING.checkss}', '{VOTING.errsm}', '{VOTING.active_captcha}','');" />
+			<input class="btn btn-primary btn-sm" value="{VOTING.langresult}" type="button" onclick="nv_sendvoting(this.form, '{VOTING.vid}', 0, '{VOTING.checkss}', '', '{VOTING.active_captcha}','');" />
+```
+
+Tìm đoạn bắt đầu bằng:
+
+```html
+<!-- BEGIN: captcha -->
+```
+
+Kết thúc bằng:
+
+```html
+<!-- END: captcha -->
+```
+
+Thay đoạn đó thành:
+
+```html
+<!-- BEGIN: has_captcha -->
+<div id="voting-modal-{VOTING.vid}" class="hidden">
+    <div class="clearfix">
+        <!-- BEGIN: basic -->
+        <div class="m-bottom">
+            <strong>{LANG.enter_captcha}</strong>
+        </div>
+        <div class="clearfix">
+            <div class="margin-bottom">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <input type="text" class="form-control rsec" value="" name="captcha" maxlength="{GFX_MAXLENGTH}"/>
+                    </div>
+                    <div class="col-xs-12">
+                        <img class="captchaImg display-inline-block" src="{SRC_CAPTCHA}" height="32" alt="{N_CAPTCHA}" title="{N_CAPTCHA}" />
+        				<em class="fa fa-pointer fa-refresh margin-left margin-right" title="{CAPTCHA_REFRESH}" onclick="change_captcha('.rsec');"></em>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END: basic -->
+        <!-- BEGIN: recaptcha -->
+        <div class="m-bottom text-center">
+            <strong>{N_CAPTCHA}</strong>
+        </div>
+        <div class="margin-bottom clearfix">
+            <div class="nv-recaptcha-default"><div id="{RECAPTCHA_ELEMENT}" data-toggle="recaptcha"></div></div>
+            <script type="text/javascript">
+            nv_recaptcha_elements.push({
+                id: "{RECAPTCHA_ELEMENT}",
+                btn: $('[type="submit"]', $('#{RECAPTCHA_ELEMENT}').parent().parent().parent()),
+                pnum: 3,
+                btnselector: '[name="submit"]'
+            })
+            </script>
+        </div>
+        <!-- END: recaptcha -->
+        <input type="button" name="submit" class="btn btn-primary btn-block" value="{VOTING.langsubmit}" onclick="nv_sendvoting_captcha(this, {VOTING.vid}, '{LANG.enter_captcha_error}','');"/>
+    </div>
+</div>
+<!-- END: has_captcha -->
+```
+
+#### Cập nhật main.tpl
+
+Mở themes/ten-giao-dien/modules/voting/main.tpl:
+
+Tìm:
+
+```html
+<!-- BEGIN: main -->
+```
+
+Thêm xuống dưới:
+
+```html
+<div class=" col-md-12 col-sm-12 voting-col-1">
+```
+
+Tìm và xóa:
+
+```html
+                    <input class="btn btn-primary btn-sm" type="button" value="{VOTING.langresult}" onclick="nv_sendvoting(this.form, '{VOTING.vid}', 0, '{VOTING.checkss}', '');"/>
+```
+
+Tìm đoạn bắt đầu bằng:
+
+```html
+<!-- BEGIN: captcha -->
+```
+
+Kết thúc bằng:
+
+```html
+<!-- END: captcha -->
+```
+
+Thay đoạn đó thành:
+
+```html
+<!-- BEGIN: has_captcha -->
+<div id="voting-modal-{VOTING.vid}" class="hidden">
+    <div class="clearfix">
+        <!-- BEGIN: basic -->
+        <div class="m-bottom">
+            <strong>{LANG.enter_captcha}</strong>
+        </div>
+        <div class="clearfix">
+            <div class="margin-bottom">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <input type="text" class="form-control rsec" value="" name="captcha" maxlength="{GFX_MAXLENGTH}"/>
+                    </div>
+                    <div class="col-xs-12">
+                        <img class="captchaImg display-inline-block" src="{SRC_CAPTCHA}" height="32" alt="{N_CAPTCHA}" title="{N_CAPTCHA}" />
+        				<em class="fa fa-pointer fa-refresh margin-left margin-right" title="{CAPTCHA_REFRESH}" onclick="change_captcha('.rsec');"></em>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END: basic -->
+        <!-- BEGIN: recaptcha -->
+        <div class="m-bottom text-center">
+            <strong>{N_CAPTCHA}</strong>
+        </div>
+        <div class="margin-bottom clearfix">
+            <div class="nv-recaptcha-default"><div id="{RECAPTCHA_ELEMENT}" data-toggle="recaptcha"></div></div>
+            <script type="text/javascript">
+            nv_recaptcha_elements.push({
+                id: "{RECAPTCHA_ELEMENT}",
+                btn: $('[type="submit"]', $('#{RECAPTCHA_ELEMENT}').parent().parent().parent()),
+                pnum: 3,
+                btnselector: '[name="submit"]'
+            })
+            </script>
+        </div>
+        <!-- END: recaptcha -->
+        <input type="button" name="submit" class="btn btn-primary btn-block" value="{VOTING.langsubmit}" onclick="nv_sendvoting_captcha(this, {VOTING.vid}, '{LANG.enter_captcha_error}','{LINKURL}');"/>
+    </div>
+</div>
+<!-- END: has_captcha -->
+```
+
+Tìm:
+
+```html
+<!-- END: main -->
+```
+
+Thêm lên trên:
+
+```html
+	<div class="margin">
+	    <!-- BEGIN: note -->
+	    <div class="alert alert-info">{VOTINGNOTE}</div>
+	    <!-- END: note -->
+	    <h3 class="text-primary text-center margin-bottom-lg">{LANG.voting_result}</h3>
+	    <!-- BEGIN: result -->
+	    <div class="row">
+	        <div class="col-xs-24 col-md-12">{VOTING.title}</div>
+	        <div class="col-xs-24 col-md-12">
+	            <div class="progress">
+	                <div class="progress-bar" role="progressbar" aria-valuenow="{WIDTH}" aria-valuemin="0" aria-valuemax="100" style="width: {WIDTH}%;"><span class="text-danger">{WIDTH}%</span></div>
+	            </div>
+	        </div>
+	    </div>
+		<!-- END: result -->
+	    <p class="text-center sum-voting">
+	        <strong>{LANG.voting_total}</strong>: {TOTAL} {LANG.voting_counter} - <strong>{LANG.voting_pubtime}: </strong>{VOTINGTIME}
+	    </p>
+	</div>
+</div>
+<div class="col-md-12 col-sm-12 voting-col-2">
+		<div class="col-sm-24 float-voting">
+
+			<ul class="nav nav-tabs">
+			  <li class="active"><a data-toggle="tab" href="#home">{LANG.voting_pro}</a></li>
+			  <li><a data-toggle="tab" href="#menu1">{LANG.voting_hits_hot}</a></li>
+			  <li><a data-toggle="tab" href="#menu2">{LANG.voting_hot}</a></li>
+			</ul>
+		</div>
+		<div class="col-sm-24 padding-voting">
+			<div class="tab-content">
+				  <div id="home" class="tab-pane fade in active">
+				  	<ul>
+				  		<!-- BEGIN: loopvotingnew -->
+				  		<li>
+				  		<span>
+				    		<a href="{LINKNEW}">{TITILENEW}</a>
+				    	</span>
+				  		</li>
+				    	<!-- END: loopvotingnew -->
+				  	</ul>
+				  </div>
+				  <div id="menu1" class="tab-pane fade">
+				    <ul>
+				  		<!-- BEGIN: loopvotinghithot -->
+				  		<li>
+				  		<span>
+				    		<a href="{LINKNEW}">{TITILENEW}</a>
+				    	</span>
+				  		</li>
+				    	<!-- END: loopvotinghithot -->
+				  	</ul>
+				  </div>
+				  <div id="menu2" class="tab-pane fade">
+				    <ul>
+				  		<!-- BEGIN: loopvotinghot -->
+				  		<li>
+				  		<span>
+				    		<a href="{LINKNEW}">{TITILENEW}</a>
+				    	</span>
+				  		</li>
+				    	<!-- END: loopvotinghot -->
+				  	</ul>
+				  </div>
+			</div>
+		</div>
+	</div>
+```
