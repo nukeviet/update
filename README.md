@@ -29,7 +29,228 @@ Sau khi cập nhật xong, cần chú ý:
 
 Các giao diện khác giao diện mặc định đã được làm cho NukeViet 4.1.00 cần sửa thêm như sau để có thể sử dụng cho NukeViet 4.1 Beta 2:
 
+### Cập nhật giao diện chính
+
+Mở themes/ten-giao-dien/theme.php:
+
+Tìm:
+
+```php
+    global $home, $array_mod_title, $lang_global, $language_array, $global_config, $site_mods, $module_name, $module_info, $op_file, $mod_title, $my_head, $my_footer, $client_info, $module_config, $op, $rewrite_keys;
+```
+
+Trong đó xóa:
+
+```php
+, $rewrite_keys
+```
+
+Tìm:
+
+```php
+        if (empty($rewrite_keys)) {
+```
+
+Thay lại thành:
+
+```php
+        if (!$global_config['rewrite_enable']) {
+```
+
+#### JS của giao diện chính
+
+Tìm file xử lý javascript chính của giao diện (ví dụ `themes/ten-giao-dien/js/main.js`) cập nhật theo hướng sau:
+
+Bổ sung thêm biến `reCapIDs = [];`
+
+Ví dụ thêm vào đầu file dòng:
+
+```js
+var reCapIDs = [];
+```
+
+Thêm giá trị `callback` cho hàm `tipShow` ví dụ:
+
+```js
+function tipShow(a, b) {
+```
+
+Thay lại thành:
+
+```js
+function tipShow(a, b, callback) {
+```
+
+Trong hàm `tipShow` thay:
+
+```js
+    $("#tip").attr("data-content", b).show("fast");
+    tip_active = !0
+```
+
+Thành:
+
+```js
+    if (typeof callback != "undefined") {
+        $("#tip").attr("data-content", b).show("fast", function() {
+            if (callback == "recaptchareset" && typeof nv_is_recaptcha != "undefined" && nv_is_recaptcha) {
+                $('[data-toggle="recaptcha"]', $(this)).each(function() {
+                    var parent = $(this).parent();
+                    var oldID = $(this).attr('id');
+                    var id = "recaptcha" + (new Date().getTime()) + nv_randomPassword(8);
+                    var ele;
+                    var btn = false, pnum = 0, btnselector = '';
+                    
+                    $(this).remove();
+                    parent.append('<div id="' + id + '" data-toggle="recaptcha"></div>');
+                    
+                    for (i = 0, j = nv_recaptcha_elements.length; i < j; i++) {
+                        ele = nv_recaptcha_elements[i];
+                        if (typeof ele.pnum != "undefined" && typeof ele.btnselector != "undefined" && ele.pnum && ele.btnselector != "" && ele.id == oldID) {
+                            pnum = ele.pnum;
+                            btnselector = ele.btnselector;
+                            btn = $('#' + id);
+                            for (k = 1; k <= ele.pnum; k ++) {
+                                btn = btn.parent();
+                            }
+                            btn = $(ele.btnselector, btn);
+                            break;
+                        }
+                    }
+                    var newEle = {};
+                    newEle.id = id;
+                    if (btn != false) {
+                        newEle.btn = btn;
+                        newEle.pnum = pnum;
+                        newEle.btnselector = btnselector;
+                    }
+                    nv_recaptcha_elements.push(newEle);
+                });
+                reCaptchaLoadCallback();
+            }
+        });
+    } else {
+        $("#tip").attr("data-content", b).show("fast");
+    }
+    tip_active = 1;
+```
+
+Thực hiện tương tự cho hàm `ftipShow`
+
+Thay đổi hàm `change_captcha` để hỗ trợ reload ReCAPTCHA ví dụ:
+
+```js
+function change_captcha(a) {
+    if (typeof nv_is_recaptcha != "undefined" && nv_is_recaptcha) {
+        for (i = 0, j = reCapIDs.length; i < j; i++) {
+            var ele = reCapIDs[i];
+            var btn = nv_recaptcha_elements[ele[0]];
+            if ($('#' + btn.id).length) {
+                if (typeof btn.btn != "undefined" && btn.btn != "") {
+                    btn.btn.prop('disabled', true);
+                }
+                grecaptcha.reset(ele[1]);
+            }
+        }
+        reCaptchaLoadCallback();
+    } else {
+        $("img.captchaImg").attr("src", nv_base_siteurl + "index.php?scaptcha=captcha&nocache=" + nv_randomPassword(10));
+        "undefined" != typeof a && "" != a && $(a).val("");
+    }
+    return !1
+}
+```
+
+Thêm giá trị `callback` cho hàm `modalShow` và `modalShowByObj`: Đối chiếu với giao diện default để sửa.
+
+Bổ sung hai hàm `reCaptchaLoadCallback` và `reCaptchaResCallback` :
+
+```js
+
+var reCaptchaLoadCallback = function() {
+    for (i = 0, j = nv_recaptcha_elements.length; i < j; i++) {
+        var ele = nv_recaptcha_elements[i];
+        if ($('#' + ele.id).length && typeof reCapIDs[i] == "undefined") {
+            var size = '';
+            if (typeof ele.btn != "undefined" && ele.btn != "") {
+                ele.btn.prop('disabled', true);
+            }
+            if (typeof ele.size != "undefined" && ele.size == "compact") {
+                size = 'compact';
+            }
+            reCapIDs.push([
+                i, grecaptcha.render(ele.id, {
+                    'sitekey': nv_recaptcha_sitekey,
+                    'type': nv_recaptcha_type,
+                    'size': size,
+                    'callback': reCaptchaResCallback
+                })
+            ]);
+        }
+    }
+}
+
+var reCaptchaResCallback = function() {
+    for (i = 0, j = reCapIDs.length; i < j; i++) {
+        var ele = reCapIDs[i];
+        var btn = nv_recaptcha_elements[ele[0]];
+        if ($('#' + btn.id).length) {
+            var res = grecaptcha.getResponse(ele[1]);
+            if (res != "") {
+                if (typeof btn.btn != "undefined" && btn.btn != "") {
+                    btn.btn.prop('disabled', false);
+                }
+            }
+        }
+    }
+}
+```
+
+Thay đổi cách xử lý khi hiển thị tip top và tip bottom ví dụ:
+
+Thay:
+
+```js
+    $("[data-toggle=tip], [data-toggle=ftip]").click(function() {
+        var a = $(this).attr("data-target"),
+            d = $(a).html(),
+            b = $(this).attr("data-toggle"),
+            c = "tip" == b ? $("#tip").attr("data-content") : $("#ftip").attr("data-content");
+        a != c ? ("" != c && $('[data-target="' + c + '"]').attr("data-click", "y"), "tip" == b ? ($("#tip .bg").html(d), tipShow(this, a)) : ($("#ftip .bg").html(d), ftipShow(this, a))) : "n" == $(this).attr("data-click") ? "tip" == b ? tipHide() : ftipHide() : "tip" == b ? tipShow(this, a) : ftipShow(this, a);
+        return !1
+    });
+```
+
+Thành:
+
+```js
+    $("[data-toggle=tip], [data-toggle=ftip]").click(function() {
+        var a = $(this).attr("data-target"),
+            d = $(a).html(),
+            b = $(this).attr("data-toggle"),
+            c = "tip" == b ? $("#tip").attr("data-content") : $("#ftip").attr("data-content");
+        var callback = $(this).data("callback");
+        a != c ? ("" != c && $('[data-target="' + c + '"]').attr("data-click", "y"), "tip" == b ? ($("#tip .bg").html(d), tipShow(this, a, callback)) : ($("#ftip .bg").html(d), ftipShow(this, a, callback))) : "n" == $(this).attr("data-click") ? "tip" == b ? tipHide() : ftipHide() : "tip" == b ? tipShow(this, a, callback) : ftipShow(this, a, callback);
+        return !1
+    });
+```
+
+Bổ sung thao tác xử lý sau khi load:
+
+```js
+    if (typeof nv_is_recaptcha != "undefined" && nv_is_recaptcha && nv_recaptcha_elements.length > 0) {
+        var a = document.createElement("script");
+        a.type = "text/javascript";
+        a.async = !0;
+        a.src = "https://www.google.com/recaptcha/api.js?hl=" + nv_lang_interface + "&onload=reCaptchaLoadCallback&render=explicit";
+        var b = document.getElementsByTagName("script")[0];
+        b.parentNode.insertBefore(a, b);
+    }
+```    
+    
 ### Cập nhật giao diện module banners
+
+Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/js/banners.js` thì đối chiếu với file `themes/default/js/banners.js` để sửa đổi.
 
 Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/banners` thì thực hiện các bước dưới đây:
 
@@ -84,6 +305,8 @@ Thêm xuống dưới:
 
 ### Cập nhật giao diện module comment
 
+Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/js/comment.js` thì đối chiếu với file `themes/default/js/comment.js` để sửa đổi.
+
 Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/comment` thì thực hiện các bước dưới đây:
 
 #### Cập nhật main.tpl
@@ -126,7 +349,13 @@ Thay lại thành:
 
 ### Cập nhật giao diện module contact
 
+Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/js/contact.js` thì đối chiếu với file `themes/default/js/contact.js` để sửa đổi.
+
 Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/contact` thì thực hiện các bước dưới đây:
+
+#### Bổ sung giao diện block.supporter.tpl
+
+Sao chép file `themes/default/modules/contact/block.supporter.tpl` sang `themes/ten-giao-dien/modules/contact/block.supporter.tpl` và chỉnh sửa lại cho hợp lý.
 
 #### Cập nhật form.tpl
 
@@ -195,6 +424,8 @@ Thêm xuống dưới
 ```
 
 ### Cập nhật giao diện module news
+
+Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/js/news.js` thì đối chiếu với file `themes/default/js/news.js` để sửa đổi.
 
 Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/news` thì thực hiện các bước dưới đây:
 
@@ -875,6 +1106,8 @@ Thay lại thành:
 
 ### Cập nhật giao diện module users
 
+Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/js/users.js` thì đối chiếu với file `themes/default/js/users.js` để sửa đổi.
+
 Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/users` thì thực hiện các bước dưới đây:
 
 #### Cập nhật avatar.tpl
@@ -1186,6 +1419,8 @@ Thêm xuống dưới:
 ```
 
 ### Cập nhật giao diện module voting
+
+Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/js/banners.js` thì đối chiếu với file `themes/default/js/voting.js` để sửa đổi.
 
 Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/voting` thì thực hiện các bước dưới đây:
 
