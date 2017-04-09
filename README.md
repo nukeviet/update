@@ -250,9 +250,10 @@ Bổ sung thao tác xử lý sau khi load:
     
 ### Cập nhật giao diện module banners
 
-Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/js/banners.js` thì đối chiếu với file `themes/default/js/banners.js` để sửa đổi.
-
 Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/banners` thì thực hiện các bước dưới đây:
+
+Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/js/banners.js` thì đối chiếu với file `themes/default/js/banners.js` để sửa đổi.
+Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/banners/theme.php` thì đối chiếu với file `themes/default/modules/banners/theme.php` để sửa đổi.
 
 #### Cập nhật global.banners.tpl
 
@@ -305,9 +306,10 @@ Thêm xuống dưới:
 
 ### Cập nhật giao diện module comment
 
-Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/js/comment.js` thì đối chiếu với file `themes/default/js/comment.js` để sửa đổi.
-
 Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/comment` thì thực hiện các bước dưới đây:
+
+Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/js/comment.js` thì đối chiếu với file `themes/default/js/comment.js` để sửa đổi.
+Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/comment/theme.php` thì đối chiếu với file `themes/default/modules/comment/theme.php` để sửa đổi.
 
 #### Cập nhật main.tpl
 
@@ -349,9 +351,10 @@ Thay lại thành:
 
 ### Cập nhật giao diện module contact
 
-Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/js/contact.js` thì đối chiếu với file `themes/default/js/contact.js` để sửa đổi.
-
 Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/contact` thì thực hiện các bước dưới đây:
+
+Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/js/contact.js` thì đối chiếu với file `themes/default/js/contact.js` để sửa đổi.
+Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/contact/theme.php` thì đối chiếu với file `themes/default/modules/contact/theme.php` để sửa đổi.
 
 #### Bổ sung giao diện block.supporter.tpl
 
@@ -425,9 +428,10 @@ Thêm xuống dưới
 
 ### Cập nhật giao diện module news
 
-Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/js/news.js` thì đối chiếu với file `themes/default/js/news.js` để sửa đổi.
-
 Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/news` thì thực hiện các bước dưới đây:
+
+Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/js/news.js` thì đối chiếu với file `themes/default/js/news.js` để sửa đổi.
+Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/news/theme.php` thì đối chiếu với file `themes/default/modules/news/theme.php` để sửa đổi.
 
 #### Cập nhật block_groups.tpl
 
@@ -1106,9 +1110,10 @@ Thay lại thành:
 
 ### Cập nhật giao diện module users
 
-Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/js/users.js` thì đối chiếu với file `themes/default/js/users.js` để sửa đổi.
-
 Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/users` thì thực hiện các bước dưới đây:
+
+Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/js/users.js` thì đối chiếu với file `themes/default/js/users.js` để sửa đổi.
+Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/users/theme.php` thì đối chiếu với file `themes/default/modules/users/theme.php` để sửa đổi.
 
 #### Cập nhật avatar.tpl
 
@@ -1420,9 +1425,10 @@ Thêm xuống dưới:
 
 ### Cập nhật giao diện module voting
 
-Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/js/banners.js` thì đối chiếu với file `themes/default/js/voting.js` để sửa đổi.
-
 Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/voting` thì thực hiện các bước dưới đây:
+
+Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/js/banners.js` thì đối chiếu với file `themes/default/js/voting.js` để sửa đổi.
+Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/banners/theme.php` thì đối chiếu với file `themes/default/modules/voting/theme.php` để sửa đổi.
 
 #### Cập nhật global.voting.tpl
 
