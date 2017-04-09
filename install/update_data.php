@@ -131,6 +131,18 @@ function nv_up_delunusefiles()
         'message' => ''
     );
 
+    nv_deletefile(NV_ROOTDIR . '/includes/rewrite.php');
+    nv_deletefile(NV_ROOTDIR . '/includes/rewrite_index.php');
+    
+    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/plugins/autosave/css/autosave.css');
+    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/plugins/autosave/js/difflib.js');
+    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/plugins/autosave/js/diffview.js');
+    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/plugins/autosave/js/jsdiff.js');
+    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/plugins/autosave/js/lz-string-1.3.3.js');
+    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/plugins/autosave/js/moment.js');
+    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/plugins/gg', true);
+    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/plugins/googledocs/.gitignore');
+
     nv_deletefile(NV_ROOTDIR . '/assets/js/jquery/jquery.watermarker.js');
     nv_deletefile(NV_ROOTDIR . '/assets/js/jquery/Jcrop.gif');
     nv_deletefile(NV_ROOTDIR . '/assets/js/jquery/jquery.Jcrop.min.css');
