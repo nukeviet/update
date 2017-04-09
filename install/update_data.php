@@ -449,8 +449,61 @@ function nv_up_systemcfg()
     } catch (PDOException $e) {
         trigger_error($e->getMessage());
     }
+    
+    // Thay đổi mã hóa
+    if (!empty($global_config['ftp_user_pass']) or !empty($global_config['smtp_password'])) {
+        global $crypt;
+        
+        if (!empty($global_config['ftp_user_pass'])) {
+            $ftp_user_pass = $crypt->aes_decrypt(nv_base64_decode($global_config['ftp_user_pass']));
+            $ftp_user_pass = nv_tmp_encrypt($ftp_user_pass);
+            
+            try {
+                $db->query("UPDATE " . NV_CONFIG_GLOBALTABLE . " SET config_value=" . $db->quote($ftp_user_pass) . " WHERE lang='sys' AND module='global' AND config_name='ftp_user_pass'");
+            } catch (PDOException $e) {
+                trigger_error($e->getMessage());
+            }
+        }
+        
+        if (!empty($global_config['smtp_password'])) {
+            $smtp_password = $crypt->aes_decrypt(nv_base64_decode($global_config['smtp_password']));
+            $smtp_password = nv_tmp_encrypt($smtp_password);
+            
+            try {
+                $db->query("UPDATE " . NV_CONFIG_GLOBALTABLE . " SET config_value=" . $db->quote($smtp_password) . " WHERE lang='sys' AND module='site' AND config_name='smtp_password'");
+            } catch (PDOException $e) {
+                trigger_error($e->getMessage());
+            }
+        }
+    }
 
     return $return;
+}
+
+/**
+ * nv_tmp_encrypt()
+ * 
+ * @param mixed $data
+ * @return
+ */
+function nv_tmp_encrypt($data)
+{
+    global $global_config;
+
+    $key = sha1($global_config['sitekey']);
+    if (isset($key{64})) {
+        $key = pack('H32', $key);
+    }
+    if (! isset($key{63})) {
+        $key = str_pad($key, 64, chr(0));
+    }
+    $ipad = substr($key, 0, 64) ^ str_repeat(chr(0x36), 64);
+    $opad = substr($key, 0, 64) ^ str_repeat(chr(0x5C), 64);
+    
+    $iv = substr($key, 0, 16);
+    
+    $data = openssl_encrypt($data, 'aes-256-cbc', $key, 0, $iv);
+    return strtr($data, '+/=', '-_,');
 }
 
 /**
