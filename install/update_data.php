@@ -42,6 +42,7 @@ $nv_update_config['lang']['vi']['nv_up_modusers'] = 'Cập nhật module users';
 $nv_update_config['lang']['vi']['nv_up_modbanners'] = 'Cập nhật module banners';
 $nv_update_config['lang']['vi']['nv_up_modpage'] = 'Cập nhật module page';
 $nv_update_config['lang']['vi']['nv_up_modcontact'] = 'Cập nhật module contact';
+$nv_update_config['lang']['vi']['nv_up_modmenu'] = 'Cập nhật module menu';
 $nv_update_config['lang']['vi']['nv_up_systemcfg'] = 'Cập nhật các cấu hình hệ thống';
 $nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản 4.1.01';
 // English
@@ -51,6 +52,7 @@ $nv_update_config['lang']['en']['nv_up_modusers'] = 'Update module users';
 $nv_update_config['lang']['en']['nv_up_modbanners'] = 'Update module banners';
 $nv_update_config['lang']['en']['nv_up_modpage'] = 'Update module page';
 $nv_update_config['lang']['en']['nv_up_modcontact'] = 'Update module contact';
+$nv_update_config['lang']['en']['nv_up_modmenu'] = 'Update module menu';
 $nv_update_config['lang']['en']['nv_up_systemcfg'] = 'Update system config';
 $nv_update_config['lang']['en']['nv_up_finish'] = 'Update new version 4.1.01';
 
@@ -90,6 +92,12 @@ $nv_update_config['tasklist'][] = array(
     'rq' => 1,
     'l' => 'nv_up_modcontact',
     'f' => 'nv_up_modcontact'
+);
+$nv_update_config['tasklist'][] = array(
+    'r' => '4.1.01',
+    'rq' => 1,
+    'l' => 'nv_up_modmenu',
+    'f' => 'nv_up_modmenu'
 );
 $nv_update_config['tasklist'][] = array(
     'r' => '4.1.01',
@@ -180,6 +188,7 @@ function nv_up_modnews()
             }
             try {
                 $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . "_rows 
+                ADD external_link TINYINT( 1 ) UNSIGNED NOT NULL DEFAULT '0' AFTER allowed_rating ,
                 ADD instant_active TINYINT( 1 ) NOT NULL DEFAULT '0' AFTER click_rating ,
                 ADD instant_template VARCHAR( 100 ) NOT NULL DEFAULT '' AFTER instant_active, 
                 ADD instant_creatauto TINYINT( 1 ) NOT NULL DEFAULT '0' AFTER instant_template ;");
@@ -199,6 +208,7 @@ function nv_up_modnews()
             while ($row = $result->fetch()) {
                 try {
                     $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . "_" . $row['catid'] . " 
+                    ADD external_link TINYINT( 1 ) UNSIGNED NOT NULL DEFAULT '0' AFTER allowed_rating ,
                     ADD instant_active TINYINT( 1 ) NOT NULL DEFAULT '0' AFTER click_rating ,
                     ADD instant_template VARCHAR( 100 ) NOT NULL DEFAULT '' AFTER instant_active, 
                     ADD instant_creatauto TINYINT( 1 ) NOT NULL DEFAULT '0' AFTER instant_template ;");
@@ -212,6 +222,19 @@ function nv_up_modnews()
                 } catch (PDOException $e) {
                     trigger_error($e->getMessage());
                 }
+            }
+            // Thêm bảng tmp
+            try {
+                $db->query("CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . "_tmp (
+                  id mediumint(8) UNSIGNED NOT NULL,
+                  admin_id int(11) NOT NULL DEFAULT '0',
+                  time_edit int(11) NOT NULL,
+                  time_late int(11) NOT NULL,
+                  ip varchar(50) NOT NULL,
+                  PRIMARY KEY (id)
+                ) ENGINE=MyISAM;");
+            } catch (PDOException $e) {
+                trigger_error($e->getMessage());
             }
         }
     }
@@ -382,7 +405,7 @@ function nv_up_modcontact()
             }
             try {
                 $db->query("CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . "_supporter (
-                  id smallint(5) UNSIGNED NOT NULL,
+                  id smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT,
                   departmentid smallint(5) UNSIGNED NOT NULL,
                   full_name varchar(255) NOT NULL,
                   image varchar(255) NOT NULL DEFAULT '',
@@ -390,8 +413,45 @@ function nv_up_modcontact()
                   email varchar(100) NOT NULL,
                   others text NOT NULL,
                   act tinyint(1) UNSIGNED NOT NULL DEFAULT '1',
-                  weight smallint(5) NOT NULL
+                  weight smallint(5) NOT NULL,
+                  PRIMARY KEY (id)
                 ) ENGINE=MyISAM;");
+            } catch (PDOException $e) {
+                trigger_error($e->getMessage());
+            }
+        }
+    }
+
+    return $return;
+}
+
+/**
+ * nv_up_modmenu()
+ *
+ * @return
+ *
+ */
+function nv_up_modmenu()
+{
+    global $nv_update_baseurl, $db, $db_config;
+
+    $return = array(
+        'status' => 1,
+        'complete' => 1,
+        'next' => 1,
+        'link' => 'NO',
+        'lang' => 'NO',
+        'message' => ''
+    );
+
+    // Duyệt tất cả các ngôn ngữ
+    $language_query = $db->query('SELECT lang FROM ' . $db_config['prefix'] . '_setup_language WHERE setup = 1');
+    while (list ($lang) = $language_query->fetch(3)) {
+        // Lấy tất cả các module và module ảo của nó
+        $mquery = $db->query("SELECT title, module_data FROM " . $db_config['prefix'] . "_" . $lang . "_modules WHERE module_file = 'menu'");
+        while (list ($mod, $mod_data) = $mquery->fetch(3)) {
+            try {
+                $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . "_rows ADD image VARCHAR(255) NULL DEFAULT '' AFTER icon;");
             } catch (PDOException $e) {
                 trigger_error($e->getMessage());
             }
@@ -428,6 +488,14 @@ function nv_up_modvoting()
         while (list ($mod, $mod_data) = $mquery->fetch(3)) {
             try {
                 $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . " ADD active_captcha tinyint(1) UNSIGNED NOT NULL DEFAULT '0' AFTER  acceptcm;");
+            } catch (PDOException $e) {
+                $return['status'] = $return['complete'] = 0;
+                $return['message'] = $e->getMessage();
+            }
+            try {
+                $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . " ADD alias VARCHAR(250) NOT NULL AFTER question;");
+                $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . " ADD weight smallint(4) NOT NULL DEFAULT '0' AFTER act;");
+                $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . " ADD hot_post tinyint(1) NOT NULL DEFAULT '0' AFTER weight;");
             } catch (PDOException $e) {
                 $return['status'] = $return['complete'] = 0;
                 $return['message'] = $e->getMessage();
@@ -481,6 +549,20 @@ function nv_up_systemcfg()
             $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_modules CHANGE admin_title admin_title VARCHAR(255) NOT NULL DEFAULT '';");
             $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_modules ADD site_title VARCHAR(255) NOT NULL DEFAULT '' AFTER custom_title;");
             $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_modfuncs ADD func_site_title VARCHAR(255) NOT NULL DEFAULT '' AFTER func_custom_name;");
+        } catch (PDOException $e) {
+            trigger_error($e->getMessage());
+        }
+        
+        // Thay đổi độ dài trường
+        try {
+            $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_modfuncs CHANGE in_module in_module VARCHAR(50) NOT NULL;");
+        } catch (PDOException $e) {
+            trigger_error($e->getMessage());
+        }
+        
+        // Thay đổi độ dài trường
+        try {
+            $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_modules CHANGE title title VARCHAR(50) NOT NULL, CHANGE module_file module_file VARCHAR(50) NOT NULL DEFAULT '', CHANGE module_data module_data VARCHAR(50) NOT NULL DEFAULT '', CHANGE module_upload module_upload VARCHAR(50) NOT NULL DEFAULT '';");
         } catch (PDOException $e) {
             trigger_error($e->getMessage());
         }
