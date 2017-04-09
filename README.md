@@ -24,7 +24,6 @@ Sau khi cập nhật xong, cần chú ý:
 - Nếu website có sử dụng module news, vào cấu hình module thiết lập chức năng bài viết tức thời của Facebook nếu cần thiết.
 - Vào phần cấu hình => Thiết lập an ninh để tùy chỉnh loại captcha nếu cần thiết.
 - Nếu sử dụng giao diện mặc định và có block global.company_info.php thì cần xóa block và thêm lại.
-- ...
 - Kiểm tra lại tương thích của các module không phải mặc định của hệ thống.
 - Nếu site sử dụng giao diện không phải mặc định, cần cập nhật giao diện theo hướng dẫn bên dưới.
 
