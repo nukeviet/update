@@ -21,6 +21,9 @@ Giải nén và Upload các file trong gói cập nhật với cấu trúc của
 ### Bước 2: Xử lý sau cập nhật:
 
 Sau khi cập nhật xong, cần chú ý:
+- Nếu website có sử dụng module news, vào cấu hình module thiết lập chức năng bài viết tức thời của Facebook nếu cần thiết.
+- Vào phần cấu hình => Thiết lập an ninh để tùy chỉnh loại captcha nếu cần thiết.
+- Nếu sử dụng giao diện mặc định và có block global.company_info.php thì cần xóa block và thêm lại.
 - ...
 - Kiểm tra lại tương thích của các module không phải mặc định của hệ thống.
 - Nếu site sử dụng giao diện không phải mặc định, cần cập nhật giao diện theo hướng dẫn bên dưới.
@@ -28,6 +31,10 @@ Sau khi cập nhật xong, cần chú ý:
 ## Hướng dẫn cập nhật các giao diện không phải là giao diện mặc định:
 
 Các giao diện khác giao diện mặc định đã được làm cho NukeViet 4.1.00 cần sửa thêm như sau để có thể sử dụng cho NukeViet 4.1 Beta 2:
+
+> Lưu ý: 
+> - Các hướng dẫn cập nhật dưới đây nhằm mục đích tối ưu giao diện của bạn hoạt động với 100% chức năng có sẵn của hệ thống. Nếu không cập nhật theo các hướng dẫn dưới đây giao diện của bạn vẫn có thể sử dụng được.
+> - Code ở giao diện của bạn có thể khác với những gì chúng tôi đưa ra ở hướng dẫn. Khi đó, bạn cần đối chiếu sự thay đổi giữa những phần thêm, thay thế ở hướng dẫn cập nhật để xác định cách cập nhật cho giao diện của bạn.
 
 ### Cập nhật giao diện chính
 
@@ -253,7 +260,8 @@ Bổ sung thao tác xử lý sau khi load:
 Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/banners` thì thực hiện các bước dưới đây:
 
 Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/js/banners.js` thì đối chiếu với file `themes/default/js/banners.js` để sửa đổi.
-Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/banners/theme.php` thì đối chiếu với file `themes/default/modules/banners/theme.php` để sửa đổi.
+
+Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/banners/theme.php` thì đối chiếu với file `modules/banners/theme.php` để sửa đổi.
 
 #### Cập nhật global.banners.tpl
 
@@ -309,7 +317,8 @@ Thêm xuống dưới:
 Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/comment` thì thực hiện các bước dưới đây:
 
 Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/js/comment.js` thì đối chiếu với file `themes/default/js/comment.js` để sửa đổi.
-Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/comment/theme.php` thì đối chiếu với file `themes/default/modules/comment/theme.php` để sửa đổi.
+
+Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/comment/theme.php` thì đối chiếu với file `modules/comment/theme.php` để sửa đổi.
 
 #### Cập nhật main.tpl
 
@@ -354,7 +363,8 @@ Thay lại thành:
 Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/contact` thì thực hiện các bước dưới đây:
 
 Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/js/contact.js` thì đối chiếu với file `themes/default/js/contact.js` để sửa đổi.
-Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/contact/theme.php` thì đối chiếu với file `themes/default/modules/contact/theme.php` để sửa đổi.
+
+Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/contact/theme.php` thì đối chiếu với file `modules/contact/theme.php` để sửa đổi.
 
 #### Bổ sung giao diện block.supporter.tpl
 
@@ -431,7 +441,8 @@ Thêm xuống dưới
 Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/news` thì thực hiện các bước dưới đây:
 
 Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/js/news.js` thì đối chiếu với file `themes/default/js/news.js` để sửa đổi.
-Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/news/theme.php` thì đối chiếu với file `themes/default/modules/news/theme.php` để sửa đổi.
+
+Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/news/theme.php` thì đối chiếu với file `modules/news/theme.php` để sửa đổi.
 
 #### Cập nhật block_groups.tpl
 
@@ -1113,7 +1124,8 @@ Thay lại thành:
 Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/users` thì thực hiện các bước dưới đây:
 
 Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/js/users.js` thì đối chiếu với file `themes/default/js/users.js` để sửa đổi.
-Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/users/theme.php` thì đối chiếu với file `themes/default/modules/users/theme.php` để sửa đổi.
+
+Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/users/theme.php` thì đối chiếu với file `modules/users/theme.php` để sửa đổi.
 
 #### Cập nhật avatar.tpl
 
@@ -1428,7 +1440,8 @@ Thêm xuống dưới:
 Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/voting` thì thực hiện các bước dưới đây:
 
 Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/js/banners.js` thì đối chiếu với file `themes/default/js/voting.js` để sửa đổi.
-Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/banners/theme.php` thì đối chiếu với file `themes/default/modules/voting/theme.php` để sửa đổi.
+
+Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/banners/theme.php` thì đối chiếu với file `modules/voting/theme.php` để sửa đổi.
 
 #### Cập nhật global.voting.tpl
 
