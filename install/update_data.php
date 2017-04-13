@@ -248,6 +248,15 @@ function nv_up_modnews()
             } catch (PDOException $e) {
                 trigger_error($e->getMessage());
             }
+            // Thêm Elastic
+            try {
+                $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', '" . $mod . "', 'elas_use', '0')");
+                $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', '" . $mod . "', 'elas_host', '')");
+                $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', '" . $mod . "', 'elas_port', '9200')");
+                $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', '" . $mod . "', 'elas_index', '')");
+            } catch (PDOException $e) {
+                trigger_error($e->getMessage());
+            }
         }
     }
 
