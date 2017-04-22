@@ -3,8 +3,7 @@
 /**
  * @Project NUKEVIET 4.x
  * @Author VINADES.,JSC (contact@vinades.vn)
- * @Copyright (C) 2015 VINADES.,JSC.
- * All rights reserved
+ * @Copyright (C) 2015 VINADES.,JSC. All rights reserved
  * @License GNU/GPL version 2 or any later version
  * @Createdate Sat, 07 Mar 2015 03:43:56 GMT
  */
@@ -17,17 +16,17 @@ $nv_update_config = array();
 $nv_update_config['type'] = 1;
 
 // ID goi cap nhat
-$nv_update_config['packageID'] = 'NVUD4100';
+$nv_update_config['packageID'] = 'NVUD4102';
 
 // Cap nhat cho module nao, de trong neu la cap nhat NukeViet, ten thu muc module neu la cap nhat module
 $nv_update_config['formodule'] = '';
 
 // Thong tin phien ban, tac gia, ho tro
-$nv_update_config['release_date'] = 1475686800;
+$nv_update_config['release_date'] = 1492966799;
 $nv_update_config['author'] = 'VINADES.,JSC (contact@vinades.vn)';
-$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.1.00';
-$nv_update_config['to_version'] = '4.1.00';
-$nv_update_config['allow_old_version'] = array('4.0.29');
+$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.1.02';
+$nv_update_config['to_version'] = '4.1.02';
+$nv_update_config['allow_old_version'] = array('4.0.29', '4.1.00', '4.1.01');
 
 // 0:Nang cap bang tay, 1:Nang cap tu dong, 2:Nang cap nua tu dong
 $nv_update_config['update_auto_type'] = 1;
@@ -37,73 +36,81 @@ $nv_update_config['lang']['vi'] = array();
 $nv_update_config['lang']['en'] = array();
 
 // Tiếng Việt
-$nv_update_config['lang']['vi']['nv_up_modcomment'] = 'Cập nhật module comment lên 4.1.00';
-$nv_update_config['lang']['vi']['nv_up_modnews'] = 'Cập nhật module news lên 4.1.00';
-$nv_update_config['lang']['vi']['nv_up_modvoting'] = 'Cập nhật module voting lên 4.1.00';
-$nv_update_config['lang']['vi']['nv_up_modusers'] = 'Cập nhật module users lên 4.1.00';
-$nv_update_config['lang']['vi']['nv_up_mod2step'] = 'Thêm module xác thực hai bước';
-$nv_update_config['lang']['vi']['nv_up_fucsys'] = 'Cập nhật các chức năng hệ thống';
+$nv_update_config['lang']['vi']['nv_up_modcomment4100'] = 'Cập nhật module comment lên 4.1.00';
+$nv_update_config['lang']['vi']['nv_up_modnews4100'] = 'Cập nhật module news lên 4.1.00';
+$nv_update_config['lang']['vi']['nv_up_modvoting4100'] = 'Cập nhật module voting lên 4.1.00';
+$nv_update_config['lang']['vi']['nv_up_modusers4100'] = 'Cập nhật module users lên 4.1.00';
+$nv_update_config['lang']['vi']['nv_up_mod2step4100'] = 'Thêm module xác thực hai bước';
+$nv_update_config['lang']['vi']['nv_up_fucsys4100'] = 'Cập nhật các chức năng hệ thống';
+$nv_update_config['lang']['vi']['nv_up_delfiles4100'] = 'Xóa file thừa bản 4.1.00';
 $nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản 4.1.00';
 // English
-$nv_update_config['lang']['en']['nv_up_modcomment'] = 'Update module comment to 4.1.00';
-$nv_update_config['lang']['en']['nv_up_modnews'] = 'Update module news to 4.1.00';
-$nv_update_config['lang']['en']['nv_up_modvoting'] = 'Update module voting to 4.1.00';
-$nv_update_config['lang']['en']['nv_up_modusers'] = 'Update module users to 4.1.00';
-$nv_update_config['lang']['en']['nv_up_mod2step'] = 'Add module two-step-verification';
-$nv_update_config['lang']['en']['nv_up_fucsys'] = 'Update system functions';
+$nv_update_config['lang']['en']['nv_up_modcomment4100'] = 'Update module comment to 4.1.00';
+$nv_update_config['lang']['en']['nv_up_modnews4100'] = 'Update module news to 4.1.00';
+$nv_update_config['lang']['en']['nv_up_modvoting4100'] = 'Update module voting to 4.1.00';
+$nv_update_config['lang']['en']['nv_up_modusers4100'] = 'Update module users to 4.1.00';
+$nv_update_config['lang']['en']['nv_up_mod2step4100'] = 'Add module two-step-verification';
+$nv_update_config['lang']['en']['nv_up_fucsys4100'] = 'Update system functions';
+$nv_update_config['lang']['vi']['nv_up_delfiles4100'] = 'Delete unused files 4.1.00';
 $nv_update_config['lang']['en']['nv_up_finish'] = 'Update new version 4.1.00';
 
 $nv_update_config['tasklist'] = array();
 $nv_update_config['tasklist'][] = array(
     'r' => '4.1.00',
     'rq' => 1,
-    'l' => 'nv_up_modcomment',
-    'f' => 'nv_up_modcomment'
+    'l' => 'nv_up_modcomment4100',
+    'f' => 'nv_up_modcomment4100'
 );
 $nv_update_config['tasklist'][] = array(
     'r' => '4.1.00',
     'rq' => 1,
-    'l' => 'nv_up_modnews',
-    'f' => 'nv_up_modnews'
+    'l' => 'nv_up_modnews4100',
+    'f' => 'nv_up_modnews4100'
 );
 $nv_update_config['tasklist'][] = array(
     'r' => '4.1.00',
     'rq' => 1,
-    'l' => 'nv_up_modvoting',
-    'f' => 'nv_up_modvoting'
+    'l' => 'nv_up_modvoting4100',
+    'f' => 'nv_up_modvoting4100'
 );
 $nv_update_config['tasklist'][] = array(
     'r' => '4.1.00',
     'rq' => 1,
-    'l' => 'nv_up_modusers',
-    'f' => 'nv_up_modusers'
+    'l' => 'nv_up_modusers4100',
+    'f' => 'nv_up_modusers4100'
 );
 $nv_update_config['tasklist'][] = array(
     'r' => '4.1.00',
     'rq' => 1,
-    'l' => 'nv_up_mod2step',
-    'f' => 'nv_up_mod2step'
+    'l' => 'nv_up_mod2step4100',
+    'f' => 'nv_up_mod2step4100'
 );
 $nv_update_config['tasklist'][] = array(
     'r' => '4.1.00',
     'rq' => 1,
-    'l' => 'nv_up_fucsys',
-    'f' => 'nv_up_fucsys'
+    'l' => 'nv_up_fucsys4100',
+    'f' => 'nv_up_fucsys4100'
 );
 $nv_update_config['tasklist'][] = array(
     'r' => '4.1.00',
+    'rq' => 1,
+    'l' => 'nv_up_delfiles4100',
+    'f' => 'nv_up_delfiles4100'
+);
+$nv_update_config['tasklist'][] = array(
+    'r' => '4.1.02',
     'rq' => 2,
     'l' => 'nv_up_finish',
     'f' => 'nv_up_finish'
 );
 
 /**
- * nv_up_modcomment()
+ * nv_up_modcomment4100()
  *
  * @return
  *
  */
-function nv_up_modcomment()
+function nv_up_modcomment4100()
 {
     global $nv_update_baseurl, $db, $db_config;
 
@@ -153,12 +160,12 @@ function nv_up_modcomment()
 }
 
 /**
- * nv_up_modnews()
+ * nv_up_modnews4100()
  *
  * @return
  *
  */
-function nv_up_modnews()
+function nv_up_modnews4100()
 {
     global $nv_update_baseurl, $db, $db_config;
 
@@ -199,12 +206,12 @@ function nv_up_modnews()
 }
 
 /**
- * nv_up_modvoting()
+ * nv_up_modvoting4100()
  *
  * @return
  *
  */
-function nv_up_modvoting()
+function nv_up_modvoting4100()
 {
     global $nv_update_baseurl, $db, $db_config;
 
@@ -236,12 +243,12 @@ function nv_up_modvoting()
 }
 
 /**
- * nv_up_modusers()
+ * nv_up_modusers4100()
  *
  * @return
  *
  */
-function nv_up_modusers()
+function nv_up_modusers4100()
 {
     global $nv_update_baseurl, $db, $db_config;
 
@@ -289,12 +296,12 @@ function nv_up_modusers()
 }
 
 /**
- * nv_up_mod2step()
+ * nv_up_mod2step4100()
  *
  * @return
  *
  */
-function nv_up_mod2step()
+function nv_up_mod2step4100()
 {
     global $nv_update_baseurl, $db, $db_config;
 
@@ -693,12 +700,12 @@ function nv_setup_data_module($lang, $module_name, $sample = 0)
 }
 
 /**
- * nv_up_fucsys()
+ * nv_up_fucsys4100()
  *
  * @return
  *
  */
-function nv_up_fucsys()
+function nv_up_fucsys4100()
 {
     global $nv_update_baseurl, $db, $db_config;
 
@@ -774,6 +781,32 @@ function nv_up_fucsys()
 }
 
 /**
+ * nv_up_delfiles4100()
+ *
+ * @return
+ *
+ */
+function nv_up_delfiles4100()
+{
+    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config;
+    $return = array(
+        'status' => 1,
+        'complete' => 1,
+        'next' => 1,
+        'link' => 'NO',
+        'lang' => 'NO',
+        'message' => ''
+    );
+
+    // Xóa file thừa
+    @nv_deletefile(NV_ROOTDIR . '/admin/siteinfo/notification_load.php');
+    @nv_deletefile(NV_ROOTDIR . '/themes/admin_default/modules/siteinfo/notification_load.tpl');
+    @nv_deletefile(NV_ROOTDIR . '/vendor/vinades/nukeviet/Core/FloodBlocker.php');
+
+    return $return;
+}
+
+/**
  * nv_up_finish()
  *
  * @return
@@ -791,15 +824,10 @@ function nv_up_finish()
         'message' => ''
     );
 
-    // Xóa file thừa
-    @nv_deletefile(NV_ROOTDIR . '/admin/siteinfo/notification_load.php');
-    @nv_deletefile(NV_ROOTDIR . '/themes/admin_default/modules/siteinfo/notification_load.tpl');
-    @nv_deletefile(NV_ROOTDIR . '/vendor/vinades/nukeviet/Core/FloodBlocker.php');
-
     // Cập nhật phiên bản
-    $db->query("UPDATE " . NV_CONFIG_GLOBALTABLE . " SET config_value='4.1.00' WHERE lang='sys' AND module='global' AND config_name='version'");
-    $db->query("UPDATE " . $db_config['prefix'] . "_setup_extensions SET  version='4.1.00 " . $nv_update_config['release_date'] . "' WHERE type='module' and basename IN ('banners', 'comment','contact','feeds','freecontent','menu','news','page','seek','statistics','users','voting', 'two-step-verification')");
-    $db->query("UPDATE " . $db_config['prefix'] . "_setup_extensions SET  version='4.1.00 " . $nv_update_config['release_date'] . "' WHERE type='theme' and basename IN ('default', 'mobile_default')");
+    $db->query("UPDATE " . NV_CONFIG_GLOBALTABLE . " SET config_value='" . $nv_update_config['to_version'] . "' WHERE lang='sys' AND module='global' AND config_name='version'");
+    $db->query("UPDATE " . $db_config['prefix'] . "_setup_extensions SET  version='" . $nv_update_config['to_version'] . " " . $nv_update_config['release_date'] . "' WHERE type='module' and basename IN ('banners', 'comment','contact','feeds','freecontent','menu','news','page','seek','statistics','users','voting', 'two-step-verification')");
+    $db->query("UPDATE " . $db_config['prefix'] . "_setup_extensions SET  version='" . $nv_update_config['to_version'] . " " . $nv_update_config['release_date'] . "' WHERE type='theme' and basename IN ('default', 'mobile_default')");
     
     $nv_Cache->delAll();
     
