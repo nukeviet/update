@@ -55,6 +55,7 @@ $nv_update_config['lang']['vi']['nv_up_systemcfg4101'] = 'Cập nhật các cấ
 
 $nv_update_config['lang']['vi']['nv_up_modnews4102'] = 'Cập nhật module news lên 4.1.02';
 $nv_update_config['lang']['vi']['nv_up_modpage4102'] = 'Cập nhật module page lên 4.1.02';
+$nv_update_config['lang']['vi']['nv_up_systemcfg4102'] = 'Cập nhật các cấu hình hệ thống bản 4.1.02';
 
 $nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản 4.1.02';
 
@@ -65,7 +66,7 @@ $nv_update_config['lang']['en']['nv_up_modvoting4100'] = 'Update module voting t
 $nv_update_config['lang']['en']['nv_up_modusers4100'] = 'Update module users to 4.1.00';
 $nv_update_config['lang']['en']['nv_up_mod2step4100'] = 'Add module two-step-verification';
 $nv_update_config['lang']['en']['nv_up_fucsys4100'] = 'Update system functions';
-$nv_update_config['lang']['vi']['nv_up_delfiles4100'] = 'Delete unused files 4.1.00';
+$nv_update_config['lang']['en']['nv_up_delfiles4100'] = 'Delete unused files 4.1.00';
 
 $nv_update_config['lang']['en']['nv_up_delunusefiles4101'] = 'Delete unused files 4.1.01';
 $nv_update_config['lang']['en']['nv_up_modnews4101'] = 'Update module news 4.1.01';
@@ -78,6 +79,7 @@ $nv_update_config['lang']['en']['nv_up_systemcfg4101'] = 'Update system config 4
 
 $nv_update_config['lang']['en']['nv_up_modnews4102'] = 'Update module news 4.1.02';
 $nv_update_config['lang']['en']['nv_up_modpage4102'] = 'Update module page 4.1.02';
+$nv_update_config['lang']['en']['nv_up_systemcfg4102'] = 'Update system config 4.1.02';
 
 $nv_update_config['lang']['en']['nv_up_finish'] = 'Update new version 4.1.02';
 
@@ -187,6 +189,12 @@ $nv_update_config['tasklist'][] = array(
 $nv_update_config['tasklist'][] = array(
     'r' => '4.1.02',
     'rq' => 2,
+    'l' => 'nv_up_systemcfg4102',
+    'f' => 'nv_up_systemcfg4102'
+);
+$nv_update_config['tasklist'][] = array(
+    'r' => '4.1.02',
+    'rq' => 2,
     'l' => 'nv_up_finish',
     'f' => 'nv_up_finish'
 );
@@ -229,14 +237,14 @@ function nv_up_modcomment4100()
                     try {
                         $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', '" . $module_name . "', 'perpagecomm', '5')");
                     } catch (Exception $e) {
-                        //
+                        trigger_error($e->getMessage());
                     }
                 }
                 if (!isset($array_config_module['timeoutcomm'])) {
                     try {
                         $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', '" . $module_name . "', 'timeoutcomm', '360')");
                     } catch (Exception $e) {
-                        //
+                        trigger_error($e->getMessage());
                     }
                 }
             }
@@ -276,15 +284,13 @@ function nv_up_modnews4100()
                 ADD titlesite varchar(255) NOT NULL DEFAULT '' AFTER id,
                 ADD description text NOT NULL AFTER titlesite;");
             } catch (PDOException $e) {
-                $return['status'] = $return['complete'] = 0;
-                $return['message'] = $e->getMessage();
+                trigger_error($e->getMessage());
             }
             
             try {
                 $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', '" . $mod . "', 'htmlhometext', '0')");
             } catch (PDOException $e) {
-                $return['status'] = $return['complete'] = 0;
-                $return['message'] = $e->getMessage();
+                trigger_error($e->getMessage());
             }
         }
     }
@@ -320,8 +326,7 @@ function nv_up_modvoting4100()
             try {
                 $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . " ADD active_captcha tinyint(1) UNSIGNED NOT NULL DEFAULT '0' AFTER  acceptcm;");
             } catch (PDOException $e) {
-                $return['status'] = $return['complete'] = 0;
-                $return['message'] = $e->getMessage();
+                trigger_error($e->getMessage());
             }
         }
     }
@@ -364,8 +369,7 @@ function nv_up_modusers4100()
                     UNIQUE KEY userid (userid, code)
                 ) ENGINE=MyISAM");
             } catch (PDOException $e) {
-                $return['status'] = $return['complete'] = 0;
-                $return['message'] = $e->getMessage();
+                trigger_error($e->getMessage());
             }
             
             try {
@@ -373,8 +377,7 @@ function nv_up_modusers4100()
                 ADD active2step tinyint(1) unsigned NOT NULL DEFAULT '0' AFTER active, 
                 ADD secretkey varchar(20) DEFAULT '' AFTER active2step;");
             } catch (PDOException $e) {
-                $return['status'] = $return['complete'] = 0;
-                $return['message'] = $e->getMessage();
+                trigger_error($e->getMessage());
             }
         }
     }
@@ -408,8 +411,7 @@ function nv_up_mod2step4100()
             327, 'module', 'two-step-verification', 1, 0, 'two-step-verification', 'two_step_verification', '4.0.29 1463652000', " . NV_CURRENTTIME . ", 'VINADES (contact@vinades.vn)', ''
         )");
     } catch (PDOException $e) {
-        $return['status'] = $return['complete'] = 0;
-        $return['message'] = $e->getMessage();
+        trigger_error($e->getMessage());
     }
 
     // Duyệt tất cả các ngôn ngữ
@@ -509,43 +511,37 @@ function nv_up_fucsys4100()
     try {
         $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'global', 'is_login_blocker', '1')");
     } catch (PDOException $e) {
-        $return['status'] = $return['complete'] = 0;
-        $return['message'] = $e->getMessage();
+        trigger_error($e->getMessage());
     }
     
     try {
         $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'global', 'login_number_tracking', '5')");
     } catch (PDOException $e) {
-        $return['status'] = $return['complete'] = 0;
-        $return['message'] = $e->getMessage();
+        trigger_error($e->getMessage());
     }
     
     try {
         $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'global', 'login_time_tracking', '5')");
     } catch (PDOException $e) {
-        $return['status'] = $return['complete'] = 0;
-        $return['message'] = $e->getMessage();
+        trigger_error($e->getMessage());
     }
     
     try {
         $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'global', 'login_time_ban', '1440')");
     } catch (PDOException $e) {
-        $return['status'] = $return['complete'] = 0;
-        $return['message'] = $e->getMessage();
+        trigger_error($e->getMessage());
     }
 
     try {
         $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'global', 'two_step_verification', '0')");
     } catch (PDOException $e) {
-        $return['status'] = $return['complete'] = 0;
-        $return['message'] = $e->getMessage();
+        trigger_error($e->getMessage());
     }
     
     try {
         $db->query("ALTER TABLE " . $db_config['prefix'] . "_setup_language ADD weight smallint(4) UNSIGNED NOT NULL DEFAULT '0' AFTER setup ;");
     } catch (PDOException $e) {
-        $return['status'] = $return['complete'] = 0;
-        $return['message'] = $e->getMessage();
+        trigger_error($e->getMessage());
     }
     
     // Cập nhật lại thứ tự
@@ -561,8 +557,7 @@ function nv_up_fucsys4100()
     try {
         $db->query("UPDATE " . $db_config['prefix'] . "_setup_extensions SET is_virtual=1 WHERE type='module' AND title='freecontent'");
     } catch (PDOException $e) {
-        $return['status'] = $return['complete'] = 0;
-        $return['message'] = $e->getMessage();
+        trigger_error($e->getMessage());
     }
     
     return $return;
@@ -1145,6 +1140,47 @@ function nv_up_modpage4102()
             }
         }
     }
+    return $return;
+}
+
+/**
+ * nv_up_systemcfg4102()
+ *
+ * @return
+ *
+ */
+function nv_up_systemcfg4102()
+{
+    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config;
+    $return = array(
+        'status' => 1,
+        'complete' => 1,
+        'next' => 1,
+        'link' => 'NO',
+        'lang' => 'NO',
+        'message' => ''
+    );
+    
+    // Xác định plugin cdn_js_css_image.php
+    $plugin_file = 'cdn_js_css_image.php';
+    $plugin_area = 3;
+    $check_exists = $db->query("SELECT COUNT(*) FROM " . $db_config['prefix'] . "_plugin WHERE plugin_file='" . $plugin_file . "'")->fetchColumn();
+    
+    if ($check_exists <= 0 and file_exists(NV_ROOTDIR . '/includes/plugin/' . $plugin_file)) {
+        $weight = $db->query("SELECT MAX(weight) FROM " . $db_config['prefix'] . "_plugin WHERE plugin_area=" . $plugin_area)->fetchColumn();
+        $weight = $weight + 1;
+        
+        try {
+            $sth = $db->prepare('INSERT INTO ' . $db_config['prefix'] . '_plugin (plugin_file, plugin_area, weight) VALUES (:plugin_file, :plugin_area, :weight)');
+            $sth->bindParam(':plugin_file', $plugin_file, PDO::PARAM_STR);
+            $sth->bindParam(':plugin_area', $plugin_area, PDO::PARAM_INT);
+            $sth->bindParam(':weight', $weight, PDO::PARAM_INT);
+            $sth->execute();
+        } catch (PDOException $e) {
+            trigger_error($e->getMessage());
+        }
+    }
+    
     return $return;
 }
 
