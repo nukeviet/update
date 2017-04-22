@@ -32,28 +32,31 @@ Giải nén và Upload các file trong gói cập nhật với cấu trúc của
 
 Sau khi cập nhật xong, cần chú ý:
 
-*Nếu bạn đang dùng bản 4.0.29:*
+**Nếu bạn đang dùng bản 4.0.29:**
 
 - Truy cập vào khu vực cấu hình => Cấu hình chung nhấp lưu lại để hệ thống cập nhật các thông số mới cho chức năng tìm kiếm.
 - Truy cập khu vực Cấu hình => Ngôn ngữ để sắp xếp các ngôn ngữ nếu bạn sử dụng nhiều hơn một ngôn ngữ.
 - Có thể thêm mã xác nhận cho các bình chọn ở module voting.
 - Truy cập khu vực Cấu hình => Thiết lập an ninh để tùy chỉnh chức năng xác thực hai bước và chặn đăng nhập sai nhiều lần nếu cần thiết.
 
-*Nếu bạn đang dùng bản 4.1.00 hoặc nhỏ hơn:*
+**Nếu bạn đang dùng bản 4.1.00 hoặc nhỏ hơn:**
 
 - Nếu website có sử dụng module news hoặc module ảo của nó, vào cấu hình module thiết lập chức năng bài viết tức thời của Facebook nếu cần thiết.
 - Vào phần cấu hình => Thiết lập an ninh để tùy chỉnh loại captcha nếu cần thiết.
 - Nếu sử dụng giao diện mặc định và có block global.company_info.php thì cần xóa block và thêm lại.
 
-*Nếu bạn đang dùng bản 4.1.01 hoặc nhỏ hơn:*
+**Nếu bạn đang dùng bản 4.1.01 hoặc nhỏ hơn:**
 
 - Nếu website có sử dụng module news hoặc module ảo của nó, vào cấu hình module để bật chức năng cho phép copy bài viết nếu cần thiết.
 - Nếu website có sử dụng module page hoặc module ảo của nó, vào cấu hình module để bật chức năng cho phép copy bài viết nếu cần thiết.
 
-*Cuối cùng cần:*
+**Cuối cùng cần:**
 
 - Kiểm tra lại tương thích của các module không phải mặc định của hệ thống.
 - Nếu site sử dụng giao diện không phải mặc định, cần cập nhật giao diện theo hướng dẫn bên dưới.
 
 ## Hướng dẫn cập nhật các giao diện không phải là giao diện mặc định:
 
+> - **Các giao diện bản 4.1.01 có thể chạy trên bản 4.1.02 mà không cần cập nhật**
+> - **Nếu site đang ở bản 4.1.00 hãy nâng cấp theo hướng dẫn tại: https://github.com/nukeviet/update/wiki/Hướng-dẫn-nâng-cấp-giao-diện-tương-thích-từ-NukeViet-4.1-Beta-1-(4.1.00)-lên-NukeViet-4.1-Beta-2-(4.1.01)**
+> - **Nếu site đang ở bản 4.0.29 hãy cập nhật giao diện lên 4.1.02 theo hướng dẫn dưới đây**
