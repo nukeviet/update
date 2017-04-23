@@ -634,18 +634,6 @@ Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/news
 
 Mở themes/ten-giao-dien/modules/news/block_groups.tpl:
 
-Tìm khoảng dòng 2:
-
-```html
-<ul>
-```
-
-Thay lại thành:
-
-```html
-<ul class="block_groups">
-```
-
 Tìm khoảng dòng 6:
 
 ```html
@@ -703,18 +691,6 @@ Thay lại thành:
 #### Cập nhật block_news.tpl
 
 Mở themes/ten-giao-dien/modules/news/block_news.tpl:
-
-Tìm khoảng dòng 2:
-
-```html
-<ul>
-```
-
-Thay lại thành:
-
-```html
-<ul class="block_news">
-```
 
 Tìm khoảng dòng 6:
 
@@ -777,18 +753,6 @@ Thay lại thành:
 #### Cập nhật block_tophits.tpl
 
 Mở themes/ten-giao-dien/modules/news/block_tophits.tpl:
-
-Tìm khoảng dòng 2:
-
-```html
-<ul>
-```
-
-Thay lại thành:
-
-```html
-<ul class="block_tophits">
-```
 
 Tìm khoảng dòng 6:
 
@@ -891,18 +855,6 @@ Thay lại thành:
         			<li><a class="dimgray" rel="nofollow" title="{LANG.savefile}" href="{URL_SAVEFILE}"><em class="fa fa-save fa-lg">&nbsp;</em></a></li>
 ```
 
-Tìm khoảng dòng 106:
-
-```html
-                <p>{STRINGRATING}</p>
-```
-
-Thay lại thành:
-
-```html
-                <p id="stringrating">{STRINGRATING}</p>
-```
-
 Tìm khoảng dòng 109 đến dòng 110:
 
 ```html
@@ -929,18 +881,6 @@ Thay lại thành:
             			<a href="{TOPIC.link}" {TOPIC.target_blank} <!-- BEGIN: tooltip -->data-placement="{TOOLTIP_POSITION}" data-content="{TOPIC.hometext_clean}" data-img="{TOPIC.imghome}" data-rel="tooltip"<!-- END: tooltip --> title="{TOPIC.title}"><h4>{TOPIC.title}</h4></a>
 ```
 
-Tìm khoảng dòng 194:
-
-```html
-            <ul class="related">
-```
-
-Thay lại thành:
-
-```html
-            <ul class="related list-inline">
-```
-
 Tìm khoảng dòng 198:
 
 ```html
@@ -951,18 +891,6 @@ Thay lại thành:
 
 ```html
         			<a href="{RELATED_NEW.link}" {RELATED_NEW.target_blank} <!-- BEGIN: tooltip -->data-placement="{TOOLTIP_POSITION}" data-content="{RELATED_NEW.hometext_clean}" data-img="{RELATED_NEW.imghome}" data-rel="tooltip"<!-- END: tooltip --> title="{RELATED_NEW.title}"><h4>{RELATED_NEW.title}</h4></a>
-```
-
-Tìm khoảng dòng 212:
-
-```html
-            <ul class="related">
-```
-
-Thay lại thành:
-
-```html
-            <ul class="related list-inline">
 ```
 
 Tìm khoảng dòng 216:
@@ -1030,18 +958,6 @@ Thêm xuống dưới:
 
 Mở themes/ten-giao-dien/modules/news/topic.tpl:
 
-Tìm khoảng dòng 5:
-
-```html
-		<h3>{TOPPIC_TITLE}</h3>
-```
-
-Thay lại thành:
-
-```html
-		<h1>{TOPPIC_TITLE}</h1>
-```
-
 Tìm khoảng dòng 18:
 
 ```html
@@ -1064,30 +980,6 @@ Thay lại thành:
 
 ```html
 		<h3><a href="{TOPIC.link}" title="{TOPIC.title}" {TOPIC.target_blank}>{TOPIC.title}</a></h3>
-```
-
-Tìm khoảng dòng 24:
-
-```html
-		<p class="text-justify">
-```
-
-Thay lại thành:
-
-```html
-		<div class="text-justify">
-```
-
-Tìm khoảng dòng 26:
-
-```html
-		</p>
-```
-
-Thay lại thành:
-
-```html
-		</div>
 ```
 
 Tìm khoảng dòng 39:
@@ -1129,30 +1021,6 @@ Thay lại thành:
 
 ```html
 				<a href="{CONTENT.link}" title="{CONTENT.title}" {CONTENT.target_blank}>{CONTENT.title}</a>
-```
-
-Tìm khoảng dòng 39:
-
-```html
-			<p class="text-justify">
-```
-
-Thay lại thành:
-
-```html
-			<div class="text-justify">
-```
-
-Tìm khoảng dòng 41:
-
-```html
-			</p>
-```
-
-Thay lại thành:
-
-```html
-			</div>
 ```
 
 Tìm khoảng dòng 55:
@@ -1479,30 +1347,6 @@ Thay lại thành:
 					<a href="{CONTENT.link}" title="{CONTENT.title}" {CONTENT.target_blank}>{CONTENT.title}</a>
 ```
 
-Tìm khoảng dòng 35:
-
-```html
-				<p class="text-justify">
-```
-
-Thay lại thành:
-
-```html
-				<div class="text-justify">
-```
-
-Tìm khoảng dòng 37:
-
-```html
-				</p>
-```
-
-Thay lại thành:
-
-```html
-				</div>
-```
-
 Tìm khoảng dòng 48:
 
 ```html
@@ -1542,30 +1386,6 @@ Thay lại thành:
 
 ```html
                 <a href="{NEWSTOP.link}" title="{NEWSTOP.title}" {NEWSTOP.target_blank}>{NEWSTOP.title}</a>
-```
-
-Tìm khoảng dòng 36:
-
-```html
-            <p class="text-justify">
-```
-
-Thay lại thành:
-
-```html
-            <div class="text-justify">
-```
-
-Tìm khoảng dòng 38:
-
-```html
-            </p>
-```
-
-Thay lại thành:
-
-```html
-            </div>
 ```
 
 Tìm khoảng dòng 49:
@@ -1983,18 +1803,6 @@ Thêm xuống dưới:
 #### Cập nhật userinfo.tpl
 
 Mở themes/ten-giao-dien/modules/users/userinfo.tpl:
-
-Tìm khoảng dòng 42:
-
-```html
- 			<col style="width:30%"/>
-```
-
-Thay lại thành:
-
-```html
- 			<col style="width:45%"/>
-```
 
 Tìm khoảng dòng 73:
 
