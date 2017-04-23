@@ -1181,6 +1181,12 @@ function nv_up_systemcfg4102()
         }
     }
     
+    try {
+        $db->query("DROP TABLE IF EXISTS " . $db_config['prefix'] . "_setup");
+    } catch (PDOException $e) {
+        trigger_error($e->getMessage());
+    }
+    
     return $return;
 }
 
