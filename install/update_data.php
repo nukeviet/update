@@ -1134,7 +1134,7 @@ function nv_up_modpage4102()
         while (list ($mod, $mod_data) = $mquery->fetch(3)) {
             // Cấu hình copy bài viết
             try {
-                $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', '" . $mod . "', 'copy_page', 0);");
+                $db->query("INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data. "_config VALUES ('copy_page', '0')");
             } catch (PDOException $e) {
                 trigger_error($e->getMessage());
             }
