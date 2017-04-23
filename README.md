@@ -630,12 +630,23 @@ Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/news
 Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/js/news.js` thì đối chiếu với file `themes/default/js/news.js` để sửa đổi.
 
 Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/news/theme.php` thì đối chiếu với file `modules/news/theme.php` để sửa đổi.
-
 #### Cập nhật block_groups.tpl
 
 Mở themes/ten-giao-dien/modules/news/block_groups.tpl:
 
-Tìm:
+Tìm khoảng dòng 2:
+
+```html
+<ul>
+```
+
+Thay lại thành:
+
+```html
+<ul class="block_groups">
+```
+
+Tìm khoảng dòng 6:
 
 ```html
 		<a href="{ROW.link}" title="{ROW.title}"><img src="{ROW.thumb}" alt="{ROW.title}" width="{ROW.blockwidth}" class="img-thumbnail pull-left"/></a>
@@ -647,83 +658,99 @@ Thay lại thành:
 		<a href="{ROW.link}" title="{ROW.title}" {ROW.target_blank} ><img src="{ROW.thumb}" alt="{ROW.title}" width="{ROW.blockwidth}" class="img-thumbnail pull-left"/></a>
 ```
 
-Tìm:
+Tìm khoảng dòng 8:
 
 ```html
-		<a {TITLE} class="show" href="{ROW.link}" data-content="{ROW.hometext_clean}" data-img="{ROW.thumb}" data-rel="block_tooltip">{ROW.title_clean}</a>
+		<a {TITLE} class="show" href="{ROW.link}" data-content="{ROW.hometext}" data-img="{ROW.thumb}" data-rel="block_tooltip">{ROW.title}</a>
 ```
 
 Thay lại thành:
 
 ```html
 		<a {TITLE} class="show" href="{ROW.link}" {ROW.target_blank} data-content="{ROW.hometext_clean}" data-img="{ROW.thumb}" data-rel="block_tooltip">{ROW.title_clean}</a>
+
 ```
 
 #### Cập nhật block_headline.tpl
 
 Mở themes/ten-giao-dien/modules/news/block_headline.tpl:
 
-Tìm:
+Tìm khoảng dòng 11:
 
 ```html
 					<a title="{HOTSNEWS.title}" href="{HOTSNEWS.link}"><img class="img-responsive" id="slImg{HOTSNEWS.imgID}" src="{PIX_IMG}" alt="{HOTSNEWS.image_alt}" /></a><h3><a title="{HOTSNEWS.title}" href="{HOTSNEWS.link}">{HOTSNEWS.title}</a></h3>
 ```
 
-Thay lại thành
+Thay lại thành:
 
 ```html
 					<a title="{HOTSNEWS.title}" href="{HOTSNEWS.link}" {HOTSNEWS.target_blank}><img class="img-responsive" id="slImg{HOTSNEWS.imgID}" src="{PIX_IMG}" alt="{HOTSNEWS.image_alt}" /></a><h3><a title="{HOTSNEWS.title}" href="{HOTSNEWS.link}" {HOTSNEWS.target_blank}>{HOTSNEWS.title}</a></h3>
 ```
 
-Tìm:
+Tìm khoảng dòng 33:
 
 ```html
-						<a {TITLE} class="show" href="{LASTEST.link}" data-content="{LASTEST.hometext_clean}" data-img="{LASTEST.homeimgfile}" data-rel="block_headline_tooltip">{LASTEST.title}</a>
+						<a {TITLE} class="show" href="{LASTEST.link}" data-content="{LASTEST.hometext}" data-img="{LASTEST.homeimgfile}" data-rel="block_headline_tooltip">{LASTEST.title}</a>
 ```
 
 Thay lại thành:
 
 ```html
 						<a {TITLE} class="show" href="{LASTEST.link}" {LASTEST.target_blank} data-content="{LASTEST.hometext_clean}" data-img="{LASTEST.homeimgfile}" data-rel="block_headline_tooltip">{LASTEST.title}</a>
+
 ```
 
 #### Cập nhật block_news.tpl
 
 Mở themes/ten-giao-dien/modules/news/block_news.tpl:
 
-Tìm:
+Tìm khoảng dòng 2:
+
+```html
+<ul>
+```
+
+Thay lại thành:
+
+```html
+<ul class="block_news">
+```
+
+Tìm khoảng dòng 6:
 
 ```html
 		<a title="{blocknews.title}" href="{blocknews.link}"><img src="{blocknews.imgurl}" alt="{blocknews.title}" width="{blocknews.width}" class="img-thumbnail pull-left"/></a>
 ```
 
-Thay lại thành
+Thay lại thành:
 
 ```html
 		<a title="{blocknews.title}" href="{blocknews.link}" {blocknews.target_blank}><img src="{blocknews.imgurl}" alt="{blocknews.title}" width="{blocknews.width}" class="img-thumbnail pull-left"/></a>
 ```
 
-Tìm:
+Tìm khoảng dòng 8:
 
 ```html
-		<a {TITLE} class="show" href="{blocknews.link}" data-content="{blocknews.hometext_clean}" data-img="{blocknews.imgurl}" data-rel="block_news_tooltip">{blocknews.title}</a>
+		<a {TITLE} class="show" href="{blocknews.link}" data-content="{blocknews.hometext}" data-img="{blocknews.imgurl}" data-rel="block_news_tooltip">{blocknews.title}</a>
 ```
 
 Thay lại thành:
 
 ```html
 		<a {TITLE} class="show" href="{blocknews.link}" {blocknews.target_blank} data-content="{blocknews.hometext_clean}" data-img="{blocknews.imgurl}" data-rel="block_news_tooltip">{blocknews.title}</a>
+
 ```
 
 #### Cập nhật block_newscenter.tpl
 
 Mở themes/ten-giao-dien/modules/news/block_newscenter.tpl:
 
-Tìm:
+Tìm khoảng dòng 7 đến dòng 9:
 
 ```html
                     <div class="margin-bottom text-center"><a href="{main.link}"><img src="{main.imgsource}" alt="{main.title}" width="{main.width}" class="img-thumbnail"/></a></div>
                     <h2 class="margin-bottom-sm"><a href="{main.link}" title="{main.title}">{main.titleclean60}</a></h2>
+                    <p>{main.hometext}</p>
 ```
 
 Thay lại thành:
@@ -731,66 +758,89 @@ Thay lại thành:
 ```html
                     <div class="margin-bottom text-center"><a href="{main.link}" title="{main.link}" {main.target_blank}><img src="{main.imgsource}" alt="{main.title}" width="{main.width}" class="img-thumbnail"/></a></div>
                     <h2 class="margin-bottom-sm"><a href="{main.link}" title="{main.title}" {main.target_blank}>{main.titleclean60}</a></h2>
+                    {main.hometext}
 ```
 
-Tìm:
+Tìm khoảng dòng 16:
 
 ```html
-                            <a class="show black h4" href="{othernews.link}" <!-- BEGIN: tooltip -->data-placement="{TOOLTIP_POSITION}" data-content="{othernews.hometext_clean}" data-img="{othernews.imgsource}" data-rel="tooltip"<!-- END: tooltip --> title="{othernews.title}" ><img src="{othernews.imgsource}" alt="{othernews.title}" class="img-thumbnail pull-right margin-left-sm" style="width:65px;"/>{othernews.titleclean60}</a>
+                            <a class="show black h4" href="{othernews.link}" <!-- BEGIN: tooltip -->data-placement="{TOOLTIP_POSITION}" data-content="{othernews.hometext}" data-img="{othernews.imgsource}" data-rel="tooltip"<!-- END: tooltip --> title="{othernews.title}" ><img src="{othernews.imgsource}" alt="{othernews.title}" class="img-thumbnail pull-right margin-left-sm" style="width:65px;"/>{othernews.titleclean60}</a>
 ```
 
-Thay lại thành
+Thay lại thành:
 
 ```html
                             <a class="show black h4" href="{othernews.link}" {othernews.target_blank} <!-- BEGIN: tooltip -->data-placement="{TOOLTIP_POSITION}" data-content="{othernews.hometext_clean}" data-img="{othernews.imgsource}" data-rel="tooltip"<!-- END: tooltip --> title="{othernews.title}" ><img src="{othernews.imgsource}" alt="{othernews.title}" class="img-thumbnail pull-right margin-left-sm" style="width:65px;"/>{othernews.titleclean60}</a>
+
 ```
 
 #### Cập nhật block_tophits.tpl
 
 Mở themes/ten-giao-dien/modules/news/block_tophits.tpl:
 
-Tìm:
+Tìm khoảng dòng 2:
+
+```html
+<ul>
+```
+
+Thay lại thành:
+
+```html
+<ul class="block_tophits">
+```
+
+Tìm khoảng dòng 6:
 
 ```html
 		<a title="{blocknews.title}" href="{blocknews.link}"><img src="{blocknews.imgurl}" alt="{blocknews.title}" width="{blocknews.width}" class="img-thumbnail pull-left"/></a>
-		<!-- END: imgblock -->
-		<a {TITLE} class="show" href="{blocknews.link}" data-content="{blocknews.hometext_clean}" data-img="{blocknews.imgurl}" data-rel="block_news_tooltip">{blocknews.title}</a>
 ```
 
 Thay lại thành:
 
 ```html
 		<a title="{blocknews.title}" href="{blocknews.link}" {blocknews.target_blank}><img src="{blocknews.imgurl}" alt="{blocknews.title}" width="{blocknews.width}" class="img-thumbnail pull-left"/></a>
-		<!-- END: imgblock -->
+```
+
+Tìm khoảng dòng 8:
+
+```html
+		<a {TITLE} class="show" href="{blocknews.link}" data-content="{blocknews.hometext}" data-img="{blocknews.imgurl}" data-rel="block_news_tooltip">{blocknews.title}</a>
+```
+
+Thay lại thành:
+
+```html
 		<a {TITLE} class="show" href="{blocknews.link}" {blocknews.target_blank} data-content="{blocknews.hometext_clean}" data-img="{blocknews.imgurl}" data-rel="block_news_tooltip">{blocknews.title}</a>
+
 ```
 
 #### Cập nhật content.tpl
 
 Mở themes/ten-giao-dien/modules/news/content.tpl:
 
-Tìm:
+Tìm khoảng dòng 107:
 
 ```html
-	<div class="form-group">
-		<label class="col-sm-4 control-label">{LANG.captcha} <span class="txtrequired">(*)</span></label>
-```
-
-Thêm lên trên
-
-```html
-    <!-- BEGIN: captcha -->
-```
-
-Tìm:
-
-```html
-            <img alt="{CAPTCHA_REFRESH}" src="{CAPTCHA_REFR_SRC}" width="16" height="16" class="refresh" onclick="change_captcha('#fcode_iavim');" />
+			<input maxlength="255" value="{DATA.keywords}" name="keywords" type="text" class="form-control" />
 		</div>
 	</div>
 ```
 
 Thêm xuống dưới:
+
+```html
+    <!-- BEGIN: captcha -->
+```
+
+Tìm khoảng dòng 118 đến dòng 119:
+
+```html
+
+	<br />
+```
+
+Thay lại thành:
 
 ```html
     <!-- END: captcha -->
@@ -810,16 +860,67 @@ Thêm xuống dưới:
     </div>
     <!-- END: recaptcha -->
     
+
 ```
 
 #### Cập nhật detail.tpl
 
 Mở themes/ten-giao-dien/modules/news/detail.tpl:
 
-Tìm:
+Tìm khoảng dòng 19:
 
 ```html
-            			<a href="{TOPIC.link}" <!-- BEGIN: tooltip -->data-placement="{TOOLTIP_POSITION}" data-content="{TOPIC.hometext_clean}" data-img="{TOPIC.imghome}" data-rel="tooltip"<!-- END: tooltip --> title="{TOPIC.title}">{TOPIC.title}</a>
+        			<li><a class="dimgray" title="{LANG.print}" href="javascript: void(0)" onclick="nv_open_browse('{URL_PRINT}','{TITLE}',840,500,'resizable=yes,scrollbars=yes,toolbar=no,location=no,status=no');return false"><em class="fa fa-print fa-lg">&nbsp;</em></a></li>
+```
+
+Thay lại thành:
+
+```html
+        			<li><a class="dimgray" rel="nofollow" title="{LANG.print}" href="javascript: void(0)" onclick="nv_open_browse('{URL_PRINT}','{TITLE}',840,500,'resizable=yes,scrollbars=yes,toolbar=no,location=no,status=no');return false"><em class="fa fa-print fa-lg">&nbsp;</em></a></li>
+```
+
+Tìm khoảng dòng 22:
+
+```html
+        			<li><a class="dimgray" title="{LANG.savefile}" href="{URL_SAVEFILE}"><em class="fa fa-save fa-lg">&nbsp;</em></a></li>
+```
+
+Thay lại thành:
+
+```html
+        			<li><a class="dimgray" rel="nofollow" title="{LANG.savefile}" href="{URL_SAVEFILE}"><em class="fa fa-save fa-lg">&nbsp;</em></a></li>
+```
+
+Tìm khoảng dòng 106:
+
+```html
+                <p>{STRINGRATING}</p>
+```
+
+Thay lại thành:
+
+```html
+                <p id="stringrating">{STRINGRATING}</p>
+```
+
+Tìm khoảng dòng 109 đến dòng 110:
+
+```html
+                    <span itemprop="rating">{DETAIL.numberrating}</span> -
+                    <span itemprop="votes">{DETAIL.click_rating}</span> {LANG.rating_count}
+```
+
+Thay lại thành:
+
+```html
+                    <span itemprop="rating" id="numberrating">{DETAIL.numberrating}</span> -
+                    <span itemprop="votes" id="click_rating">{DETAIL.click_rating}</span> {LANG.rating_count}
+```
+
+Tìm khoảng dòng 176:
+
+```html
+            			<a href="{TOPIC.link}" <!-- BEGIN: tooltip -->data-placement="{TOOLTIP_POSITION}" data-content="{TOPIC.hometext}" data-img="{TOPIC.imghome}" data-rel="tooltip"<!-- END: tooltip --> title="{TOPIC.title}">{TOPIC.title}</a>
 ```
 
 Thay lại thành:
@@ -828,10 +929,22 @@ Thay lại thành:
             			<a href="{TOPIC.link}" {TOPIC.target_blank} <!-- BEGIN: tooltip -->data-placement="{TOOLTIP_POSITION}" data-content="{TOPIC.hometext_clean}" data-img="{TOPIC.imghome}" data-rel="tooltip"<!-- END: tooltip --> title="{TOPIC.title}"><h4>{TOPIC.title}</h4></a>
 ```
 
-Tìm:
+Tìm khoảng dòng 194:
 
 ```html
-        			<a href="{RELATED_NEW.link}" <!-- BEGIN: tooltip -->data-placement="{TOOLTIP_POSITION}" data-content="{RELATED_NEW.hometext_clean}" data-img="{RELATED_NEW.imghome}" data-rel="tooltip"<!-- END: tooltip --> title="{RELATED_NEW.title}">{RELATED_NEW.title}</a>
+            <ul class="related">
+```
+
+Thay lại thành:
+
+```html
+            <ul class="related list-inline">
+```
+
+Tìm khoảng dòng 198:
+
+```html
+        			<a href="{RELATED_NEW.link}" <!-- BEGIN: tooltip -->data-placement="{TOOLTIP_POSITION}" data-content="{RELATED_NEW.hometext}" data-img="{RELATED_NEW.imghome}" data-rel="tooltip"<!-- END: tooltip --> title="{RELATED_NEW.title}">{RELATED_NEW.title}</a>
 ```
 
 Thay lại thành:
@@ -840,23 +953,36 @@ Thay lại thành:
         			<a href="{RELATED_NEW.link}" {RELATED_NEW.target_blank} <!-- BEGIN: tooltip -->data-placement="{TOOLTIP_POSITION}" data-content="{RELATED_NEW.hometext_clean}" data-img="{RELATED_NEW.imghome}" data-rel="tooltip"<!-- END: tooltip --> title="{RELATED_NEW.title}"><h4>{RELATED_NEW.title}</h4></a>
 ```
 
-Tìm:
+Tìm khoảng dòng 212:
 
 ```html
-        			<a class="list-inline" href="{RELATED.link}"<!-- BEGIN: tooltip --> data-placement="{TOOLTIP_POSITION}" data-content="{RELATED.hometext_clean}" data-img="{RELATED.imghome}" data-rel="tooltip"<!-- END: tooltip --> title="{RELATED.title}">{RELATED.title}</a>
+            <ul class="related">
+```
+
+Thay lại thành:
+
+```html
+            <ul class="related list-inline">
+```
+
+Tìm khoảng dòng 216:
+
+```html
+        			<a class="list-inline" href="{RELATED.link}"<!-- BEGIN: tooltip --> data-placement="{TOOLTIP_POSITION}" data-content="{RELATED.hometext}" data-img="{RELATED.imghome}" data-rel="tooltip"<!-- END: tooltip --> title="{RELATED.title}">{RELATED.title}</a>
 ```
 
 Thay lại thành:
 
 ```html
         			<a href="{RELATED.link}" {RELATED.target_blank} <!-- BEGIN: tooltip --> data-placement="{TOOLTIP_POSITION}" data-content="{RELATED.hometext_clean}" data-img="{RELATED.imghome}" data-rel="tooltip"<!-- END: tooltip --> title="{RELATED.title}"><h4>{RELATED.title}</h4></a>
+
 ```
 
 #### Cập nhật search.tpl
 
 Mở themes/ten-giao-dien/modules/news/search.tpl:
 
-Tìm:
+Tìm khoảng dòng 113:
 
 ```html
 			<h3><a href="{LINK}">{TITLEROW}</a></h3>
@@ -866,13 +992,14 @@ Thay lại thành:
 
 ```html
 			<h3><a href="{LINK}" title="{TITLEROW}" {TARGET_BLANK}>{TITLEROW}</a></h3>
+
 ```
 
 #### Cập nhật sendmail.tpl
 
 Mở themes/ten-giao-dien/modules/news/sendmail.tpl:
 
-Tìm:
+Tìm khoảng dòng 72:
 
 ```html
 					<!-- END: captcha -->
@@ -896,29 +1023,74 @@ Thêm xuống dưới:
                         </div>
                     </div>
                     <!-- END: recaptcha -->
+
 ```
 
 #### Cập nhật topic.tpl
 
 Mở themes/ten-giao-dien/modules/news/topic.tpl:
 
-Tìm:
+Tìm khoảng dòng 5:
+
+```html
+		<h3>{TOPPIC_TITLE}</h3>
+```
+
+Thay lại thành:
+
+```html
+		<h1>{TOPPIC_TITLE}</h1>
+```
+
+Tìm khoảng dòng 18:
 
 ```html
 		<a href="{TOPIC.link}" title="{TOPIC.title}"><img alt="{TOPIC.alt}" src="{TOPIC.src}" width="{TOPIC.width}" class="img-thumbnail pull-left imghome" /></a>
-		<!-- END: homethumb -->
-		<h3><a href="{TOPIC.link}" title="{TOPIC.title}">{TOPIC.title}</a></h3>
 ```
 
 Thay lại thành:
 
 ```html
 		<a href="{TOPIC.link}" title="{TOPIC.title}" {TOPIC.target_blank}><img alt="{TOPIC.alt}" src="{TOPIC.src}" width="{TOPIC.width}" class="img-thumbnail pull-left imghome" /></a>
-		<!-- END: homethumb -->
+```
+
+Tìm khoảng dòng 20:
+
+```html
+		<h3><a href="{TOPIC.link}" title="{TOPIC.title}">{TOPIC.title}</a></h3>
+```
+
+Thay lại thành:
+
+```html
 		<h3><a href="{TOPIC.link}" title="{TOPIC.title}" {TOPIC.target_blank}>{TOPIC.title}</a></h3>
 ```
 
-Tìm:
+Tìm khoảng dòng 24:
+
+```html
+		<p class="text-justify">
+```
+
+Thay lại thành:
+
+```html
+		<div class="text-justify">
+```
+
+Tìm khoảng dòng 26:
+
+```html
+		</p>
+```
+
+Thay lại thành:
+
+```html
+		</div>
+```
+
+Tìm khoảng dòng 39:
 
 ```html
 		<a title="{TOPIC_OTHER.title}" href="{TOPIC_OTHER.link}">{TOPIC_OTHER.title}</a>
@@ -928,25 +1100,26 @@ Thay lại thành:
 
 ```html
 		<a title="{TOPIC_OTHER.title}" href="{TOPIC_OTHER.link}" {TOPIC_OTHER.target_blank}>{TOPIC_OTHER.title}</a>
+
 ```
 
 #### Cập nhật viewcat_grid.tpl
 
 Mở themes/ten-giao-dien/modules/news/viewcat_grid.tpl:
 
-Tìm:
+Tìm khoảng dòng 19:
 
 ```html
 			<a href="{CONTENT.link}" title="{CONTENT.title}"><img  alt="{HOMEIMGALT1}" src="{HOMEIMG1}" width="150px" class="img-thumbnail pull-left imghome" /></a>
 ```
 
-Thay lại thành
+Thay lại thành:
 
 ```html
 			<a href="{CONTENT.link}" title="{CONTENT.title}" {CONTENT.target_blank}><img  alt="{HOMEIMGALT1}" src="{HOMEIMG1}" width="150px" class="img-thumbnail pull-left imghome" /></a>
 ```
 
-Tìm:
+Tìm khoảng dòng 22:
 
 ```html
 				<a href="{CONTENT.link}" title="{CONTENT.title}">{CONTENT.title}</a>
@@ -958,7 +1131,31 @@ Thay lại thành:
 				<a href="{CONTENT.link}" title="{CONTENT.title}" {CONTENT.target_blank}>{CONTENT.title}</a>
 ```
 
-Tìm:
+Tìm khoảng dòng 39:
+
+```html
+			<p class="text-justify">
+```
+
+Thay lại thành:
+
+```html
+			<div class="text-justify">
+```
+
+Tìm khoảng dòng 41:
+
+```html
+			</p>
+```
+
+Thay lại thành:
+
+```html
+			</div>
+```
+
+Tìm khoảng dòng 55:
 
 ```html
 		<a title="{CONTENT.title}" href="{CONTENT.link}"><img alt="{HOMEIMGALT1}" src="{HOMEIMG1}" width="{IMGWIDTH1}" class="img-thumbnail"/></a>
@@ -970,7 +1167,7 @@ Thay lại thành:
 		<a title="{CONTENT.title}" href="{CONTENT.link}" {CONTENT.target_blank}><img alt="{HOMEIMGALT1}" src="{HOMEIMG1}" width="{IMGWIDTH1}" class="img-thumbnail"/></a>
 ```
 
-Tìm:
+Tìm khoảng dòng 57:
 
 ```html
 			<h4><a class="show" href="{CONTENT.link}" <!-- BEGIN: tooltip -->data-content="{CONTENT.hometext_clean}" data-img="" data-rel="tooltip" data-placement="{TOOLTIP_POSITION}"<!-- END: tooltip --> title="{CONTENT.title}">{CONTENT.title}</a></h4>
@@ -980,29 +1177,31 @@ Thay lại thành:
 
 ```html
 			<h4><a class="show" href="{CONTENT.link}" {CONTENT.target_blank} <!-- BEGIN: tooltip -->data-content="{CONTENT.hometext_clean}" data-img="" data-rel="tooltip" data-placement="{TOOLTIP_POSITION}"<!-- END: tooltip --> title="{CONTENT.title}">{CONTENT.title}</a></h4>
+
 ```
 
 #### Cập nhật viewcat_list.tpl
 
 Mở themes/ten-giao-dien/modules/news/viewcat_list.tpl:
 
-Tìm:
+Tìm khoảng dòng 17:
 
 ```html
-	<a class="show h4" href="{CONTENT.link}" <!-- BEGIN: tooltip -->data-content="{CONTENT.hometext_clean}" data-img="{CONTENT.imghome}" data-rel="tooltip" data-placement="{TOOLTIP_POSITION}"<!-- END: tooltip --> title="{CONTENT.title}">
+	<a class="show h4" href="{CONTENT.link}" <!-- BEGIN: tooltip -->data-content="{CONTENT.hometext}" data-img="{CONTENT.imghome}" data-rel="tooltip" data-placement="{TOOLTIP_POSITION}"<!-- END: tooltip --> title="{CONTENT.title}">
 ```
 
 Thay lại thành:
 
 ```html
 	<a class="show h4" href="{CONTENT.link}" {CONTENT.target_blank} <!-- BEGIN: tooltip -->data-content="{CONTENT.hometext_clean}" data-img="{CONTENT.imghome}" data-rel="tooltip" data-placement="{TOOLTIP_POSITION}"<!-- END: tooltip --> title="{CONTENT.title}">
+
 ```
 
 #### Cập nhật viewcat_main_bottom.tpl
 
 Mở themes/ten-giao-dien/modules/news/viewcat_main_bottom.tpl:
 
-Tìm:
+Tìm khoảng dòng 23:
 
 ```html
 			<a href="{CONTENT.link}" title="{CONTENT.title}"><img alt="{HOMEIMGALT}" src="{HOMEIMG}" width="{IMGWIDTH}" class="img-thumbnail pull-left imghome" /></a>
@@ -1014,38 +1213,53 @@ Thay lại thành:
 			<a href="{CONTENT.link}" title="{CONTENT.title}" {CONTENT.target_blank}><img alt="{HOMEIMGALT}" src="{HOMEIMG}" width="{IMGWIDTH}" class="img-thumbnail pull-left imghome" /></a>
 ```
 
-Tìm:
+Tìm khoảng dòng 26:
 
 ```html
 				<a href="{CONTENT.link}" title="{CONTENT.title}">{CONTENT.title}</a>
 ```
 
-Thay lại thành
+Thay lại thành:
 
 ```html
 				<a href="{CONTENT.link}" title="{CONTENT.title}" {CONTENT.target_blank}>{CONTENT.title}</a>
 ```
 
-Tìm:
+Tìm khoảng dòng 40 đến dòng 42:
 
 ```html
-					<a class="show h4" href="{OTHER.link}" <!-- BEGIN: tooltip -->data-content="{OTHER.hometext_clean}" data-img="{OTHER.imghome}" data-rel="tooltip" data-placement="{TOOLTIP_POSITION}"<!-- END: tooltip --> title="{OTHER.title}">{OTHER.title}</a>
+			<p>
+				{CONTENT.hometext}
+			</p>
+```
+
+Thay lại thành:
+
+```html
+			{CONTENT.hometext}
+```
+
+Tìm khoảng dòng 53:
+
+```html
+					<a class="show h4" href="{OTHER.link}" <!-- BEGIN: tooltip -->data-content="{OTHER.hometext}" data-img="{OTHER.imghome}" data-rel="tooltip" data-placement="{TOOLTIP_POSITION}"<!-- END: tooltip --> title="{OTHER.title}">{OTHER.title}</a>
 ```
 
 Thay lại thành:
 
 ```html
 					<a class="show h4" href="{OTHER.link}" {OTHER.target_blank} <!-- BEGIN: tooltip -->data-content="{OTHER.hometext_clean}" data-img="{OTHER.imghome}" data-rel="tooltip" data-placement="{TOOLTIP_POSITION}"<!-- END: tooltip --> title="{OTHER.title}">{OTHER.title}</a>
+
 ```
 
 #### Cập nhật viewcat_main_left.tpl
 
 Mở themes/ten-giao-dien/modules/news/viewcat_main_left.tpl:
 
-Tìm:
+Tìm khoảng dòng 28:
 
 ```html
-							<a class="show h4" href="{OTHER.link}" <!-- BEGIN: tooltip -->data-content="{OTHER.hometext_clean}" data-img="{OTHER.imghome}" data-rel="tooltip" data-placement="{TOOLTIP_POSITION}"<!-- END: tooltip --> title="{OTHER.title}">{OTHER.title}</a>
+							<a class="show h4" href="{OTHER.link}" <!-- BEGIN: tooltip -->data-content="{OTHER.hometext}" data-img="{OTHER.imghome}" data-rel="tooltip" data-placement="{TOOLTIP_POSITION}"<!-- END: tooltip --> title="{OTHER.title}">{OTHER.title}</a>
 ```
 
 Thay lại thành:
@@ -1054,7 +1268,7 @@ Thay lại thành:
 							<a class="show h4" href="{OTHER.link}" {OTHER.target_blank} <!-- BEGIN: tooltip -->data-content="{OTHER.hometext_clean}" data-img="{OTHER.imghome}" data-rel="tooltip" data-placement="{TOOLTIP_POSITION}"<!-- END: tooltip --> title="{OTHER.title}">{OTHER.title}</a>
 ```
 
-Tìm:
+Tìm khoảng dòng 37:
 
 ```html
 					<a title="{CONTENT.title}" href="{CONTENT.link}"><img src="{HOMEIMG}" alt="{HOMEIMGALT}" width="{IMGWIDTH}" class="img-thumbnail pull-left imghome" /></a>
@@ -1066,7 +1280,7 @@ Thay lại thành:
 					<a title="{CONTENT.title}" href="{CONTENT.link}" {CONTENT.target_blank}><img src="{HOMEIMG}" alt="{HOMEIMGALT}" width="{IMGWIDTH}" class="img-thumbnail pull-left imghome" /></a>
 ```
 
-Tìm:
+Tìm khoảng dòng 40:
 
 ```html
 						<a title="{CONTENT.title}" href="{CONTENT.link}">{CONTENT.title}</a>
@@ -1076,13 +1290,26 @@ Thay lại thành:
 
 ```html
 						<a title="{CONTENT.title}" href="{CONTENT.link}" {CONTENT.target_blank}>{CONTENT.title}</a>
+```
+
+Tìm khoảng dòng 54:
+
+```html
+					<p>{CONTENT.hometext}</p>
+```
+
+Thay lại thành:
+
+```html
+					{CONTENT.hometext}
+
 ```
 
 #### Cập nhật viewcat_main_right.tpl
 
 Mở themes/ten-giao-dien/modules/news/viewcat_main_right.tpl:
 
-Tìm:
+Tìm khoảng dòng 25:
 
 ```html
 					<a title="{CONTENT.title}" href="{CONTENT.link}"><img src="{HOMEIMG}" alt="{HOMEIMGALT}" width="{IMGWIDTH}" class="img-thumbnail pull-left imghome" /></a>
@@ -1094,7 +1321,7 @@ Thay lại thành:
 					<a title="{CONTENT.title}" href="{CONTENT.link}" {CONTENT.target_blank}><img src="{HOMEIMG}" alt="{HOMEIMGALT}" width="{IMGWIDTH}" class="img-thumbnail pull-left imghome" /></a>
 ```
 
-Tìm:
+Tìm khoảng dòng 28:
 
 ```html
 						<a title="{CONTENT.title}" href="{CONTENT.link}">{CONTENT.title}</a>
@@ -1106,59 +1333,112 @@ Thay lại thành:
 						<a title="{CONTENT.title}" href="{CONTENT.link}" {CONTENT.target_blank}>{CONTENT.title}</a>
 ```
 
-Tìm:
+Tìm khoảng dòng 42:
 
 ```html
-							<a class="show h4" href="{OTHER.link}" title="{OTHER.title}" <!-- BEGIN: tooltip -->data-content="{OTHER.hometext_clean}" data-img="{OTHER.imghome}" data-rel="tooltip" data-placement="{TOOLTIP_POSITION}"<!-- END: tooltip -->>{OTHER.title}</a>
+					<p>{CONTENT.hometext}</p>
+```
+
+Thay lại thành:
+
+```html
+					{CONTENT.hometext}
+```
+
+Tìm khoảng dòng 50:
+
+```html
+							<a class="show h4" href="{OTHER.link}" title="{OTHER.title}" <!-- BEGIN: tooltip -->data-content="{OTHER.hometext}" data-img="{OTHER.imghome}" data-rel="tooltip" data-placement="{TOOLTIP_POSITION}"<!-- END: tooltip -->>{OTHER.title}</a>
 ```
 
 Thay lại thành:
 
 ```html
 							<a class="show h4" href="{OTHER.link}" title="{OTHER.title}" {OTHER.target_blank} <!-- BEGIN: tooltip -->data-content="{OTHER.hometext_clean}" data-img="{OTHER.imghome}" data-rel="tooltip" data-placement="{TOOLTIP_POSITION}"<!-- END: tooltip --> >{OTHER.title}</a>
+
 ```
 
 #### Cập nhật viewcat_page.tpl
 
 Mở themes/ten-giao-dien/modules/news/viewcat_page.tpl:
 
-Tìm:
+Tìm khoảng dòng 19:
 
 ```html
 			<a href="{CONTENT.link}" title="{CONTENT.title}"><img  alt="{HOMEIMGALT1}" src="{HOMEIMG1}" width="{IMGWIDTH1}" class="img-thumbnail pull-left imghome" /></a>
-			<!-- END: image -->
-			<h2>
-				<a href="{CONTENT.link}" title="{CONTENT.title}">{CONTENT.title}</a>
 ```
 
 Thay lại thành:
 
 ```html
 			<a href="{CONTENT.link}" title="{CONTENT.title}" {CONTENT.target_blank}><img  alt="{HOMEIMGALT1}" src="{HOMEIMG1}" width="{IMGWIDTH1}" class="img-thumbnail pull-left imghome" /></a>
-			<!-- END: image -->
-			<h2>
-				<a href="{CONTENT.link}" title="{CONTENT.title}" {CONTENT.target_blank}>{CONTENT.title}</a>
 ```
 
-Tìm:
+Tìm khoảng dòng 22:
 
 ```html
-			<a href="{CONTENT.link}" title="{CONTENT.title}"><img  alt="{HOMEIMGALT1}" src="{HOMEIMG1}" width="{IMGWIDTH1}" class="img-thumbnail pull-left imghome" /></a>
-			<!-- END: image -->
-			<h3>
 				<a href="{CONTENT.link}" title="{CONTENT.title}">{CONTENT.title}</a>
 ```
 
 Thay lại thành:
 
 ```html
-			<a href="{CONTENT.link}" title="{CONTENT.title}" {CONTENT.target_blank}><img  alt="{HOMEIMGALT1}" src="{HOMEIMG1}" width="{IMGWIDTH1}" class="img-thumbnail pull-left imghome" /></a>
-			<!-- END: image -->
-			<h3>
 				<a href="{CONTENT.link}" title="{CONTENT.title}" {CONTENT.target_blank}>{CONTENT.title}</a>
 ```
 
-Tìm:
+Tìm khoảng dòng 40 đến dòng 42:
+
+```html
+			<p>
+				{CONTENT.hometext}
+			</p>
+```
+
+Thay lại thành:
+
+```html
+			{CONTENT.hometext}
+```
+
+Tìm khoảng dòng 55:
+
+```html
+			<a href="{CONTENT.link}" title="{CONTENT.title}"><img  alt="{HOMEIMGALT1}" src="{HOMEIMG1}" width="{IMGWIDTH1}" class="img-thumbnail pull-left imghome" /></a>
+```
+
+Thay lại thành:
+
+```html
+			<a href="{CONTENT.link}" title="{CONTENT.title}" {CONTENT.target_blank}><img  alt="{HOMEIMGALT1}" src="{HOMEIMG1}" width="{IMGWIDTH1}" class="img-thumbnail pull-left imghome" /></a>
+```
+
+Tìm khoảng dòng 58:
+
+```html
+				<a href="{CONTENT.link}" title="{CONTENT.title}">{CONTENT.title}</a>
+```
+
+Thay lại thành:
+
+```html
+				<a href="{CONTENT.link}" title="{CONTENT.title}" {CONTENT.target_blank}>{CONTENT.title}</a>
+```
+
+Tìm khoảng dòng 72 đến dòng 74:
+
+```html
+			<p>
+				{CONTENT.hometext}
+			</p>
+```
+
+Thay lại thành:
+
+```html
+			{CONTENT.hometext}
+```
+
+Tìm khoảng dòng 91:
 
 ```html
 		<em class="fa fa-angle-right">&nbsp;</em><a href="{RELATED.link}" title="{RELATED.title}">{RELATED.title} <em>({RELATED.publtime}) </em></a>
@@ -1168,31 +1448,62 @@ Thay lại thành:
 
 ```html
 		<em class="fa fa-angle-right">&nbsp;</em><a href="{RELATED.link}" title="{RELATED.title}" {EXTLINK}>{RELATED.title} <em>({RELATED.publtime}) </em></a>
+
 ```
 
 #### Cập nhật viewcat_top.tpl
 
 Mở themes/ten-giao-dien/modules/news/viewcat_top.tpl:
 
-Tìm:
+Tìm khoảng dòng 18:
 
 ```html
 				<a href="{CONTENT.link}" title="{CONTENT.title}"><img id="imghome" alt="{HOMEIMGALT0}" src="{HOMEIMG0}" width="{IMGWIDTH0}" class="img-thumbnail pull-left imghome" /></a>
-				<!-- END: image -->
-				<h2>
-					<a href="{CONTENT.link}" title="{CONTENT.title}">{CONTENT.title}</a>
 ```
 
 Thay lại thành:
 
 ```html
 				<a href="{CONTENT.link}" title="{CONTENT.title}" {CONTENT.target_blank}><img id="imghome" alt="{HOMEIMGALT0}" src="{HOMEIMG0}" width="{IMGWIDTH0}" class="img-thumbnail pull-left imghome" /></a>
-				<!-- END: image -->
-				<h2>
+```
+
+Tìm khoảng dòng 21:
+
+```html
+					<a href="{CONTENT.link}" title="{CONTENT.title}">{CONTENT.title}</a>
+```
+
+Thay lại thành:
+
+```html
 					<a href="{CONTENT.link}" title="{CONTENT.title}" {CONTENT.target_blank}>{CONTENT.title}</a>
 ```
 
-Tìm:
+Tìm khoảng dòng 35:
+
+```html
+				<p class="text-justify">
+```
+
+Thay lại thành:
+
+```html
+				<div class="text-justify">
+```
+
+Tìm khoảng dòng 37:
+
+```html
+				</p>
+```
+
+Thay lại thành:
+
+```html
+				</div>
+```
+
+Tìm khoảng dòng 48:
 
 ```html
 					<em class="fa fa-angle-right">&nbsp;</em><a title="{CONTENT.title}" href="{CONTENT.link}">{CONTENT.title}</a>
@@ -1202,34 +1513,65 @@ Thay lại thành:
 
 ```html
 					<em class="fa fa-angle-right">&nbsp;</em><a title="{CONTENT.title}" href="{CONTENT.link}" {CONTENT.target_blank}>{CONTENT.title}</a>
+
 ```
 
 #### Cập nhật viewcat_two_column.tpl
 
 Mở themes/ten-giao-dien/modules/news/viewcat_two_column.tpl:
 
-Tìm:
+Tìm khoảng dòng 19:
 
 ```html
             <a href="{NEWSTOP.link}" title="{NEWSTOP.title}"><img alt="{HOMEIMGALT0}" src="{HOMEIMG0}" width="{IMGWIDTH0}" class="img-thumbnail pull-left imghome" /></a>
-            <!-- END: image -->
-            <h3>
-                <a href="{NEWSTOP.link}" title="{NEWSTOP.title}">{NEWSTOP.title}</a>
 ```
 
 Thay lại thành:
 
 ```html
             <a href="{NEWSTOP.link}" title="{NEWSTOP.title}" {NEWSTOP.target_blank}><img alt="{HOMEIMGALT0}" src="{HOMEIMG0}" width="{IMGWIDTH0}" class="img-thumbnail pull-left imghome" /></a>
-            <!-- END: image -->
-            <h3>
+```
+
+Tìm khoảng dòng 22:
+
+```html
+                <a href="{NEWSTOP.link}" title="{NEWSTOP.title}">{NEWSTOP.title}</a>
+```
+
+Thay lại thành:
+
+```html
                 <a href="{NEWSTOP.link}" title="{NEWSTOP.title}" {NEWSTOP.target_blank}>{NEWSTOP.title}</a>
 ```
 
-Tìm:
+Tìm khoảng dòng 36:
 
 ```html
-                <a class="show h4" href="{NEWSTOP.link}" <!-- BEGIN: tooltip -->data-content="{NEWSTOP.hometext_clean}" data-img="{NEWSTOP.imghome}" data-placement="{TOOLTIP_POSITION}" data-rel="tooltip"<!-- END: tooltip --> title="{NEWSTOP.title}">{NEWSTOP.title}</a>
+            <p class="text-justify">
+```
+
+Thay lại thành:
+
+```html
+            <div class="text-justify">
+```
+
+Tìm khoảng dòng 38:
+
+```html
+            </p>
+```
+
+Thay lại thành:
+
+```html
+            </div>
+```
+
+Tìm khoảng dòng 49:
+
+```html
+                <a class="show h4" href="{NEWSTOP.link}" <!-- BEGIN: tooltip -->data-content="{NEWSTOP.hometext}" data-img="{NEWSTOP.imghome}" data-placement="{TOOLTIP_POSITION}" data-rel="tooltip"<!-- END: tooltip --> title="{NEWSTOP.title}">{NEWSTOP.title}</a>
 ```
 
 Thay lại thành:
@@ -1238,7 +1580,7 @@ Thay lại thành:
                 <a class="show h4" href="{NEWSTOP.link}" {NEWSTOP.target_blank} <!-- BEGIN: tooltip -->data-content="{NEWSTOP.hometext_clean}" data-img="{NEWSTOP.imghome}" data-placement="{TOOLTIP_POSITION}" data-rel="tooltip"<!-- END: tooltip --> title="{NEWSTOP.title}">{NEWSTOP.title}</a>
 ```
 
-Tìm:
+Tìm khoảng dòng 67:
 
 ```html
                     <a href="{CONTENT.link}" title="{CONTENT.title}">{CONTENT.title}</a>
@@ -1250,7 +1592,7 @@ Thay lại thành:
                     <a href="{CONTENT.link}" title="{CONTENT.title}" {CONTENT.target_blank}>{CONTENT.title}</a>
 ```
 
-Tìm:
+Tìm khoảng dòng 82:
 
 ```html
                 <a href="{CONTENT.link}" title="{CONTENT.title}"><img alt="{HOMEIMGALT01}" src="{HOMEIMG01}" width="{IMGWIDTH0}" class="img-thumbnail pull-left imghome" /></a>
@@ -1262,16 +1604,29 @@ Thay lại thành:
                 <a href="{CONTENT.link}" title="{CONTENT.title}" {CONTENT.target_blank}><img alt="{HOMEIMGALT01}" src="{HOMEIMG01}" width="{IMGWIDTH0}" class="img-thumbnail pull-left imghome" /></a>
 ```
 
-Tìm:
+Tìm khoảng dòng 94:
 
 ```html
-                        <a class="show h4" href="{CONTENT.link}" <!-- BEGIN: tooltip -->data-content="{CONTENT.hometext_clean}" data-img="{CONTENT.imghome}" data-rel="tooltip" data-placement="{TOOLTIP_POSITION}"<!-- END: tooltip --> title="{CONTENT.title}">{CONTENT.title}</a>
+                        <a class="show h4" href="{CONTENT.link}" <!-- BEGIN: tooltip -->data-content="{CONTENT.hometext}" data-img="{CONTENT.imghome}" data-rel="tooltip" data-placement="{TOOLTIP_POSITION}"<!-- END: tooltip --> title="{CONTENT.title}">{CONTENT.title}</a>
 ```
 
 Thay lại thành:
 
 ```html
                         <a class="show h4" href="{CONTENT.link}" {CONTENT.target_blank} <!-- BEGIN: tooltip -->data-content="{CONTENT.hometext_clean}" data-img="{CONTENT.imghome}" data-rel="tooltip" data-placement="{TOOLTIP_POSITION}"<!-- END: tooltip --> title="{CONTENT.title}">{CONTENT.title}</a>
+```
+
+Tìm khoảng dòng 128:
+
+```html
+$(window).load(function(){
+```
+
+Thay lại thành:
+
+```html
+$(window).on('load', function() {
+
 ```
 
 ### Cập nhật giao diện module seek
@@ -1318,7 +1673,7 @@ Nếu giao diện của bạn có tồn tại `themes/ten-giao-dien/modules/user
 
 Mở themes/ten-giao-dien/modules/users/avatar.tpl:
 
-Tìm:
+Tìm khoảng dòng 2 đến dòng 3:
 
 ```html
 <script src="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/jquery/jquery.Jcrop.min.js" type="text/javascript"></script>
@@ -1332,7 +1687,7 @@ Thay lại thành:
 <script type="text/javascript" src="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/cropper/cropper.min.js"></script>
 ```
 
-Tìm:
+Tìm khoảng dòng 37 đến dòng 42:
 
 ```html
         <input type="hidden" id="x1" name="x1"/>
@@ -1350,23 +1705,26 @@ Thay lại thành:
         <input type="hidden" id="crop_y" name="crop_y"/>
         <input type="hidden" id="crop_width" name="crop_width"/>
         <input type="hidden" id="crop_height" name="crop_height"/>
+
 ```
 
 #### Cập nhật block.login.tpl
 
 Mở themes/ten-giao-dien/modules/users/block.login.tpl:
 
+Tìm khoảng dòng 4:
+
 ```html
 	<button type="button" class="login btn btn-success btn-sm" onclick="modalShowByObj('#guestLogin_{BLOCKID}')">
 ```
 
-Thay lại thành
+Thay lại thành:
 
 ```html
 	<button type="button" class="login btn btn-success btn-sm" onclick="modalShowByObj('#guestLogin_{BLOCKID}', 'recaptchareset')">
 ```
 
-Tìm:
+Tìm khoảng dòng 8:
 
 ```html
 	<button type="button" class="register btn btn-primary btn-sm" onclick="modalShowByObj('#guestReg_{BLOCKID}')">
@@ -1376,13 +1734,14 @@ Thay lại thành:
 
 ```html
 	<button type="button" class="register btn btn-primary btn-sm" onclick="modalShowByObj('#guestReg_{BLOCKID}', 'recaptchareset')">
+
 ```
 
 #### Cập nhật block.user_button.tpl
 
 Mở themes/ten-giao-dien/modules/users/block.user_button.tpl:
 
-Tìm:
+Tìm khoảng dòng 2:
 
 ```html
 <span><a title="{GLANG.signin} - {GLANG.register}" class="pa pointer button" data-toggle="tip" data-target="#guestBlock_{BLOCKID}" data-click="y"><em class="fa fa-user fa-lg"></em><span class="hidden">{GLANG.signin}</span></a></span>
@@ -1392,13 +1751,14 @@ Thay lại thành:
 
 ```html
 <span><a title="{GLANG.signin} - {GLANG.register}" class="pa pointer button" data-toggle="tip" data-target="#guestBlock_{BLOCKID}" data-click="y" data-callback="recaptchareset"><em class="fa fa-user fa-lg"></em><span class="hidden">{GLANG.signin}</span></a></span>
+
 ```
 
 #### Cập nhật confirm.tpl
 
 Mở themes/ten-giao-dien/modules/users/confirm.tpl:
 
-Tìm:
+Tìm khoảng dòng 32:
 
 ```html
 				<!-- END: captcha -->
@@ -1422,39 +1782,39 @@ Thêm xuống dưới:
                 <!-- END: recaptcha -->
 ```
 
-#### Cập nhật login_form.tpl
-
-Mở themes/ten-giao-dien/modules/users/login_form.tpl:
-
-Tìm:
+Tìm khoảng dòng 34:
 
 ```html
-        <!-- END: captcha -->
-        
+					<input name="openid_account_confirm" value="1" type="hidden" />
+```
+
+Thêm xuống dưới
+
+```html
+                    <!-- BEGIN: redirect --><input name="nv_redirect" value="{REDIRECT}" type="hidden" /><!-- END: redirect -->
+
+```
+
+#### Cập nhật info.tpl
+
+Mở themes/ten-giao-dien/modules/users/info.tpl:
+
+Tìm khoảng dòng 13:
+
+```html
+        <!-- BEGIN: edit_password --><li class="{PASSWORD_ACTIVE}"><a data-toggle="tab" data-location="{EDITINFO_FORM}/password" href="#edit_password">{LANG.edit_password}</a></li><!-- END: edit_password -->
 ```
 
 Thêm xuống dưới:
 
 ```html
-        <!-- BEGIN: recaptcha -->
-        <div class="form-group loginCaptcha">
-            <div class="middle text-center clearfix">
-                <!-- BEGIN: default --><div class="nv-recaptcha-default"><div id="{RECAPTCHA_ELEMENT}" data-toggle="recaptcha"></div></div><!-- END: default -->
-                <!-- BEGIN: compact --><div class="nv-recaptcha-compact"><div id="{RECAPTCHA_ELEMENT}" data-toggle="recaptcha"></div></div><!-- END: compact -->
-                <script type="text/javascript">
-                nv_recaptcha_elements.push({
-                    id: "{RECAPTCHA_ELEMENT}",
-                    <!-- BEGIN: smallbtn -->size: "compact",<!-- END: smallbtn -->
-                    btn: $('[type="submit"]', $('#{RECAPTCHA_ELEMENT}').parent().parent().parent().parent()),
-                    pnum: 4,
-                    btnselector: '[type="submit"]'
-                })
-                </script>
-            </div>
-        </div>
-        <!-- END: recaptcha -->
-        
+        <!-- BEGIN: 2step --><li><a href="{URL_2STEP}">{LANG.2step_status}</a></li><!-- END: 2step -->
+
 ```
+
+#### Cập nhật login_form.tpl
+
+Mở `themes/ten-theme/modules/users/login_form.tpl` đối chiếu với `themes/default/modules/users/login_form.tpl` để chỉnh sửa phù hợp do có nhiều thay đổi.
 
 #### Cập nhật lostactivelink.tpl
 
@@ -1497,8 +1857,6 @@ Thêm xuống dưới:
 ```
 
 #### Cập nhật lostpass_form.tpl
-
-Mở themes/ten-giao-dien/modules/users/lostpass_form.tpl:
 
 Tìm:
 
@@ -1621,3 +1979,69 @@ Thêm xuống dưới:
         </div>
         <!-- END: reg_recaptcha -->
 ```
+
+#### Cập nhật userinfo.tpl
+
+Mở themes/ten-giao-dien/modules/users/userinfo.tpl:
+
+Tìm khoảng dòng 42:
+
+```html
+ 			<col style="width:30%"/>
+```
+
+Thay lại thành:
+
+```html
+ 			<col style="width:45%"/>
+```
+
+Tìm khoảng dòng 73:
+
+```html
+            <tr>
+                <td>{LANG.st_login2}</td>
+                <td>{USER.st_login}</td>
+```
+
+Thêm xuống dưới:
+
+```html
+            </tr>
+            <tr>
+                <td>{LANG.2step_status}</td>
+                <td>{USER.active2step} (<a href="{URL_2STEP}">{LANG.2step_link}</a>)</td>
+
+```
+
+#### Cập nhật viewdetailusers.tpl
+
+Mở themes/ten-giao-dien/modules/users/viewdetailusers.tpl:
+
+Tìm khoảng dòng 15:
+
+```html
+
+    			<li><em class="fa fa-angle-right">&nbsp;</em> {LANG.last_login}: {USER.last_login}</li>
+    		</ul>
+    	</div>
+    </div>
+```
+
+Thêm xuống dưới:
+
+```html
+    
+    <!-- BEGIN: for_admin -->
+    <div class="m-bottom clearfix">
+        <div class="pull-right">
+            {LANG.for_admin}: 
+            <!-- BEGIN: edit --><a href="{USER.link_edit}" class="btn btn-info btn-xs"><i class="fa fa-edit"></i> {GLANG.edit}</a><!-- END: edit -->
+            <!-- BEGIN: delete --><a href="#" class="btn btn-danger btn-xs" data-toggle="admindeluser" data-userid="{USER.userid}" data-link="{USER.link_delete}" data-back="{USER.link_delete_callback}"><i class="fa fa-trash-o"></i> {GLANG.delete}</a><!-- END: delete -->
+        </div>
+    </div>
+    <!-- END: for_admin -->
+    
+
+```
+
