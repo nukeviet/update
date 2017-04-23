@@ -69,7 +69,7 @@ if ($nv_Request->isset_request('getexample', 'post')) {
     
     $return = array('status' => 'error');
     
-    // T?m ra cái ?nh demo
+    // T?m ra cï¿½i ?nh demo
     $image_demo = array();
     
     if ($thumb_dir) {
