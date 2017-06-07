@@ -138,10 +138,10 @@ function nv_up_modusers4103()
                     $sql = "SELECT fid FROM " . $db_config['prefix'] . "_" . $mod_data . "_field WHERE fid<=7 ORDER BY fid ASC";
                     $result = $db->query($sql);
                     while ($row = $result->fetch()) {
-                        $fid = ++$maxFID;
+                        $fid = (++$maxFID) + 7;
                         $db->query("UPDATE " . $db_config['prefix'] . "_" . $mod_data . "_field SET fid=" . $fid . " WHERE fid=" . $row['fid']);
                     }
-                    $maxFID++;
+                    $maxFID + 8;
                     $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $mod_data . "_field AUTO_INCREMENT=" . $maxFID);
                 }
             } catch (PDOException $e) {
