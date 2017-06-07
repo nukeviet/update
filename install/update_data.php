@@ -127,6 +127,112 @@ function nv_up_modusers4103()
             } catch (PDOException $e) {
                 trigger_error($e->getMessage());
             }
+            
+            // Đổi ID các trường dữ liệu hiện có nếu từ 1 - 7
+            try {
+                $maxFID = $db->query("SELECT MAX(fid) FROM " . $db_config['prefix'] . "_" . $mod_data . "_field")->fetchColumn();
+                if ($maxFID === null) {
+                    $maxFID = 0;
+                }
+                if ($maxFID > 0) {
+                    $sql = "SELECT fid FROM " . $db_config['prefix'] . "_" . $mod_data . "_field WHERE fid<=7 ORDER BY fid ASC";
+                    $result = $db->query($sql);
+                    while ($row = $result->fetch()) {
+                        $fid = ++$maxFID;
+                        $db->query("UPDATE " . $db_config['prefix'] . "_" . $mod_data . "_field SET fid=" . $fid . " WHERE fid=" . $row['fid']);
+                    }
+                    $maxFID++;
+                    $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $mod_data . "_field AUTO_INCREMENT=" . $maxFID);
+                }
+            } catch (PDOException $e) {
+                trigger_error($e->getMessage());
+            }
+            
+            // Đổi tên các trường trùng với trường SYS
+            $array_sys_field = array('first_name', 'last_name', 'gender', 'birthday', 'sig', 'question', 'answer');
+            $array_custom_field = $array_infotable_field = array();
+            $array_field_afterchanged = array();
+            
+            try {
+                $sql = "SELECT fid, field FROM " . $db_config['prefix'] . "_" . $mod_data . "_field";
+                $result = $db->query($sql);
+                while ($row = $result->fetch()) {
+                    $array_custom_field[$row['fid']] = $row['field'];
+                }
+                $sql = "SHOW FULL COLUMNS FROM " . $db_config['prefix'] . "_" . $mod_data . "_info";
+                $result = $db->query($sql);
+                while ($row = $result->fetch()) {
+                    $array_infotable_field[$row['field']] = array(
+                        'type' => $row['type'],
+                        'collation' => $row['collation'],
+                        'field' => $row['field'],
+                        'null' => $row['null'],
+                        'default' => $row['default']
+                    );
+                }
+                
+                $ascii_offset = 97; // Prefix ký tự từ A-Z chắc không có chuyện vượt qua ngoài này mà vẫn trùng
+                $prefix_set = 'cus%s_';
+                
+                foreach ($array_custom_field as $custom_field_fid => $custom_field) {
+                    $i = 0;
+                    $is_change = false;
+                    $new_field_name = $custom_field;
+                    while (in_array($new_field_name, $array_sys_field) or in_array($new_field_name, $array_field_afterchanged)) {
+                        $is_change = true;
+                        $new_field_name = sprintf($prefix_set, chr($ascii_offset + $i)) . $new_field_name;
+                        $i++;
+                    }
+                    if ($is_change) {
+                        $array_field_afterchanged[] = $new_field_name;
+                        $db->query("UPDATE " . $db_config['prefix'] . "_" . $mod_data . "_field SET field='" . $new_field_name . "' WHERE fid=" . $custom_field_fid);
+                        
+                        if (isset($array_infotable_field[$custom_field])) {
+                            $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $mod_data . "_info CHANGE 
+                            " . $custom_field . " " . $new_field_name . " " . $array_infotable_field[$custom_field]['type'] . " CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci 
+                            " . ($array_infotable_field[$custom_field]['null'] == 'NO' ? "NOT NULL" : "") . (strpos($array_infotable_field[$custom_field]['type'], 'varchar') === false ? '' : " DEFAULT '" . $array_infotable_field[$custom_field]['default'] . "'" ));
+                        }
+                    }
+                }
+            } catch (PDOException $e) {
+                trigger_error($e->getMessage());
+            }
+            
+            // Cập nhật thứ tự tăng lên 7
+            try {
+                $db->query("UPDATE " . $db_config['prefix'] . "_" . $mod_data . "_field SET weight=weight+7 WHERE fid>7");
+            } catch (PDOException $e) {
+                trigger_error($e->getMessage());
+            }
+            
+            // Chèn các field mặc định vào
+            try {
+                $db->query("INSERT INTO " . $db_config['prefix'] . "_" . $mod_data . "_field (fid, field, weight, field_type, field_choices, sql_choices, match_type, match_regex, func_callback, min_length, max_length, required, show_register, user_editable, show_profile, class, language, default_value, system) VALUES 
+                    (1, 'first_name', 1, 'textbox', '', '', 'none', '', '', 0, 255, 0, 1, 1, 1, 'input', 'a:2:{s:2:\"vi\";a:2:{i:0;s:4:\"Tên\";i:1;s:0:\"\";}s:2:\"en\";a:2:{i:0;s:10:\"First name\";i:1;s:0:\"\";}}', '', 1),
+                    (2, 'last_name', 2, 'textbox', '', '', 'none', '', '', 0, 255, 1, 1, 1, 1, 'input', 'a:2:{s:2:\"vi\";a:2:{i:0;s:20:\"Họ và tên đệm\";i:1;s:0:\"\";}s:2:\"en\";a:2:{i:0;s:9:\"Last name\";i:1;s:0:\"\";}}', '', 1),
+                    (3, 'gender', 3, 'radio', 'a:2:{s:1:\"M\";s:3:\"Nam\";s:1:\"F\";s:4:\"Nữ\";}', '', 'none', '', '', 0, 255, 0, 1, 1, 1, 'input', 'a:2:{s:2:\"vi\";a:2:{i:0;s:12:\"Giới tính\";i:1;s:0:\"\";}s:2:\"en\";a:2:{i:0;s:6:\"Gender\";i:1;s:0:\"\";}}', '1', 1),
+                    (4, 'birthday', 4, 'date', 'a:1:{s:12:\"current_date\";i:0;}', '', 'none', '', '', 0, 0, 0, 1, 1, 1, 'input', 'a:2:{s:2:\"vi\";a:2:{i:0;s:10:\"Ngày sinh\";i:1;s:0:\"\";}s:2:\"en\";a:2:{i:0;s:8:\"Birthday\";i:1;s:0:\"\";}}', '0', 1),
+                    (5, 'sig', 5, 'textarea', '', '', 'none', '', '', 0, 255, 1, 1, 1, 1, 'input', 'a:2:{s:2:\"vi\";a:2:{i:0;s:9:\"Chữ ký\";i:1;s:0:\"\";}s:2:\"en\";a:2:{i:0;s:3:\"Sig\";i:1;s:0:\"\";}}', '', 1),
+                    (6, 'answer', 6, 'textbox', '', '', 'none', '', '', 0, 255, 1, 1, 1, 1, 'input', 'a:2:{s:2:\"vi\";a:2:{i:0;s:11:\"Trả lời\";i:1;s:0:\"\";}s:2:\"en\";a:2:{i:0;s:6:\"Answer\";i:1;s:0:\"\";}}', '', 1),
+                    (7, 'question', 7, 'textbox', '', '', 'none', '', '', 0, 255, 1, 1, 1, 1, 'input', 'a:2:{s:2:\"vi\";a:2:{i:0;s:22:\"Câu hỏi bảo mật\";i:1;s:0:\"\";}s:2:\"en\";a:2:{i:0;s:8:\"Question\";i:1;s:0:\"\";}}', '', 1)
+                ;");
+            } catch (PDOException $e) {
+                trigger_error($e->getMessage());
+            }
+            
+            // Fix lại weight chuẩn
+            try {
+                $sql = "SELECT fid FROM " . $db_config['prefix'] . "_" . $mod_data . "_field ORDER BY weight ASC";
+                $result = $db->query($sql);
+                
+                $weight = 0;
+                while ($row = $result->fetch()) {
+                    $weight++;
+                    $db->query("UPDATE " . $db_config['prefix'] . "_" . $mod_data . "_field SET weight=" . $weight . " WHERE fid=" . $row['fid']);
+                }
+            } catch (PDOException $e) {
+                trigger_error($e->getMessage());
+            }
         }
     }
     return $return;
