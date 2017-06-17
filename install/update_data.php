@@ -82,9 +82,34 @@ function nv_up_modusers4103()
         'lang' => 'NO',
         'message' => ''
     );
+    
     // Duyệt tất cả các ngôn ngữ
     $language_query = $db->query('SELECT lang FROM ' . $db_config['prefix'] . '_setup_language WHERE setup = 1');
     while (list ($lang) = $language_query->fetch(3)) {
+        // Lấy ngôn ngữ
+        $lang_module = array();
+        $lang_translator = array();
+        
+        // Lấy từ thư mục update
+        if (file_exists(NV_ROOTDIR . '/install/update/modules/users/language/' . $lang . '.php')) {
+            include NV_ROOTDIR . '/install/update/modules/users/language/' . $lang . '.php';
+        } elseif (file_exists(NV_ROOTDIR . '/install/update/modules/users/language/en.php')) {
+            include NV_ROOTDIR . '/install/update/modules/users/language/en.php';
+        } else {
+            include NV_ROOTDIR . '/install/update/modules/users/language/vi.php';
+        }
+        
+        // Lấy từ thư mục module
+        if (empty($lang_module)) {
+            if (file_exists(NV_ROOTDIR . '/modules/users/language/' . $lang . '.php')) {
+                include NV_ROOTDIR . '/modules/users/language/' . $lang . '.php';
+            } elseif (file_exists(NV_ROOTDIR . '/modules/users/language/en.php')) {
+                include NV_ROOTDIR . '/modules/users/language/en.php';
+            } else {
+                include NV_ROOTDIR . '/modules/users/language/vi.php';
+            }
+        }
+        
         // Lấy tất cả các module và module ảo của nó
         $mquery = $db->query("SELECT title, module_data FROM " . $db_config['prefix'] . "_" . $lang . "_modules WHERE module_file = 'users'");
         while (list ($mod, $mod_data) = $mquery->fetch(3)) {
@@ -208,13 +233,13 @@ function nv_up_modusers4103()
             // Chèn các field mặc định vào
             try {
                 $db->query("INSERT INTO " . $db_config['prefix'] . "_" . $mod_data . "_field (fid, field, weight, field_type, field_choices, sql_choices, match_type, match_regex, func_callback, min_length, max_length, required, show_register, user_editable, show_profile, class, language, default_value, system) VALUES 
-                    (1, 'first_name', 1, 'textbox', '', '', 'none', '', '', 0, 255, 0, 1, 1, 1, 'input', 'a:2:{s:2:\"vi\";a:2:{i:0;s:4:\"Tên\";i:1;s:0:\"\";}s:2:\"en\";a:2:{i:0;s:10:\"First name\";i:1;s:0:\"\";}}', '', 1),
-                    (2, 'last_name', 2, 'textbox', '', '', 'none', '', '', 0, 255, 1, 1, 1, 1, 'input', 'a:2:{s:2:\"vi\";a:2:{i:0;s:20:\"Họ và tên đệm\";i:1;s:0:\"\";}s:2:\"en\";a:2:{i:0;s:9:\"Last name\";i:1;s:0:\"\";}}', '', 1),
-                    (3, 'gender', 3, 'radio', 'a:2:{s:1:\"M\";s:3:\"Nam\";s:1:\"F\";s:4:\"Nữ\";}', '', 'none', '', '', 0, 255, 0, 1, 1, 1, 'input', 'a:2:{s:2:\"vi\";a:2:{i:0;s:12:\"Giới tính\";i:1;s:0:\"\";}s:2:\"en\";a:2:{i:0;s:6:\"Gender\";i:1;s:0:\"\";}}', '1', 1),
-                    (4, 'birthday', 4, 'date', 'a:1:{s:12:\"current_date\";i:0;}', '', 'none', '', '', 0, 0, 0, 1, 1, 1, 'input', 'a:2:{s:2:\"vi\";a:2:{i:0;s:10:\"Ngày sinh\";i:1;s:0:\"\";}s:2:\"en\";a:2:{i:0;s:8:\"Birthday\";i:1;s:0:\"\";}}', '0', 1),
-                    (5, 'sig', 5, 'textarea', '', '', 'none', '', '', 0, 255, 1, 1, 1, 1, 'input', 'a:2:{s:2:\"vi\";a:2:{i:0;s:9:\"Chữ ký\";i:1;s:0:\"\";}s:2:\"en\";a:2:{i:0;s:3:\"Sig\";i:1;s:0:\"\";}}', '', 1),
-                    (6, 'answer', 6, 'textbox', '', '', 'none', '', '', 0, 255, 1, 1, 1, 1, 'input', 'a:2:{s:2:\"vi\";a:2:{i:0;s:11:\"Trả lời\";i:1;s:0:\"\";}s:2:\"en\";a:2:{i:0;s:6:\"Answer\";i:1;s:0:\"\";}}', '', 1),
-                    (7, 'question', 7, 'textbox', '', '', 'none', '', '', 0, 255, 1, 1, 1, 1, 'input', 'a:2:{s:2:\"vi\";a:2:{i:0;s:22:\"Câu hỏi bảo mật\";i:1;s:0:\"\";}s:2:\"en\";a:2:{i:0;s:8:\"Question\";i:1;s:0:\"\";}}', '', 1)
+                    (1, 'first_name', 1, 'textbox', '', '', 'none', '', '', 0, 100, 1, 1, 1, 1, 'input', '', '', 1), 
+                    (2, 'last_name', 2, 'textbox', '', '', 'none', '', '', 0, 100, 0, 1, 1, 1, 'input', '', '', 1), 
+                    (3, 'gender', 3, 'select', 'a:3:{s:1:\"N\";s:0:\"\";s:1:\"M\";s:0:\"\";s:1:\"F\";s:0:\"\";}', '', 'none', '', '', 0, 1, 0, 1, 1, 1, 'input', '', '2', 1), 
+                    (4, 'birthday', 4, 'date', 'a:1:{s:12:\"current_date\";i:0;}', '', 'none', '', '', 0, 0, 1, 1, 1, 1, 'input', '', '0', 1), 
+                    (5, 'sig', 5, 'textarea', '', '', 'none', '', '', 0, 1000, 0, 1, 1, 1, 'input', '', '', 1), 
+                    (6, 'question', 6, 'textbox', '', '', 'none', '', '', 3, 255, 1, 1, 1, 1, 'input', '', '', 1), 
+                    (7, 'answer', 7, 'textbox', '', '', 'none', '', '', 3, 255, 1, 1, 1, 1, 'input', '', '', 1)
                 ;");
             } catch (PDOException $e) {
                 trigger_error($e->getMessage());
@@ -229,6 +254,26 @@ function nv_up_modusers4103()
                 while ($row = $result->fetch()) {
                     $weight++;
                     $db->query("UPDATE " . $db_config['prefix'] . "_" . $mod_data . "_field SET weight=" . $weight . " WHERE fid=" . $row['fid']);
+                }
+            } catch (PDOException $e) {
+                trigger_error($e->getMessage());
+            }
+            
+            // Cập nhật lang cho các field
+            try {
+                $sql = "SELECT fid, field, language, system FROM " . $db_config['prefix'] . "_" . $mod_data . "_field";
+                $_result = $db->query($sql);
+                while ($_row = $_result->fetch()) {
+                    $_row['language'] = $_row['language'] ? unserialize($_row['language']) : array();
+                    if (!isset($_row['language'][$lang])) {
+                        if (!empty($_row['system'])) {
+                            $_row['language'][$lang] = array(0 => $lang_module[$_row['field']], 1 => '');
+                        } elseif (!empty($_row['language'])) {
+                            $_copy_lang = current($_row['language']);
+                            $_row['language'][$lang] = array(0 => ucfirst(nv_EncString($_copy_lang[0])), 1 => ucfirst(nv_EncString($_copy_lang[1])));
+                        }
+                        $db->query('UPDATE ' . $db_config['prefix'] . '_' . $mod_data . '_field SET language=' . $db->quote(serialize($_row['language'])) . ' WHERE fid=' . $_row['fid']);
+                    }
                 }
             } catch (PDOException $e) {
                 trigger_error($e->getMessage());
