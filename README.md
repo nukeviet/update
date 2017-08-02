@@ -1,5 +1,7 @@
 # Hướng dẫn cập nhật từ NukeViet 4.1 Official (4.1.02) lên NukeViet 4.1.03
 
+> Chú ý: Đây là nhánh thử nghiệm, hiện không có phiên bản 4.1.03. Hãy thử tìm phiên bản cao hơn.
+
 Nếu phiên bản NukeViet 4 của bạn nhỏ hơn 4.1.02 bạn cần tìm hướng dẫn nâng cấp tối thiểu lên phiên bản 4.1.02 trước khi tiến hành các bước tiếp theo.
 
 ## Nâng cấp hệ thống:
