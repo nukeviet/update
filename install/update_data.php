@@ -2,7 +2,7 @@
 
 /**
  * @Project NUKEVIET 4.x
- * @Author VINADES.,JSC (contact@vinades.vn)
+ * @Author VINADES.,JSC <contact@vinades.vn>
  * @Copyright (C) 2015 VINADES.,JSC. All rights reserved
  * @License GNU/GPL version 2 or any later version
  * @Createdate Sat, 07 Mar 2015 03:43:56 GMT
@@ -23,10 +23,10 @@ $nv_update_config['formodule'] = '';
 
 // Thong tin phien ban, tac gia, ho tro
 $nv_update_config['release_date'] = 1492966799;
-$nv_update_config['author'] = 'VINADES.,JSC (contact@vinades.vn)';
-$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.1.03';
-$nv_update_config['to_version'] = '4.1.03';
-$nv_update_config['allow_old_version'] = array('4.1.02');
+$nv_update_config['author'] = 'VINADES.,JSC <contact@vinades.vn>';
+$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.2.01';
+$nv_update_config['to_version'] = '4.2.01';
+$nv_update_config['allow_old_version'] = array('4.1.02', '4.2.00');
 
 // 0:Nang cap bang tay, 1:Nang cap tu dong, 2:Nang cap nua tu dong
 $nv_update_config['update_auto_type'] = 1;
@@ -36,42 +36,42 @@ $nv_update_config['lang']['vi'] = array();
 $nv_update_config['lang']['en'] = array();
 
 // Tiếng Việt
-$nv_update_config['lang']['vi']['nv_up_modusers4103'] = 'Cập nhật module users lên 4.1.03';
-$nv_update_config['lang']['vi']['nv_up_systemcfg4103'] = 'Cập nhật các cấu hình hệ thống bản 4.1.03';
-$nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản 4.1.03';
+$nv_update_config['lang']['vi']['nv_up_modusers4200'] = 'Cập nhật module users lên 4.2.00';
+$nv_update_config['lang']['vi']['nv_up_systemcfg4200'] = 'Cập nhật các cấu hình hệ thống bản 4.2.00';
+$nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản 4.2.00';
 
 // English
-$nv_update_config['lang']['vi']['nv_up_modusers4103'] = 'Update module users to 4.1.03';
-$nv_update_config['lang']['vi']['nv_up_systemcfg4103'] = 'Update system config to 4.1.03';
-$nv_update_config['lang']['vi']['nv_up_finish'] = 'Update new version 4.1.03';
+$nv_update_config['lang']['vi']['nv_up_modusers4200'] = 'Update module users to 4.2.00';
+$nv_update_config['lang']['vi']['nv_up_systemcfg4200'] = 'Update system config to 4.2.00';
+$nv_update_config['lang']['vi']['nv_up_finish'] = 'Update new version 4.2.00';
 
 $nv_update_config['tasklist'] = array();
 $nv_update_config['tasklist'][] = array(
-    'r' => '4.1.03',
+    'r' => '4.2.00',
     'rq' => 2,
-    'l' => 'nv_up_modusers4103',
-    'f' => 'nv_up_modusers4103'
+    'l' => 'nv_up_modusers4200',
+    'f' => 'nv_up_modusers4200'
 );
 $nv_update_config['tasklist'][] = array(
-    'r' => '4.1.03',
+    'r' => '4.2.00',
     'rq' => 2,
-    'l' => 'nv_up_systemcfg4103',
-    'f' => 'nv_up_systemcfg4103'
+    'l' => 'nv_up_systemcfg4200',
+    'f' => 'nv_up_systemcfg4200'
 );
 $nv_update_config['tasklist'][] = array(
-    'r' => '4.1.03',
+    'r' => '4.2.01',
     'rq' => 2,
     'l' => 'nv_up_finish',
     'f' => 'nv_up_finish'
 );
 
 /**
- * nv_up_modusers4103()
+ * nv_up_modusers4200()
  *
  * @return
  *
  */
-function nv_up_modusers4103()
+function nv_up_modusers4200()
 {
     global $nv_update_baseurl, $db, $db_config;
     $return = array(
@@ -82,14 +82,14 @@ function nv_up_modusers4103()
         'lang' => 'NO',
         'message' => ''
     );
-    
+
     // Duyệt tất cả các ngôn ngữ
     $language_query = $db->query('SELECT lang FROM ' . $db_config['prefix'] . '_setup_language WHERE setup = 1');
     while (list ($lang) = $language_query->fetch(3)) {
         // Lấy ngôn ngữ
         $lang_module = array();
         $lang_translator = array();
-        
+
         // Lấy từ thư mục update
         if (file_exists(NV_ROOTDIR . '/install/update/modules/users/language/' . $lang . '.php')) {
             include NV_ROOTDIR . '/install/update/modules/users/language/' . $lang . '.php';
@@ -98,7 +98,7 @@ function nv_up_modusers4103()
         } else {
             include NV_ROOTDIR . '/install/update/modules/users/language/vi.php';
         }
-        
+
         // Lấy từ thư mục module
         if (empty($lang_module)) {
             if (file_exists(NV_ROOTDIR . '/modules/users/language/' . $lang . '.php')) {
@@ -109,7 +109,7 @@ function nv_up_modusers4103()
                 include NV_ROOTDIR . '/modules/users/language/vi.php';
             }
         }
-        
+
         // Lấy tất cả các module và module ảo của nó
         $mquery = $db->query("SELECT title, module_data FROM " . $db_config['prefix'] . "_" . $lang . "_modules WHERE module_file = 'users'");
         while (list ($mod, $mod_data) = $mquery->fetch(3)) {
@@ -152,7 +152,7 @@ function nv_up_modusers4103()
             } catch (PDOException $e) {
                 trigger_error($e->getMessage());
             }
-            
+
             // Đổi ID các trường dữ liệu hiện có nếu từ 1 - 7
             try {
                 $maxFID = $db->query("SELECT MAX(fid) FROM " . $db_config['prefix'] . "_" . $mod_data . "_field")->fetchColumn();
@@ -172,12 +172,12 @@ function nv_up_modusers4103()
             } catch (PDOException $e) {
                 trigger_error($e->getMessage());
             }
-            
+
             // Đổi tên các trường trùng với trường SYS
             $array_sys_field = array('first_name', 'last_name', 'gender', 'birthday', 'sig', 'question', 'answer');
             $array_custom_field = $array_infotable_field = array();
             $array_field_afterchanged = array();
-            
+
             try {
                 $sql = "SELECT fid, field FROM " . $db_config['prefix'] . "_" . $mod_data . "_field";
                 $result = $db->query($sql);
@@ -195,10 +195,10 @@ function nv_up_modusers4103()
                         'default' => $row['default']
                     );
                 }
-                
+
                 $ascii_offset = 97; // Prefix ký tự từ A-Z chắc không có chuyện vượt qua ngoài này mà vẫn trùng
                 $prefix_set = 'cus%s_';
-                
+
                 foreach ($array_custom_field as $custom_field_fid => $custom_field) {
                     $i = 0;
                     $is_change = false;
@@ -211,10 +211,10 @@ function nv_up_modusers4103()
                     if ($is_change) {
                         $array_field_afterchanged[] = $new_field_name;
                         $db->query("UPDATE " . $db_config['prefix'] . "_" . $mod_data . "_field SET field='" . $new_field_name . "' WHERE fid=" . $custom_field_fid);
-                        
+
                         if (isset($array_infotable_field[$custom_field])) {
-                            $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $mod_data . "_info CHANGE 
-                            " . $custom_field . " " . $new_field_name . " " . $array_infotable_field[$custom_field]['type'] . " CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci 
+                            $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $mod_data . "_info CHANGE
+                            " . $custom_field . " " . $new_field_name . " " . $array_infotable_field[$custom_field]['type'] . " CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
                             " . ($array_infotable_field[$custom_field]['null'] == 'NO' ? "NOT NULL" : "") . (strpos($array_infotable_field[$custom_field]['type'], 'varchar') === false ? '' : " DEFAULT '" . $array_infotable_field[$custom_field]['default'] . "'" ));
                         }
                     }
@@ -222,34 +222,34 @@ function nv_up_modusers4103()
             } catch (PDOException $e) {
                 trigger_error($e->getMessage());
             }
-            
+
             // Cập nhật thứ tự tăng lên 7
             try {
                 $db->query("UPDATE " . $db_config['prefix'] . "_" . $mod_data . "_field SET weight=weight+7 WHERE fid>7");
             } catch (PDOException $e) {
                 trigger_error($e->getMessage());
             }
-            
+
             // Chèn các field mặc định vào
             try {
-                $db->query("INSERT INTO " . $db_config['prefix'] . "_" . $mod_data . "_field (fid, field, weight, field_type, field_choices, sql_choices, match_type, match_regex, func_callback, min_length, max_length, required, show_register, user_editable, show_profile, class, language, default_value, system) VALUES 
-                    (1, 'first_name', 1, 'textbox', '', '', 'none', '', '', 0, 100, 1, 1, 1, 1, 'input', '', '', 1), 
-                    (2, 'last_name', 2, 'textbox', '', '', 'none', '', '', 0, 100, 0, 1, 1, 1, 'input', '', '', 1), 
-                    (3, 'gender', 3, 'select', 'a:3:{s:1:\"N\";s:0:\"\";s:1:\"M\";s:0:\"\";s:1:\"F\";s:0:\"\";}', '', 'none', '', '', 0, 1, 0, 1, 1, 1, 'input', '', '2', 1), 
-                    (4, 'birthday', 4, 'date', 'a:1:{s:12:\"current_date\";i:0;}', '', 'none', '', '', 0, 0, 1, 1, 1, 1, 'input', '', '0', 1), 
-                    (5, 'sig', 5, 'textarea', '', '', 'none', '', '', 0, 1000, 0, 1, 1, 1, 'input', '', '', 1), 
-                    (6, 'question', 6, 'textbox', '', '', 'none', '', '', 3, 255, 1, 1, 1, 1, 'input', '', '', 1), 
+                $db->query("INSERT INTO " . $db_config['prefix'] . "_" . $mod_data . "_field (fid, field, weight, field_type, field_choices, sql_choices, match_type, match_regex, func_callback, min_length, max_length, required, show_register, user_editable, show_profile, class, language, default_value, system) VALUES
+                    (1, 'first_name', 1, 'textbox', '', '', 'none', '', '', 0, 100, 1, 1, 1, 1, 'input', '', '', 1),
+                    (2, 'last_name', 2, 'textbox', '', '', 'none', '', '', 0, 100, 0, 1, 1, 1, 'input', '', '', 1),
+                    (3, 'gender', 3, 'select', 'a:3:{s:1:\"N\";s:0:\"\";s:1:\"M\";s:0:\"\";s:1:\"F\";s:0:\"\";}', '', 'none', '', '', 0, 1, 0, 1, 1, 1, 'input', '', '2', 1),
+                    (4, 'birthday', 4, 'date', 'a:1:{s:12:\"current_date\";i:0;}', '', 'none', '', '', 0, 0, 1, 1, 1, 1, 'input', '', '0', 1),
+                    (5, 'sig', 5, 'textarea', '', '', 'none', '', '', 0, 1000, 0, 1, 1, 1, 'input', '', '', 1),
+                    (6, 'question', 6, 'textbox', '', '', 'none', '', '', 3, 255, 1, 1, 1, 1, 'input', '', '', 1),
                     (7, 'answer', 7, 'textbox', '', '', 'none', '', '', 3, 255, 1, 1, 1, 1, 'input', '', '', 1)
                 ;");
             } catch (PDOException $e) {
                 trigger_error($e->getMessage());
             }
-            
+
             // Fix lại weight chuẩn
             try {
                 $sql = "SELECT fid FROM " . $db_config['prefix'] . "_" . $mod_data . "_field ORDER BY weight ASC";
                 $result = $db->query($sql);
-                
+
                 $weight = 0;
                 while ($row = $result->fetch()) {
                     $weight++;
@@ -258,7 +258,7 @@ function nv_up_modusers4103()
             } catch (PDOException $e) {
                 trigger_error($e->getMessage());
             }
-            
+
             // Cập nhật lang cho các field
             try {
                 $sql = "SELECT fid, field, language, system FROM " . $db_config['prefix'] . "_" . $mod_data . "_field";
@@ -284,12 +284,12 @@ function nv_up_modusers4103()
 }
 
 /**
- * nv_up_systemcfg4103()
+ * nv_up_systemcfg4200()
  *
  * @return
  *
  */
-function nv_up_systemcfg4103()
+function nv_up_systemcfg4200()
 {
     global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config;
     $return = array(
@@ -310,8 +310,8 @@ function nv_up_systemcfg4103()
         } catch (PDOException $e) {
             trigger_error($e->getMessage());
         }
-    }    
-    
+    }
+
     return $return;
 }
 
@@ -339,6 +339,6 @@ function nv_up_finish()
     $db->query("UPDATE " . $db_config['prefix'] . "_setup_extensions SET  version='" . $nv_update_config['to_version'] . " " . $nv_update_config['release_date'] . "' WHERE type='theme' and basename IN ('default', 'mobile_default')");
 
     nv_save_file_config_global();
-    
+
     return $return;
 }
