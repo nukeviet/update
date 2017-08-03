@@ -38,12 +38,14 @@ $nv_update_config['lang']['en'] = array();
 // Tiếng Việt
 $nv_update_config['lang']['vi']['nv_up_modusers4200'] = 'Cập nhật module users lên 4.2.00';
 $nv_update_config['lang']['vi']['nv_up_systemcfg4200'] = 'Cập nhật các cấu hình hệ thống bản 4.2.00';
+$nv_update_config['lang']['vi']['nv_up_modbanners4201'] = 'Cập nhật module banners lên 4.2.01';
 $nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản 4.2.00';
 
 // English
-$nv_update_config['lang']['vi']['nv_up_modusers4200'] = 'Update module users to 4.2.00';
-$nv_update_config['lang']['vi']['nv_up_systemcfg4200'] = 'Update system config to 4.2.00';
-$nv_update_config['lang']['vi']['nv_up_finish'] = 'Update new version 4.2.00';
+$nv_update_config['lang']['en']['nv_up_modusers4200'] = 'Update module users to 4.2.00';
+$nv_update_config['lang']['en']['nv_up_systemcfg4200'] = 'Update system config to 4.2.00';
+$nv_update_config['lang']['en']['nv_up_modbanners4201'] = 'Update module banners to 4.2.01';
+$nv_update_config['lang']['en']['nv_up_finish'] = 'Update new version 4.2.00';
 
 $nv_update_config['tasklist'] = array();
 $nv_update_config['tasklist'][] = array(
@@ -58,6 +60,14 @@ $nv_update_config['tasklist'][] = array(
     'l' => 'nv_up_systemcfg4200',
     'f' => 'nv_up_systemcfg4200'
 );
+
+$nv_update_config['tasklist'][] = array(
+    'r' => '4.2.01',
+    'rq' => 2,
+    'l' => 'nv_up_modbanners4201',
+    'f' => 'nv_up_modbanners4201'
+);
+
 $nv_update_config['tasklist'][] = array(
     'r' => '4.2.01',
     'rq' => 2,
@@ -93,15 +103,15 @@ function nv_up_modusers4200()
         // Lấy từ thư mục update
         if (file_exists(NV_ROOTDIR . '/install/update/modules/users/language/' . $lang . '.php')) {
             include NV_ROOTDIR . '/install/update/modules/users/language/' . $lang . '.php';
-        } elseif (file_exists(NV_ROOTDIR . '/install/update/modules/users/language/en.php')) {
-            include NV_ROOTDIR . '/install/update/modules/users/language/en.php';
-        } else {
-            include NV_ROOTDIR . '/install/update/modules/users/language/vi.php';
         }
 
         // Lấy từ thư mục module
         if (empty($lang_module)) {
-            if (file_exists(NV_ROOTDIR . '/modules/users/language/' . $lang . '.php')) {
+            if (file_exists(NV_ROOTDIR . '/install/update/modules/users/language/en.php')) {
+                include NV_ROOTDIR . '/install/update/modules/users/language/en.php';
+            } elseif (file_exists(NV_ROOTDIR . '/install/update/modules/users/language/vi.php')) {
+                include NV_ROOTDIR . '/install/update/modules/users/language/vi.php';
+            } elseif (file_exists(NV_ROOTDIR . '/modules/users/language/' . $lang . '.php')) {
                 include NV_ROOTDIR . '/modules/users/language/' . $lang . '.php';
             } elseif (file_exists(NV_ROOTDIR . '/modules/users/language/en.php')) {
                 include NV_ROOTDIR . '/modules/users/language/en.php';
@@ -115,10 +125,23 @@ function nv_up_modusers4200()
         while (list ($mod, $mod_data) = $mquery->fetch(3)) {
             // Thêm cấu hình tuổi để đăng ký
             try {
-                $db->query("INSERT INTO " . $db_config['prefix'] . "_" . $mod_data . "_config (config, content, edit_time) VALUES ('min_old_user', '16', '0');");
+                $db->query("INSERT INTO " . $db_config['prefix'] . "_" . $mod_data . "_config (config, content, edit_time) VALUES ('min_old_user', '16', '" . NV_CURRENTTIME . "');");
             } catch (PDOException $e) {
                 trigger_error($e->getMessage());
             }
+            // Cấu hình thời gian thành viên chờ để active
+            try {
+                $db->query("INSERT INTO " . $db_config['prefix'] . "_" . $mod_data . "_config (config, content, edit_time) VALUES ('register_active_time', '86400', '" . NV_CURRENTTIME . "');");
+            } catch (PDOException $e) {
+                trigger_error($e->getMessage());
+            }
+            // Thêm trường cho các site cài mới bị thiếu
+            try {
+                $db->query("INSERT INTO " . $db_config['prefix'] . "_" . $mod_data . "_config (config, content, edit_time) VALUES ('active_user_logs', '1', '" . NV_CURRENTTIME . "');");
+            } catch (PDOException $e) {
+                trigger_error($e->getMessage());
+            }
+
             // Thêm trường hệ thống vào bảng field
             try {
                 $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $mod_data . "_field ADD system TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Trường dữ liệu hệ thống' AFTER default_value;");
@@ -315,6 +338,234 @@ function nv_up_systemcfg4200()
     return $return;
 }
 
+
+/**
+ * nv_up_modbanners4201()
+ *
+ * @return
+ *
+ */
+function nv_up_modbanners4201()
+{
+    global $nv_update_baseurl, $db, $db_config;
+    $return = array(
+        'status' => 1,
+        'complete' => 1,
+        'next' => 1,
+        'link' => 'NO',
+        'lang' => 'NO',
+        'message' => ''
+    );
+
+    // Nếu site có banner clients mới tác động đến fields
+    $sql = "SELECT * FROM " . NV_BANNERS_GLOBALTABLE . "_clients";
+    $array_banner_clients = $db->query($sql)->fetchAll();
+
+    if (!empty($array_banner_clients)) {
+        $sql = 'SELECT * FROM ' . $db_config['prefix'] . '_setup_language WHERE setup=1';
+        $array_langsetup = $db->query($sql)->fetchAll();
+
+        // Chuẩn bị các trường dữ liệu
+        $array_bannercl_fields = array(
+            'website' => array('url'),
+            'location' => array('none'),
+            'yim' => array('none'),
+            'phone' => array('none'),
+            'fax' => array('none'),
+            'mobile' => array('none')
+        );
+        $custom_fields = array();
+
+        $sql = 'SELECT * FROM ' . NV_USERS_GLOBALTABLE . '_field';
+        $result = $db->query($sql);
+
+        while ($row = $result->fetch()) {
+            $custom_fields[$row['field']] = $row;
+        }
+
+        // Chuẩn bị các trường dữ liệu
+        $weight = sizeof($custom_fields);
+        foreach ($array_bannercl_fields as $field => $field_data) {
+            if (!isset($custom_fields[$field])) {
+                $weight++;
+
+                $language = array();
+                foreach ($array_langsetup as $lang) {
+                    $language[$lang['lang']] = array(
+                        0 => nv_get_banner_language($lang['lang'], $field),
+                        1 => ''
+                    );
+                }
+
+                $array = array();
+                $array['field'] = $field;
+                $array['weight'] = $weight;
+                $array['field_type'] = 'textbox';
+                $array['field_choices'] = '';
+                $array['sql_choices'] = '';
+                $array['match_type'] = $field_data[0];
+                $array['match_regex'] = '';
+                $array['func_callback'] = '';
+                $array['min_length'] = 0;
+                $array['max_length'] = 255;
+                $array['required'] = 0;
+                $array['show_register'] = 0;
+                $array['user_editable'] = 1;
+                $array['show_profile'] = 0;
+                $array['class'] = '';
+                $array['language'] = serialize($language);
+                $array['default_value'] = '';
+
+                $sql = 'INSERT INTO ' . NV_USERS_GLOBALTABLE . '_field (
+                    field, weight, field_type, field_choices, sql_choices, match_type, match_regex, func_callback, min_length, max_length, required,
+                    show_register, user_editable, show_profile, class, language, default_value
+                ) VALUES (
+                    :field, :weight, :field_type, :field_choices, :sql_choices, :match_type, :match_regex, :func_callback, :min_length, :max_length, :required,
+                    :show_register, :user_editable, :show_profile, :class, :language, :default_value
+                )';
+
+                $fid = $db->insert_id($sql, 'fid', $array);
+
+                if ($fid) {
+                    try {
+                        $db->exec('ALTER TABLE ' . NV_USERS_GLOBALTABLE . '_info ADD ' . $field . ' VARCHAR(255) NOT NULL DEFAULT \'\'');
+                    } catch (PDOException $e) {
+                        trigger_error($e->getMessage());
+                    }
+                }
+            }
+        }
+
+        // Bắt đầu lưu client vào
+        foreach ($array_banner_clients as $client) {
+            // Xác định trùng email
+            $sql = 'SELECT userid FROM ' . NV_USERS_GLOBALTABLE . ' WHERE email=:email';
+            $sth = $db->prepare($sql);
+            $sth->bindParam(':email', $client['email'], PDO::PARAM_STR);
+            $sth->execute();
+            $user = $sth->fetch();
+            if (empty($user)) {
+                // Xác định tên đăng nhập không bị trùng
+                $username = $client['login'];
+                $offset = 0;
+                while ($db->query('SELECT userid FROM ' . NV_USERS_GLOBALTABLE . ' WHERE username=' . $db->quote($username))->rowCount()) {
+                    $offset++;
+                    $username = $username . $offset;
+                }
+                // Thêm tài khoản
+                $sql = "INSERT INTO " . NV_USERS_GLOBALTABLE . " (
+                    group_id, username, md5username, password, email, first_name, last_name, gender, birthday, sig, regdate,
+                    question, answer, passlostkey, view_mail,
+                    remember, in_groups, active, checknum, last_login, last_ip, last_agent, last_openid, idsite
+                ) VALUES (
+                    4,
+                    :username,
+                    :md5_username,
+                    :password,
+                    :email,
+                    :first_name,
+                    :last_name,
+                    '', 0, '', " . $client['reg_time'] . ", '', '',
+                    '', 0, 1, '4', " . $client['act'] . ", '', 0, '', '', '', " . $global_config['idsite'] . "
+                )";
+
+                $data_insert = array();
+                $data_insert['username'] = $username;
+                $data_insert['md5_username'] = nv_md5safe($username);
+                $data_insert['password'] = $client['pass'];
+                $data_insert['email'] = $client['email'];
+                $data_insert['first_name'] = '';
+                $data_insert['last_name'] = $client['full_name'];
+
+                $userid = $db->insert_id($sql, 'userid', $data_insert);
+
+                if ($userid) {
+                    try {
+                        $db->exec('INSERT INTO ' . NV_USERS_GLOBALTABLE . '_info (userid) VALUES (' . $userid . ')');
+                    } catch (PDOException $e) {
+                        trigger_error($e->getMessage());
+                    }
+                    $user = array('userid' => $userid);
+                }
+            }
+
+            if (!empty($user)) {
+                $array_info = array();
+                foreach ($array_bannercl_fields as $fkey => $fval) {
+                    if (!empty($client[$fkey])) {
+                        $array_info[$fkey] = $db->quote($client[$fkey]);
+                    }
+                }
+
+                if (!empty($array_info)) {
+                    $sql = array();
+                    foreach ($array_info as $fkey => $fval) {
+                        $sql[] = $fkey . '=' . $fval;
+                    }
+                    $sql = 'UPDATE ' . NV_USERS_GLOBALTABLE . '_info SET ' . implode(', ', $sql) . ' WHERE userid=' . $user['userid'];
+                    try {
+                        $db->query($sql);
+                    } catch (PDOException $e) {
+                        trigger_error($e->getMessage());
+                    }
+                }
+
+                // Cập nhật các quảng cáo
+                $db->query('UPDATE ' . NV_BANNERS_GLOBALTABLE . '_rows SET clid=' . $user['userid'] . ' WHERE clid=' . $client['id']);
+            }
+        }
+    }
+
+    // Xóa bảng clients
+    try {
+        $db->query("DROP TABLE " . NV_BANNERS_GLOBALTABLE . "_clients");
+    } catch (PDOException $e) {
+        trigger_error($e->getMessage());
+    }
+
+    // Xóa các file thừa
+    @nv_deletefile(NV_ROOTDIR . '/modules/banners/admin/add_client.php');
+    @nv_deletefile(NV_ROOTDIR . '/modules/banners/admin/banners_client.php');
+    @nv_deletefile(NV_ROOTDIR . '/modules/banners/admin/change_act_client.php');
+    @nv_deletefile(NV_ROOTDIR . '/modules/banners/admin/cl_list.php');
+    @nv_deletefile(NV_ROOTDIR . '/modules/banners/admin/client_list.php');
+    @nv_deletefile(NV_ROOTDIR . '/modules/banners/admin/del_client.php');
+    @nv_deletefile(NV_ROOTDIR . '/modules/banners/admin/edit_client.php');
+    @nv_deletefile(NV_ROOTDIR . '/modules/banners/admin/info_cl.php');
+    @nv_deletefile(NV_ROOTDIR . '/modules/banners/admin/info_client.php');
+    @nv_deletefile(NV_ROOTDIR . '/themes/admin_default/modules/banners/add_client.tpl');
+    @nv_deletefile(NV_ROOTDIR . '/themes/admin_default/modules/banners/banners_client.tpl');
+    @nv_deletefile(NV_ROOTDIR . '/themes/admin_default/modules/banners/cl_list.tpl');
+    @nv_deletefile(NV_ROOTDIR . '/themes/admin_default/modules/banners/client_list.tpl');
+    @nv_deletefile(NV_ROOTDIR . '/themes/admin_default/modules/banners/edit_client.tpl');
+    @nv_deletefile(NV_ROOTDIR . '/themes/admin_default/modules/banners/info_cl.tpl');
+    @nv_deletefile(NV_ROOTDIR . '/themes/admin_default/modules/banners/info_client.tpl');
+
+    // Thêm trường bảng plans
+    try {
+        $db->query("ALTER TABLE " . NV_BANNERS_GLOBALTABLE . "_plans ADD uploadtype VARCHAR(255) NOT NULL DEFAULT '' AFTER require_image;");
+    } catch (PDOException $e) {
+        trigger_error($e->getMessage());
+    }
+    try {
+        $db->query("ALTER TABLE " . NV_BANNERS_GLOBALTABLE . "_plans ADD uploadgroup VARCHAR(255) NOT NULL DEFAULT '' AFTER uploadtype;");
+    } catch (PDOException $e) {
+        trigger_error($e->getMessage());
+    }
+    try {
+        $db->query("ALTER TABLE " . NV_BANNERS_GLOBALTABLE . "_plans ADD exp_time INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER uploadgroup;");
+    } catch (PDOException $e) {
+        trigger_error($e->getMessage());
+    }
+    try {
+        $db->query("UPDATE " . NV_BANNERS_GLOBALTABLE . "_plans SET uploadtype='images,flash'");
+    } catch (PDOException $e) {
+        trigger_error($e->getMessage());
+    }
+
+    return $return;
+}
+
 /**
  * nv_up_finish()
  *
@@ -341,4 +592,35 @@ function nv_up_finish()
     nv_save_file_config_global();
 
     return $return;
+}
+
+/**
+ * nv_get_banner_language()
+ *
+ * @param mixed $lang
+ * @param mixed $langkey
+ * @return
+ */
+function nv_get_banner_language($lang, $langkey)
+{
+    $langreturn = nv_ucfirst($langkey);
+    $keyfound = false;
+    $lang_module = $lang_translator = array();
+
+    if (file_exists(NV_ROOTDIR . '/modules/banners/language/' . $lang . '.php')) {
+        include NV_ROOTDIR . '/modules/banners/language/' . $lang . '.php';
+        if (isset($lang_module[$langkey])) {
+            $langreturn = $lang_module[$langkey];
+            $keyfound = true;
+        }
+    }
+
+    if (!$keyfound and file_exists(NV_ROOTDIR . '/modules/banners/language/en.php')) {
+        include NV_ROOTDIR . '/modules/banners/language/en.php';
+        if (isset($lang_module[$langkey])) {
+            $langreturn = $lang_module[$langkey];
+        }
+    }
+
+    return $langreturn;
 }
