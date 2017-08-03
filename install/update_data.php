@@ -39,12 +39,14 @@ $nv_update_config['lang']['en'] = array();
 $nv_update_config['lang']['vi']['nv_up_modusers4200'] = 'Cập nhật module users lên 4.2.00';
 $nv_update_config['lang']['vi']['nv_up_systemcfg4200'] = 'Cập nhật các cấu hình hệ thống bản 4.2.00';
 $nv_update_config['lang']['vi']['nv_up_modbanners4201'] = 'Cập nhật module banners lên 4.2.01';
+$nv_update_config['lang']['vi']['nv_up_modusers4201'] = 'Cập nhật module users lên 4.2.01';
 $nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản 4.2.00';
 
 // English
 $nv_update_config['lang']['en']['nv_up_modusers4200'] = 'Update module users to 4.2.00';
 $nv_update_config['lang']['en']['nv_up_systemcfg4200'] = 'Update system config to 4.2.00';
 $nv_update_config['lang']['en']['nv_up_modbanners4201'] = 'Update module banners to 4.2.01';
+$nv_update_config['lang']['en']['nv_up_modusers4201'] = 'Update module users to 4.2.01';
 $nv_update_config['lang']['en']['nv_up_finish'] = 'Update new version 4.2.00';
 
 $nv_update_config['tasklist'] = array();
@@ -66,6 +68,12 @@ $nv_update_config['tasklist'][] = array(
     'rq' => 2,
     'l' => 'nv_up_modbanners4201',
     'f' => 'nv_up_modbanners4201'
+);
+$nv_update_config['tasklist'][] = array(
+    'r' => '4.2.01',
+    'rq' => 2,
+    'l' => 'nv_up_modusers4201',
+    'f' => 'nv_up_modusers4201'
 );
 
 $nv_update_config['tasklist'][] = array(
@@ -132,12 +140,6 @@ function nv_up_modusers4200()
             // Cấu hình thời gian thành viên chờ để active
             try {
                 $db->query("INSERT INTO " . $db_config['prefix'] . "_" . $mod_data . "_config (config, content, edit_time) VALUES ('register_active_time', '86400', '" . NV_CURRENTTIME . "');");
-            } catch (PDOException $e) {
-                trigger_error($e->getMessage());
-            }
-            // Thêm trường cho các site cài mới bị thiếu
-            try {
-                $db->query("INSERT INTO " . $db_config['prefix'] . "_" . $mod_data . "_config (config, content, edit_time) VALUES ('active_user_logs', '1', '" . NV_CURRENTTIME . "');");
             } catch (PDOException $e) {
                 trigger_error($e->getMessage());
             }
@@ -563,6 +565,41 @@ function nv_up_modbanners4201()
         trigger_error($e->getMessage());
     }
 
+    return $return;
+}
+
+/**
+ * nv_up_modusers4201()
+ *
+ * @return
+ *
+ */
+function nv_up_modusers4201()
+{
+    global $nv_update_baseurl, $db, $db_config;
+    $return = array(
+        'status' => 1,
+        'complete' => 1,
+        'next' => 1,
+        'link' => 'NO',
+        'lang' => 'NO',
+        'message' => ''
+    );
+
+    // Duyệt tất cả các ngôn ngữ
+    $language_query = $db->query('SELECT lang FROM ' . $db_config['prefix'] . '_setup_language WHERE setup = 1');
+    while (list ($lang) = $language_query->fetch(3)) {
+        // Lấy tất cả các module và module ảo của nó
+        $mquery = $db->query("SELECT title, module_data FROM " . $db_config['prefix'] . "_" . $lang . "_modules WHERE module_file = 'users'");
+        while (list ($mod, $mod_data) = $mquery->fetch(3)) {
+            // Thêm trường cho các site cài mới bị thiếu
+            try {
+                $db->query("INSERT INTO " . $db_config['prefix'] . "_" . $mod_data . "_config (config, content, edit_time) VALUES ('active_user_logs', '1', '" . NV_CURRENTTIME . "');");
+            } catch (PDOException $e) {
+                trigger_error($e->getMessage());
+            }
+        }
+    }
     return $return;
 }
 
