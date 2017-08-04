@@ -8,7 +8,8 @@
  * @Createdate Sat, 07 Mar 2015 03:43:56 GMT
  */
 
-if (!defined('NV_IS_UPDATE')) die('Stop!!!');
+if (!defined('NV_IS_UPDATE'))
+    die('Stop!!!');
 
 $nv_update_config = array();
 
@@ -16,13 +17,13 @@ $nv_update_config = array();
 $nv_update_config['type'] = 1;
 
 // ID goi cap nhat
-$nv_update_config['packageID'] = 'NVUD4103';
+$nv_update_config['packageID'] = 'NVUD4201';
 
 // Cap nhat cho module nao, de trong neu la cap nhat NukeViet, ten thu muc module neu la cap nhat module
 $nv_update_config['formodule'] = '';
 
 // Thong tin phien ban, tac gia, ho tro
-$nv_update_config['release_date'] = 1492966799;
+$nv_update_config['release_date'] = 1501938000;
 $nv_update_config['author'] = 'VINADES.,JSC <contact@vinades.vn>';
 $nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.2.01';
 $nv_update_config['to_version'] = '4.2.01';
