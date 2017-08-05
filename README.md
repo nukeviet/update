@@ -6,7 +6,8 @@ Nếu phiên bản NukeViet 4 của bạn nhỏ hơn 4.1.02 bạn cần tìm hư
 
 ### Bước 1: Chuẩn bị trước khi cập nhật:
 
-Backup toàn bộ CSDL và các file code, tránh tình trạng có vấn đề phát sinh site không hoạt động được sau update.
+- Backup toàn bộ CSDL và các file code, tránh tình trạng có vấn đề phát sinh site không hoạt động được sau update.
+- Nếu site của bạn đã tùy biến các thư mục bằng cách sửa file includes/constants.php hãy đưa về mặc định, sau nâng cấp tiến hành cấu hình trở lại.
 
 ### Bước 2: Thực hiện cập nhật:
 
