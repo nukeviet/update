@@ -536,6 +536,10 @@ function nv_up_modbanners4201()
     @nv_deletefile(NV_ROOTDIR . '/modules/banners/admin/edit_client.php');
     @nv_deletefile(NV_ROOTDIR . '/modules/banners/admin/info_cl.php');
     @nv_deletefile(NV_ROOTDIR . '/modules/banners/admin/info_client.php');
+    @nv_deletefile(NV_ROOTDIR . '/modules/banners/funcs/cledit.php');
+    @nv_deletefile(NV_ROOTDIR . '/modules/banners/funcs/clientinfo.php');
+    @nv_deletefile(NV_ROOTDIR . '/modules/banners/funcs/clinfo.php');
+    @nv_deletefile(NV_ROOTDIR . '/modules/banners/funcs/logininfo.php');
     @nv_deletefile(NV_ROOTDIR . '/themes/admin_default/modules/banners/add_client.tpl');
     @nv_deletefile(NV_ROOTDIR . '/themes/admin_default/modules/banners/banners_client.tpl');
     @nv_deletefile(NV_ROOTDIR . '/themes/admin_default/modules/banners/cl_list.tpl');
@@ -543,6 +547,10 @@ function nv_up_modbanners4201()
     @nv_deletefile(NV_ROOTDIR . '/themes/admin_default/modules/banners/edit_client.tpl');
     @nv_deletefile(NV_ROOTDIR . '/themes/admin_default/modules/banners/info_cl.tpl');
     @nv_deletefile(NV_ROOTDIR . '/themes/admin_default/modules/banners/info_client.tpl');
+    @nv_deletefile(NV_ROOTDIR . '/themes/default/modules/banners/cledit.tpl');
+    @nv_deletefile(NV_ROOTDIR . '/themes/default/modules/banners/clientinfo.tpl');
+    @nv_deletefile(NV_ROOTDIR . '/themes/default/modules/banners/clinfo.tpl');
+    @nv_deletefile(NV_ROOTDIR . '/themes/default/modules/banners/logininfo.tpl');
 
     // Thêm trường bảng plans
     try {
