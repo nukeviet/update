@@ -1,6 +1,6 @@
-# Hướng dẫn cập nhật từ NukeViet 4.1 Official (4.1.02), NukeViet 4.2 Beta (4.2.00) lên NukeViet 4.2.01
+# Hướng dẫn cập nhật từ 4.2.01, 4.2.02, 4.2.03 lên NukeViet 4.3.00
 
-Nếu phiên bản NukeViet 4 của bạn nhỏ hơn 4.1.02 bạn cần tìm hướng dẫn nâng cấp tối thiểu lên phiên bản 4.1.02 trước khi tiến hành các bước tiếp theo.
+Nếu phiên bản NukeViet 4 của bạn nhỏ hơn 4.2.01 bạn cần tìm hướng dẫn nâng cấp tối thiểu lên phiên bản 4.2.01 trước khi tiến hành các bước tiếp theo.
 
 ## Nâng cấp hệ thống:
 
@@ -24,7 +24,7 @@ Nếu thất bại hãy thử cách cập nhật thủ công bên dưới.
 
 #### Cập nhật thủ công:
 
-Download gói cập nhật tại: https://github.com/nukeviet/update/releases/download/to-4.2.01/update-to-4.2.01.zip
+Download gói cập nhật tại: https://github.com/nukeviet/update/releases/download/to-4.3.00/update-to-4.3.00.zip
 Giải nén và Upload các file trong gói cập nhật với cấu trúc của NukeViet, sau đó vào admin để tiến hành cập nhật.
 
 ### Bước 3: Xử lý sau cập nhật:
@@ -40,6 +40,8 @@ Sau khi cập nhật xong, cần chú ý:
 - Nếu site của bạn dùng giao diện không phải mặc định cần cập nhật theo hướng dẫn bên dưới.
 
 ## Hướng dẫn cập nhật các giao diện không phải là giao diện mặc định:
+
+> Nếu site của bạn sử dụng giao diện không phải mặc định, cần cập nhật theo hướng dẫn bên dưới.
 
 ### Cập nhật theme.php
 
