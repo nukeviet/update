@@ -23,7 +23,7 @@ $nv_update_config['packageID'] = 'NVUD4300';
 $nv_update_config['formodule'] = '';
 
 // Thong tin phien ban, tac gia, ho tro
-$nv_update_config['release_date'] = 1510138800;
+$nv_update_config['release_date'] = 1510218000;
 $nv_update_config['author'] = 'VINADES.,JSC <contact@vinades.vn>';
 $nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.3.00';
 $nv_update_config['to_version'] = '4.3.00';
