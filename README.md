@@ -676,26 +676,6 @@ Tìm và xóa đoạn:
 	</div>
 ```
 
-Tìm:
-
-```html
-			<input maxlength="255" value="{DATA.author}" name="author" type="text" class="form-control" />
-		</div>
-	</div>
-```
-
-Thêm xuống dưới:
-
-```html
-
-	<div class="form-group">
-		<label class="col-sm-4 control-label">{LANG.content_keywords}</label>
-		<div class="col-sm-20">
-			<input maxlength="255" value="{DATA.keywords}" name="keywords" type="text" class="form-control" />
-		</div>
-	</div>
-```
-
 #### Cập nhật detail.tpl
 
 Mở file `themes/ten-theme/modules/news/detail.tpl` chỉnh sửa như sau:
