@@ -26,9 +26,3 @@ Nếu thất bại hãy thử cách cập nhật thủ công bên dưới.
 
 Download gói cập nhật tại: https://github.com/nukeviet/update/releases/download/to-4.3.01/update-to-4.3.01.zip
 Giải nén và Upload các file trong gói cập nhật với cấu trúc của NukeViet, sau đó vào admin để tiến hành cập nhật.
-
-### Bước 3: Xử lý sau cập nhật:
-
-Sau khi cập nhật xong, cần chú ý:
-
-- Kiểm tra lại tương thích của các module không phải là module mặc định có sẵn trong hệ thống.
