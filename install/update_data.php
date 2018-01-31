@@ -37,18 +37,82 @@ $nv_update_config['lang']['vi'] = array();
 $nv_update_config['lang']['en'] = array();
 
 // Tiếng Việt
+$nv_update_config['lang']['vi']['nv_up_modnews4301'] = 'Cập nhật module news lên 4.3.01';
+$nv_update_config['lang']['vi']['nv_up_modlang4301'] = 'Cập nhật module language lên 4.3.01';
 $nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản 4.3.01';
 
 // English
+$nv_update_config['lang']['vi']['nv_up_modnews4301'] = 'Update module news to 4.3.01';
+$nv_update_config['lang']['vi']['nv_up_modlang4301'] = 'Update module language to 4.3.01';
 $nv_update_config['lang']['en']['nv_up_finish'] = 'Update new version 4.3.01';
 
 $nv_update_config['tasklist'] = array();
 $nv_update_config['tasklist'][] = array(
     'r' => '4.3.01',
     'rq' => 2,
+    'l' => 'nv_up_modnews4301',
+    'f' => 'nv_up_modnews4301'
+);
+$nv_update_config['tasklist'][] = array(
+    'r' => '4.3.01',
+    'rq' => 2,
+    'l' => 'nv_up_modlang4301',
+    'f' => 'nv_up_modlang4301'
+);
+$nv_update_config['tasklist'][] = array(
+    'r' => '4.3.01',
+    'rq' => 2,
     'l' => 'nv_up_finish',
     'f' => 'nv_up_finish'
 );
+
+/**
+ * nv_up_modlang4301()
+ *
+ * @return
+ *
+ */
+function nv_up_modlang4301()
+{
+    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config;
+    $return = array(
+        'status' => 1,
+        'complete' => 1,
+        'next' => 1,
+        'link' => 'NO',
+        'lang' => 'NO',
+        'message' => ''
+    );
+
+    try {
+        $db->query("ALTER TABLE " . NV_LANGUAGE_GLOBALTABLE . "_file CHANGE langtype langtype VARCHAR(50) NOT NULL DEFAULT 'lang_module';");
+    } catch (PDOException $e) {
+        trigger_error($e->getMessage());
+    }
+    try {
+        $db->query("ALTER TABLE " . NV_LANGUAGE_GLOBALTABLE . " ADD langtype VARCHAR(50) NOT NULL DEFAULT 'lang_module' AFTER idfile;");
+    } catch (PDOException $e) {
+        trigger_error($e->getMessage());
+    }
+    try {
+        $db->query("ALTER TABLE " . NV_LANGUAGE_GLOBALTABLE . " DROP INDEX filelang, ADD UNIQUE filelang (idfile, lang_key, langtype) USING BTREE;");
+    } catch (PDOException $e) {
+        trigger_error($e->getMessage());
+    }
+
+    // Cập nhật lại các lang key
+    try {
+        $sql = "SELECT idfile, langtype FROM " . NV_LANGUAGE_GLOBALTABLE . "_file";
+        $result = $db->query($sql);
+        while ($row = $result->fetch()) {
+            $db->query("UPDATE " . NV_LANGUAGE_GLOBALTABLE . " SET langtype=" . $db->quote($row['langtype']) . " WHERE idfile=" . $row['idfile']);
+        }
+    } catch (PDOException $e) {
+        trigger_error($e->getMessage());
+    }
+
+    return $return;
+}
 
 /**
  * nv_up_finish()
