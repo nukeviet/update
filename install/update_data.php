@@ -67,6 +67,44 @@ $nv_update_config['tasklist'][] = array(
 );
 
 /**
+ * nv_up_modnews4301()
+ *
+ * @return
+ *
+ */
+function nv_up_modnews4301()
+{
+    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config;
+    $return = array(
+        'status' => 1,
+        'complete' => 1,
+        'next' => 1,
+        'link' => 'NO',
+        'lang' => 'NO',
+        'message' => ''
+    );
+    // Duyệt tất cả các ngôn ngữ
+    foreach ($global_config['allow_sitelangs'] as $lang) {
+        // Lấy tất cả các module và module ảo của nó
+        $mquery = $db->query("SELECT title, module_data FROM " . $db_config['prefix'] . "_" . $lang . "_modules WHERE module_file = 'news'");
+        while (list ($mod, $mod_data) = $mquery->fetch(3)) {
+            // Thêm trường từ khóa
+            try {
+                $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . "_detail ADD keywords VARCHAR(255) NOT NULL DEFAULT '' AFTER bodyhtml;");
+            } catch (PDOException $e) {
+                trigger_error($e->getMessage());
+            }
+            try {
+                $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', '" . $mod . "', 'keywords_tag', '1');");
+            } catch (PDOException $e) {
+                trigger_error($e->getMessage());
+            }
+        }
+    }
+    return $return;
+}
+
+/**
  * nv_up_modlang4301()
  *
  * @return
