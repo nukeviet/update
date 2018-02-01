@@ -42,8 +42,8 @@ $nv_update_config['lang']['vi']['nv_up_modlang4301'] = 'Cập nhật module lang
 $nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản 4.3.01';
 
 // English
-$nv_update_config['lang']['vi']['nv_up_modnews4301'] = 'Update module news to 4.3.01';
-$nv_update_config['lang']['vi']['nv_up_modlang4301'] = 'Update module language to 4.3.01';
+$nv_update_config['lang']['en']['nv_up_modnews4301'] = 'Update module news to 4.3.01';
+$nv_update_config['lang']['en']['nv_up_modlang4301'] = 'Update module language to 4.3.01';
 $nv_update_config['lang']['en']['nv_up_finish'] = 'Update new version 4.3.01';
 
 $nv_update_config['tasklist'] = array();
