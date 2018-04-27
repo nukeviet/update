@@ -325,7 +325,21 @@ function nv_up_finish()
 
     nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/compatibility.js');
     nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/l10n.js');
-    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/plugins/clipboard', true);
+
+    nv_deletefile(NV_ROOTDIR . '/modules/contact/admin/content.php');
+    nv_deletefile(NV_ROOTDIR . '/themes/admin_default/modules/contact/content.tpl');
+    nv_deletefile(NV_ROOTDIR . '/themes/mobile_default/mobile_default.png');
+    nv_deletefile(NV_ROOTDIR . '/vendor/apache', true);
+    nv_deletefile(NV_ROOTDIR . '/vendor/facebook/facebook-instant-articles-sdk-php', true);
+    nv_deletefile(NV_ROOTDIR . '/vendor/facebook/graph-sdk', true);
+    nv_deletefile(NV_ROOTDIR . '/vendor/gregwar/captcha/Font', true);
+    nv_deletefile(NV_ROOTDIR . '/vendor/gregwar/captcha/autoload.php');
+    nv_deletefile(NV_ROOTDIR . '/vendor/gregwar/captcha/CaptchaBuilder.php');
+    nv_deletefile(NV_ROOTDIR . '/vendor/gregwar/captcha/CaptchaBuilderInterface.php');
+    nv_deletefile(NV_ROOTDIR . '/vendor/gregwar/captcha/ImageFileHandler.php');
+    nv_deletefile(NV_ROOTDIR . '/vendor/gregwar/captcha/PhraseBuilder.php');
+    nv_deletefile(NV_ROOTDIR . '/vendor/gregwar/captcha/PhraseBuilderInterface.php');
+    nv_deletefile(NV_ROOTDIR . '/vendor/symfony/css-selector', true);
 
     // Cập nhật phiên bản
     $db->query("UPDATE " . NV_CONFIG_GLOBALTABLE . " SET config_value='" . $nv_update_config['to_version'] . "' WHERE lang='sys' AND module='global' AND config_name='version'");
