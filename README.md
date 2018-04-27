@@ -42,7 +42,7 @@ window.location.href = location.reload()
 Nếu có thay bằng
 
 ```html
-location.reload();
+location.reload()
 ```
 
 **Nếu giao diện của bạn tồn tại themes/my_theme/modules/contact/form.tpl**
