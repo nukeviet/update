@@ -329,6 +329,9 @@ function nv_up_finish()
     nv_deletefile(NV_ROOTDIR . '/modules/contact/admin/content.php');
     nv_deletefile(NV_ROOTDIR . '/themes/admin_default/modules/contact/content.tpl');
     nv_deletefile(NV_ROOTDIR . '/themes/mobile_default/mobile_default.png');
+
+    /*
+    Đoạn này sẽ chạy ở bản 4.3.03
     nv_deletefile(NV_ROOTDIR . '/vendor/apache', true);
     nv_deletefile(NV_ROOTDIR . '/vendor/facebook/facebook-instant-articles-sdk-php', true);
     nv_deletefile(NV_ROOTDIR . '/vendor/facebook/graph-sdk', true);
@@ -340,6 +343,7 @@ function nv_up_finish()
     nv_deletefile(NV_ROOTDIR . '/vendor/gregwar/captcha/PhraseBuilder.php');
     nv_deletefile(NV_ROOTDIR . '/vendor/gregwar/captcha/PhraseBuilderInterface.php');
     nv_deletefile(NV_ROOTDIR . '/vendor/symfony/css-selector', true);
+    */
 
     // Cập nhật phiên bản
     $db->query("UPDATE " . NV_CONFIG_GLOBALTABLE . " SET config_value='" . $nv_update_config['to_version'] . "' WHERE lang='sys' AND module='global' AND config_name='version'");
