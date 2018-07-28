@@ -23,11 +23,11 @@ $nv_update_config['packageID'] = 'NVUD4302';
 $nv_update_config['formodule'] = '';
 
 // Thong tin phien ban, tac gia, ho tro
-$nv_update_config['release_date'] = 1525251600;
+$nv_update_config['release_date'] = 1533200400;
 $nv_update_config['author'] = 'VINADES.,JSC <contact@vinades.vn>';
-$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.3.02';
-$nv_update_config['to_version'] = '4.3.02';
-$nv_update_config['allow_old_version'] = array('4.3.00', '4.3.01');
+$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.3.03';
+$nv_update_config['to_version'] = '4.3.03';
+$nv_update_config['allow_old_version'] = array('4.3.00', '4.3.01', '4.3.02');
 
 // 0:Nang cap bang tay, 1:Nang cap tu dong, 2:Nang cap nua tu dong
 $nv_update_config['update_auto_type'] = 1;
@@ -42,6 +42,7 @@ $nv_update_config['lang']['vi']['nv_up_modlang4301'] = 'Cập nhật module lang
 $nv_update_config['lang']['vi']['nv_up_modusers4302'] = 'Cập nhật module users lên 4.3.02';
 $nv_update_config['lang']['vi']['nv_up_modcontact4302'] = 'Cập nhật module contact lên 4.3.02';
 $nv_update_config['lang']['vi']['nv_up_sys4302'] = 'Cập nhật hệ thống lên 4.3.02';
+$nv_update_config['lang']['vi']['nv_up_delfile4302'] = 'Xóa các file thừa bản 4.3.02';
 $nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản 4.3.02';
 
 // English
@@ -50,6 +51,7 @@ $nv_update_config['lang']['en']['nv_up_modlang4301'] = 'Update module language t
 $nv_update_config['lang']['en']['nv_up_modusers4302'] = 'Update module users to 4.3.02';
 $nv_update_config['lang']['en']['nv_up_modcontact4302'] = 'Update module contact to 4.3.02';
 $nv_update_config['lang']['en']['nv_up_sys4302'] = 'Update system to 4.3.02';
+$nv_update_config['lang']['en']['nv_up_delfile4302'] = 'Delete unused files of version 4.3.02';
 $nv_update_config['lang']['en']['nv_up_finish'] = 'Update new version 4.3.02';
 
 $nv_update_config['tasklist'] = array();
@@ -84,7 +86,13 @@ $nv_update_config['tasklist'][] = array(
     'f' => 'nv_up_sys4302'
 );
 $nv_update_config['tasklist'][] = array(
-    'r' => '4.3.02',
+    'r' => '4.3.03',
+    'rq' => 2,
+    'l' => 'nv_up_delfile4302',
+    'f' => 'nv_up_delfile4302'
+);
+$nv_update_config['tasklist'][] = array(
+    'r' => '4.3.03',
     'rq' => 2,
     'l' => 'nv_up_finish',
     'f' => 'nv_up_finish'
@@ -306,6 +314,39 @@ function nv_up_sys4302()
 }
 
 /**
+ * nv_up_delfile4302()
+ *
+ * @return
+ *
+ */
+function nv_up_delfile4302()
+{
+    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config;
+    $return = array(
+        'status' => 1,
+        'complete' => 1,
+        'next' => 1,
+        'link' => 'NO',
+        'lang' => 'NO',
+        'message' => ''
+    );
+
+    nv_deletefile(NV_ROOTDIR . '/vendor/apache', true);
+    nv_deletefile(NV_ROOTDIR . '/vendor/facebook/facebook-instant-articles-sdk-php', true);
+    nv_deletefile(NV_ROOTDIR . '/vendor/facebook/graph-sdk', true);
+    nv_deletefile(NV_ROOTDIR . '/vendor/gregwar/captcha/Font', true);
+    nv_deletefile(NV_ROOTDIR . '/vendor/gregwar/captcha/autoload.php');
+    nv_deletefile(NV_ROOTDIR . '/vendor/gregwar/captcha/CaptchaBuilder.php');
+    nv_deletefile(NV_ROOTDIR . '/vendor/gregwar/captcha/CaptchaBuilderInterface.php');
+    nv_deletefile(NV_ROOTDIR . '/vendor/gregwar/captcha/ImageFileHandler.php');
+    nv_deletefile(NV_ROOTDIR . '/vendor/gregwar/captcha/PhraseBuilder.php');
+    nv_deletefile(NV_ROOTDIR . '/vendor/gregwar/captcha/PhraseBuilderInterface.php');
+    nv_deletefile(NV_ROOTDIR . '/vendor/symfony/css-selector', true);
+
+    return $return;
+}
+
+/**
  * nv_up_finish()
  *
  * @return
@@ -329,21 +370,6 @@ function nv_up_finish()
     nv_deletefile(NV_ROOTDIR . '/modules/contact/admin/content.php');
     nv_deletefile(NV_ROOTDIR . '/themes/admin_default/modules/contact/content.tpl');
     nv_deletefile(NV_ROOTDIR . '/themes/mobile_default/mobile_default.png');
-
-    /*
-    Đoạn này sẽ chạy ở bản 4.3.03
-    nv_deletefile(NV_ROOTDIR . '/vendor/apache', true);
-    nv_deletefile(NV_ROOTDIR . '/vendor/facebook/facebook-instant-articles-sdk-php', true);
-    nv_deletefile(NV_ROOTDIR . '/vendor/facebook/graph-sdk', true);
-    nv_deletefile(NV_ROOTDIR . '/vendor/gregwar/captcha/Font', true);
-    nv_deletefile(NV_ROOTDIR . '/vendor/gregwar/captcha/autoload.php');
-    nv_deletefile(NV_ROOTDIR . '/vendor/gregwar/captcha/CaptchaBuilder.php');
-    nv_deletefile(NV_ROOTDIR . '/vendor/gregwar/captcha/CaptchaBuilderInterface.php');
-    nv_deletefile(NV_ROOTDIR . '/vendor/gregwar/captcha/ImageFileHandler.php');
-    nv_deletefile(NV_ROOTDIR . '/vendor/gregwar/captcha/PhraseBuilder.php');
-    nv_deletefile(NV_ROOTDIR . '/vendor/gregwar/captcha/PhraseBuilderInterface.php');
-    nv_deletefile(NV_ROOTDIR . '/vendor/symfony/css-selector', true);
-    */
 
     // Cập nhật phiên bản
     $db->query("UPDATE " . NV_CONFIG_GLOBALTABLE . " SET config_value='" . $nv_update_config['to_version'] . "' WHERE lang='sys' AND module='global' AND config_name='version'");
