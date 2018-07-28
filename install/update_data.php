@@ -332,8 +332,7 @@ function nv_up_delfile4302()
     );
 
     nv_deletefile(NV_ROOTDIR . '/vendor/apache', true);
-    nv_deletefile(NV_ROOTDIR . '/vendor/facebook/facebook-instant-articles-sdk-php', true);
-    nv_deletefile(NV_ROOTDIR . '/vendor/facebook/graph-sdk', true);
+    nv_deletefile(NV_ROOTDIR . '/vendor/facebook', true);
     nv_deletefile(NV_ROOTDIR . '/vendor/gregwar/captcha/Font', true);
     nv_deletefile(NV_ROOTDIR . '/vendor/gregwar/captcha/autoload.php');
     nv_deletefile(NV_ROOTDIR . '/vendor/gregwar/captcha/CaptchaBuilder.php');
@@ -342,6 +341,8 @@ function nv_up_delfile4302()
     nv_deletefile(NV_ROOTDIR . '/vendor/gregwar/captcha/PhraseBuilder.php');
     nv_deletefile(NV_ROOTDIR . '/vendor/gregwar/captcha/PhraseBuilderInterface.php');
     nv_deletefile(NV_ROOTDIR . '/vendor/symfony/css-selector', true);
+    nv_deletefile(NV_ROOTDIR . '/vendor/vinades/nukeviet/Cache/CRedis.php');
+    nv_deletefile(NV_ROOTDIR . '/vendor/vinades/nukeviet/Cache/Memcacheds.php');
 
     return $return;
 }
