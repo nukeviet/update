@@ -42,7 +42,7 @@ $nv_update_config['lang']['vi']['nv_up_modlang4301'] = 'Cập nhật module lang
 $nv_update_config['lang']['vi']['nv_up_modusers4302'] = 'Cập nhật module users lên 4.3.02';
 $nv_update_config['lang']['vi']['nv_up_modcontact4302'] = 'Cập nhật module contact lên 4.3.02';
 $nv_update_config['lang']['vi']['nv_up_sys4302'] = 'Cập nhật hệ thống lên 4.3.02';
-$nv_update_config['lang']['vi']['nv_up_delfile4302'] = 'Xóa các file thừa bản 4.3.02';
+$nv_update_config['lang']['vi']['nv_up_delfile4302'] = 'Xóa các file thừa';
 $nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản 4.3.02';
 
 // English
@@ -51,7 +51,7 @@ $nv_update_config['lang']['en']['nv_up_modlang4301'] = 'Update module language t
 $nv_update_config['lang']['en']['nv_up_modusers4302'] = 'Update module users to 4.3.02';
 $nv_update_config['lang']['en']['nv_up_modcontact4302'] = 'Update module contact to 4.3.02';
 $nv_update_config['lang']['en']['nv_up_sys4302'] = 'Update system to 4.3.02';
-$nv_update_config['lang']['en']['nv_up_delfile4302'] = 'Delete unused files of version 4.3.02';
+$nv_update_config['lang']['en']['nv_up_delfile4302'] = 'Delete unused files';
 $nv_update_config['lang']['en']['nv_up_finish'] = 'Update new version 4.3.02';
 
 $nv_update_config['tasklist'] = array();
@@ -331,18 +331,20 @@ function nv_up_delfile4302()
         'message' => ''
     );
 
-    nv_deletefile(NV_ROOTDIR . '/vendor/apache', true);
-    nv_deletefile(NV_ROOTDIR . '/vendor/facebook', true);
-    nv_deletefile(NV_ROOTDIR . '/vendor/gregwar/captcha/Font', true);
-    nv_deletefile(NV_ROOTDIR . '/vendor/gregwar/captcha/autoload.php');
-    nv_deletefile(NV_ROOTDIR . '/vendor/gregwar/captcha/CaptchaBuilder.php');
-    nv_deletefile(NV_ROOTDIR . '/vendor/gregwar/captcha/CaptchaBuilderInterface.php');
-    nv_deletefile(NV_ROOTDIR . '/vendor/gregwar/captcha/ImageFileHandler.php');
-    nv_deletefile(NV_ROOTDIR . '/vendor/gregwar/captcha/PhraseBuilder.php');
-    nv_deletefile(NV_ROOTDIR . '/vendor/gregwar/captcha/PhraseBuilderInterface.php');
-    nv_deletefile(NV_ROOTDIR . '/vendor/symfony/css-selector', true);
-    nv_deletefile(NV_ROOTDIR . '/vendor/vinades/nukeviet/Cache/CRedis.php');
-    nv_deletefile(NV_ROOTDIR . '/vendor/vinades/nukeviet/Cache/Memcacheds.php');
+    if (file_exists(NV_ROOTDIR . '/vendor/gregwar/captcha/src/Gregwar/Captcha/CaptchaBuilder.php')) {
+        nv_deletefile(NV_ROOTDIR . '/vendor/apache', true);
+        nv_deletefile(NV_ROOTDIR . '/vendor/facebook', true);
+        nv_deletefile(NV_ROOTDIR . '/vendor/gregwar/captcha/Font', true);
+        nv_deletefile(NV_ROOTDIR . '/vendor/gregwar/captcha/autoload.php');
+        nv_deletefile(NV_ROOTDIR . '/vendor/gregwar/captcha/CaptchaBuilder.php');
+        nv_deletefile(NV_ROOTDIR . '/vendor/gregwar/captcha/CaptchaBuilderInterface.php');
+        nv_deletefile(NV_ROOTDIR . '/vendor/gregwar/captcha/ImageFileHandler.php');
+        nv_deletefile(NV_ROOTDIR . '/vendor/gregwar/captcha/PhraseBuilder.php');
+        nv_deletefile(NV_ROOTDIR . '/vendor/gregwar/captcha/PhraseBuilderInterface.php');
+        nv_deletefile(NV_ROOTDIR . '/vendor/symfony/css-selector', true);
+        nv_deletefile(NV_ROOTDIR . '/vendor/vinades/nukeviet/Cache/CRedis.php');
+        nv_deletefile(NV_ROOTDIR . '/vendor/vinades/nukeviet/Cache/Memcacheds.php');
+    }
 
     return $return;
 }
