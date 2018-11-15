@@ -30,6 +30,8 @@ Nếu trong quá trình cập nhật bị đẩy ra, bạn đăng nhập lại q
 Download gói cập nhật tại: https://github.com/nukeviet/update/releases/download/to-4.3.04/update-to-4.3.04.zip
 Giải nén và Upload các file trong gói cập nhật với cấu trúc của NukeViet, sau đó vào admin để tiến hành cập nhật.
 
+> Lưu ý: Trong quá trình cập nhật, sau khi thực hiện xong bước di chuyển các file và thư mục, bạn sẽ bị đẩy ra khỏi tài khoản quản trị. Khi đó bạn hãy thực hiện đăng nhập lại quản trị và tiến hành di chuyển tới khu vực cập nhật lần nữa để hệ thống tiếp tục tiến trình.
+
 ### Bước 3: Điều chỉnh giao diện
 
 Nếu site của bạn hiện ở phiên bản nhỏ hơn 4.3.02 và sử dụng giao diện không phải mặc định thì thực hiện cập nhật theo hướng dẫn sau
