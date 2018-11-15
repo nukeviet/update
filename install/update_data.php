@@ -17,13 +17,13 @@ $nv_update_config = array();
 $nv_update_config['type'] = 1;
 
 // ID goi cap nhat
-$nv_update_config['packageID'] = 'NVUD4303';
+$nv_update_config['packageID'] = 'NVUD4304';
 
 // Cap nhat cho module nao, de trong neu la cap nhat NukeViet, ten thu muc module neu la cap nhat module
 $nv_update_config['formodule'] = '';
 
 // Thong tin phien ban, tac gia, ho tro
-$nv_update_config['release_date'] = 1533549600;
+$nv_update_config['release_date'] = 1542280892;
 $nv_update_config['author'] = 'VINADES.,JSC <contact@vinades.vn>';
 $nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.3.04';
 $nv_update_config['to_version'] = '4.3.04';
@@ -55,7 +55,7 @@ $nv_update_config['lang']['en']['nv_up_modcontact4302'] = 'Update module contact
 $nv_update_config['lang']['en']['nv_up_sys4302'] = 'Update system to 4.3.02';
 $nv_update_config['lang']['en']['nv_up_delfile4302'] = 'Delete unused files v4.3.02';
 $nv_update_config['lang']['en']['nv_up_delfile4303'] = 'Delete unused files v4.3.03';
-$nv_update_config['lang']['en']['nv_up_delfile4303'] = 'Delete unused files v4.3.04';
+$nv_update_config['lang']['en']['nv_up_delfile4304'] = 'Delete unused files v4.3.04';
 $nv_update_config['lang']['en']['nv_up_finish'] = 'Update new version 4.3.04';
 
 $nv_update_config['tasklist'] = array();
@@ -412,7 +412,7 @@ function nv_up_delfile4304()
     );
 
     nv_deletefile(NV_ROOTDIR . '/vendor/gregwar/captcha', true);
-    nv_deletefile(NV_ROOTDIR . '/vendor/symfony/finder/', true);
+    nv_deletefile(NV_ROOTDIR . '/vendor/symfony/finder', true);
 
     return $return;
 }
@@ -443,6 +443,15 @@ function nv_up_finish()
     $db->query("UPDATE " . $db_config['prefix'] . "_setup_extensions SET  version='" . $nv_update_config['to_version'] . " " . $nv_update_config['release_date'] . "' WHERE type='theme' and basename IN ('default', 'mobile_default')");
 
     nv_save_file_config_global();
+
+    $array_config_rewrite = array(
+        'rewrite_enable' => $global_config['rewrite_enable'],
+        'rewrite_optional' => $global_config['rewrite_optional'],
+        'rewrite_endurl' => $global_config['rewrite_endurl'],
+        'rewrite_exturl' => $global_config['rewrite_exturl'],
+        'rewrite_op_mod' => $global_config['rewrite_op_mod'],
+    );
+    nv_rewrite_change($array_config_rewrite);
 
     return $return;
 }
