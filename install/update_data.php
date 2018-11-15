@@ -25,9 +25,9 @@ $nv_update_config['formodule'] = '';
 // Thong tin phien ban, tac gia, ho tro
 $nv_update_config['release_date'] = 1533549600;
 $nv_update_config['author'] = 'VINADES.,JSC <contact@vinades.vn>';
-$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.3.03';
-$nv_update_config['to_version'] = '4.3.03';
-$nv_update_config['allow_old_version'] = array('4.3.00', '4.3.01', '4.3.02');
+$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.3.04';
+$nv_update_config['to_version'] = '4.3.04';
+$nv_update_config['allow_old_version'] = array('4.3.00', '4.3.01', '4.3.02', '4.3.03');
 
 // 0:Nang cap bang tay, 1:Nang cap tu dong, 2:Nang cap nua tu dong
 $nv_update_config['update_auto_type'] = 1;
@@ -42,8 +42,10 @@ $nv_update_config['lang']['vi']['nv_up_modlang4301'] = 'Cập nhật module lang
 $nv_update_config['lang']['vi']['nv_up_modusers4302'] = 'Cập nhật module users lên 4.3.02';
 $nv_update_config['lang']['vi']['nv_up_modcontact4302'] = 'Cập nhật module contact lên 4.3.02';
 $nv_update_config['lang']['vi']['nv_up_sys4302'] = 'Cập nhật hệ thống lên 4.3.02';
-$nv_update_config['lang']['vi']['nv_up_delfile4302'] = 'Xóa các file thừa';
-$nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản 4.3.02';
+$nv_update_config['lang']['vi']['nv_up_delfile4302'] = 'Xóa các file thừa v4.3.02';
+$nv_update_config['lang']['vi']['nv_up_delfile4303'] = 'Xóa các file thừa v4.3.03';
+$nv_update_config['lang']['vi']['nv_up_delfile4304'] = 'Xóa các file thừa v4.3.04';
+$nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản 4.3.04';
 
 // English
 $nv_update_config['lang']['en']['nv_up_modnews4301'] = 'Update module news to 4.3.01';
@@ -51,8 +53,10 @@ $nv_update_config['lang']['en']['nv_up_modlang4301'] = 'Update module language t
 $nv_update_config['lang']['en']['nv_up_modusers4302'] = 'Update module users to 4.3.02';
 $nv_update_config['lang']['en']['nv_up_modcontact4302'] = 'Update module contact to 4.3.02';
 $nv_update_config['lang']['en']['nv_up_sys4302'] = 'Update system to 4.3.02';
-$nv_update_config['lang']['en']['nv_up_delfile4302'] = 'Delete unused files';
-$nv_update_config['lang']['en']['nv_up_finish'] = 'Update new version 4.3.02';
+$nv_update_config['lang']['en']['nv_up_delfile4302'] = 'Delete unused files v4.3.02';
+$nv_update_config['lang']['en']['nv_up_delfile4303'] = 'Delete unused files v4.3.03';
+$nv_update_config['lang']['en']['nv_up_delfile4303'] = 'Delete unused files v4.3.04';
+$nv_update_config['lang']['en']['nv_up_finish'] = 'Update new version 4.3.04';
 
 $nv_update_config['tasklist'] = array();
 $nv_update_config['tasklist'][] = array(
@@ -86,13 +90,25 @@ $nv_update_config['tasklist'][] = array(
     'f' => 'nv_up_sys4302'
 );
 $nv_update_config['tasklist'][] = array(
-    'r' => '4.3.03',
+    'r' => '4.3.02',
     'rq' => 2,
     'l' => 'nv_up_delfile4302',
     'f' => 'nv_up_delfile4302'
 );
 $nv_update_config['tasklist'][] = array(
     'r' => '4.3.03',
+    'rq' => 2,
+    'l' => 'nv_up_delfile4303',
+    'f' => 'nv_up_delfile4303'
+);
+$nv_update_config['tasklist'][] = array(
+    'r' => '4.3.04',
+    'rq' => 2,
+    'l' => 'nv_up_delfile4304',
+    'f' => 'nv_up_delfile4304'
+);
+$nv_update_config['tasklist'][] = array(
+    'r' => '4.3.04',
     'rq' => 2,
     'l' => 'nv_up_finish',
     'f' => 'nv_up_finish'
@@ -350,12 +366,12 @@ function nv_up_delfile4302()
 }
 
 /**
- * nv_up_finish()
+ * nv_up_delfile4303()
  *
  * @return
  *
  */
-function nv_up_finish()
+function nv_up_delfile4303()
 {
     global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config;
     $return = array(
@@ -373,6 +389,53 @@ function nv_up_finish()
     nv_deletefile(NV_ROOTDIR . '/modules/contact/admin/content.php');
     nv_deletefile(NV_ROOTDIR . '/themes/admin_default/modules/contact/content.tpl');
     nv_deletefile(NV_ROOTDIR . '/themes/mobile_default/mobile_default.png');
+
+    return $return;
+}
+
+/**
+ * nv_up_delfile4303()
+ *
+ * @return
+ *
+ */
+function nv_up_delfile4304()
+{
+    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config;
+    $return = array(
+        'status' => 1,
+        'complete' => 1,
+        'next' => 1,
+        'link' => 'NO',
+        'lang' => 'NO',
+        'message' => ''
+    );
+
+    nv_deletefile(NV_ROOTDIR . '/vendor/gregwar/captcha', true);
+    nv_deletefile(NV_ROOTDIR . '/vendor/symfony/finder/', true);
+
+    return $return;
+}
+
+
+
+/**
+ * nv_up_finish()
+ *
+ * @return
+ *
+ */
+function nv_up_finish()
+{
+    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config;
+    $return = array(
+        'status' => 1,
+        'complete' => 1,
+        'next' => 1,
+        'link' => 'NO',
+        'lang' => 'NO',
+        'message' => ''
+    );
 
     // Cập nhật phiên bản
     $db->query("UPDATE " . NV_CONFIG_GLOBALTABLE . " SET config_value='" . $nv_update_config['to_version'] . "' WHERE lang='sys' AND module='global' AND config_name='version'");

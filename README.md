@@ -1,4 +1,4 @@
-# Hướng dẫn cập nhật từ 4.3.00, 4.3.01, 4.3.02 lên NukeViet 4.3.03
+# Hướng dẫn cập nhật từ 4.3.00, 4.3.01, 4.3.02, 4.3.03 lên NukeViet 4.3.04
 
 Nếu phiên bản NukeViet 4 của bạn nhỏ hơn 4.3.00 bạn cần tìm hướng dẫn nâng cấp lên phiên bản 4.3.00 trước khi tiến hành các bước tiếp theo.
 
@@ -22,9 +22,11 @@ Nếu phiên bản NukeViet 4 của bạn nhỏ hơn 4.3.00 bạn cần tìm hư
 
 Nếu thất bại hãy thử cách cập nhật thủ công bên dưới.
 
+Nếu trong quá trình cập nhật bị đẩy ra, bạn đăng nhập lại quản trị để làm theo hướng dẫn (Hệ thống báo Xóa gói cập nhật do không tương thích, Bạn hãy xóa để tiếp tục vânh hành site)
+
 #### Cập nhật thủ công:
 
-Download gói cập nhật tại: https://github.com/nukeviet/update/releases/download/to-4.3.03/update-to-4.3.03.zip
+Download gói cập nhật tại: https://github.com/nukeviet/update/releases/download/to-4.3.04/update-to-4.3.04.zip
 Giải nén và Upload các file trong gói cập nhật với cấu trúc của NukeViet, sau đó vào admin để tiến hành cập nhật.
 
 ### Bước 3: Điều chỉnh giao diện
@@ -66,3 +68,12 @@ Thêm xuống dưới
 ```html
         <!-- END: sendcopy -->
 ```
+
+### Bước 4: Cấu hình lại site.
+- Tìm file config.php Tìm cấu hình sitekey đổi giá trị sitekey (Việc này cần thực hiện để đảm bảo an toàn).
+- Thực hiện dọn dẹp hệ thống để xóa các file log. Bạn có thể thực hiện việc này bằng thao tác: Tại khu vực quản trị chọn **Công cụ web => Dọn dẹp hệ thống**, nhấp vào ô check ở dòng **Xóa các thông báo lỗi** sau đó nhấp **Thực hiện**
+- Vào phần: **Cấu hình -> Cấu hình chung** Lưu thay đổi để hệ thống ghi lại một số thiết lập.
+- Vào phần: **Cấu hình -> Thiết lập an ninh ** Chọn tab **Cấu hình hiển thị captcha** để chọn Loại captcha là reCAPTCHA sau đó khai báo các thông số Site key, Secret key bằng cách đăng ký tài khỏan captcha tại https://www.google.com/recaptcha/admin#list (Ghi chú: Nếu website của bạn chạy trên mạng nội bộ không có Internet cấu hình  Loại captcha là Captcha mặc định)
+- Nếu site có sử dụng các thư viện bên ngoài như phpoffice/phpspreadsheet thông qua composer, bạcn cần khai báo để composer cập nhật lại
+ 
+
