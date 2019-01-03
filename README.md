@@ -78,5 +78,6 @@ Thêm xuống dưới
 - Vào phần: **Cấu hình -> Cấu hình chung** Lưu thay đổi để hệ thống ghi lại một số thiết lập.
 - Vào phần: **Cấu hình -> Thiết lập an ninh ** Chọn tab **Cấu hình hiển thị captcha** để chọn Loại captcha là reCAPTCHA sau đó khai báo các thông số Site key, Secret key bằng cách đăng ký tài khỏan captcha tại https://www.google.com/recaptcha/admin#list (Ghi chú: Nếu website của bạn chạy trên mạng nội bộ không có Internet cấu hình  Loại captcha là Captcha mặc định)
 - Nếu site có sử dụng các thư viện bên ngoài như phpoffice/phpspreadsheet thông qua composer, bạcn cần khai báo để composer cập nhật lại
+- Cấu hình lại các mật khẩu đã nhập vào hệ thống như: Tài khoản FTP, SMTP 
  
 
