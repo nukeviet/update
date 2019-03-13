@@ -8,16 +8,17 @@
  * @Createdate Sat, 07 Mar 2015 03:43:56 GMT
  */
 
-if (!defined('NV_IS_UPDATE'))
+if (!defined('NV_IS_UPDATE')) {
     die('Stop!!!');
+}
 
-$nv_update_config = array();
+$nv_update_config = [];
 
 // Kieu nang cap 1: Update; 2: Upgrade
 $nv_update_config['type'] = 1;
 
 // ID goi cap nhat
-$nv_update_config['packageID'] = 'NVUD4304';
+$nv_update_config['packageID'] = 'NVUD4305';
 
 // Cap nhat cho module nao, de trong neu la cap nhat NukeViet, ten thu muc module neu la cap nhat module
 $nv_update_config['formodule'] = '';
@@ -25,16 +26,16 @@ $nv_update_config['formodule'] = '';
 // Thong tin phien ban, tac gia, ho tro
 $nv_update_config['release_date'] = 1542280892;
 $nv_update_config['author'] = 'VINADES.,JSC <contact@vinades.vn>';
-$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.3.04';
-$nv_update_config['to_version'] = '4.3.04';
-$nv_update_config['allow_old_version'] = array('4.3.00', '4.3.01', '4.3.02', '4.3.03', '4.3.04');
+$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.3.05';
+$nv_update_config['to_version'] = '4.3.05';
+$nv_update_config['allow_old_version'] = ['4.3.00', '4.3.01', '4.3.02', '4.3.03', '4.3.04', '4.3.05'];
 
 // 0:Nang cap bang tay, 1:Nang cap tu dong, 2:Nang cap nua tu dong
 $nv_update_config['update_auto_type'] = 1;
 
-$nv_update_config['lang'] = array();
-$nv_update_config['lang']['vi'] = array();
-$nv_update_config['lang']['en'] = array();
+$nv_update_config['lang'] = [];
+$nv_update_config['lang']['vi'] = [];
+$nv_update_config['lang']['en'] = [];
 
 // Tiếng Việt
 $nv_update_config['lang']['vi']['nv_up_modnews4301'] = 'Cập nhật module news lên 4.3.01';
@@ -45,6 +46,8 @@ $nv_update_config['lang']['vi']['nv_up_sys4302'] = 'Cập nhật hệ thống l�
 $nv_update_config['lang']['vi']['nv_up_delfile4302'] = 'Xóa các file thừa v4.3.02';
 $nv_update_config['lang']['vi']['nv_up_delfile4303'] = 'Xóa các file thừa v4.3.03';
 $nv_update_config['lang']['vi']['nv_up_delfile4304'] = 'Xóa các file thừa v4.3.04';
+$nv_update_config['lang']['vi']['nv_up_googleplus4305'] = 'Gỡ bỏ Google Plus';
+$nv_update_config['lang']['vi']['nv_up_modusers4305'] = 'Cập nhật module users lên 4.3.05';
 $nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản 4.3.04';
 
 // English
@@ -56,63 +59,77 @@ $nv_update_config['lang']['en']['nv_up_sys4302'] = 'Update system to 4.3.02';
 $nv_update_config['lang']['en']['nv_up_delfile4302'] = 'Delete unused files v4.3.02';
 $nv_update_config['lang']['en']['nv_up_delfile4303'] = 'Delete unused files v4.3.03';
 $nv_update_config['lang']['en']['nv_up_delfile4304'] = 'Delete unused files v4.3.04';
+$nv_update_config['lang']['en']['nv_up_googleplus4305'] = 'Remove Google Plus';
+$nv_update_config['lang']['en']['nv_up_modusers4305'] = 'Update module users to 4.3.05';
 $nv_update_config['lang']['en']['nv_up_finish'] = 'Update new version 4.3.04';
 
-$nv_update_config['tasklist'] = array();
-$nv_update_config['tasklist'][] = array(
+$nv_update_config['tasklist'] = [];
+$nv_update_config['tasklist'][] = [
     'r' => '4.3.01',
     'rq' => 2,
     'l' => 'nv_up_modnews4301',
     'f' => 'nv_up_modnews4301'
-);
-$nv_update_config['tasklist'][] = array(
+];
+$nv_update_config['tasklist'][] = [
     'r' => '4.3.01',
     'rq' => 2,
     'l' => 'nv_up_modlang4301',
     'f' => 'nv_up_modlang4301'
-);
-$nv_update_config['tasklist'][] = array(
+];
+$nv_update_config['tasklist'][] = [
     'r' => '4.3.02',
     'rq' => 2,
     'l' => 'nv_up_modusers4302',
     'f' => 'nv_up_modusers4302'
-);
-$nv_update_config['tasklist'][] = array(
+];
+$nv_update_config['tasklist'][] = [
     'r' => '4.3.02',
     'rq' => 2,
     'l' => 'nv_up_modcontact4302',
     'f' => 'nv_up_modcontact4302'
-);
-$nv_update_config['tasklist'][] = array(
+];
+$nv_update_config['tasklist'][] = [
     'r' => '4.3.02',
     'rq' => 2,
     'l' => 'nv_up_sys4302',
     'f' => 'nv_up_sys4302'
-);
-$nv_update_config['tasklist'][] = array(
+];
+$nv_update_config['tasklist'][] = [
     'r' => '4.3.02',
     'rq' => 2,
     'l' => 'nv_up_delfile4302',
     'f' => 'nv_up_delfile4302'
-);
-$nv_update_config['tasklist'][] = array(
+];
+$nv_update_config['tasklist'][] = [
     'r' => '4.3.03',
     'rq' => 2,
     'l' => 'nv_up_delfile4303',
     'f' => 'nv_up_delfile4303'
-);
-$nv_update_config['tasklist'][] = array(
+];
+$nv_update_config['tasklist'][] = [
     'r' => '4.3.04',
     'rq' => 2,
     'l' => 'nv_up_delfile4304',
     'f' => 'nv_up_delfile4304'
-);
-$nv_update_config['tasklist'][] = array(
-    'r' => '4.3.04',
+];
+$nv_update_config['tasklist'][] = [
+    'r' => '4.3.05',
+    'rq' => 2,
+    'l' => 'nv_up_googleplus4305',
+    'f' => 'nv_up_googleplus4305'
+];
+$nv_update_config['tasklist'][] = [
+    'r' => '4.3.05',
+    'rq' => 2,
+    'l' => 'nv_up_modusers4305',
+    'f' => 'nv_up_modusers4305'
+];
+$nv_update_config['tasklist'][] = [
+    'r' => '4.3.05',
     'rq' => 2,
     'l' => 'nv_up_finish',
     'f' => 'nv_up_finish'
-);
+];
 
 /**
  * nv_up_modnews4301()
@@ -417,7 +434,103 @@ function nv_up_delfile4304()
     return $return;
 }
 
+/**
+ * @return number[]|string[]
+ */
+function nv_up_googleplus4305()
+{
+    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config;
+    $return = array(
+        'status' => 1,
+        'complete' => 1,
+        'next' => 1,
+        'link' => 'NO',
+        'lang' => 'NO',
+        'message' => ''
+    );
 
+    // Xóa bảng google plus
+    try {
+        $db->query("DROP TABLE " . $db_config['prefix'] . "_googleplus");
+    } catch (PDOException $e) {
+        trigger_error($e->getMessage());
+    }
+
+    // Duyệt tất cả các ngôn ngữ
+    foreach ($global_config['allow_sitelangs'] as $lang) {
+        // Xóa trường gid bảng modules
+        try {
+            $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_modules DROP gid");
+        } catch (PDOException $e) {
+            trigger_error($e->getMessage());
+        }
+
+        // Lấy tất cả các module news và module ảo của nó
+        $mquery = $db->query("SELECT title, module_data FROM " . $db_config['prefix'] . "_" . $lang . "_modules WHERE module_file='news'");
+        while (list ($mod, $mod_data) = $mquery->fetch(3)) {
+            // Xóa trường gid
+            try {
+                $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . "_detail DROP gid");
+            } catch (PDOException $e) {
+                trigger_error($e->getMessage());
+            }
+        }
+
+        // Lấy tất cả các module page và module ảo của nó
+        $mquery = $db->query("SELECT title, module_data FROM " . $db_config['prefix'] . "_" . $lang . "_modules WHERE module_file='page'");
+        while (list ($mod, $mod_data) = $mquery->fetch(3)) {
+            // Xóa trường gid
+            try {
+                $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . " DROP gid");
+            } catch (PDOException $e) {
+                trigger_error($e->getMessage());
+            }
+        }
+    }
+    return $return;
+}
+
+/**
+ * @return number[]|string[]
+ */
+function nv_up_modusers4305()
+{
+    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config;
+    $return = array(
+        'status' => 1,
+        'complete' => 1,
+        'next' => 1,
+        'link' => 'NO',
+        'lang' => 'NO',
+        'message' => ''
+    );
+    // Duyệt tất cả các ngôn ngữ
+    foreach ($global_config['allow_sitelangs'] as $lang) {
+        // Lấy tất cả các module và module ảo của nó
+        $mquery = $db->query("SELECT title, module_data FROM " . $db_config['prefix'] . "_" . $lang . "_modules WHERE module_file='users'");
+        while (list ($mod, $mod_data) = $mquery->fetch(3)) {
+            // Thêm cấu hình
+            try {
+                $db->query("INSERT IGNORE INTO " . $db_config['prefix'] . "_" . $mod_data . "_config (config, content, edit_time) VALUES ('active_editinfo_censor', '0', " . NV_CURRENTTIME . ")");
+            } catch (PDOException $e) {
+                trigger_error($e->getMessage());
+            }
+            // Thêm bảng dữ liệu
+            try {
+                $db->query("CREATE TABLE IF NOT EXISTS " . $db_config['prefix'] . "_" . $mod_data . "_edit (
+                    userid mediumint(8) unsigned NOT NULL,
+                    lastedit int(11) unsigned NOT NULL DEFAULT '0',
+                    info_basic text NOT NULL,
+                    info_custom text NOT NULL,
+                    PRIMARY KEY (userid)
+                ) ENGINE=MyISAM;");
+            } catch (PDOException $e) {
+                trigger_error($e->getMessage());
+            }
+        }
+    }
+    return $return;
+}
 
 /**
  * nv_up_finish()
