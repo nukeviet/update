@@ -24,7 +24,7 @@ $nv_update_config['packageID'] = 'NVUD4305';
 $nv_update_config['formodule'] = '';
 
 // Thong tin phien ban, tac gia, ho tro
-$nv_update_config['release_date'] = 1542280892;
+$nv_update_config['release_date'] = 1552640400;
 $nv_update_config['author'] = 'VINADES.,JSC <contact@vinades.vn>';
 $nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.3.05';
 $nv_update_config['to_version'] = '4.3.05';
@@ -48,7 +48,7 @@ $nv_update_config['lang']['vi']['nv_up_delfile4303'] = 'Xóa các file thừa v4
 $nv_update_config['lang']['vi']['nv_up_delfile4304'] = 'Xóa các file thừa v4.3.04';
 $nv_update_config['lang']['vi']['nv_up_googleplus4305'] = 'Gỡ bỏ Google Plus';
 $nv_update_config['lang']['vi']['nv_up_modusers4305'] = 'Cập nhật module users lên 4.3.05';
-$nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản 4.3.04';
+$nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản 4.3.05';
 
 // English
 $nv_update_config['lang']['en']['nv_up_modnews4301'] = 'Update module news to 4.3.01';
@@ -61,7 +61,7 @@ $nv_update_config['lang']['en']['nv_up_delfile4303'] = 'Delete unused files v4.3
 $nv_update_config['lang']['en']['nv_up_delfile4304'] = 'Delete unused files v4.3.04';
 $nv_update_config['lang']['en']['nv_up_googleplus4305'] = 'Remove Google Plus';
 $nv_update_config['lang']['en']['nv_up_modusers4305'] = 'Update module users to 4.3.05';
-$nv_update_config['lang']['en']['nv_up_finish'] = 'Update new version 4.3.04';
+$nv_update_config['lang']['en']['nv_up_finish'] = 'Update new version 4.3.05';
 
 $nv_update_config['tasklist'] = [];
 $nv_update_config['tasklist'][] = [
@@ -549,6 +549,16 @@ function nv_up_finish()
         'lang' => 'NO',
         'message' => ''
     );
+
+    // Chỉnh sửa bảng cronjobs
+    try {
+        $db->query("ALTER TABLE " . $db_config['prefix'] . "_cronjobs ADD inter_val_type TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' COMMENT '0: Lặp lại sau thời điểm bắt đầu thực tế, 1:lặp lại sau thời điểm bắt đầu trong CSDL' AFTER inter_val");
+    } catch (PDOException $e) {
+        trigger_error($e->getMessage());
+    }
+
+    nv_deletefile(NV_ROOTDIR . '/admin/seotools/googleplus.php');
+    nv_deletefile(NV_ROOTDIR . '/themes/admin_default/modules/seotools/googleplus.tpl');
 
     // Cập nhật phiên bản
     $db->query("UPDATE " . NV_CONFIG_GLOBALTABLE . " SET config_value='" . $nv_update_config['to_version'] . "' WHERE lang='sys' AND module='global' AND config_name='version'");
