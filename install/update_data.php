@@ -688,6 +688,8 @@ function nv_up_finish()
     nv_deletefile(NV_ROOTDIR . '/admin/seotools/googleplus.php');
     nv_deletefile(NV_ROOTDIR . '/themes/admin_default/modules/seotools/googleplus.tpl');
 
+    nv_deletefile(NV_ROOTDIR . '/themes/default/js/block.global.company_info.js');
+
     // Cập nhật phiên bản
     $db->query("UPDATE " . NV_CONFIG_GLOBALTABLE . " SET config_value='" . $nv_update_config['to_version'] . "' WHERE lang='sys' AND module='global' AND config_name='version'");
     $db->query("UPDATE " . $db_config['prefix'] . "_setup_extensions SET  version='" . $nv_update_config['to_version'] . " " . $nv_update_config['release_date'] . "' WHERE type='module' and basename IN ('banners', 'comment','contact','feeds','freecontent','menu','news','page','seek','statistics','users','voting', 'two-step-verification')");
