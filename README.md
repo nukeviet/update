@@ -1,4 +1,4 @@
-# Hướng dẫn cập nhật từ 4.3.00 => 4.3.05 lên NukeViet 4.3.06
+# Hướng dẫn cập nhật từ 4.3.00 => 4.3.06 lên NukeViet 4.3.07
 
 Nếu phiên bản NukeViet 4 của bạn nhỏ hơn 4.3.00 bạn cần tìm hướng dẫn nâng cấp lên phiên bản 4.3.00 trước khi tiến hành các bước tiếp theo.
 
@@ -27,7 +27,7 @@ Nếu trong quá trình cập nhật bị đẩy ra, bạn đăng nhập lại q
 
 #### Cập nhật thủ công:
 
-Download gói cập nhật tại: https://github.com/nukeviet/update/releases/download/to-4.3.06/update-to-4.3.06.zip
+Download gói cập nhật tại: https://github.com/nukeviet/update/releases/download/to-4.3.07/update-to-4.3.07.zip
 Giải nén và Upload các file trong gói cập nhật với cấu trúc của NukeViet, sau đó vào admin để tiến hành cập nhật.
 
 > Lưu ý: Nếu site của bạn đang ở bản 4.3.03 về trước khi thực hiện cập nhật xong bước di chuyển các file và thư mục, bạn sẽ bị đẩy ra khỏi tài khoản quản trị. Khi đó bạn hãy thực hiện đăng nhập lại quản trị và tiến hành di chuyển tới khu vực cập nhật lần nữa để hệ thống tiếp tục tiến trình.
