@@ -18,17 +18,17 @@ $nv_update_config = [];
 $nv_update_config['type'] = 1;
 
 // ID goi cap nhat
-$nv_update_config['packageID'] = 'NVUD4307';
+$nv_update_config['packageID'] = 'NVUD4308';
 
 // Cap nhat cho module nao, de trong neu la cap nhat NukeViet, ten thu muc module neu la cap nhat module
 $nv_update_config['formodule'] = '';
 
 // Thong tin phien ban, tac gia, ho tro
-$nv_update_config['release_date'] = 1569056400;
+$nv_update_config['release_date'] = 1577523600;
 $nv_update_config['author'] = 'VINADES.,JSC <contact@vinades.vn>';
-$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.3.07';
-$nv_update_config['to_version'] = '4.3.07';
-$nv_update_config['allow_old_version'] = ['4.3.00', '4.3.01', '4.3.02', '4.3.03', '4.3.04', '4.3.05', '4.3.06', '4.3.07'];
+$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.3.08';
+$nv_update_config['to_version'] = '4.3.08';
+$nv_update_config['allow_old_version'] = ['4.3.00', '4.3.01', '4.3.02', '4.3.03', '4.3.04', '4.3.05', '4.3.06', '4.3.07', '4.3.08'];
 
 // 0:Nang cap bang tay, 1:Nang cap tu dong, 2:Nang cap nua tu dong
 $nv_update_config['update_auto_type'] = 1;
@@ -54,7 +54,8 @@ $nv_update_config['lang']['vi']['nv_up_modnews4306'] = 'Cập nhật module news
 $nv_update_config['lang']['vi']['nv_up_sys4306'] = 'Cập nhật hệ thống lên 4.3.06';
 $nv_update_config['lang']['vi']['nv_up_modusers4307'] = 'Cập nhật module users lên 4.3.07';
 $nv_update_config['lang']['vi']['nv_up_sys4307'] = 'Cập nhật hệ thống lên 4.3.07';
-$nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản 4.3.07';
+$nv_update_config['lang']['vi']['nv_up_sys4308'] = 'Cập nhật hệ thống lên 4.3.08';
+$nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản 4.3.08';
 
 // English
 $nv_update_config['lang']['en']['nv_up_modnews4301'] = 'Update module news to 4.3.01';
@@ -73,7 +74,8 @@ $nv_update_config['lang']['en']['nv_up_modnews4306'] = 'Update module news to 4.
 $nv_update_config['lang']['en']['nv_up_sys4306'] = 'Update system to 4.3.06';
 $nv_update_config['lang']['en']['nv_up_modusers4307'] = 'Update module users to 4.3.07';
 $nv_update_config['lang']['en']['nv_up_sys4307'] = 'Update system to 4.3.07';
-$nv_update_config['lang']['en']['nv_up_finish'] = 'Update to new version 4.3.07';
+$nv_update_config['lang']['en']['nv_up_sys4308'] = 'Update system to 4.3.08';
+$nv_update_config['lang']['en']['nv_up_finish'] = 'Update to new version 4.3.08';
 
 $nv_update_config['tasklist'] = [];
 $nv_update_config['tasklist'][] = [
@@ -173,7 +175,13 @@ $nv_update_config['tasklist'][] = [
     'f' => 'nv_up_sys4307'
 ];
 $nv_update_config['tasklist'][] = [
-    'r' => '4.3.07',
+    'r' => '4.3.08',
+    'rq' => 2,
+    'l' => 'nv_up_sys4308',
+    'f' => 'nv_up_sys4308'
+];
+$nv_update_config['tasklist'][] = [
+    'r' => '4.3.08',
     'rq' => 2,
     'l' => 'nv_up_finish',
     'f' => 'nv_up_finish'
@@ -777,6 +785,54 @@ function nv_up_sys4307()
     }
     try {
         $db->query("ALTER TABLE " . $db_config['prefix'] . "_banners_click ADD id INT(11) unsigned NOT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (id);");
+    } catch (PDOException $e) {
+        trigger_error($e->getMessage());
+    }
+
+    return $return;
+}
+
+/**
+ * @return number[]|string[]
+ */
+function nv_up_sys4308()
+{
+    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config;
+    $return = array(
+        'status' => 1,
+        'complete' => 1,
+        'next' => 1,
+        'link' => 'NO',
+        'lang' => 'NO',
+        'message' => ''
+    );
+
+    // Chức năng cấu hình các giao diện người dùng ngoài site
+    foreach ($global_config['allow_sitelangs'] as $lang) {
+        try {
+            $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', 'global', 'user_allowed_theme', '');");
+        } catch (PDOException $e) {
+            trigger_error($e->getMessage());
+        }
+    }
+
+    // Ghi lại thời điểm sửa thông tin tài khoản lần cuối
+    foreach ($global_config['allow_sitelangs'] as $lang) {
+        // Lấy tất cả các module và module ảo của nó
+        $mquery = $db->query("SELECT title, module_data FROM " . $db_config['prefix'] . "_" . $lang . "_modules WHERE module_file='users'");
+        while (list ($mod, $mod_data) = $mquery->fetch(3)) {
+            // Thêm trường dữ liệu đối tượng kích hoạt tài khoản
+            try {
+                $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $mod_data . " ADD last_update INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Thời điểm cập nhật thông tin lần cuối' AFTER last_openid;");
+            } catch (PDOException $e) {
+                trigger_error($e->getMessage());
+            }
+        }
+    }
+
+    // Cập nhật phần quản lý metatags
+    try {
+        $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'site', 'private_site', '0');");
     } catch (PDOException $e) {
         trigger_error($e->getMessage());
     }

@@ -1,4 +1,4 @@
-# Hướng dẫn cập nhật từ 4.3.00 => 4.3.06 lên NukeViet 4.3.07
+# Hướng dẫn cập nhật từ 4.3.00 => 4.3.07 lên NukeViet 4.3.08
 
 Nếu phiên bản NukeViet 4 của bạn nhỏ hơn 4.3.00 bạn cần tìm hướng dẫn nâng cấp lên phiên bản 4.3.00 trước khi tiến hành các bước tiếp theo.
 
@@ -27,16 +27,17 @@ Nếu trong quá trình cập nhật bị đẩy ra, bạn đăng nhập lại q
 
 #### Cập nhật thủ công:
 
-Download gói cập nhật tại: https://github.com/nukeviet/update/releases/download/to-4.3.07/update-to-4.3.07.zip
+Download gói cập nhật tại: https://github.com/nukeviet/update/releases/download/to-4.3.08/update-to-4.3.08.zip
 Giải nén và Upload các file trong gói cập nhật với cấu trúc của NukeViet, sau đó vào admin để tiến hành cập nhật.
 
 > Lưu ý: Nếu site của bạn đang ở bản 4.3.03 về trước khi thực hiện cập nhật xong bước di chuyển các file và thư mục, bạn sẽ bị đẩy ra khỏi tài khoản quản trị. Khi đó bạn hãy thực hiện đăng nhập lại quản trị và tiến hành di chuyển tới khu vực cập nhật lần nữa để hệ thống tiếp tục tiến trình.
 
 ### Bước 3: Cấu hình lại site.
 
+- Đăng nhập quản trị tối cao, vào khu vực **Công cụ SEO => Cấu hình Meta-Tags** xóa bỏ đi các Meta-Tags: robots, googlebot, msnbot (tại cột Tên Nhóm xóa nội dung trong các ô tương ứng và nhấp Thực hiện là có thể xóa được).
 - Nếu site có sử dụng các thư viện bên ngoài như `phpoffice/phpspreadsheet` thông qua composer, bạn cần khai báo để composer cập nhật lại
 
-Nếu site của bạn ở bản 4.3.03 về trước cần làm các bước sau (site đang ở bản 4.3.04 thì không cần):
+Nếu site của bạn ở bản 4.3.03 về trước cần làm các bước sau (site đang ở bản 4.3.04 về sau thì không cần):
 
 - Tìm file config.php Tìm cấu hình sitekey đổi giá trị sitekey (Việc này cần thực hiện để đảm bảo an toàn).
 - Thực hiện dọn dẹp hệ thống để xóa các file log. Bạn có thể thực hiện việc này bằng thao tác: Tại khu vực quản trị chọn **Công cụ web => Dọn dẹp hệ thống**, nhấp vào ô check ở dòng **Xóa các thông báo lỗi** sau đó nhấp **Thực hiện**
