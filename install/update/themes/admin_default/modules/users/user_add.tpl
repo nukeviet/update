@@ -23,7 +23,7 @@
                 <tr>
                     <td> {LANG.email} </td>
                     <td> <span class="text-danger">(*)</span> </td>
-                    <td><input type="text" class="form-control email required w300" value="{DATA.email}" name="email" id="email_iavim" /></td>
+                    <td><input type="email" class="form-control email required w300" value="{DATA.email}" name="email" id="email_iavim" /></td>
                 </tr>
                 <tr>
                     <td> {LANG.password} </td>
@@ -220,6 +220,7 @@
     </div>
     <div class="text-center">
         <input type="hidden" name="confirm" value="1" />
+        <input type="hidden" name="nv_redirect" value="{NV_REDIRECT}" />
         <button class="btn btn-primary" type="submit">
             <i class="fa fa-spin fa-spinner hidden"></i>
             <span>{LANG.member_add}</span>

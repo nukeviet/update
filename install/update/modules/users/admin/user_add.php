@@ -28,6 +28,10 @@ if (defined('NV_EDITOR')) {
 
 $_user = $custom_fields = [];
 $userid = 0;
+$nv_redirect = '';
+if ($nv_Request->isset_request('nv_redirect', 'post,get')) {
+    $nv_redirect = nv_get_redirect();
+}
 if ($nv_Request->isset_request('confirm', 'post')) {
     $_user['username'] = $nv_Request->get_title('username', 'post', '', 1);
     $_user['email'] = nv_strtolower($nv_Request->get_title('email', 'post', '', 1));
@@ -87,13 +91,15 @@ if ($nv_Request->isset_request('confirm', 'post')) {
         ]);
     }
 
-    if (($error_xemail = nv_check_valid_email($_user['email'])) != '') {
+    $error_xemail = nv_check_valid_email($_user['email'], true);
+    if ($error_xemail[0] != '') {
         nv_jsonOutput([
             'status' => 'error',
             'input' => 'email',
-            'mess' => $error_xemail
+            'mess' => $error_xemail[0]
         ]);
     }
+    $_user['email'] = $error_xemail[1];
 
     // Thực hiện câu truy vấn để kiểm tra email đã tồn tại chưa.
     $stmt = $db->prepare('SELECT userid FROM ' . NV_MOD_TABLE . ' WHERE email= :email');
@@ -293,12 +299,29 @@ if ($nv_Request->isset_request('confirm', 'post')) {
         'input' => '',
         'username' => $_user['username'],
         'admin_add' => (isset($admin_mods['authors']) and defined('NV_IS_GODADMIN') or (defined('NV_IS_SPADMIN') and ($global_config['spadmin_add_admin'] == 1 or $global_config['idsite'] > 0))) ? 'yes' : 'no',
-        'mess' => sprintf($lang_module['admin_add'], $_user['username'])
+        'mess' => sprintf($lang_module['admin_add'], $_user['username']),
+        'nv_redirect' => $nv_redirect != '' ? nv_redirect_decrypt($nv_redirect) . '&userid=' . $userid : ''
     ]);
 }
 
-$_user['username'] = $_user['email'] = $_user['password1'] = $_user['password2'] = $_user['question'] = $_user['answer'] = '';
-$_user['first_name'] = $_user['last_name'] = $_user['gender'] = $_user['sig'] = $_user['birthday'] = '';
+$initdata = [];
+if ($nv_Request->isset_request('initdata', 'post')) {
+    $_initdata = $nv_Request->get_title('initdata', 'post');
+    $_initdata = json_decode($crypt->decrypt($_initdata, NV_CHECK_SESSION), true);
+    $initdata = is_array($_initdata) ? $_initdata : [];
+}
+$_user['email'] = isset($initdata['email']) ? $initdata['email'] : '';
+$_user['first_name'] = isset($initdata['first_name']) ? $initdata['first_name'] : '';
+$_user['last_name'] = isset($initdata['last_name']) ? $initdata['last_name'] : '';
+$_user['username'] = isset($initdata['username']) ? $initdata['username'] : '';
+$_user['question'] = isset($initdata['question']) ? $initdata['question'] : '';
+$_user['answer'] = isset($initdata['answer']) ? $initdata['answer'] : '';
+$_user['gender'] = isset($initdata['gender']) ? $initdata['gender'] : '';
+$_user['sig'] = isset($initdata['sig']) ? $initdata['sig'] : '';
+$_user['birthday'] = isset($initdata['birthday']) ? $initdata['birthday'] : '';
+$_user['password1'] = isset($initdata['password1']) ? $initdata['password1'] : '';
+$_user['password2'] = isset($initdata['password2']) ? $initdata['password2'] : '';
+
 $_user['view_mail'] = 0;
 $_user['in_groups'] = [];
 $_user['is_official'] = ' checked="checked"';
@@ -328,6 +351,8 @@ $xtpl->assign('NV_UNICKMAX', $global_config['nv_unickmax']);
 $xtpl->assign('NV_UPASSMAX', $global_config['nv_upassmax']);
 $xtpl->assign('NV_UPASSMIN', $global_config['nv_upassmin']);
 
+$xtpl->assign('NV_REDIRECT', $nv_redirect);
+
 if (defined('NV_IS_USER_FORUM')) {
     $xtpl->parse('main.is_forum');
 } else {
@@ -350,16 +375,16 @@ if (defined('NV_IS_USER_FORUM')) {
             // Value luôn là giá trị mặc định
             if (!empty($row['field_choices'])) {
                 if ($row['field_type'] == 'date') {
-                    $row['value'] = ($row['field_choices']['current_date']) ? NV_CURRENTTIME : $row['default_value'];
+                    $row['value'] = isset($initdata[$row['field']]) ? $initdata[$row['field']] : (($row['field_choices']['current_date']) ? NV_CURRENTTIME : $row['default_value']);
                 } elseif ($row['field_type'] == 'number') {
-                    $row['value'] = $row['default_value'];
+                    $row['value'] = isset($initdata[$row['field']]) ? $initdata[$row['field']] : $row['default_value'];
                 } else {
                     $temp = array_keys($row['field_choices']);
-                    $tempkey = intval($row['default_value']) - 1;
+                    $tempkey = isset($initdata[$row['field']]) ? $initdata[$row['field']] : intval($row['default_value']) - 1;
                     $row['value'] = (isset($temp[$tempkey])) ? $temp[$tempkey] : '';
                 }
             } else {
-                $row['value'] = $row['default_value'];
+                $row['value'] = isset($initdata[$row['field']]) ? $initdata[$row['field']] : $row['default_value'];
             }
 
             $row['required'] = ($row['required']) ? 'required' : '';
@@ -483,6 +508,7 @@ if (defined('NV_IS_USER_FORUM')) {
 $xtpl->parse('main');
 $contents = $xtpl->text('main');
 
+$showheader = $nv_Request->get_int('showheader', 'post,get', 1);
 include NV_ROOTDIR . '/includes/header.php';
-echo nv_admin_theme($contents);
+echo nv_admin_theme($contents, $showheader);
 include NV_ROOTDIR . '/includes/footer.php';

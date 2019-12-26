@@ -23,7 +23,7 @@
                 <tr>
                     <td> {LANG.email} </td>
                     <td> <span class="text-danger">(*)</span> </td>
-                    <td><input class="email required form-control" value="{DATA.email}" name="email" id="email_iavim" style="width: 300px" /></td>
+                    <td><input type="email" class="email required form-control" value="{DATA.email}" name="email" id="email_iavim" style="width: 300px" /></td>
                 </tr>
                 <!-- BEGIN: name_show_0 -->
                 <!-- BEGIN: show_last_name-->
@@ -244,6 +244,7 @@
     </div>
     <div class="text-center">
         <input type="hidden" name="confirm" value="1" />
+        <input type="hidden" name="nv_redirect" value="{NV_REDIRECT}" />
         <button class="btn btn-primary" type="submit">
             <i class="fa fa-spin fa-spinner hidden"></i>
             <span>{LANG.edit_title}</span>
