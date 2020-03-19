@@ -17,7 +17,7 @@ $global_config['cached'] = 'files';
 
 ## 2. Upload file nâng cấp
 
-Download gói nâng cấp tại: https://github.com/nukeviet/update/files/88516/NukeViet_4.0.23_4.0.24.zip
+Download gói nâng cấp tại: https://github.com/nukeviet/update/releases/download/NukeViet_4.0.23_4.0.24/update-to-4.0.24.zip
 
 Upload các file trong gói nâng cấp, sau đó vào admin để tiến hành nâng cấp.
 
