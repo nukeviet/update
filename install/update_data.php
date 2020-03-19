@@ -172,10 +172,20 @@ function nv_up_contact()
         $mquery = $db->query("SELECT title, module_data FROM " . $db_config['prefix'] . "_" . $lang . "_modules WHERE module_file = 'contact'");
 
         while (list ($mod, $mod_data) = $mquery->fetch(3)) {
+            // Thêm trường địa chỉ bộ phận
             try {
                 $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . "_department ADD address VARCHAR(255) NOT NULL AFTER email");
             } catch (PDOException $e) {
-                //
+                trigger_error(print_r($e, true));
+            }
+            /**
+             * @since 19/03/2020 by hoaquynhtim99
+             * Bổ sung trường dữ liệu thiếu vào tool cập nhật
+             */
+            try {
+                $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . "_department ADD image VARCHAR(255) NOT NULL DEFAULT '' AFTER alias;");
+            } catch (PDOException $e) {
+                trigger_error(print_r($e, true));
             }
         }
     }
