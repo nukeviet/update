@@ -1054,6 +1054,7 @@ function nv_up_sys4400()
     $result = $db->query($sql);
     while ($row = $result->fetch()) {
         $row['uploadtype'] = array_filter(array_unique(array_map('trim', explode(',', $row['uploadtype']))));
+        $row['uploadtype'] = array_diff($row['uploadtype'], ['flash']);
         $row['uploadtype'] = empty($row['uploadtype']) ? '' : implode(',', $row['uploadtype']);
 
         $sql = "UPDATE " . NV_BANNERS_GLOBALTABLE . "_plans SET uploadtype=" . $db->quote($row['uploadtype']) . " WHERE id=" . $row['id'];
@@ -1061,12 +1062,14 @@ function nv_up_sys4400()
     }
 
     /*
-     * Cập nhật config ini file
+     * Cập nhật config ini file -- Bỏ
      */
-    $array_files = nv_scandir(NV_ROOTDIR . '/' . NV_DATADIR, '/^config\_ini\..*\.php$/');
+    /*
+    $array_files = nv_scandir(NV_ROOTDIR . '/' . NV_DATADIR, '/^config\_ini\.(.*)\.php$/');
     foreach ($array_files as $file) {
         nv_deletefile(NV_ROOTDIR . '/' . NV_DATADIR . '/' . $file);
     }
+    */
 
     return $return;
 }
