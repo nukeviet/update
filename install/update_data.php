@@ -18,7 +18,7 @@ $nv_update_config = [];
 $nv_update_config['type'] = 1;
 
 // ID goi cap nhat
-$nv_update_config['packageID'] = 'NVUD4400dev';
+$nv_update_config['packageID'] = 'NVUD4400';
 
 // Cap nhat cho module nao, de trong neu la cap nhat NukeViet, ten thu muc module neu la cap nhat module
 $nv_update_config['formodule'] = '';
@@ -1070,6 +1070,23 @@ function nv_up_sys4400()
         nv_deletefile(NV_ROOTDIR . '/' . NV_DATADIR . '/' . $file);
     }
     */
+
+    // Thêm một số cấu hình tài khoản
+    try {
+        $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'site', 'max_user_admin', '0');");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+    try {
+        $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'site', 'max_user_number', '0');");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+    try {
+        $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'global', 'users_special', '0');");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
 
     return $return;
 }
