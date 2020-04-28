@@ -169,6 +169,64 @@ Thành:
 
 #### Phần thực hiện thêm nếu muốn tối ưu hơn:
 
+- Module page: Thêm cấu hình số ký tự tiêu đề, giới thiệu, hiển thị ảnh cho global.page.php
+
+Việc sửa này không bắt buộc, nếu không sửa thì các cấu hình của block chỉ không hiển thị hình ảnh minh họa:
+
+Sửa file (nếu có): themes/my_theme/modules/page/block.about.tpl tìm đến đoạn:
+
+```html
+<h3 class="margin-bottom"><a title="{TITLE}" href="{LINK}">{TITLE}</a></h3>
+```
+
+Sửa lại thành:
+
+```html
+<!-- BEGIN: image -->
+<div class="image pull-left">
+    <a href="{LINK}" title="{TITLE}"> <img src="{IMAGE}" alt="{TITLE}" class="img-responsive" /></a>
+</div>
+<!-- END: image -->
+<h3 class="margin-bottom">
+    <a title="{TITLE}" href="{LINK}">{TITLE}</a>
+</h3>
+```
+
+- Sửa lỗi giao diện block global.login.php và global.user_button.php
+
+Mở themes/ten-theme/modules/users/block.login.tpl (nếu có) và themes/ten-theme/modules/users/block.user_button.tpl (nếu có) tìm những đoạn
+
+```
+{NV_BASE_SITEURL}themes/{BLOCK_THEME}/js/users.js
+```
+
+Hoặc
+
+```
+{NV_BASE_SITEURL}themes/default/js/users.js
+```
+
+Thay lại thành
+
+```
+{NV_BASE_SITEURL}themes/{BLOCK_JS}/js/users.js
+```
+
+- Xóa google fonts khi thay đổi thiết lập giao diện
+
+Mở themes/ten-themes/config.php tìm
+
+```php
+    $nv_Cache->delMod('settings');
+```
+
+Thêm xuống dưới
+
+```php
+    $gfonts = new NukeViet\Client\Gfonts();
+    $gfonts->destroyAll();
+```
+
 - Xóa bỏ tích hợp web Google+ (Việc này cần làm do Google đã gỡ bỏ nền tảng Google Plus):
 
 Tìm và xóa các đoạn tương tự như sau trong các file tpl của giao diện
