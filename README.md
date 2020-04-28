@@ -1,4 +1,4 @@
-# Hướng dẫn cập nhật từ 4.3.00 => 4.3.07 lên NukeViet 4.3.08
+# Hướng dẫn cập nhật từ NukeViet 4.3 (4.3.00 đến 4.3.08) lên NukeViet 4.4.00
 
 Nếu phiên bản NukeViet 4 của bạn nhỏ hơn 4.3.00 bạn cần tìm hướng dẫn nâng cấp lên phiên bản 4.3.00 trước khi tiến hành các bước tiếp theo.
 
@@ -17,6 +17,8 @@ Nếu phiên bản NukeViet 4 của bạn nhỏ hơn 4.3.00 bạn cần tìm hư
 > - Thực hiện cập nhật bằng một trong các cách bên dưới.
 > - Nếu trong quá trình cập nhật hoặc sau khi cập nhật website xảy ra sự cố hãy sao chép nội dung trong file có dạng **dd-mm-yyyy_error_log.log** ở thư mục **data/logs/error_logs/** để gửi hỗ trợ tại [Diễn đàn NukeViet.Vn](https://nukeviet.vn/vi/forum/Nang-cap/).
 
+**Lưu ý: Khi thực hiện cập nhật xong bước di chuyển các file và thư mục, nếu bị đẩy ra khỏi tài khoản quản trị (mất trạng thái đăng nhập, hệ thống báo website đang bị đình chỉ) bạn hãy thực hiện đăng nhập lại quản trị và tiến hành di chuyển tới khu vực cập nhật lần nữa để hệ thống tiếp tục tiến trình.**
+
 #### Cập nhật tự động:
 
 Đăng nhập quản trị site dưới quyền admin tối cao, di chuyển vào khu vực *Công cụ web => Kiểm tra phiên bản*, tại đây nhận thông báo cập nhật và làm theo các bước hệ thống hướng dẫn.
@@ -27,10 +29,8 @@ Nếu trong quá trình cập nhật bị đẩy ra, bạn đăng nhập lại q
 
 #### Cập nhật thủ công:
 
-Download gói cập nhật tại: https://github.com/nukeviet/update/releases/download/to-4.3.08/update-to-4.3.08.zip
+Download gói cập nhật tại: https://github.com/nukeviet/update/releases/download/to-4.4.00/update-to-4.4.00.zip
 Giải nén và Upload các file trong gói cập nhật với cấu trúc của NukeViet, sau đó vào admin để tiến hành cập nhật.
-
-> Lưu ý: Nếu site của bạn đang ở bản 4.3.03 về trước khi thực hiện cập nhật xong bước di chuyển các file và thư mục, bạn sẽ bị đẩy ra khỏi tài khoản quản trị. Khi đó bạn hãy thực hiện đăng nhập lại quản trị và tiến hành di chuyển tới khu vực cập nhật lần nữa để hệ thống tiếp tục tiến trình.
 
 ### Bước 3: Cấu hình lại site.
 
@@ -47,9 +47,127 @@ Nếu site của bạn ở bản 4.3.03 về trước cần làm các bước sa
 
 ### Bước 4: Điều chỉnh giao diện
 
+**Nếu site của bạn sử dụng giao diện không phải mặc định thì thực hiện cập nhật theo hướng dẫn sau:**
+
 > Các hướng dẫn dưới đây bạn có thể không cần thực hiện nếu cảm thấy khó khăn. Việc không cập nhật giao diện website của bạn vẫn hoạt động bình thường.
 
-**Nếu site của bạn sử dụng giao diện không phải mặc định thì thực hiện cập nhật theo hướng dẫn sau:**
+#### Phần nên thực hiện:
+
+Bạn nên thực hiện các hướng dẫn ở phần này để giúp website của bạn tối ưu SEO.
+
+**Chuyển breadcrumb từ vocabulary sang schema.org**
+
+Mở file themes/theme-cua-ban/layout/header_extended.tpl tìm:
+
+```html
+<ul class="temp-breadcrumbs hidden">
+```
+
+Thay thành:
+
+```html
+<ul class="temp-breadcrumbs hidden" itemscope itemtype="https://schema.org/BreadcrumbList">
+```
+
+Trong thẻ ul đó tìm các thẻ li (có khoảng 2 thẻ), thay thế các thành phần sau:
+Thay:
+
+```
+itemscope itemtype="http://data-vocabulary.org/Breadcrumb"
+```
+
+Thành
+
+```
+itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"
+```
+
+Thay `itemprop="url"` thành `itemprop="item"`.
+Thay `itemprop="title"` thành `itemprop="name"`.
+
+Trước khi đóng thẻ li thứ nhất thêm:
+
+```html
+<i class="hidden" itemprop="position" content="1"></i>
+```
+
+Trước khi đóng thẻ li thứ hai thêm:
+
+```html
+<i class="hidden" itemprop="position" content="{BREADCRUMBS.position}"></i>
+```
+
+Sau khi hoàn chỉnh kết quả sẽ như sau:
+
+```html
+<ul class="temp-breadcrumbs hidden" itemscope itemtype="https://schema.org/BreadcrumbList">
+    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="{THEME_SITE_HREF}" itemprop="item" title="{LANG.Home}"><span itemprop="name">{LANG.Home}</span></a><i class="hidden" itemprop="position" content="1"></i></li>
+    <!-- BEGIN: loop --><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="{BREADCRUMBS.link}" itemprop="item" title="{BREADCRUMBS.title}"><span class="txt" itemprop="name">{BREADCRUMBS.title}</span></a><i class="hidden" itemprop="position" content="{BREADCRUMBS.position}"></i></li><!-- END: loop -->
+</ul>
+```
+
+Mở file themes/default/theme.php tìm
+
+```php
+foreach ($array_mod_title_copy as $arr_cat_title_i) {
+```
+
+Thêm lên bên trên:
+
+```php
+$border = 2;
+```
+
+Thêm xuống dưới:
+
+```php
+$arr_cat_title_i['position'] = $border++;
+```
+
+**Sửa Review snippet module news**
+
+Nếu giao diện của bạn tồn tại file themes/theme-cua-ban/modules/news/detail.tpl tìm đoạn code từ thẻ `<!-- BEGIN: data_rating -->` đến thẻ `<!-- END: data_rating -->` thay bằng đoạn code sau
+
+```html
+<span itemscope itemtype="https://schema.org/AggregateRating">
+    <span class="hidden d-none hide" itemprop="itemReviewed" itemscope itemtype="https://schema.org/CreativeWorkSeries">
+        <span class="hidden d-none hide" itemprop="name">{DETAIL.title}</span>
+    </span>
+    {LANG.rating_average}:
+    <span id="numberrating" itemprop="ratingValue">{DETAIL.numberrating}</span> -
+    <span id="click_rating" itemprop="ratingCount">{DETAIL.click_rating}</span> {LANG.rating_count}
+    <span class="hidden d-none hide" itemprop="bestRating">5</span>
+</span>
+```
+
+Ví dụ thay:
+
+```html
+<!-- BEGIN: data_rating -->
+<span itemscope itemtype="http://data-vocabulary.org/Review-aggregate">{LANG.rating_average}:
+    <span itemprop="rating" id="numberrating">{DETAIL.numberrating}</span> -
+    <span itemprop="votes" id="click_rating">{DETAIL.click_rating}</span> {LANG.rating_count}
+</span>
+<!-- END: data_rating -->
+```
+
+Thành:
+
+```html
+<!-- BEGIN: data_rating -->
+<span itemscope itemtype="https://schema.org/AggregateRating">
+    <span class="hidden d-none hide" itemprop="itemReviewed" itemscope itemtype="https://schema.org/CreativeWorkSeries">
+        <span class="hidden d-none hide" itemprop="name">{DETAIL.title}</span>
+    </span>
+    {LANG.rating_average}:
+    <span id="numberrating" itemprop="ratingValue">{DETAIL.numberrating}</span> -
+    <span id="click_rating" itemprop="ratingCount">{DETAIL.click_rating}</span> {LANG.rating_count}
+    <span class="hidden d-none hide" itemprop="bestRating">5</span>
+</span>
+<!-- END: data_rating -->
+```
+
+#### Phần thực hiện thêm nếu muốn tối ưu hơn:
 
 - Xóa bỏ tích hợp web Google+ (Việc này cần làm do Google đã gỡ bỏ nền tảng Google Plus):
 

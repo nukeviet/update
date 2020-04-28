@@ -24,7 +24,7 @@ $nv_update_config['packageID'] = 'NVUD4400';
 $nv_update_config['formodule'] = '';
 
 // Thong tin phien ban, tac gia, ho tro
-$nv_update_config['release_date'] = 1577523601;
+$nv_update_config['release_date'] = 1588150800;
 $nv_update_config['author'] = 'VINADES.,JSC <contact@vinades.vn>';
 $nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.4.00';
 $nv_update_config['to_version'] = '4.4.00';
@@ -1113,6 +1113,7 @@ function nv_up_finish()
     nv_deletefile(NV_ROOTDIR . '/themes/admin_default/modules/seotools/googleplus.tpl');
     nv_deletefile(NV_ROOTDIR . '/themes/default/js/block.global.company_info.js');
     nv_deletefile(NV_ROOTDIR . '/themes/admin_default/images/vertical_menu_bg.jpg');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/select2/select2-bootstrap.min.css');
 
     // Cập nhật phiên bản
     $array_modules = [
