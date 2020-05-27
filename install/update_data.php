@@ -18,17 +18,17 @@ $nv_update_config = [];
 $nv_update_config['type'] = 1;
 
 // ID goi cap nhat
-$nv_update_config['packageID'] = 'NVUD4308';
+$nv_update_config['packageID'] = 'NVUD4309';
 
 // Cap nhat cho module nao, de trong neu la cap nhat NukeViet, ten thu muc module neu la cap nhat module
 $nv_update_config['formodule'] = '';
 
 // Thong tin phien ban, tac gia, ho tro
-$nv_update_config['release_date'] = 1577523600;
+$nv_update_config['release_date'] = 1590570000;
 $nv_update_config['author'] = 'VINADES.,JSC <contact@vinades.vn>';
-$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.3.08';
-$nv_update_config['to_version'] = '4.3.08';
-$nv_update_config['allow_old_version'] = ['4.3.00', '4.3.01', '4.3.02', '4.3.03', '4.3.04', '4.3.05', '4.3.06', '4.3.07', '4.3.08'];
+$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.3.09';
+$nv_update_config['to_version'] = '4.3.09';
+$nv_update_config['allow_old_version'] = ['4.3.00', '4.3.01', '4.3.02', '4.3.03', '4.3.04', '4.3.05', '4.3.06', '4.3.07', '4.3.08', '4.3.09'];
 
 // 0:Nang cap bang tay, 1:Nang cap tu dong, 2:Nang cap nua tu dong
 $nv_update_config['update_auto_type'] = 1;
@@ -55,7 +55,7 @@ $nv_update_config['lang']['vi']['nv_up_sys4306'] = 'Cập nhật hệ thống l�
 $nv_update_config['lang']['vi']['nv_up_modusers4307'] = 'Cập nhật module users lên 4.3.07';
 $nv_update_config['lang']['vi']['nv_up_sys4307'] = 'Cập nhật hệ thống lên 4.3.07';
 $nv_update_config['lang']['vi']['nv_up_sys4308'] = 'Cập nhật hệ thống lên 4.3.08';
-$nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản 4.3.08';
+$nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản 4.3.09';
 
 // English
 $nv_update_config['lang']['en']['nv_up_modnews4301'] = 'Update module news to 4.3.01';
@@ -75,7 +75,7 @@ $nv_update_config['lang']['en']['nv_up_sys4306'] = 'Update system to 4.3.06';
 $nv_update_config['lang']['en']['nv_up_modusers4307'] = 'Update module users to 4.3.07';
 $nv_update_config['lang']['en']['nv_up_sys4307'] = 'Update system to 4.3.07';
 $nv_update_config['lang']['en']['nv_up_sys4308'] = 'Update system to 4.3.08';
-$nv_update_config['lang']['en']['nv_up_finish'] = 'Update to new version 4.3.08';
+$nv_update_config['lang']['en']['nv_up_finish'] = 'Update to new version 4.3.09';
 
 $nv_update_config['tasklist'] = [];
 $nv_update_config['tasklist'][] = [
@@ -181,7 +181,7 @@ $nv_update_config['tasklist'][] = [
     'f' => 'nv_up_sys4308'
 ];
 $nv_update_config['tasklist'][] = [
-    'r' => '4.3.08',
+    'r' => '4.3.09',
     'rq' => 2,
     'l' => 'nv_up_finish',
     'f' => 'nv_up_finish'

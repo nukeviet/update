@@ -1,4 +1,4 @@
-# Hướng dẫn cập nhật từ 4.3.00 => 4.3.07 lên NukeViet 4.3.08
+# Hướng dẫn cập nhật từ 4.3.00 => 4.3.08 lên NukeViet 4.3.09
 
 Nếu phiên bản NukeViet 4 của bạn nhỏ hơn 4.3.00 bạn cần tìm hướng dẫn nâng cấp lên phiên bản 4.3.00 trước khi tiến hành các bước tiếp theo.
 
@@ -17,17 +17,7 @@ Nếu phiên bản NukeViet 4 của bạn nhỏ hơn 4.3.00 bạn cần tìm hư
 > - Thực hiện cập nhật bằng một trong các cách bên dưới.
 > - Nếu trong quá trình cập nhật hoặc sau khi cập nhật website xảy ra sự cố hãy sao chép nội dung trong file có dạng **dd-mm-yyyy_error_log.log** ở thư mục **data/logs/error_logs/** để gửi hỗ trợ tại [Diễn đàn NukeViet.Vn](https://nukeviet.vn/vi/forum/Nang-cap/).
 
-#### Cập nhật tự động:
-
-Đăng nhập quản trị site dưới quyền admin tối cao, di chuyển vào khu vực *Công cụ web => Kiểm tra phiên bản*, tại đây nhận thông báo cập nhật và làm theo các bước hệ thống hướng dẫn.
-
-Nếu thất bại hãy thử cách cập nhật thủ công bên dưới.
-
-Nếu trong quá trình cập nhật bị đẩy ra, bạn đăng nhập lại quản trị để làm theo hướng dẫn (Hệ thống báo Xóa gói cập nhật do không tương thích, Bạn hãy xóa để tiếp tục vânh hành site)
-
-#### Cập nhật thủ công:
-
-Download gói cập nhật tại: https://github.com/nukeviet/update/releases/download/to-4.3.08/update-to-4.3.08.zip
+Download gói cập nhật tại: https://github.com/nukeviet/update/releases/download/to-4.3.09/update-to-4.3.09.zip
 Giải nén và Upload các file trong gói cập nhật với cấu trúc của NukeViet, sau đó vào admin để tiến hành cập nhật.
 
 > Lưu ý: Nếu site của bạn đang ở bản 4.3.03 về trước khi thực hiện cập nhật xong bước di chuyển các file và thư mục, bạn sẽ bị đẩy ra khỏi tài khoản quản trị. Khi đó bạn hãy thực hiện đăng nhập lại quản trị và tiến hành di chuyển tới khu vực cập nhật lần nữa để hệ thống tiếp tục tiến trình.
