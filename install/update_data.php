@@ -228,14 +228,12 @@ function nv_up_sys4401()
     }
 
     // Cập nhật file .htaccess
-    /*
     $htaccess = NV_ROOTDIR . '/.htaccess';
     if (is_writable($htaccess)) {
         $htaccess_content = file_get_contents($htaccess);
         $htaccess_content = preg_replace('/error\.php\?code\=([0-9]{3})/', 'error.php?code=\\1&nvDisableRewriteCheck=1', $htaccess_content);
         file_put_contents($htaccess, $htaccess_content, LOCK_EX);
     }
-    */
 
     return $return;
 }
@@ -289,8 +287,6 @@ function nv_up_finish()
     $db->query("UPDATE " . $db_config['prefix'] . "_setup_extensions SET  version='" . $nv_update_config['to_version'] . " " . $nv_update_config['release_date'] . "' WHERE type='theme' AND basename IN ('" . implode("', '", $array_themes) . "')");
 
     nv_save_file_config_global();
-    nv_rewrite_change($global_config);
-    nv_server_config_change($global_config);
 
     return $return;
 }
