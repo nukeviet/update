@@ -1,4 +1,4 @@
-# Hướng dẫn cập nhật từ NukeViet 4.4.00 lên NukeViet 4.4.01
+# Hướng dẫn cập nhật từ NukeViet 4.4.00, 4.4.01 lên NukeViet 4.4.02
 
 Nếu phiên bản NukeViet 4 của bạn nhỏ hơn 4.4.00 bạn cần tìm hướng dẫn nâng cấp lên phiên bản 4.4.00 trước khi tiến hành các bước tiếp theo.
 
@@ -27,7 +27,7 @@ Nếu trong quá trình cập nhật bị đẩy ra, bạn đăng nhập lại q
 
 #### Cập nhật thủ công:
 
-Download gói cập nhật tại: https://github.com/nukeviet/update/releases/download/to-4.4.01/update-to-4.4.01.zip
+Download gói cập nhật tại: https://github.com/nukeviet/update/releases/download/to-4.4.02/update-to-4.4.02.zip
 Giải nén và Upload các file trong gói cập nhật với cấu trúc của NukeViet, sau đó vào admin để tiến hành cập nhật.
 
 ### Bước 3: Cấu hình lại site.
