@@ -1050,15 +1050,19 @@ function nv_up_sys4400()
     /*
      * Cập nhật banner
      */
-    $sql = "SELECT id, uploadtype FROM " . NV_BANNERS_GLOBALTABLE . "_plans";
-    $result = $db->query($sql);
-    while ($row = $result->fetch()) {
-        $row['uploadtype'] = array_filter(array_unique(array_map('trim', explode(',', $row['uploadtype']))));
-        $row['uploadtype'] = array_diff($row['uploadtype'], ['flash']);
-        $row['uploadtype'] = empty($row['uploadtype']) ? '' : implode(',', $row['uploadtype']);
+    try {
+        $sql = "SELECT id, uploadtype FROM " . NV_BANNERS_GLOBALTABLE . "_plans";
+        $result = $db->query($sql);
+        while ($row = $result->fetch()) {
+            $row['uploadtype'] = array_filter(array_unique(array_map('trim', explode(',', $row['uploadtype']))));
+            $row['uploadtype'] = array_diff($row['uploadtype'], ['flash']);
+            $row['uploadtype'] = empty($row['uploadtype']) ? '' : implode(',', $row['uploadtype']);
 
-        $sql = "UPDATE " . NV_BANNERS_GLOBALTABLE . "_plans SET uploadtype=" . $db->quote($row['uploadtype']) . " WHERE id=" . $row['id'];
-        $db->query($sql);
+            $sql = "UPDATE " . NV_BANNERS_GLOBALTABLE . "_plans SET uploadtype=" . $db->quote($row['uploadtype']) . " WHERE id=" . $row['id'];
+            $db->query($sql);
+        }
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
     }
 
     /*
