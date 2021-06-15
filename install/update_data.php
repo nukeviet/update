@@ -12,23 +12,25 @@ if (!defined('NV_IS_UPDATE')) {
     die('Stop!!!');
 }
 
+die('Đang cập nhật, vui lòng chưa thử nghiệm');
+
 $nv_update_config = [];
 
 // Kieu nang cap 1: Update; 2: Upgrade
 $nv_update_config['type'] = 1;
 
 // ID goi cap nhat
-$nv_update_config['packageID'] = 'NVUD4402';
+$nv_update_config['packageID'] = 'NVUD4500';
 
 // Cap nhat cho module nao, de trong neu la cap nhat NukeViet, ten thu muc module neu la cap nhat module
 $nv_update_config['formodule'] = '';
 
 // Thong tin phien ban, tac gia, ho tro
-$nv_update_config['release_date'] = 1592816400;
+$nv_update_config['release_date'] = 1624352400;
 $nv_update_config['author'] = 'VINADES.,JSC <contact@vinades.vn>';
-$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.4.02';
-$nv_update_config['to_version'] = '4.4.02';
-$nv_update_config['allow_old_version'] = ['4.4.00', '4.4.01', '4.4.02'];
+$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.5.00';
+$nv_update_config['to_version'] = '4.5.00';
+$nv_update_config['allow_old_version'] = ['4.5.00', '4.5.00'];
 
 // 0:Nang cap bang tay, 1:Nang cap tu dong, 2:Nang cap nua tu dong
 $nv_update_config['update_auto_type'] = 1;
@@ -38,29 +40,28 @@ $nv_update_config['lang']['vi'] = [];
 $nv_update_config['lang']['en'] = [];
 
 // Tiếng Việt
-$nv_update_config['lang']['vi']['nv_up_modusers4401'] = 'Cập nhật module users lên 4.4.01';
-$nv_update_config['lang']['vi']['nv_up_sys4401'] = 'Cập nhật hệ thống lên 4.4.01';
-
-$nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản 4.4.02';
+$nv_update_config['lang']['vi']['nv_up_modusers4500'] = 'Cập nhật module users lên 4.5.00';
+$nv_update_config['lang']['vi']['nv_up_sys4500'] = 'Cập nhật hệ thống lên 4.5.00';
+$nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản 4.5.00';
 
 // English
-$nv_update_config['lang']['en']['nv_up_modusers4401'] = 'Update module users to 4.4.01';
-$nv_update_config['lang']['en']['nv_up_sys4401'] = 'Update system to 4.4.01';
+$nv_update_config['lang']['en']['nv_up_modusers4500'] = 'Update module users to 4.5.00';
+$nv_update_config['lang']['en']['nv_up_sys4500'] = 'Update system to 4.5.00';
 
-$nv_update_config['lang']['en']['nv_up_finish'] = 'Update to new version 4.4.02';
+$nv_update_config['lang']['en']['nv_up_finish'] = 'Update to new version 4.5.00';
 
 $nv_update_config['tasklist'] = [];
 $nv_update_config['tasklist'][] = [
-    'r' => '4.4.01',
+    'r' => '4.5.00',
     'rq' => 2,
-    'l' => 'nv_up_modusers4401',
-    'f' => 'nv_up_modusers4401'
+    'l' => 'nv_up_modusers4500',
+    'f' => 'nv_up_modusers4500'
 ];
 $nv_update_config['tasklist'][] = [
-    'r' => '4.4.01',
+    'r' => '4.5.00',
     'rq' => 2,
-    'l' => 'nv_up_sys4401',
-    'f' => 'nv_up_sys4401'
+    'l' => 'nv_up_sys4500',
+    'f' => 'nv_up_sys4500'
 ];
 $nv_update_config['tasklist'][] = [
     'r' => $nv_update_config['to_version'],
@@ -72,7 +73,7 @@ $nv_update_config['tasklist'][] = [
 /**
  * @return number[]|string[]
  */
-function nv_up_modusers4401()
+function nv_up_modusers4500()
 {
     global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config;
 
@@ -94,34 +95,7 @@ function nv_up_modusers4401()
         // Lấy tất cả các module và module ảo của nó
         $mquery = $db->query("SELECT title, module_data FROM " . $db_config['prefix'] . "_" . $lang . "_modules WHERE module_file='users'");
         while (list ($mod, $mod_data) = $mquery->fetch(3)) {
-            // Thêm trường bảng reg
-            try {
-                $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $mod_data . "_reg ADD idsite mediumint(8) unsigned NOT NULL DEFAULT '0' AFTER openid_info, ADD INDEX (idsite);");
-            } catch (PDOException $e) {
-                trigger_error(print_r($e, true));
-            }
 
-            // Cập nhật lại cấu hình xem danh sách quản trị
-            try {
-                $sql = "SELECT content FROM " . $db_config['prefix'] . "_" . $mod_data . "_config WHERE config='access_admin'";
-                $access_admin = $db->query($sql)->fetchColumn();
-                if (!empty($access_admin)) {
-                    $access_admin = (array) unserialize($access_admin);
-                    if (!isset($access_admin['access_viewlist'])) {
-                        $access_admin['access_viewlist'] = [
-                            1 => 1,
-                            2 => 1,
-                            3 => 1
-                        ];
-                        $access_admin = serialize($access_admin);
-
-                        $sql = "UPDATE " . $db_config['prefix'] . "_" . $mod_data . "_config SET content=" . $db->quote($access_admin) . " WHERE config='access_admin'";
-                        $db->query($sql);
-                    }
-                }
-            } catch (PDOException $e) {
-                trigger_error(print_r($e, true));
-            }
         }
     }
 
@@ -131,7 +105,7 @@ function nv_up_modusers4401()
 /**
  * @return number[]|string[]
  */
-function nv_up_sys4401()
+function nv_up_sys4500()
 {
     global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config;
 
@@ -144,96 +118,11 @@ function nv_up_sys4401()
         'message' => ''
     ];
 
-    // Cập nhật lại cấu hình SMTP
     try {
-        $db->query("UPDATE " . NV_CONFIG_GLOBALTABLE . " SET config_value='mail' WHERE config_name='mailer_mode' AND lang='sys' AND module='site' AND config_value='';");
     } catch (PDOException $e) {
         trigger_error(print_r($e, true));
     }
 
-    // Thêm một số cấu hình an ninh
-    try {
-        $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'global', 'domains_restrict', '1');");
-    } catch (PDOException $e) {
-        trigger_error(print_r($e, true));
-    }
-    try {
-        $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'global', 'domains_whitelist', '[\"youtube.com\",\"www.youtube.com\",\"google.com\",\"www.google.com\",\"drive.google.com\"]');");
-    } catch (PDOException $e) {
-        trigger_error(print_r($e, true));
-    }
-
-    try {
-        $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'global', 'crosssite_restrict', '1');");
-    } catch (PDOException $e) {
-        trigger_error(print_r($e, true));
-    }
-    try {
-        $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'global', 'crosssite_valid_domains', '');");
-    } catch (PDOException $e) {
-        trigger_error(print_r($e, true));
-    }
-    try {
-        $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'global', 'crosssite_valid_ips', '');");
-    } catch (PDOException $e) {
-        trigger_error(print_r($e, true));
-    }
-    try {
-        $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'global', 'crossadmin_restrict', '1');");
-    } catch (PDOException $e) {
-        trigger_error(print_r($e, true));
-    }
-    try {
-        $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'global', 'crossadmin_valid_domains', '');");
-    } catch (PDOException $e) {
-        trigger_error(print_r($e, true));
-    }
-    try {
-        $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'global', 'crossadmin_valid_ips', '');");
-    } catch (PDOException $e) {
-        trigger_error(print_r($e, true));
-    }
-
-    try {
-        $db->query("UPDATE " . NV_CONFIG_GLOBALTABLE . " SET config_value=(SELECT config_value FROM " . NV_CONFIG_GLOBALTABLE . " WHERE lang = 'sys' AND module = 'site' AND config_name = 'cors_restrict_domains') WHERE lang = 'sys' AND module = 'global' AND config_name = 'crosssite_restrict';");
-    } catch (PDOException $e) {
-        trigger_error(print_r($e, true));
-    }
-    try {
-        $db->query("UPDATE " . NV_CONFIG_GLOBALTABLE . " SET config_value=(SELECT config_value FROM " . NV_CONFIG_GLOBALTABLE . " WHERE lang = 'sys' AND module = 'site' AND config_name = 'cors_restrict_domains') WHERE lang = 'sys' AND module = 'global' AND config_name = 'crossadmin_restrict';");
-    } catch (PDOException $e) {
-        trigger_error(print_r($e, true));
-    }
-
-    try {
-        $db->query("UPDATE " . NV_CONFIG_GLOBALTABLE . " SET config_value=(SELECT config_value FROM " . NV_CONFIG_GLOBALTABLE . " WHERE lang = 'sys' AND module = 'site' AND config_name = 'cors_valid_domains') WHERE lang = 'sys' AND module = 'global' AND config_name = 'crosssite_valid_domains';");
-    } catch (PDOException $e) {
-        trigger_error(print_r($e, true));
-    }
-    try {
-        $db->query("UPDATE " . NV_CONFIG_GLOBALTABLE . " SET config_value=(SELECT config_value FROM " . NV_CONFIG_GLOBALTABLE . " WHERE lang = 'sys' AND module = 'site' AND config_name = 'cors_valid_domains') WHERE lang = 'sys' AND module = 'global' AND config_name = 'crossadmin_valid_domains';");
-    } catch (PDOException $e) {
-        trigger_error(print_r($e, true));
-    }
-
-    try {
-        $db->query("DELETE FROM " . NV_CONFIG_GLOBALTABLE . " WHERE lang = 'sys' AND module = 'site' AND config_name = 'cors_restrict_domains';");
-    } catch (PDOException $e) {
-        trigger_error(print_r($e, true));
-    }
-    try {
-        $db->query("DELETE FROM " . NV_CONFIG_GLOBALTABLE . " WHERE lang = 'sys' AND module = 'site' AND config_name = 'cors_valid_domains';");
-    } catch (PDOException $e) {
-        trigger_error(print_r($e, true));
-    }
-
-    // Cập nhật file .htaccess
-    $htaccess = NV_ROOTDIR . '/.htaccess';
-    if (is_writable($htaccess)) {
-        $htaccess_content = file_get_contents($htaccess);
-        $htaccess_content = preg_replace('/error\.php\?code\=([0-9]{3})/', 'error.php?code=\\1&nvDisableRewriteCheck=1', $htaccess_content);
-        file_put_contents($htaccess, $htaccess_content, LOCK_EX);
-    }
 
     return $return;
 }
@@ -257,9 +146,12 @@ function nv_up_finish()
         'message' => ''
     ];
 
-    nv_deletefile(NV_ROOTDIR . '/admin/settings/cdn.php');
-    nv_deletefile(NV_ROOTDIR . '/admin/themes/change_layout.php');
-    nv_deletefile(NV_ROOTDIR . '/vendor/pclzip', true);
+    nv_deletefile(NV_ROOTDIR . 'assets/fonts/FontAwesome.otf');
+    nv_deletefile(NV_ROOTDIR . 'assets/fonts/fontawesome-webfont.eot');
+    nv_deletefile(NV_ROOTDIR . 'assets/js/chart/Chart.bundle.min.js');
+    nv_deletefile(NV_ROOTDIR . 'assets/js/chart/Chart.min.css');
+    nv_deletefile(NV_ROOTDIR . 'assets/js/chart/Chart.min.js');
+    nv_deletefile(NV_ROOTDIR . 'themes/default/fonts/NukeVietIcons.eot');
 
     // Cập nhật phiên bản
     $array_modules = [
