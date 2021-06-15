@@ -26,7 +26,7 @@ function GetSourceNews($sourceid)
         $sql = 'SELECT title FROM ' . NV_PREFIXLANG . '_' . $module_data . '_sources WHERE sourceid = ' . $sourceid;
         $re = $db_slave->query($sql);
 
-        if (list ($title) = $re->fetch(3)) {
+        if (list($title) = $re->fetch(3)) {
             return $title;
         }
     }
@@ -42,99 +42,96 @@ function GetSourceNews($sourceid)
  */
 function BoldKeywordInStr($str, $keyword)
 {
+    $str = nv_br2nl($str);
+    $str = nv_nl2br($str, ' ');
+    $str = nv_unhtmlspecialchars(strip_tags(trim($str)));
     $str = nv_clean60($str, 300);
+
     if (!empty($keyword)) {
-        $tmp = explode(' ', $keyword);
-        foreach ($tmp as $k) {
-            $tp = strtolower($k);
-            $str = str_replace($tp, '<span class="keyword">' . $tp . '</span>', $str);
-            $tp = strtoupper($k);
-            $str = str_replace($tp, '<span class="keyword">' . $tp . '</span>', $str);
-            $k[0] = strtoupper($k[0]);
-            $str = str_replace($k, '<span class="keyword">' . $k . '</span>', $str);
-        }
+        $patterns = [
+            nv_preg_quote($keyword)
+        ];
+        $patterns[] = function_exists('searchPatternByLang') ? searchPatternByLang(nv_preg_quote(nv_EncString($keyword))) : nv_preg_quote(nv_EncString($keyword));
+        $patterns = array_unique($patterns);
+        $patterns = '/(' . implode('|', $patterns) . ')/uis';
+
+        $str = preg_replace($patterns, '<span class="keyword">$1</span>', $str);
     }
     return $str;
 }
 
 $key = $nv_Request->get_title('q', 'get', '');
-$key = str_replace('+', ' ', $key);
+$key = str_replace(["'", '"', '<', '>', '&#039;', '&quot;', '&lt;', '&gt;'], '', $key);
+$key = str_replace('+', ' ', urldecode($key));
 $key = trim(nv_substr($key, 0, NV_MAX_SEARCH_LENGTH));
 $keyhtml = nv_htmlspecialchars($key);
 
-$base_url_rewrite = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op;
+$page_url = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op;
 if (!empty($key)) {
-    $base_url_rewrite .= '&q=' . urlencode($key);
+    $page_url .= '&q=' . urlencode($key);
 }
 
 $choose = $nv_Request->get_int('choose', 'get', 0);
 if (!empty($choose)) {
-    $base_url_rewrite .= '&choose=' . $choose;
+    $page_url .= '&choose=' . $choose;
 }
 
 $catid = $nv_Request->get_int('catid', 'get', 0);
 if (!empty($catid)) {
-    $base_url_rewrite .= '&catid=' . $catid;
+    $page_url .= '&catid=' . $catid;
 }
 $from_date = $nv_Request->get_title('from_date', 'get', '', 0);
 $date_array['from_date'] = preg_replace('/[^0-9]/', '.', urldecode($from_date));
 if (preg_match('/^([0-9]{1,2})\.([0-9]{1,2})\.([0-9]{4})$/', $date_array['from_date'])) {
-    $base_url_rewrite .= '&from_date=' . $date_array['from_date'];
+    $page_url .= '&from_date=' . $date_array['from_date'];
 }
 
 $to_date = $nv_Request->get_title('to_date', 'get', '', 0);
 $date_array['to_date'] = preg_replace('/[^0-9]/', '.', urldecode($to_date));
 if (preg_match('/^([0-9]{1,2})\.([0-9]{1,2})\.([0-9]{4})$/', $date_array['to_date'])) {
-    $base_url_rewrite .= '&to_date=' . $date_array['to_date'];
+    $page_url .= '&to_date=' . $date_array['to_date'];
 }
 
+$base_url = $page_url;
 $page = $nv_Request->get_int('page', 'get', 1);
 if ($page > 1) {
-    $base_url_rewrite .= '&page=' . $page;
-}
-$base_url_rewrite = nv_url_rewrite($base_url_rewrite, true);
-
-$request_uri = $_SERVER['REQUEST_URI'];
-if ($request_uri != $base_url_rewrite and NV_MAIN_DOMAIN . $request_uri != $base_url_rewrite) {
-    header('Location: ' . $base_url_rewrite);
-    die();
+    $page_url .= '&page=' . $page;
 }
 
-$array_cat_search = array();
+$canonicalUrl = getCanonicalUrl($page_url, true);
+
+$array_cat_search = [];
+$array_cat_search[0]['title'] = $lang_module['search_all'];
 foreach ($global_array_cat as $arr_cat_i) {
-    $array_cat_search[$arr_cat_i['catid']] = array(
+    $array_cat_search[$arr_cat_i['catid']] = [
         'catid' => $arr_cat_i['catid'],
         'title' => $arr_cat_i['title'],
         'select' => ($arr_cat_i['catid'] == $catid) ? 'selected' : ''
-    );
+    ];
 }
-
-$array_cat_search[0]['title'] = $lang_module['search_all'];
 
 $contents = call_user_func('search_theme', $key, $choose, $date_array, $array_cat_search);
 $where = '';
 $tbl_src = '';
 if (empty($key) and ($catid == 0) and empty($from_date) and empty($to_date)) {
     $contents .= '<div class="alert alert-danger">' . $lang_module['empty_data_search'] . '</div>';
+} elseif (!empty($key) and nv_strlen($key) < NV_MIN_SEARCH_LENGTH) {
+    $contents .= '<div class="alert alert-danger">' . sprintf($lang_module['search_word_short'], NV_MIN_SEARCH_LENGTH) . '</div>';
 } else {
-    $canonicalUrl = nv_url_rewrite(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=search&amp;q=' . $key, true);
-    if (strpos($canonicalUrl, NV_MY_DOMAIN) !== 0) {
-        $canonicalUrl = NV_MY_DOMAIN . $canonicalUrl;
-    }
-
     $dbkey = $db_slave->dblikeescape($key);
     $dbkeyhtml = $db_slave->dblikeescape($keyhtml);
+    $internal_authors = [];
 
     if ($module_config[$module_name]['elas_use'] == 1) {
-        //ket noi den csdl elastic
+        // ket noi den csdl elastic
         $nukeVietElasticSearh = new NukeViet\ElasticSearch\Functions($module_config[$module_name]['elas_host'], $module_config[$module_name]['elas_port'], $module_config[$module_name]['elas_index']);
 
         $dbkeyhtml = nv_EncString($dbkeyhtml);
         if ($choose == 1) {
             $search_elastic = [
                 'should' => [
-                    'multi_match' => [ //dung multi_match:tim kiem theo nhieu truong
-                        'query' => $dbkeyhtml, //tim kiem theo t? kh�a
+                    'multi_match' => [ // dung multi_match:tim kiem theo nhieu truong
+                        'query' => $dbkeyhtml, // tim kiem theo t? kh�a
                         'type' => [
                             'cross_fields'
                         ],
@@ -142,15 +139,15 @@ if (empty($key) and ($catid == 0) and empty($from_date) and empty($to_date)) {
                             'unsigned_title',
                             'unsigned_hometext',
                             'unsigned_bodyhtml'
-                        ], //tim kiem theo 3 truong m?c d?nh l� ho?c
+                        ], // tim kiem theo 3 truong m?c d?nh l� ho?c
                         'minimum_should_match' => [
                             '50%'
                         ]
                     ]
                 ]
             ];
-        } else if ($choose == 2) {
-            //match:tim kiem theo 1 truong
+        } elseif ($choose == 2) {
+            // match:tim kiem theo 1 truong
             $search_elastic = [
                 'should' => [
                     'match' => [
@@ -158,8 +155,40 @@ if (empty($key) and ($catid == 0) and empty($from_date) and empty($to_date)) {
                     ]
                 ]
             ];
-
-        } else if ($choose == 3) {
+            // Tim bai viet co internal author trung voi ket qua tim kiem
+            if ($db->dbtype == 'mysql' and function_exists('searchKeywordforSQL')) {
+                $where = 'alias REGEXP :q_alias OR pseudonym REGEXP :q_pseudonym';
+                $_dbkeyhtml = searchKeywordforSQL($dbkeyhtml);
+            } else {
+                $where = 'alias LIKE :q_alias OR pseudonym LIKE :q_pseudonym';
+                $_dbkeyhtml = '%' . $dbkeyhtml . '%';
+            }
+            $db->sqlreset()
+                ->select('id')
+                ->from(NV_PREFIXLANG . '_' . $module_data . '_authorlist')
+                ->where($where);
+            $sth = $db->prepare($db->sql());
+            $sth->bindValue(':q_alias', $_dbkeyhtml, PDO::PARAM_STR);
+            $sth->bindValue(':q_pseudonym', $_dbkeyhtml, PDO::PARAM_STR);
+            $sth->execute();
+            $match = [];
+            while ($id_search = $sth->fetch(3)) {
+                $match[] = [
+                    'match' => [
+                        'id' => $id_search[0]
+                    ]
+                ];
+            }
+            if (empty($match)) {
+                $match[] = [
+                    'match' => [
+                        'id' => -1
+                    ]
+                ];
+            }
+            $search_elastic_user['filter']['or'] = $match;
+            $search_elastic = array_merge($search_elastic, $search_elastic_user);
+        } elseif ($choose == 3) {
             $qurl = $key;
             $url_info = parse_url($qurl);
             if (isset($url_info['scheme']) and isset($url_info['host'])) {
@@ -173,11 +202,10 @@ if (empty($key) and ($catid == 0) and empty($from_date) and empty($to_date)) {
                 ]
             ];
         } else {
-
             $search_elastic = [
                 'should' => [
-                    'multi_match' => [ //dung multi_match:tim kiem theo nhieu truong
-                        'query' => $dbkeyhtml, //tim kiem theo tu khoa
+                    'multi_match' => [ // dung multi_match:tim kiem theo nhieu truong
+                        'query' => $dbkeyhtml, // tim kiem theo tu khoa
                         'type' => [
                             'cross_fields'
                         ],
@@ -185,14 +213,48 @@ if (empty($key) and ($catid == 0) and empty($from_date) and empty($to_date)) {
                             'unsigned_title',
                             'unsigned_hometext',
                             'unsigned_bodyhtml',
-                            'sourcetext'
-                        ], //tim kiem theo 3 truong m?c d?nh l� ho?c
+                            'sourcetext',
+                            'unsigned_author'
+                        ], // tim kiem theo 3 truong m?c d?nh l� ho?c
                         'minimum_should_match' => [
                             '50%'
                         ]
                     ]
                 ]
             ];
+            // Tim bai viet co internal author trung voi ket qua tim kiem
+            if ($db->dbtype == 'mysql' and function_exists('searchKeywordforSQL')) {
+                $where = 'alias REGEXP :q_alias OR pseudonym REGEXP :q_pseudonym';
+                $_dbkeyhtml = searchKeywordforSQL($dbkeyhtml);
+            } else {
+                $where = 'alias LIKE :q_alias OR pseudonym LIKE :q_pseudonym';
+                $_dbkeyhtml = '%' . $dbkeyhtml . '%';
+            }
+            $db->sqlreset()
+                ->select('id')
+                ->from(NV_PREFIXLANG . '_' . $module_data . '_authorlist')
+                ->where($where);
+            $sth = $db->prepare($db->sql());
+            $sth->bindValue(':q_alias', $_dbkeyhtml, PDO::PARAM_STR);
+            $sth->bindValue(':q_pseudonym', $_dbkeyhtml, PDO::PARAM_STR);
+            $sth->execute();
+            $match = [];
+            while ($id_search = $sth->fetch(3)) {
+                $match[] = [
+                    'match' => [
+                        'id' => $id_search[0]
+                    ]
+                ];
+            }
+            if (empty($match)) {
+                $match[] = [
+                    'match' => [
+                        'id' => -1
+                    ]
+                ];
+            }
+            $search_elastic_user['filter']['or'] = $match;
+            $search_elastic = array_merge($search_elastic, $search_elastic_user);
         }
         if ($catid > 0) {
             $search_elastic_catid = [
@@ -204,20 +266,20 @@ if (empty($key) and ($catid == 0) and empty($from_date) and empty($to_date)) {
             ];
         }
 
-        $todate_elastic = array();
-        if (preg_match('/^([0-9]{1,2})\.([0-9]{1,2})\.([0-9]{4})$/', $to_date, $m)) {
+        $todate_elastic = [];
+        if (preg_match('/^([0-9]{1,2})\.([0-9]{1,2})\.([0-9]{4})$/', $date_array['to_date'], $m)) {
             $todate_elastic = [
                 'lte' => mktime(23, 59, 59, $m[2], $m[1], $m[3])
             ];
         }
-        $fromdate_elastic = array();
-        if (preg_match('/^([0-9]{1,2})\.([0-9]{1,2})\.([0-9]{4})$/', $from_date, $m)) {
+        $fromdate_elastic = [];
+        if (preg_match('/^([0-9]{1,2})\.([0-9]{1,2})\.([0-9]{4})$/', $date_array['from_date'], $m)) {
             $fromdate_elastic = [
                 'gte' => mktime(0, 0, 0, $m[2], $m[1], $m[3])
             ];
         }
 
-        $array_query_elastic = array();
+        $array_query_elastic = [];
         $array_query_elastic['query']['bool'] = $search_elastic;
         $array_query_elastic['size'] = $per_page;
         $array_query_elastic['from'] = ($page - 1) * $per_page;
@@ -235,6 +297,8 @@ if (empty($key) and ($catid == 0) and empty($from_date) and empty($to_date)) {
             $response = $nukeVietElasticSearh->search_data(NV_PREFIXLANG . '_' . $module_data . '_rows', $array_query_elastic);
         }
         $numRecord = $response['hits']['total'];
+        // Không cho tùy ý đánh số page + xác định trang trước, trang sau
+        betweenURLs($page, ceil($numRecord / $per_page), $base_url, '&page-', $prevPage, $nextPage);
 
         foreach ($response['hits']['hits'] as $key => $value) {
             $homeimgthumb = $value['_source']['homeimgthumb'];
@@ -253,7 +317,7 @@ if (empty($key) and ($catid == 0) and empty($from_date) and empty($to_date)) {
             } else {
                 $img_src = '';
             }
-            $array_content[] = array(
+            $array_content[] = [
                 'id' => $value['_source']['id'],
                 'title' => $value['_source']['title'],
                 'alias' => $value['_source']['alias'],
@@ -264,39 +328,77 @@ if (empty($key) and ($catid == 0) and empty($from_date) and empty($to_date)) {
                 'homeimgfile' => $img_src,
                 'sourceid' => $value['_source']['sourceid'],
                 'external_link' => $value['_source']['external_link']
-            );
-
+            ];
+            $internal_authors[] = $value['_source']['id'];
         }
-        $contents .= search_result_theme($key, $numRecord, $per_page, $page, $array_content, $catid);
     } else {
         if ($choose == 1) {
+            if ($db->dbtype == 'mysql' and function_exists('searchKeywordforSQL')) {
+                $_dbkey = searchKeywordforSQL($dbkey);
+                $_dbkeyhtml = searchKeywordforSQL($dbkeyhtml);
+                $where = "AND ( tb1.title REGEXP '" . $_dbkeyhtml . "' OR tb1.hometext REGEXP '" . $_dbkey . "' OR tb2.bodyhtml REGEXP '" . $_dbkey . "' ) ";
+            } else {
+                $_dbkey = '%' . $dbkey . '%';
+                $_dbkeyhtml = '%' . $dbkeyhtml . '%';
+                $where = "AND ( tb1.title LIKE '" . $_dbkeyhtml . "' OR tb1.hometext LIKE '" . $_dbkey . "' OR tb2.bodyhtml LIKE '" . $_dbkey . "' ) ";
+            }
             $tbl_src = ' LEFT JOIN ' . NV_PREFIXLANG . '_' . $module_data . '_detail tb2 ON ( tb1.id = tb2.id ) ';
-            $where = "AND ( tb1.title LIKE '%" . $dbkeyhtml . "%' OR tb1.hometext LIKE '%" . $dbkey . "%' OR tb2.bodyhtml LIKE '%" . $dbkey . "%' ) ";
         } elseif ($choose == 2) {
-            $where = "AND ( tb1.author LIKE '%" . $dbkeyhtml . "%' ) ";
+            if ($db->dbtype == 'mysql' and function_exists('searchKeywordforSQL')) {
+                $_dbkeyhtml = searchKeywordforSQL($dbkeyhtml);
+                $where = "AND ( tb1.author REGEXP '" . $_dbkeyhtml . "'
+                    OR a.alias REGEXP '" . $_dbkeyhtml . "'
+                    OR a.pseudonym REGEXP '" . $_dbkeyhtml . "') ";
+            } else {
+                $_dbkeyhtml = '%' . $dbkeyhtml . '%';
+                $where = "AND ( tb1.author LIKE '" . $_dbkeyhtml . "'
+                    OR a.alias LIKE '" . $_dbkeyhtml . "'
+                    OR a.pseudonym LIKE '" . $_dbkeyhtml . "') ";
+            }
+            $tbl_src = ' LEFT JOIN ' . NV_PREFIXLANG . '_' . $module_data . '_authorlist a ON (tb1.id = a.id) ';
         } elseif ($choose == 3) {
             $qurl = $key;
             $url_info = parse_url($qurl);
             if (isset($url_info['scheme']) and isset($url_info['host'])) {
                 $qurl = $url_info['scheme'] . '://' . $url_info['host'];
             }
-            $where = "AND (tb1.sourceid IN (SELECT sourceid FROM " . NV_PREFIXLANG . "_" . $module_data . "_sources WHERE title like '%" . $db_slave->dblikeescape($dbkey) . "%' OR link like '%" . $db_slave->dblikeescape($qurl) . "%'))";
+            $where = 'AND (tb1.sourceid IN (SELECT sourceid FROM ' . NV_PREFIXLANG . '_' . $module_data . "_sources WHERE title LIKE '%" . $db_slave->dblikeescape($dbkey) . "%' OR link LIKE '%" . $db_slave->dblikeescape($qurl) . "%'))";
         } else {
             $qurl = $key;
             $url_info = parse_url($qurl);
             if (isset($url_info['scheme']) and isset($url_info['host'])) {
                 $qurl = $url_info['scheme'] . '://' . $url_info['host'];
             }
+            if ($db->dbtype == 'mysql' and function_exists('searchKeywordforSQL')) {
+                $_dbkey = searchKeywordforSQL($dbkey);
+                $_dbkeyhtml = searchKeywordforSQL($dbkeyhtml);
+                $where = " AND (( tb1.title REGEXP '" . $_dbkeyhtml . "' 
+                    OR tb1.hometext REGEXP '" . $_dbkey . "' 
+                    OR tb1.author REGEXP '" . $_dbkeyhtml . "' 
+                    OR tb2.bodyhtml REGEXP '" . $_dbkey . "'
+                    OR a.alias REGEXP '" . $_dbkeyhtml . "'
+                    OR a.pseudonym REGEXP '" . $_dbkeyhtml . "') 
+                    OR (tb1.sourceid IN (SELECT sourceid FROM " . NV_PREFIXLANG . '_' . $module_data . "_sources WHERE title LIKE '%" . $db_slave->dblikeescape($dbkey) . "%' OR link LIKE '%" . $db_slave->dblikeescape($qurl) . "%')))";
+            } else {
+                $_dbkey = '%' . $dbkey . '%';
+                $_dbkeyhtml = '%' . $dbkeyhtml . '%';
+                $where = " AND (( tb1.title LIKE '" . $_dbkeyhtml . "' 
+                    OR tb1.hometext LIKE '" . $_dbkey . "' 
+                    OR tb1.author LIKE '" . $_dbkeyhtml . "' 
+                    OR tb2.bodyhtml LIKE '" . $_dbkey . "'
+                    OR a.alias LIKE '" . $_dbkeyhtml . "'
+                    OR a.pseudonym LIKE '" . $_dbkeyhtml . "') 
+                    OR (tb1.sourceid IN (SELECT sourceid FROM " . NV_PREFIXLANG . '_' . $module_data . "_sources WHERE title LIKE '%" . $db_slave->dblikeescape($dbkey) . "%' OR link LIKE '%" . $db_slave->dblikeescape($qurl) . "%')))";
+            }
             $tbl_src = ' LEFT JOIN ' . NV_PREFIXLANG . '_' . $module_data . '_detail tb2 ON ( tb1.id = tb2.id )';
-            $where = " AND ( tb1.title LIKE '%" . $dbkeyhtml . "%' OR tb1.hometext LIKE '%" . $dbkey . "%' ";
-            $where .= " OR tb1.author LIKE '%" . $dbkeyhtml . "%' OR tb2.bodyhtml LIKE '%" . $dbkey . "%') OR (tb1.sourceid IN (SELECT sourceid FROM " . NV_PREFIXLANG . "_" . $module_data . "_sources WHERE title like '%" . $db_slave->dblikeescape($dbkey) . "%' OR link like '%" . $db_slave->dblikeescape($qurl) . "%'))";
+            $tbl_src .= ' LEFT JOIN ' . NV_PREFIXLANG . '_' . $module_data . '_authorlist a ON (tb1.id = a.id)';
         }
 
-        if (preg_match('/^([0-9]{1,2})\.([0-9]{1,2})\.([0-9]{4})$/', $to_date, $m)) {
-            $where .= ' AND publtime <=' . mktime(23, 59, 59, $m[2], $m[1], $m[3]);
+        if (preg_match('/^([0-9]{1,2})\.([0-9]{1,2})\.([0-9]{4})$/', $date_array['to_date'], $m)) {
+            $where .= ' AND tb1.publtime <=' . mktime(23, 59, 59, $m[2], $m[1], $m[3]);
         }
-        if (preg_match('/^([0-9]{1,2})\.([0-9]{1,2})\.([0-9]{4})$/', $from_date, $m)) {
-            $where .= ' AND publtime >=' . mktime(0, 0, 0, $m[2], $m[1], $m[3]);
+        if (preg_match('/^([0-9]{1,2})\.([0-9]{1,2})\.([0-9]{4})$/', $date_array['from_date'], $m)) {
+            $where .= ' AND tb1.publtime >=' . mktime(0, 0, 0, $m[2], $m[1], $m[3]);
         }
 
         if ($catid > 0) {
@@ -312,6 +414,8 @@ if (empty($key) and ($catid == 0) and empty($from_date) and empty($to_date)) {
 
         $numRecord = $db_slave->query($db_slave->sql())
             ->fetchColumn();
+        // Không cho tùy ý đánh số page + xác định trang trước, trang sau
+        betweenURLs($page, ceil($numRecord / $per_page), $base_url, '&page=', $prevPage, $nextPage);
 
         $db_slave->select('tb1.id,tb1.title,tb1.alias,tb1.catid,tb1.hometext,tb1.author,tb1.publtime,tb1.homeimgfile, tb1.homeimgthumb,tb1.sourceid,tb1.external_link')
             ->order('tb1.' . $order_articles_by . ' DESC')
@@ -320,10 +424,10 @@ if (empty($key) and ($catid == 0) and empty($from_date) and empty($to_date)) {
 
         $result = $db_slave->query($db_slave->sql());
 
-        $array_content = array();
+        $array_content = [];
         $show_no_image = $module_config[$module_name]['show_no_image'];
 
-        while (list ($id, $title, $alias, $catid, $hometext, $author, $publtime, $homeimgfile, $homeimgthumb, $sourceid, $external_link) = $result->fetch(3)) {
+        while (list($id, $title, $alias, $catid, $hometext, $author, $publtime, $homeimgfile, $homeimgthumb, $sourceid, $external_link) = $result->fetch(3)) {
             if ($homeimgthumb == 1) {
                 // image thumb
                 $img_src = NV_BASE_SITEURL . NV_FILES_DIR . '/' . $module_upload . '/' . $homeimgfile;
@@ -339,7 +443,7 @@ if (empty($key) and ($catid == 0) and empty($from_date) and empty($to_date)) {
             } else {
                 $img_src = '';
             }
-            $array_content[] = array(
+            $array_content[] = [
                 'id' => $id,
                 'title' => $title,
                 'alias' => $alias,
@@ -350,11 +454,29 @@ if (empty($key) and ($catid == 0) and empty($from_date) and empty($to_date)) {
                 'homeimgfile' => $img_src,
                 'sourceid' => $sourceid,
                 'external_link' => $external_link
-            );
+            ];
+            $internal_authors[] = $id;
         }
     }
 
-    $contents .= search_result_theme($key, $numRecord, $per_page, $page, $array_content, $catid);
+    if (!empty($internal_authors)) {
+        $internal_authors = implode(',', $internal_authors);
+        $db->sqlreset()
+            ->select('*')
+            ->from(NV_PREFIXLANG . '_' . $module_data . '_authorlist')
+            ->where('id IN (' . $internal_authors . ')');
+        $result = $db->query($db->sql());
+        $internal_authors = [];
+        while ($row = $result->fetch()) {
+            !isset($internal_authors[$row['id']]) && $internal_authors[$row['id']] = [];
+            $internal_authors[$row['id']][] = [
+                'href' => NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=author/' . $row['alias'],
+                'pseudonym' => $row['pseudonym']
+            ];
+        }
+    }
+
+    $contents .= search_result_theme($key, $numRecord, $per_page, $page, $array_content, $catid, $internal_authors);
 }
 
 if (empty($key)) {

@@ -103,6 +103,10 @@ class Request
 
     private $httponly = true;
 
+    private $SameSite = '';
+
+    private $set_cookie_by_options = false;
+
     private $ip_addr;
 
     private $remote_ip;
@@ -201,6 +205,12 @@ class Request
     protected $validDomains = [];
 
     /**
+     * @since 4.5.00
+     */
+    private $allowNullOrigin = false;
+    private $allowNullOriginIps = [];
+
+    /**
      * @param array $config
      * @param string $ip Client IP
      * @param \NukeViet\Core\Server|boolean $nv_Server
@@ -225,6 +235,14 @@ class Request
         if (!empty($config['cookie_httponly'])) {
             $this->httponly = true;
         }
+        if (!empty($config['cookie_SameSite']) and in_array($config['cookie_SameSite'], [
+            'Lax',
+            'Strict',
+            'None'
+        ])) {
+            $this->SameSite = $config['cookie_SameSite'];
+        }
+        $this->set_cookie_by_options = version_compare(PHP_VERSION, '7.3.0', '>=');
         if (!empty($config['cookie_prefix'])) {
             $this->cookie_prefix = preg_replace('/[^a-zA-Z0-9\_]+/', '', $config['cookie_prefix']);
         }
@@ -247,6 +265,10 @@ class Request
             $this->restrictCrossDomain = !empty($config['crossadmin_restrict']) ? true : false;
             $this->validCrossDomains = !empty($config['crossadmin_valid_domains']) ? ((array) $config['crossadmin_valid_domains']) : [];
             $this->validCrossIPs = !empty($config['crossadmin_valid_ips']) ? ((array) $config['crossadmin_valid_ips']) : [];
+        } elseif (defined('NV_REMOTE_API')) {
+            $this->restrictCrossDomain = false;
+            $this->validCrossDomains = [];
+            $this->validCrossIPs = [];
         } else {
             $this->restrictCrossDomain = !empty($config['crosssite_restrict']) ? true : false;
             $this->validCrossDomains = !empty($config['crosssite_valid_domains']) ? ((array) $config['crosssite_valid_domains']) : [];
@@ -255,6 +277,8 @@ class Request
 
         $this->isRestrictDomain = !empty($config['domains_restrict']) ? true : false;
         $this->validDomains = !empty($config['domains_whitelist']) ? ((array) $config['domains_whitelist']) : [];
+        $this->allowNullOrigin = !empty($config['allow_null_origin']) ? true : false;
+        $this->allowNullOriginIps = !empty($config['ip_allow_null_origin']) ? ((array) $config['ip_allow_null_origin']) : [];
 
         if (preg_match('#^(?:(?:\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.){3}(?:\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$#', $ip)) {
             $ip2long = ip2long($ip);
@@ -283,8 +307,7 @@ class Request
         $this->Initialize($nv_Server);
         $this->get_cookie_save_path();
 
-        $_ssl_https = (isset($config['ssl_https'])) ? $config['ssl_https'] : 0;
-        $this->sessionStart($_ssl_https);
+        $this->sessionStart(!empty($config['https_only']));
         $_REQUEST = array_merge($_POST, array_diff_key($_GET, $_POST));
     }
 
@@ -441,10 +464,12 @@ class Request
         // Cross-Site handle
         if (sizeof($_POST) or $this->method == 'POST') {
             if ($this->origin_key == 0 or $this->referer_key !== 1) {
+                // Post cross hoặc không same referer
                 if (!$this->restrictCrossDomain or in_array($this->remote_ip, $this->validCrossIPs)) {
                     $this->isIpValid = true;
                 }
             } else {
+                // Same referer hoặc không cross
                 $this->isIpValid = true;
             }
             if (!(($this->isRefererValid and (empty($this->origin) or $this->isOriginValid)) or $this->isIpValid)) {
@@ -470,13 +495,16 @@ class Request
                 } else {
                     $this->origin_key = 0;
                 }
+            } elseif (strtolower($this->origin) == 'null') {
+                // Null Origin xem như là Cross-Site
+                $this->origin_key = 0;
             } else {
                 /*
-                 * Origin có dạng `Origin: <scheme> "://" <hostname> [ ":" <port> ]`
+                 * Origin có dạng `Origin: <scheme> "://" <hostname> [ ":" <port> ]` hoặc null
                  * Nếu sai thì từ chối truy vấn
                  */
-                trigger_error(Request::INCORRECT_ORIGIN, 256);
                 unset($_SERVER['HTTP_ORIGIN']);
+                trigger_error(Request::INCORRECT_ORIGIN, 256);
             }
         } else {
             $this->origin_key = 2;
@@ -561,14 +589,28 @@ class Request
      *
      * @return
      */
-    private function sessionStart($_ssl_https)
+    private function sessionStart($https_only)
     {
         if (headers_sent() or connection_status() != 0 or connection_aborted()) {
             trigger_error(Request::IS_HEADERS_SENT, 256);
         }
 
-        $_secure = ($this->server_protocol == 'https' and $_ssl_https == 1) ? 1 : 0;
-        session_set_cookie_params(NV_LIVE_SESSION_TIME, $this->cookie_path, $this->cookie_domain, $_secure, 1);
+        $_secure = ($this->server_protocol == 'https' and $https_only) ? 1 : 0;
+        if ($this->set_cookie_by_options) {
+            $options = [
+                'lifetime' => NV_LIVE_SESSION_TIME,
+                'path' => $this->cookie_path,
+                'domain' => $this->cookie_domain,
+                'secure' => $_secure,
+                'httponly' => 1
+            ];
+            if ($this->SameSite == 'Lax' or $this->SameSite == 'Strict') {
+                $options['samesite'] = $this->SameSite;
+            }
+            session_set_cookie_params($options);
+        } else {
+            session_set_cookie_params(NV_LIVE_SESSION_TIME, $this->cookie_path, $this->cookie_domain, $_secure, 1);
+        }
 
         session_name($this->cookie_prefix . '_sess');
         session_start();
@@ -736,7 +778,9 @@ class Request
                     continue;
                 }
 
-                $attrSubSet[1] = preg_replace_callback('/\#([0-9ABCDEFabcdef]{3,6})[\;]*/', [$this, 'color_hex2rgb_callback'], $attrSubSet[1]);
+                if ('href' != $attrSubSet[0]) {
+                    $attrSubSet[1] = preg_replace_callback('/\#([0-9ABCDEFabcdef]{3,6})[\;]*/', [$this, 'color_hex2rgb_callback'], $attrSubSet[1]);
+                }
             } elseif ($attrSubSet[1] !== '0') {
                 $attrSubSet[1] = $attrSubSet[0];
             }
@@ -1116,7 +1160,25 @@ class Request
             $expire += NV_CURRENTTIME;
         }
 
-        return setcookie($name, $value, $expire, $this->cookie_path, $this->cookie_domain, $this->secure, $this->httponly);
+        if ($this->set_cookie_by_options) {
+            $options = [
+                'expires' => $expire,
+                'path' => $this->cookie_path,
+                'domain' => $this->cookie_domain,
+                'secure' => $this->secure,
+                'httponly' => $this->httponly
+            ];
+            if (!empty($this->SameSite) and (in_array($this->SameSite, [
+                'Lax',
+                'Strict'
+            ]) or ($this->SameSite == 'None' and !empty($this->secure)))) {
+                $options['samesite'] = $this->SameSite;
+            }
+
+            return setcookie($name, $value, $options);
+        } else {
+            return setcookie($name, $value, $expire, $this->cookie_path, $this->cookie_domain, $this->secure, $this->httponly);
+        }
     }
 
     /**
@@ -1554,8 +1616,15 @@ class Request
      */
     private function getAllowOriginHeaderValue()
     {
-        // Không block hoặc domain hợp lệ (domain trong danh sách hoặc là self)
-        if (!$this->restrictCrossDomain or $this->origin_key === 1 or in_array($this->origin, $this->validCrossDomains)) {
+        // Không block hoặc domain hợp lệ (domain trong danh sách hoặc là self) hoặc null và
+        if (
+            !$this->restrictCrossDomain or
+            $this->origin_key === 1 or
+            ($this->origin === 'null' and $this->allowNullOrigin and (
+                empty($this->allowNullOriginIps) or in_array($this->remote_ip, $this->allowNullOriginIps)
+            )) or
+            in_array($this->origin, $this->validCrossDomains)
+        ) {
             $this->isOriginValid = true;
             return $this->origin;
         }

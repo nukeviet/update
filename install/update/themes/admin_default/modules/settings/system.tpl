@@ -1,6 +1,9 @@
 <!-- BEGIN: main -->
+<link type="text/css" href="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/jquery-ui/jquery-ui.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/select2/select2.min.css">
 <script type="text/javascript" src="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/select2/select2.min.js"></script>
+<script type="text/javascript" src="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/jquery-ui/jquery-ui.min.js"></script>
+<script type="text/javascript" src="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/language/jquery.ui.datepicker-{NV_LANG_INTERFACE}.js"></script>
 
 <!-- BEGIN: error -->
 <div class="alert alert-danger">
@@ -12,15 +15,32 @@
         <table class="table table-striped table-bordered table-hover">
             <col class="w400" />
             <tbody>
+                <!-- BEGIN: closed_site -->
                 <tr>
                     <td><strong>{LANG.closed_site}</strong></td>
-                    <td>
-                    <select name="closed_site" class="form-control w300">
-                        <!-- BEGIN: closed_site_mode -->
-                        <option value="{MODE_VALUE}"{MODE_SELECTED}>{MODE_NAME}</option>
-                        <!-- END: closed_site_mode -->
-                    </select></td>
+                    <td><select name="closed_site" class="form-control w300" onchange="reopeningTimeShow(this);">
+                            <!-- BEGIN: closed_site_mode -->
+                            <option value="{MODE_VALUE}"{MODE_SELECTED}>{MODE_NAME}</option>
+                            <!-- END: closed_site_mode -->
+                        </select>
+                        <div id="reopening_time" style="margin-top:10px;<!-- BEGIN: reopening_time -->display:none<!-- END: reopening_time -->">
+                            <label class="control-label">{LANG.closed_site_reopening_time}</label>
+                            <div class="form-inline">
+                                <input class="form-control" name="reopening_date" id="reopening_date" value="{DATA.reopening_date}" style="width: 90px;" maxlength="10" type="text" />
+                                <select class="form-control" name="reopening_hour">
+                                    <!-- BEGIN: reopening_hour -->
+                                    <option value="{RHOUR.num}"{RHOUR.sel}>{RHOUR.title}</option>
+                                    <!-- END: reopening_hour -->
+                                </select> : <select class="form-control" name="reopening_min">
+                                    <!-- BEGIN: reopening_min -->
+                                    <option value="{RMIN.num}"{RMIN.sel}>{RMIN.title}</option>
+                                    <!-- END: reopening_min -->
+                                </select>
+                            </div>
+                        </div>
+                    </td>
                 </tr>
+                <!-- END: closed_site -->
                 <tr>
                     <td><strong>{LANG.site_email}</strong></td>
                     <td><input type="email" name="site_email" value="{DATA.site_email}" class="form-control" style="width: 450px"/></td>
@@ -117,6 +137,10 @@
                     <td><input type="text" name="my_domains" value="{MY_DOMAINS}" class="form-control" style="width: 450px"/></td>
                 </tr>
                 <tr>
+                    <td><strong>{LANG.static_url}</strong></td>
+                    <td><input type="text" name="nv_static_url" value="{DATA.nv_static_url}" class="form-control pull-left" style="width: 450px"/></td>
+                </tr>
+                <tr>
                     <td><strong>{LANG.cdn_url}</strong></td>
                     <td><input type="text" name="cdn_url" value="{DATA.cdn_url}" class="form-control pull-left" style="width: 450px"/></td>
                 </tr>
@@ -129,6 +153,18 @@
                     <td><label><input type="checkbox" name="nv_debug" value="1"{CFG_DEFINE.nv_debug}/> {LANG.nv_debug_help}</label></td>
                 </tr>
                 <tr>
+                    <td><strong>{LANG.remote_api_access}</strong></td>
+                    <td><label><input type="checkbox" name="remote_api_access" value="1"{CHECKED_REMOTE_API_ACCESS}/> {LANG.remote_api_access_help}</label></td>
+                </tr>
+                <tr>
+                    <td><strong>{LANG.remote_api_log}</strong></td>
+                    <td><input type="checkbox" name="remote_api_log" value="1"{CHECKED_REMOTE_API_LOG}/></td>
+                </tr>
+                <tr>
+                    <td><strong>{LANG.cookie_notice_popup}</strong></td>
+                    <td><input type="checkbox" name="cookie_notice_popup" value="1"{CHECKED_COOKIE_NOTICE_POPUP}/></td>
+                </tr>
+                <tr>
                     <td><strong>{LANG.error_send_email}</strong></td>
                     <td><input type="email" name="error_send_email" value="{DATA.error_send_email}" class="form-control" style="width: 450px"/></td>
                 </tr>
@@ -136,6 +172,10 @@
                 <tr>
                     <td><strong>{LANG.searchEngineUniqueID}</strong></td>
                     <td><input type="text" name="searchEngineUniqueID" value="{DATA.searchEngineUniqueID}" class="form-control" style="width: 450px" maxlength="50" /></td>
+                </tr>
+                <tr>
+                    <td><strong>{LANG.zalo_official_account_id}</strong></td>
+                    <td><input type="text" name="zaloOfficialAccountID" value="{DATA.zaloOfficialAccountID}" class="form-control" style="width: 450px" maxlength="50" /></td>
                 </tr>
             </tbody>
         </table>
@@ -164,8 +204,26 @@
     </div>
 </form>
 <script type="text/javascript">
+function reopeningTimeShow(t) {
+    var v = $(t).val();
+    if (v == '0') {
+        $("#reopening_time").hide()
+    } else {
+        $("#reopening_time").show()
+    }
+}
 $(document).ready(function() {
     $("#site_timezone").select2();
+    
+    $("#reopening_date").datepicker({
+        showOn : "both",
+        dateFormat : "dd/mm/yy",
+        changeMonth : true,
+        changeYear : true,
+        showOtherMonths : true,
+        buttonImage : nv_base_siteurl + "assets/images/calendar.gif",
+        buttonImageOnly : true
+    });
 });
 
 var LANG = [];

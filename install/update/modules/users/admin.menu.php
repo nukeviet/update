@@ -16,7 +16,7 @@ global $nv_Cache;
 
 // Xác định cấu hình
 $_mod_table = ($module_data == 'users') ? NV_USERS_GLOBALTABLE : $db_config['prefix'] . '_' . $module_data;
-$sql = "SELECT config, content FROM " . $_mod_table . "_config WHERE config IN('access_admin', 'active_editinfo_censor')";
+$sql = 'SELECT config, content FROM ' . $_mod_table . "_config WHERE config IN('access_admin', 'active_editinfo_censor')";
 $_config_module = $nv_Cache->db($sql, 'config', $module_name);
 
 $access_admin = $_config_module['access_admin']['content'];
@@ -77,7 +77,7 @@ if ($module_data == 'users' and isset($admin_mods['authors'])) {
 }
 
 if (defined('NV_IS_SPADMIN')) {
-    if (empty($global_config['idsite']) or $global_config['users_special']) {
+    if (!defined('NV_IS_USER_FORUM') and empty($global_config['idsite']) or $global_config['users_special']) {
         $submenu['question'] = $lang_module['question'];
         $submenu['siteterms'] = $lang_module['siteterms'];
         $submenu['fields'] = $lang_module['fields'];

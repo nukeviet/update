@@ -17,7 +17,7 @@ if (defined('NV_IS_USER')) {
 }
 
 if (defined('NV_IS_USER_FORUM')) {
-    require_once NV_ROOTDIR . '/' . $global_config['dir_forum'] . '/nukeviet/lostpass.php' ;
+    require_once NV_ROOTDIR . '/' . $global_config['dir_forum'] . '/nukeviet/lostpass.php';
     exit();
 }
 
@@ -27,16 +27,23 @@ if ($global_config['allowuserreg'] != 2) {
 
 $page_title = $mod_title = $lang_module['lostpass_page_title'];
 $key_words = $module_info['keywords'];
+$page_url = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op;
+$canonicalUrl = getCanonicalUrl($page_url);
+
+$array_gfx_chk = !empty($global_config['ucaptcha_area']) ? explode(',', $global_config['ucaptcha_area']) : [];
+$gfx_chk = (!empty($array_gfx_chk) and in_array('m', $array_gfx_chk)) ? 1 : 0;
+$reCaptchaPass = (!empty($global_config['recaptcha_sitekey']) and !empty($global_config['recaptcha_secretkey']) and ($global_config['recaptcha_ver'] == 2 or $global_config['recaptcha_ver'] == 3));
 
 $data = [];
 $data['checkss'] = md5(NV_CHECK_SESSION . '_' . $module_name . '_' . $op);
 $data['userField'] = nv_substr($nv_Request->get_title('userField', 'post', '', 1), 0, 100);
 $data['answer'] = nv_substr($nv_Request->get_title('answer', 'post', '', 1), 0, 255);
 $data['send'] = $nv_Request->get_bool('send', 'post', false);
-if ($global_config['captcha_type'] == 2) {
+if ($global_config['ucaptcha_type'] == 'recaptcha' and $reCaptchaPass) {
     $data['nv_seccode'] = $nv_Request->get_title('g-recaptcha-response', 'post', '');
-} else {
-    $data['nv_seccode'] = $nv_Request->get_title('nv_seccode', 'post', '');
+    $data['nv_seccode2'] = $nv_Request->get_title('nv_seccode', 'post', '');
+} elseif ($global_config['ucaptcha_type'] == 'captcha') {
+    $data['nv_seccode'] = $data['nv_seccode2'] = $nv_Request->get_title('nv_seccode', 'post', '');
 }
 $checkss = $nv_Request->get_title('checkss', 'post', '');
 
@@ -46,7 +53,8 @@ $step = 1;
 $error = $question = '';
 
 if ($checkss == $data['checkss']) {
-    if ((!empty($seccode) and md5($data['nv_seccode']) == $seccode) or nv_capcha_txt($data['nv_seccode'])) {
+    $check_seccode = ($gfx_chk and isset($data['nv_seccode'])) ? ((!empty($seccode) and md5($data['nv_seccode2']) == $seccode) or nv_capcha_txt($data['nv_seccode'], $global_config['ucaptcha_type'])) : true;
+    if ($check_seccode) {
         if (!empty($data['userField'])) {
             $check_email = nv_check_valid_email($data['userField'], true);
             $check_login = nv_check_valid_login($data['userField'], $global_config['nv_unickmax'], $global_config['nv_unickmin']);
@@ -65,7 +73,7 @@ if ($checkss == $data['checkss']) {
                     $userField = $data['userField'];
                     $sql = 'SELECT * FROM ' . NV_MOD_TABLE . '_reg WHERE username= :userField AND regdate>' . $exp;
                 }
-                $stmt = $db->prepare($sql) ;
+                $stmt = $db->prepare($sql);
                 $stmt->bindParam(':userField', $userField, PDO::PARAM_STR);
                 $stmt->execute();
                 $row = $stmt->fetch();
@@ -80,9 +88,7 @@ if ($checkss == $data['checkss']) {
                     // Kiểm tra xem hệ thống có yêu cầu nhập câu hỏi bảo mật và câu trả lời không
                     $array_field_config = nv_get_users_field_config();
                     $is_question_require = true;
-                    if (isset($array_field_config['question']) and isset($array_field_config['answer']) and
-                        empty($array_field_config['question']['required']) and empty($array_field_config['answer']['required'])
-                        ) {
+                    if (isset($array_field_config['question']) and isset($array_field_config['answer']) and empty($array_field_config['question']['required']) and empty($array_field_config['answer']['required'])) {
                         $is_question_require = false;
                     }
 
@@ -115,7 +121,10 @@ if ($checkss == $data['checkss']) {
 
                             $subject = $lang_module['lostactive_mailtitle'];
                             $message = sprintf($lang_module['lostactive_active_info'], $row['first_name'], $global_config['site_name'], NV_MY_DOMAIN . NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=active&userid=' . $row['userid'] . '&checknum=' . $checknum, $row['username'], $row['email'], $password_new, nv_date('H:i d/m/Y', $row['regdate'] + 86400));
-                            $ok = nv_sendmail([$global_config['site_name'], $global_config['site_email']], $row['email'], $subject, $message);
+                            $ok = nv_sendmail([
+                                $global_config['site_name'],
+                                $global_config['site_email']
+                            ], $row['email'], $subject, $message);
 
                             if ($ok) {
                                 $password = $crypt->hash_password($password_new, $global_config['hashprefix']);
@@ -136,6 +145,8 @@ if ($checkss == $data['checkss']) {
                             include NV_ROOTDIR . '/includes/footer.php';
                         } else {
                             $step = 2;
+                            // Pass bước 1 thì lưu mã xác nhận lại thành 1 dạng để kiểm tra session
+                            $data['nv_seccode'] = $data['nv_seccode2'];
                             $error = $lang_module['answer_failed'];
                         }
                     }
