@@ -2,7 +2,9 @@
 
 (Đang cập nhật, vui lòng chưa thử nghiệm)
 
-Nếu phiên bản NukeViet 4 của bạn nhỏ hơn 4.4.02 bạn cần tìm hướng dẫn nâng cấp lên phiên bản 4.4.02 trước khi tiến hành các bước tiếp theo.
+- Nếu phiên bản NukeViet 4 của bạn nhỏ hơn 4.4.02 bạn cần tìm hướng dẫn nâng cấp lên phiên bản 4.4.02 trước khi tiến hành các bước tiếp theo.
+- Bạn cầm kiểm tra các module và giao diện của site xem đã có bản nâng cấp cho bản NukeViet 4.5
+- Bạn nên nâng cấp thử nghiệm trên máy tính cá nhân và kiểm tra kỹ trước khi nâng cấp trên website.
 
 ## Nâng cấp hệ thống:
 
@@ -41,8 +43,10 @@ Giải nén và Upload các file trong gói cập nhật với cấu trúc của
 
 **Nếu site của bạn sử dụng giao diện không phải mặc định thì thực hiện cập nhật theo hướng dẫn sau:**
 
-(Đang cập nhật, vui lòng chưa thử nghiệm)
+[Hướng dẫn nâng cấp giao diện từ NukeViet 4.4.02 lên NukeViet 4.5.00](https://github.com/nukeviet/update/wiki/H%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-n%C3%A2ng-c%E1%BA%A5p-giao-di%E1%BB%87n-t%E1%BB%AB-NukeViet-4.4.02-l%C3%AAn-NukeViet-4.5.00)
 
-### Bước 5: Điều chỉnh module
+### Bước 5: Hướng dẫn nâng cấp module từ NukeViet 4.4.02 lên NukeViet 4.5.00
 
-(Đang cập nhật, vui lòng chưa thử nghiệm)
+**Nếu site của bạn sử dụng module không phải mặc định thì thực hiện cập nhật theo hướng dẫn sau:**
+
+[Hướng dẫn nâng cấp module từ NukeViet 4.4.02 lên NukeViet 4.5.00](https://github.com/nukeviet/update/wiki/H%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-n%C3%A2ng-c%E1%BA%A5p-module-t%E1%BB%AB-NukeViet-4.4.02-l%C3%AAn-NukeViet-4.5.00)
