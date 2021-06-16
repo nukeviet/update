@@ -11,12 +11,10 @@ if (!defined('NV_IS_UPDATE')) {
     die('Stop!!!');
 }
 
-die('Đang cập nhật, vui lòng chưa thử nghiệm');
-
 $nv_update_config = [];
 
 // Kieu nang cap 1: Update; 2: Upgrade
-$nv_update_config['type'] = 2;
+$nv_update_config['type'] = 1;
 
 // ID goi cap nhat
 $nv_update_config['packageID'] = 'NVUD4500';
@@ -35,7 +33,7 @@ $nv_update_config['allow_old_version'] = [
 ];
 
 // 0:Nang cap bang tay, 1:Nang cap tu dong, 2:Nang cap nua tu dong
-$nv_update_config['update_auto_type'] = 2;
+$nv_update_config['update_auto_type'] = 1;
 
 $nv_update_config['lang'] = [];
 $nv_update_config['lang']['vi'] = [];
@@ -223,11 +221,6 @@ function nv_up_modnews4500()
             } catch (PDOException $e) {
                 trigger_error(print_r($e, true));
             }
-            try {
-                $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', '" . $mod . "', 'keywords_tag', '1');");
-            } catch (PDOException $e) {
-                trigger_error(print_r($e, true));
-            }
 
             try {
                 $db->query("UPDATE " . NV_CONFIG_GLOBALTABLE . " SET config_name='captcha_area_comm' WHERE  lang='" . $lang . "' AND module='" . $mod . "' AND config_name='captcha'");
@@ -298,7 +291,7 @@ function nv_up_modpage4500()
     // Duyệt tất cả các ngôn ngữ
     foreach ($global_config['allow_sitelangs'] as $lang) {
         // Lấy tất cả các module và module ảo của nó
-        $mquery = $db->query("SELECT title, module_data FROM " . $db_config['prefix'] . "_" . $lang . "_modules WHERE module_file = 'contact'");
+        $mquery = $db->query("SELECT title, module_data FROM " . $db_config['prefix'] . "_" . $lang . "_modules WHERE module_file = 'page'");
         while (list ($mod, $mod_data) = $mquery->fetch(3)) {
             try {
                 $db->query("INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . "_config (config_name, config_value) VALUES ('socialbutton', 'facebook,twitter')");
@@ -371,8 +364,9 @@ function nv_up_modusers4500()
                                 ('" . $_lang . "', " . $_row['group_id'] . ", " . $db->quote($_row['title']) . ", " . $db->quote($_row['description']) . ", " . $db->quote($_row['content']) . ");");
                         }
                     }
-                    $db->query("UPDATE " . $db_config['prefix'] . "_" . $mod_data . "_groups SET title = REPLACE(title, ' ', '-') WHERE title REGEXP ' ';");
-                    $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $mod_data . "_groups CHANGE COLUMN title alias VARCHAR(240) NOT NULL AFTER group_id, DROP COLUMN description, DROP COLUMN content, DROP INDEX ktitle, ADD UNIQUE INDEX kalias (alias, idsite);");
+                    $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $mod_data . "_groups ADD COLUMN alias VARCHAR(240) NOT NULL AFTER group_id");
+                    $db->query("UPDATE " . $db_config['prefix'] . "_" . $mod_data . "_groups SET alias = REPLACE(title, ' ', '-');");
+                    $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $mod_data . "_groups DROP COLUMN description, DROP COLUMN content, DROP INDEX ktitle, ADD UNIQUE INDEX kalias (alias, idsite);");
                 } catch (PDOException $e) {
                     trigger_error(print_r($e, true));
                 }
