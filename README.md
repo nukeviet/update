@@ -38,6 +38,8 @@ Giải nén và Upload các file trong gói cập nhật với cấu trúc của
 
 - Nếu site có sử dụng các thư viện bên ngoài như `phpoffice/phpspreadsheet` thông qua composer, bạn cần khai báo để composer cập nhật lại
 - Truy cập phần Cấu hình => Thiết lập an ninh để thiết lập chức năng **Cross-Site** và **Giới hạn tên miền** theo nhu cầu.
+- Truy cập phần Cấu hình => Quản lý Modules click vào tên module News và tất các module ảo của nó để hệ thống nhận diện chức năng mới. Nếu có nhiều ngôn ngữ cần xử lý lần lượt các ngôn ngữ. Ví dụ admin/index.php?language=vi&nv=modules&op=show&mod=news
+- Truy cập phần Cấu hình => Quản lý Modules click vào tên module Users và tất các module ảo của nó để hệ thống nhận diện chức năng mới. Nếu có nhiều ngôn ngữ cần xử lý lần lượt các ngôn ngữ. Ví dụ admin/index.php?language=vi&nv=modules&op=show&mod=users
 
 ### Bước 4: Điều chỉnh giao diện
 
