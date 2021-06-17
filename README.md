@@ -1,7 +1,5 @@
 # Hướng dẫn cập nhật từ NukeViet 4.4.02 lên NukeViet 4.5.00
 
-(Đang cập nhật, vui lòng chưa thử nghiệm)
-
 - Nếu phiên bản NukeViet 4 của bạn nhỏ hơn 4.4.02 bạn cần tìm hướng dẫn nâng cấp lên phiên bản 4.4.02 trước khi tiến hành các bước tiếp theo.
 - Bạn cầm kiểm tra các module và giao diện của site xem đã có bản nâng cấp cho bản NukeViet 4.5
 - Bạn nên nâng cấp thử nghiệm trên máy tính cá nhân và kiểm tra kỹ trước khi nâng cấp trên website.
