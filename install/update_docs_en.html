@@ -1,19 +1,16 @@
 <div class="clearfix">
     <blockquote>
-    <ul>
-        <li>
-        - If your site is using a non-default theme, please update the theme to be compatible with the new version.
-        View theme upgrade guide <a href="https://github.com/nukeviet/update/wiki/H%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-n%C3%A2ng-c%E1%BA%A5p-giao-di%E1%BB%87n-t%E1%BB%AB-NukeViet-4.4.02-l%C3%AAn-NukeViet-4.5.00" target="_blank"><strong>here</strong></a> (use Google Translate to see it in your language)
-        </li>
-        <li>
-        - Additional external installation modules need updating to operate on NukeViet 4.3, see update guide <a href="https://github.com/nukeviet/update/wiki/H%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-n%C3%A2ng-c%E1%BA%A5p-module-t%E1%BB%AB-NukeViet-4.4.02-l%C3%AAn-NukeViet-4.5.00" target="_blank"><strong>here</strong></a> (use Google Translate to see it in your language).
-        </li>
-        <li>
-            - These can be done after the upgrade. You should save the two instructions above for later use.
-        </li>
-        <li>
-            Run SQL: ALTER TABLE nv4_users_groups DROP title;
-        </li>
-    </ul>
+        <ul>
+            <li>- If your site is using a non-default theme, please update the theme to be compatible with the new version. View theme upgrade guide <a href="https://github.com/nukeviet/update/wiki/H%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-n%C3%A2ng-c%E1%BA%A5p-giao-di%E1%BB%87n-t%E1%BB%AB-NukeViet-4.4.02-l%C3%AAn-NukeViet-4.5.00" target="_blank"><strong>here</strong></a> (use Google Translate to see it in your language)
+            </li>
+            <li>- Additional external installation modules need updating to operate on NukeViet 4.3, see update guide <a href="https://github.com/nukeviet/update/wiki/H%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-n%C3%A2ng-c%E1%BA%A5p-module-t%E1%BB%AB-NukeViet-4.4.02-l%C3%AAn-NukeViet-4.5.00" target="_blank"><strong>here</strong></a> (use Google Translate to see it in your language).
+            </li>
+            <li>- Go to Configuration => Security Settings to set up <b>Cross-Site</b> and <b>Domain Restriction</b> functions according to your needs.</li>
+            <li>- Go to Configuration => Manage Modules and click on the News module name and all its virtual modules so that the system recognizes the new function. If there are multiple languages, the languages need to be processed in turn. For example: admin/index.php?language=vi&nv=modules&op=show&mod=news</li>
+            <li>- Go to Configuration => Manage Modules and click on the name of the Users module and all its virtual modules so that the system can recognize the new function. If there are multiple languages, the languages need to be processed in turn. For example admin/index.php?language=vi&nv=modules&op=show&mod=users</li>
+            <li>- If the site uses external libraries such as `phpoffice/phpspreadsheet` through composer, you need to composer update</li>
+            <li>- These can be done after the upgrade. <b>You should save the two instructions above for later use</b>.
+            </li>
+        </ul>
     </blockquote>
 </div>

@@ -99,6 +99,12 @@ $nv_update_config['tasklist'][] = [
 $nv_update_config['tasklist'][] = [
     'r' => '4.5.00',
     'rq' => 2,
+    'l' => 'nv_up_modvoting4500',
+    'f' => 'nv_up_modvoting4500'
+];
+$nv_update_config['tasklist'][] = [
+    'r' => '4.5.00',
+    'rq' => 2,
     'l' => 'nv_up_sys4500',
     'f' => 'nv_up_sys4500'
 ];
@@ -249,7 +255,7 @@ function nv_up_modnews4500()
                         PRIMARY KEY (id),
                         UNIQUE KEY uid (uid),
                         UNIQUE KEY alias (alias)
-                    );");
+                    ) ENGINE=MyISAM;");
             } catch (PDOException $e) {
                 trigger_error(print_r($e, true));
             }
@@ -262,7 +268,7 @@ function nv_up_modnews4500()
                         UNIQUE KEY id_aid (id, aid),
                         KEY aid (aid),
                         KEY alias (alias)
-                        );");
+                        ) ENGINE=MyISAM;");
             } catch (PDOException $e) {
                 trigger_error(print_r($e, true));
             }
@@ -354,7 +360,7 @@ function nv_up_modusers4500()
                             description VARCHAR(240) NOT NULL DEFAULT '',
                             content TEXT,
                             UNIQUE INDEX group_id_lang (lang, group_id)
-                        );");
+                        ) ENGINE=MyISAM;");
 
                     $_query = $db->query("SELECT * FROM " . $db_config['prefix'] . "_" . $mod_data . "_groups");
                     while ($_row = $_query->fetch()) {
@@ -377,6 +383,11 @@ function nv_up_modusers4500()
                 }
                 try {
                     $db->query("UPDATE " . $db_config['prefix'] . "_" . $mod_data . "_field SET match_type='unicodename' WHERE  field IN ('first_name','last_name');");
+                } catch (PDOException $e) {
+                    trigger_error(print_r($e, true));
+                }
+                try {
+                    $db->query("INSERT IGNORE INTO " . $db_config['prefix'] . "_" . $mod_data . "_config (config, content, edit_time) VALUES ('auto_assign_oauthuser', '0', " . NV_CURRENTTIME . ")");
                 } catch (PDOException $e) {
                     trigger_error(print_r($e, true));
                 }
@@ -407,11 +418,11 @@ function nv_up_modvoting4500()
     // Duyệt tất cả các ngôn ngữ
     foreach ($global_config['allow_sitelangs'] as $lang) {
         // Lấy tất cả các module và module ảo của nó
-        $mquery = $db->query("SELECT title, module_data FROM " . $db_config['prefix'] . "_" . $lang . "_modules WHERE module_file = 'contact'");
+        $mquery = $db->query("SELECT title, module_data FROM " . $db_config['prefix'] . "_" . $lang . "_modules WHERE module_file = 'voting'");
         while (list ($mod, $mod_data) = $mquery->fetch(3)) {
 
             try {
-                $db->query("CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . "_voted (vid SMALLINT(5) UNSIGNED NOT NULL, voted TEXT, UNIQUE KEY vid (vid));");
+                $db->query("CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . "_voted (vid SMALLINT(5) UNSIGNED NOT NULL, voted TEXT, UNIQUE KEY vid (vid)) ENGINE=MyISAM;");
             } catch (PDOException $e) {
                 trigger_error(print_r($e, true));
             }
