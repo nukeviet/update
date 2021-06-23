@@ -7,7 +7,6 @@
  * @License GNU/GPL version 2 or any later version
  * @Createdate Sat, 07 Mar 2015 03:43:56 GMT
  */
-
 if (!defined('NV_IS_UPDATE')) {
     die('Stop!!!');
 }
@@ -24,11 +23,16 @@ $nv_update_config['packageID'] = 'NVUD4402';
 $nv_update_config['formodule'] = '';
 
 // Thong tin phien ban, tac gia, ho tro
-$nv_update_config['release_date'] = 1592816400;
+$nv_update_config['release_date'] = 1624755600;
 $nv_update_config['author'] = 'VINADES.,JSC <contact@vinades.vn>';
-$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.4.02';
-$nv_update_config['to_version'] = '4.4.02';
-$nv_update_config['allow_old_version'] = ['4.4.00', '4.4.01', '4.4.02'];
+$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.4.03';
+$nv_update_config['to_version'] = '4.4.03';
+$nv_update_config['allow_old_version'] = [
+    '4.4.00',
+    '4.4.01',
+    '4.4.02',
+    '4.4.03'
+];
 
 // 0:Nang cap bang tay, 1:Nang cap tu dong, 2:Nang cap nua tu dong
 $nv_update_config['update_auto_type'] = 1;
@@ -40,14 +44,15 @@ $nv_update_config['lang']['en'] = [];
 // Tiếng Việt
 $nv_update_config['lang']['vi']['nv_up_modusers4401'] = 'Cập nhật module users lên 4.4.01';
 $nv_update_config['lang']['vi']['nv_up_sys4401'] = 'Cập nhật hệ thống lên 4.4.01';
-
-$nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản 4.4.02';
+$nv_update_config['lang']['vi']['nv_up_sys4403'] = 'Cập nhật hệ thống lên 4.4.03';
+$nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản 4.4.03';
 
 // English
 $nv_update_config['lang']['en']['nv_up_modusers4401'] = 'Update module users to 4.4.01';
 $nv_update_config['lang']['en']['nv_up_sys4401'] = 'Update system to 4.4.01';
+$nv_update_config['lang']['en']['nv_up_sys4403'] = 'Update system to 4.4.03';
 
-$nv_update_config['lang']['en']['nv_up_finish'] = 'Update to new version 4.4.02';
+$nv_update_config['lang']['en']['nv_up_finish'] = 'Update to new version 4.4.03';
 
 $nv_update_config['tasklist'] = [];
 $nv_update_config['tasklist'][] = [
@@ -63,6 +68,12 @@ $nv_update_config['tasklist'][] = [
     'f' => 'nv_up_sys4401'
 ];
 $nv_update_config['tasklist'][] = [
+    'r' => '4.4.03',
+    'rq' => 2,
+    'l' => 'nv_up_sys4403',
+    'f' => 'nv_up_sys4403'
+];
+$nv_update_config['tasklist'][] = [
     'r' => $nv_update_config['to_version'],
     'rq' => 2,
     'l' => 'nv_up_finish',
@@ -70,6 +81,7 @@ $nv_update_config['tasklist'][] = [
 ];
 
 /**
+ *
  * @return number[]|string[]
  */
 function nv_up_modusers4401()
@@ -129,6 +141,7 @@ function nv_up_modusers4401()
 }
 
 /**
+ *
  * @return number[]|string[]
  */
 function nv_up_sys4401()
@@ -239,6 +252,109 @@ function nv_up_sys4401()
 }
 
 /**
+ *
+ * @return number[]|string[]
+ */
+function nv_up_sys4403()
+{
+    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config;
+
+    $return = [
+        'status' => 1,
+        'complete' => 1,
+        'next' => 1,
+        'link' => 'NO',
+        'lang' => 'NO',
+        'message' => ''
+    ];
+
+    try {
+        $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'global', 'allow_null_origin', '0');");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+    try {
+        $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'global', 'ip_allow_null_origin', '');");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+    try {
+        $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'site', 'nv_csp', 'script-src &#039;self&#039; *.google.com *.google-analytics.com *.googletagmanager.com *.gstatic.com *.facebook.com *.facebook.net *.twitter.com *.zalo.me *.zaloapp.com &#039;unsafe-inline&#039; &#039;unsafe-eval&#039;;style-src &#039;self&#039; *.google.com &#039;unsafe-inline&#039;;frame-src &#039;self&#039; *.google.com *.youtube.com *.facebook.com *.facebook.net *.twitter.com *.zalo.me;base-uri &#039;self&#039;;');");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+    try {
+        $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'site', 'nv_csp_act', '1');");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+    try {
+        $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'site', 'nv_rp', 'no-referrer-when-downgrade, strict-origin-when-cross-origin');");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+    try {
+        $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'site', 'nv_rp_act', '1');");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+    try {
+        $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'global', 'cookie_SameSite', 'Lax');");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+
+    // Duyệt tất cả các ngôn ngữ của modusers
+    // Lấy tất cả ngôn ngữ đã cài đặt
+    $sql = 'SELECT lang FROM ' . $db_config['prefix'] . '_setup_language WHERE setup=1 ORDER BY weight ASC';
+    $array_sitelangs = $db->query($sql)->fetchAll(PDO::FETCH_COLUMN);
+
+    $_module_users = [];
+    foreach ($array_sitelangs as $lang) {
+        // Lấy tất cả các module và module ảo của nó
+        $mquery = $db->query('SELECT title, module_data FROM ' . $db_config['prefix'] . '_' . $lang . "_modules WHERE module_file='users'");
+        while (list ($mod, $mod_data) = $mquery->fetch(3)) {
+            if (!in_array($mod_data, $_module_users)) {
+                // mỗi module ảo chỉ chạy 1 lần
+                $_module_users[] = $mod_data;
+
+                try {
+                    $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $mod_data . "_field CHANGE COLUMN match_type match_type ENUM('none','alphanumeric','unicodename','email','url','regex','callback') NOT NULL DEFAULT 'none' AFTER sql_choices;");
+                } catch (PDOException $e) {
+                    trigger_error(print_r($e, true));
+                }
+                try {
+                    $db->query("UPDATE " . $db_config['prefix'] . "_" . $mod_data . "_field SET match_type='unicodename' WHERE  field IN ('first_name','last_name');");
+                } catch (PDOException $e) {
+                    trigger_error(print_r($e, true));
+                }
+                try {
+                    $db->query('INSERT IGNORE INTO ' . $db_config['prefix'] . '_' . $mod_data . "_config (config, content, edit_time) VALUES ('auto_assign_oauthuser', '0', " . NV_CURRENTTIME . ')');
+                } catch (PDOException $e) {
+                    trigger_error(print_r($e, true));
+                }
+            }
+        }
+    }
+
+    //Tao lai config_global.php
+    nv_save_file_config_global();
+
+    //Chay lai .htaccess
+    $array_config_rewrite = [
+        'rewrite_enable' => $global_config['rewrite_enable'],
+        'rewrite_optional' => $global_config['rewrite_optional'],
+        'rewrite_endurl' => $global_config['rewrite_endurl'],
+        'rewrite_exturl' => $global_config['rewrite_exturl'],
+        'rewrite_op_mod' => $global_config['rewrite_op_mod'],
+        'ssl_https' => $global_config['ssl_https']
+    ];
+    $rewrite = nv_rewrite_change($array_config_rewrite);
+
+    return $return;
+}
+
+/**
  * nv_up_finish()
  *
  * @return
@@ -260,6 +376,82 @@ function nv_up_finish()
     nv_deletefile(NV_ROOTDIR . '/admin/settings/cdn.php');
     nv_deletefile(NV_ROOTDIR . '/admin/themes/change_layout.php');
     nv_deletefile(NV_ROOTDIR . '/vendor/pclzip', true);
+
+    nv_deletefile(NV_ROOTDIR . '/assets/js/chart/Chart.min.css');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/chart/Chart.min.js');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/findbarButton-next-rtl.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/findbarButton-next-rtl@2x.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/findbarButton-next.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/findbarButton-next@2x.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/findbarButton-previous-rtl.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/findbarButton-previous-rtl@2x.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/findbarButton-previous.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/findbarButton-previous@2x.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/loading-small.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/loading-small@2x.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/secondaryToolbarButton-documentProperties.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/secondaryToolbarButton-documentProperties@2x.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/secondaryToolbarButton-firstPage.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/secondaryToolbarButton-firstPage@2x.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/secondaryToolbarButton-handTool.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/secondaryToolbarButton-handTool@2x.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/secondaryToolbarButton-lastPage.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/secondaryToolbarButton-lastPage@2x.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/secondaryToolbarButton-rotateCcw.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/secondaryToolbarButton-rotateCcw@2x.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/secondaryToolbarButton-rotateCw.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/secondaryToolbarButton-rotateCw@2x.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/secondaryToolbarButton-selectTool.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/secondaryToolbarButton-selectTool@2x.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/texture.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-bookmark.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-bookmark@2x.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-download.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-download@2x.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-menuArrows.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-menuArrows@2x.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-openFile.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-openFile@2x.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-pageDown-rtl.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-pageDown-rtl@2x.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-pageDown.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-pageDown@2x.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-pageUp-rtl.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-pageUp-rtl@2x.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-pageUp.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-pageUp@2x.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-presentationMode.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-presentationMode@2x.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-print.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-print@2x.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-search.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-search@2x.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-secondaryToolbarToggle-rtl.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-secondaryToolbarToggle-rtl@2x.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-secondaryToolbarToggle.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-secondaryToolbarToggle@2x.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-sidebarToggle-rtl.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-sidebarToggle-rtl@2x.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-sidebarToggle.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-sidebarToggle@2x.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-viewAttachments.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-viewAttachments@2x.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-viewOutline-rtl.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-viewOutline-rtl@2x.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-viewOutline.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-viewOutline@2x.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-viewThumbnail.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-viewThumbnail@2x.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-zoomIn.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-zoomIn@2x.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-zoomOut.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-zoomOut@2x.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/treeitem-collapsed-rtl.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/treeitem-collapsed-rtl@2x.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/treeitem-collapsed.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/treeitem-collapsed@2x.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/treeitem-expanded.png');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/treeitem-expanded@2x.png');
 
     // Cập nhật phiên bản
     $array_modules = [
