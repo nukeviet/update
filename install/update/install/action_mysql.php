@@ -1,15 +1,16 @@
 <?php
 
 /**
- * @Project NUKEVIET 4.x
- * @Author VINADES.,JSC <contact@vinades.vn>
- * @Copyright (C) 2014 VINADES.,JSC. All rights reserved
- * @License GNU/GPL version 2 or any later version
- * @Createdate 12/28/2009 20:8
+ * NukeViet Content Management System
+ * @version 4.x
+ * @author VINADES.,JSC <contact@vinades.vn>
+ * @copyright (C) 2009-2021 VINADES.,JSC. All rights reserved
+ * @license GNU/GPL version 2 or any later version
+ * @see https://github.com/nukeviet The NukeViet CMS GitHub project
  */
 
 if (!defined('NV_MAINFILE')) {
-    die('Stop!!!');
+    exit('Stop!!!');
 }
 
 // Ten cac table cua CSDL dung chung cho he thong
@@ -92,14 +93,14 @@ $sql_create_table[] = 'CREATE TABLE ' . NV_AUTHORS_GLOBALTABLE . "_api_credentia
   admin_id int(11) unsigned NOT NULL,
   credential_title varchar(255) NOT NULL DEFAULT '',
   credential_ident varchar(50) NOT NULL DEFAULT '',
-  credential_secret varchar(255) NOT NULL DEFAULT '',
+  credential_secret varchar(250) NOT NULL DEFAULT '',
   credential_ips varchar(255) NOT NULL DEFAULT '',
   api_roles varchar(255) NOT NULL DEFAULT '',
   addtime int(11) NOT NULL DEFAULT '0',
   edittime int(11) NOT NULL DEFAULT '0',
   last_access int(11) NOT NULL DEFAULT '0',
   UNIQUE KEY credential_ident (credential_ident),
-  UNIQUE KEY credential_secret (credential_secret(191)),
+  UNIQUE KEY credential_secret (credential_secret),
   KEY admin_id (admin_id)
 ) ENGINE=MyISAM COMMENT 'Bảng lưu key API của quản trị'";
 
