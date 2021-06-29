@@ -657,6 +657,8 @@ function nv_up_finish()
     foreach ($pdfjs_del as $_delfile) {
         nv_deletefile(NV_ROOTDIR . 'assets/js/pdf.js/images/' . $_delfile);
     }
+    nv_deletefile(NV_ROOTDIR . 'themes/admin_default/modules/modules/change_custom_name_theme.tpl');
+    nv_deletefile(NV_ROOTDIR . 'themes/admin_default/modules/modules/change_site_title_theme.tpl');
 
     // Cập nhật phiên bản
     $array_modules = [
