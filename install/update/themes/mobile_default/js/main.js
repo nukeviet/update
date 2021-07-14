@@ -582,8 +582,10 @@ $(function () {
         return !1
     });
     //Change Localtion
-    $("[data-location]").on("click", function () {
-        locationReplace($(this).data("location"))
+    $("[data-location]").on("click", function() {
+        if (window.location.origin + $(this).data("location") != window.location.href) {
+            locationReplace($(this).data("location"))
+        }
     });
 });
 
