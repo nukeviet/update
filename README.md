@@ -1,4 +1,4 @@
-# Hướng dẫn cập nhật từ NukeViet 4.4.00, 4.4.01, 4.4.02 lên NukeViet 4.4.03
+# Hướng dẫn cập nhật từ NukeViet 4.4.00, 4.4.01, 4.4.02, 4.4.03 lên NukeViet 4.4.04
 
 Nếu phiên bản NukeViet 4 của bạn nhỏ hơn 4.4.00 bạn cần tìm hướng dẫn nâng cấp lên phiên bản 4.4.00 trước khi tiến hành các bước tiếp theo.
 
@@ -27,7 +27,7 @@ Nếu trong quá trình cập nhật bị đẩy ra, bạn đăng nhập lại q
 
 #### Cập nhật thủ công:
 
-Download gói cập nhật tại: https://github.com/nukeviet/update/releases/download/to-4.4.02/update-to-4.4.02.zip
+Download gói cập nhật tại: https://github.com/nukeviet/update/releases/download/to-4.4.04/update-to-4.4.04.zip
 Giải nén và Upload các file trong gói cập nhật với cấu trúc của NukeViet, sau đó vào admin để tiến hành cập nhật.
 
 ### Bước 3: Cấu hình lại site.
@@ -35,7 +35,7 @@ Giải nén và Upload các file trong gói cập nhật với cấu trúc của
 - Nếu site có sử dụng các thư viện bên ngoài như `phpoffice/phpspreadsheet` thông qua composer, bạn cần khai báo để composer cập nhật lại
 - Truy cập phần Cấu hình => Thiết lập an ninh để thiết lập chức năng **Cross-Site** và **Giới hạn tên miền** theo nhu cầu.
 
-### Bước 4: Hướng dẫn nâng cấp module từ NukeViet 4.4.02 lên NukeViet 4.4.03
+### Bước 4: Hướng dẫn nâng cấp module từ NukeViet 4.4.02 lên NukeViet 4.4.04
 
 **Nếu site của bạn sử dụng module không phải mặc định thì thực hiện cập nhật theo hướng dẫn sau:**
 
