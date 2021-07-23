@@ -17,19 +17,22 @@ $nv_update_config = [];
 $nv_update_config['type'] = 1;
 
 // ID goi cap nhat
-$nv_update_config['packageID'] = 'NVUD4500';
+$nv_update_config['packageID'] = 'NVUD4501';
 
 // Cap nhat cho module nao, de trong neu la cap nhat NukeViet, ten thu muc module neu la cap nhat module
 $nv_update_config['formodule'] = '';
 
 // Thong tin phien ban, tac gia, ho tro
-$nv_update_config['release_date'] = 1624352400;
+$nv_update_config['release_date'] = 1627035500;
 $nv_update_config['author'] = 'VINADES.,JSC <contact@vinades.vn>';
 $nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.5.00';
-$nv_update_config['to_version'] = '4.5.00';
+$nv_update_config['to_version'] = '4.5.01';
 $nv_update_config['allow_old_version'] = [
     '4.4.02',
-    '4.5.00'
+    '4.4.03',
+    '4.4.04',
+    '4.5.00',
+    '4.5.01'
 ];
 
 // 0:Nang cap bang tay, 1:Nang cap tu dong, 2:Nang cap nua tu dong
@@ -47,7 +50,7 @@ $nv_update_config['lang']['vi']['nv_up_modpage4500'] = 'Cập nhật module Page
 $nv_update_config['lang']['vi']['nv_up_modusers4500'] = 'Cập nhật module Users lên 4.5.00';
 $nv_update_config['lang']['vi']['nv_up_modvoting4500'] = 'Cập nhật module Voting lên 4.5.00';
 $nv_update_config['lang']['vi']['nv_up_sys4500'] = 'Cập nhật hệ thống lên 4.5.00';
-$nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản 4.5.00';
+$nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản 4.5.01';
 
 // English
 $nv_update_config['lang']['en']['nv_up_modbanners4500'] = 'Update module Banners lên 4.5.00';
@@ -57,8 +60,7 @@ $nv_update_config['lang']['en']['nv_up_modpage4500'] = 'Update module Page lên 
 $nv_update_config['lang']['en']['nv_up_modusers4500'] = 'Update module Users to 4.5.00';
 $nv_update_config['lang']['en']['nv_up_modvoting4500'] = 'Update module Voting to 4.5.00';
 $nv_update_config['lang']['en']['nv_up_sys4500'] = 'Update system to 4.5.00';
-
-$nv_update_config['lang']['en']['nv_up_finish'] = 'Update to new version 4.5.00';
+$nv_update_config['lang']['en']['nv_up_finish'] = 'Update to new version 4.5.01';
 
 $nv_update_config['tasklist'] = [];
 
