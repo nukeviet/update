@@ -17,21 +17,22 @@ $nv_update_config = [];
 $nv_update_config['type'] = 1;
 
 // ID goi cap nhat
-$nv_update_config['packageID'] = 'NVUD4402';
+$nv_update_config['packageID'] = 'NVUD4404';
 
 // Cap nhat cho module nao, de trong neu la cap nhat NukeViet, ten thu muc module neu la cap nhat module
 $nv_update_config['formodule'] = '';
 
 // Thong tin phien ban, tac gia, ho tro
-$nv_update_config['release_date'] = 1624755600;
+$nv_update_config['release_date'] = 1627035500;
 $nv_update_config['author'] = 'VINADES.,JSC <contact@vinades.vn>';
-$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.4.03';
-$nv_update_config['to_version'] = '4.4.03';
+$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.4.04';
+$nv_update_config['to_version'] = '4.4.04';
 $nv_update_config['allow_old_version'] = [
     '4.4.00',
     '4.4.01',
     '4.4.02',
-    '4.4.03'
+    '4.4.03',
+    '4.4.04'
 ];
 
 // 0:Nang cap bang tay, 1:Nang cap tu dong, 2:Nang cap nua tu dong
@@ -45,14 +46,14 @@ $nv_update_config['lang']['en'] = [];
 $nv_update_config['lang']['vi']['nv_up_modusers4401'] = 'Cập nhật module users lên 4.4.01';
 $nv_update_config['lang']['vi']['nv_up_sys4401'] = 'Cập nhật hệ thống lên 4.4.01';
 $nv_update_config['lang']['vi']['nv_up_sys4403'] = 'Cập nhật hệ thống lên 4.4.03';
-$nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản 4.4.03';
+$nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản 4.4.04';
 
 // English
 $nv_update_config['lang']['en']['nv_up_modusers4401'] = 'Update module users to 4.4.01';
 $nv_update_config['lang']['en']['nv_up_sys4401'] = 'Update system to 4.4.01';
 $nv_update_config['lang']['en']['nv_up_sys4403'] = 'Update system to 4.4.03';
 
-$nv_update_config['lang']['en']['nv_up_finish'] = 'Update to new version 4.4.03';
+$nv_update_config['lang']['en']['nv_up_finish'] = 'Update to new version 4.4.04';
 
 $nv_update_config['tasklist'] = [];
 $nv_update_config['tasklist'][] = [
@@ -397,32 +398,9 @@ function nv_up_sys4403()
     ];
     $rewrite = nv_rewrite_change($array_config_rewrite);
 
-    return $return;
-}
-
-/**
- * nv_up_finish()
- *
- * @return
- *
- */
-function nv_up_finish()
-{
-    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config;
-
-    $return = [
-        'status' => 1,
-        'complete' => 1,
-        'next' => 1,
-        'link' => 'NO',
-        'lang' => 'NO',
-        'message' => ''
-    ];
-
     nv_deletefile(NV_ROOTDIR . '/admin/settings/cdn.php');
     nv_deletefile(NV_ROOTDIR . '/admin/themes/change_layout.php');
     nv_deletefile(NV_ROOTDIR . '/vendor/pclzip', true);
-
     nv_deletefile(NV_ROOTDIR . '/assets/js/chart/Chart.min.css');
     nv_deletefile(NV_ROOTDIR . '/assets/js/chart/Chart.min.js');
     nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/findbarButton-next-rtl.png');
@@ -498,6 +476,27 @@ function nv_up_finish()
     nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/treeitem-collapsed@2x.png');
     nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/treeitem-expanded.png');
     nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/treeitem-expanded@2x.png');
+    return $return;
+}
+
+/**
+ * nv_up_finish()
+ *
+ * @return
+ *
+ */
+function nv_up_finish()
+{
+    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config;
+
+    $return = [
+        'status' => 1,
+        'complete' => 1,
+        'next' => 1,
+        'link' => 'NO',
+        'lang' => 'NO',
+        'message' => ''
+    ];
 
     // Cập nhật phiên bản
     $array_modules = [
