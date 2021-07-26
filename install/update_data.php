@@ -165,7 +165,7 @@ function nv_up_modcontact4500()
     foreach ($global_config['allow_sitelangs'] as $lang) {
         // Lấy tất cả các module và module ảo của nó
         $mquery = $db->query('SELECT title, module_data FROM ' . $db_config['prefix'] . '_' . $lang . "_modules WHERE module_file = 'contact'");
-        while (list($mod, $mod_data) = $mquery->fetch(3)) {
+        while (list ($mod, $mod_data) = $mquery->fetch(3)) {
             // Thêm trường từ khóa
             try {
                 $db->query('ALTER TABLE ' . $db_config['prefix'] . '_' . $lang . '_' . $mod_data . "_send ADD is_processed TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER is_reply, ADD processed_by INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER is_processed, ADD processed_time INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER processed_by;");
@@ -203,7 +203,7 @@ function nv_up_modnews4500()
     foreach ($global_config['allow_sitelangs'] as $lang) {
         // Lấy tất cả các module và module ảo của nó
         $mquery = $db->query('SELECT title, module_data FROM ' . $db_config['prefix'] . '_' . $lang . "_modules WHERE module_file = 'news'");
-        while (list($mod, $mod_data) = $mquery->fetch(3)) {
+        while (list ($mod, $mod_data) = $mquery->fetch(3)) {
             try {
                 $db->query('INSERT INTO ' . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', '" . $mod . "', 'mobile_indexfile', 'viewcat_page_new');");
             } catch (PDOException $e) {
@@ -300,7 +300,7 @@ function nv_up_modpage4500()
     foreach ($global_config['allow_sitelangs'] as $lang) {
         // Lấy tất cả các module và module ảo của nó
         $mquery = $db->query('SELECT title, module_data FROM ' . $db_config['prefix'] . '_' . $lang . "_modules WHERE module_file = 'page'");
-        while (list($mod, $mod_data) = $mquery->fetch(3)) {
+        while (list ($mod, $mod_data) = $mquery->fetch(3)) {
             try {
                 $db->query('INSERT INTO ' . $db_config['prefix'] . '_' . $lang . '_' . $mod_data . "_config (config_name, config_value) VALUES ('socialbutton', 'facebook,twitter')");
             } catch (PDOException $e) {
@@ -349,7 +349,7 @@ function nv_up_modusers4500()
     foreach ($array_sitelangs as $lang) {
         // Lấy tất cả các module và module ảo của nó
         $mquery = $db->query('SELECT title, module_data FROM ' . $db_config['prefix'] . '_' . $lang . "_modules WHERE module_file='users'");
-        while (list($mod, $mod_data) = $mquery->fetch(3)) {
+        while (list ($mod, $mod_data) = $mquery->fetch(3)) {
             if (!in_array($mod_data, $_module_users)) {
                 // mỗi module ảo chỉ chạy 1 lần
                 $_module_users[] = $mod_data;
@@ -421,7 +421,7 @@ function nv_up_modvoting4500()
     foreach ($global_config['allow_sitelangs'] as $lang) {
         // Lấy tất cả các module và module ảo của nó
         $mquery = $db->query('SELECT title, module_data FROM ' . $db_config['prefix'] . '_' . $lang . "_modules WHERE module_file = 'voting'");
-        while (list($mod, $mod_data) = $mquery->fetch(3)) {
+        while (list ($mod, $mod_data) = $mquery->fetch(3)) {
             try {
                 $db->query('CREATE TABLE ' . $db_config['prefix'] . '_' . $lang . '_' . $mod_data . '_voted (vid SMALLINT(5) UNSIGNED NOT NULL, voted TEXT, UNIQUE KEY vid (vid)) ENGINE=MyISAM;');
             } catch (PDOException $e) {
@@ -613,11 +613,6 @@ function nv_up_sys4500()
         trigger_error(print_r($e, true));
     }
 
-    try {
-    } catch (PDOException $e) {
-        trigger_error(print_r($e, true));
-    }
-
     return $return;
 }
 
@@ -683,14 +678,20 @@ function nv_up_finish()
         'mobile_default'
     ];
 
+    try {
+        $db->query("INSERT IGNORE INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'site', 'ogp_image', '')");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+
     $db->query('UPDATE ' . NV_CONFIG_GLOBALTABLE . " SET config_value='" . $nv_update_config['to_version'] . "' WHERE lang='sys' AND module='global' AND config_name='version'");
     $db->query('UPDATE ' . $db_config['prefix'] . "_setup_extensions SET  version='" . $nv_update_config['to_version'] . ' ' . $nv_update_config['release_date'] . "' WHERE type='module' AND basename IN ('" . implode("', '", $array_modules) . "')");
     $db->query('UPDATE ' . $db_config['prefix'] . "_setup_extensions SET  version='" . $nv_update_config['to_version'] . ' ' . $nv_update_config['release_date'] . "' WHERE type='theme' AND basename IN ('" . implode("', '", $array_themes) . "')");
 
-    //Tao lai config_global.php
+    // Tao lai config_global.php
     nv_save_file_config_global();
 
-    //Chay lai .htaccess
+    // Chay lai .htaccess
     $array_config_rewrite = [
         'rewrite_enable' => $global_config['rewrite_enable'],
         'rewrite_optional' => $global_config['rewrite_optional'],
