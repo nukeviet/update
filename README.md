@@ -9,7 +9,6 @@ Nếu phiên bản NukeViet 4 của bạn nhỏ hơn 4.4.00 bạn cần tìm hư
 - Backup toàn bộ CSDL và các file code, tránh tình trạng có vấn đề phát sinh site không hoạt động được sau update.
 - Nếu site của bạn đã tùy biến các thư mục bằng cách sửa file includes/constants.php hãy đưa về mặc định, sau nâng cấp tiến hành cấu hình trở lại.
 - Nếu bạn có cấu hình FTP trong quản trị, vui lòng kiểm tra lại các thông số cho đúng hoặc xóa cấu hình. Nếu cấu hình sai sẽ dẫn tới cập nhật thất bại.
-- Nếu bạn sử dụng giao diện không phải mặc định, trong giao diện đó có block themes/ten-theme/blocks/global.QR_code.php và đang sử dụng nó thì bạn hãy xóa block đó trước khi cập nhật.
 
 ### Bước 2: Thực hiện cập nhật:
 
@@ -46,7 +45,7 @@ Giải nén và Upload các file trong gói cập nhật với cấu trúc của
 
 ### Bước 5: Nâng cấp giao diện lên NukeViet 4.4.04
 
-> Lưu ý: Bước nâng cấp giao diện không bắt buộc và chỉ nhằm mục đích tối ưu, bạn có thể thực hiện hoặc không thực hiện
+> Lưu ý: Bước nâng cấp giao diện không bắt buộc và chỉ nhằm mục đích tối ưu, bạn có thể thực hiện hoặc không thực hiện. Riêng đối với trường hợp giao diện của bạn có và đang sử dụng block global.QR_code.php thì cần đọc hướng dẫn phần nâng cấp riêng cho block này ở link bên dưới. Nếu không làm theo hướng dẫn block này sẽ không hiển thị.
 
 Nếu site của bạn sử dụng giao diện không phải mặc định thì thực hiện theo hướng dẫn sau
 
