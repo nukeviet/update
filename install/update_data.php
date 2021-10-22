@@ -23,7 +23,7 @@ $nv_update_config['packageID'] = 'NVUD4404';
 $nv_update_config['formodule'] = '';
 
 // Thong tin phien ban, tac gia, ho tro
-$nv_update_config['release_date'] = 1627035500;
+$nv_update_config['release_date'] = 1635498000;
 $nv_update_config['author'] = 'VINADES.,JSC <contact@vinades.vn>';
 $nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.4.04';
 $nv_update_config['to_version'] = '4.4.04';
@@ -46,12 +46,15 @@ $nv_update_config['lang']['en'] = [];
 $nv_update_config['lang']['vi']['nv_up_modusers4401'] = 'Cập nhật module users lên 4.4.01';
 $nv_update_config['lang']['vi']['nv_up_sys4401'] = 'Cập nhật hệ thống lên 4.4.01';
 $nv_update_config['lang']['vi']['nv_up_sys4403'] = 'Cập nhật hệ thống lên 4.4.03';
+$nv_update_config['lang']['vi']['nv_up_sys4404'] = 'Cập nhật hệ thống lên 4.4.04';
+
 $nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản 4.4.04';
 
 // English
 $nv_update_config['lang']['en']['nv_up_modusers4401'] = 'Update module users to 4.4.01';
 $nv_update_config['lang']['en']['nv_up_sys4401'] = 'Update system to 4.4.01';
 $nv_update_config['lang']['en']['nv_up_sys4403'] = 'Update system to 4.4.03';
+$nv_update_config['lang']['en']['nv_up_sys4404'] = 'Update system to 4.4.04';
 
 $nv_update_config['lang']['en']['nv_up_finish'] = 'Update to new version 4.4.04';
 
@@ -73,6 +76,12 @@ $nv_update_config['tasklist'][] = [
     'rq' => 2,
     'l' => 'nv_up_sys4403',
     'f' => 'nv_up_sys4403'
+];
+$nv_update_config['tasklist'][] = [
+    'r' => '4.4.04',
+    'rq' => 2,
+    'l' => 'nv_up_sys4404',
+    'f' => 'nv_up_sys4404'
 ];
 $nv_update_config['tasklist'][] = [
     'r' => $nv_update_config['to_version'],
@@ -324,11 +333,14 @@ function nv_up_sys4403()
                 } catch (PDOException $e) {
                     trigger_error(print_r($e, true));
                 }
+                /**
+                 * @deprecated không ép cấu hình họ tên về tên người
                 try {
                     $db->query("UPDATE " . $db_config['prefix'] . "_" . $mod_data . "_field SET match_type='unicodename' WHERE  field IN ('first_name','last_name');");
                 } catch (PDOException $e) {
                     trigger_error(print_r($e, true));
                 }
+                */
                 try {
                     $db->query('INSERT IGNORE INTO ' . $db_config['prefix'] . '_' . $mod_data . "_config (config, content, edit_time) VALUES ('auto_assign_oauthuser', '0', " . NV_CURRENTTIME . ')');
                 } catch (PDOException $e) {
@@ -341,33 +353,33 @@ function nv_up_sys4403()
     //API
     try {
         $db->query("CREATE TABLE " . $db_config['prefix'] . "_authors_api_role (
-                role_id smallint(4) NOT NULL AUTO_INCREMENT,
-                role_title varchar(250) NOT NULL DEFAULT '',
-                role_description text NOT NULL,
-                role_data text NOT NULL,
-                addtime int(11) NOT NULL DEFAULT '0',
-                edittime int(11) NOT NULL DEFAULT '0',
-                PRIMARY KEY (role_id)
-            ) ENGINE = MYISAM COMMENT 'Bảng lưu quyền truy cập API'");
+            role_id smallint(4) NOT NULL AUTO_INCREMENT,
+            role_title varchar(250) NOT NULL DEFAULT '',
+            role_description text NOT NULL,
+            role_data text NOT NULL,
+            addtime int(11) NOT NULL DEFAULT '0',
+            edittime int(11) NOT NULL DEFAULT '0',
+            PRIMARY KEY (role_id)
+        ) ENGINE = MYISAM COMMENT 'Bảng lưu quyền truy cập API'");
     } catch (PDOException $e) {
         trigger_error(print_r($e, true));
     }
 
     try {
         $db->query("CREATE TABLE " . $db_config['prefix'] . "_authors_api_credential (
-                admin_id int(11) UNSIGNED NOT NULL,
-                credential_title varchar(255) NOT NULL DEFAULT '',
-                credential_ident varchar(50) NOT NULL DEFAULT '',
-                credential_secret varchar(250) NOT NULL DEFAULT '',
-                credential_ips varchar(255) NOT NULL DEFAULT '',
-                api_roles varchar(255) NOT NULL DEFAULT '',
-                addtime int(11) NOT NULL DEFAULT '0',
-                edittime int(11) NOT NULL DEFAULT '0',
-                last_access int(11) NOT NULL DEFAULT '0',
-                UNIQUE KEY credential_ident (credential_ident),
-                UNIQUE KEY credential_secret (credential_secret),
-                KEY admin_id (admin_id)
-            ) ENGINE = MYISAM COMMENT 'Bảng lưu key API của quản trị'");
+            admin_id int(11) UNSIGNED NOT NULL,
+            credential_title varchar(255) NOT NULL DEFAULT '',
+            credential_ident varchar(50) NOT NULL DEFAULT '',
+            credential_secret varchar(250) NOT NULL DEFAULT '',
+            credential_ips varchar(255) NOT NULL DEFAULT '',
+            api_roles varchar(255) NOT NULL DEFAULT '',
+            addtime int(11) NOT NULL DEFAULT '0',
+            edittime int(11) NOT NULL DEFAULT '0',
+            last_access int(11) NOT NULL DEFAULT '0',
+            UNIQUE KEY credential_ident (credential_ident),
+            UNIQUE KEY credential_secret (credential_secret),
+            KEY admin_id (admin_id)
+        ) ENGINE = MYISAM COMMENT 'Bảng lưu key API của quản trị'");
     } catch (PDOException $e) {
         trigger_error(print_r($e, true));
     }
@@ -383,20 +395,6 @@ function nv_up_sys4403()
     } catch (PDOException $e) {
         trigger_error(print_r($e, true));
     }
-
-    //Tao lai config_global.php
-    nv_save_file_config_global();
-
-    //Chay lai .htaccess
-    $array_config_rewrite = [
-        'rewrite_enable' => $global_config['rewrite_enable'],
-        'rewrite_optional' => $global_config['rewrite_optional'],
-        'rewrite_endurl' => $global_config['rewrite_endurl'],
-        'rewrite_exturl' => $global_config['rewrite_exturl'],
-        'rewrite_op_mod' => $global_config['rewrite_op_mod'],
-        'ssl_https' => $global_config['ssl_https']
-    ];
-    $rewrite = nv_rewrite_change($array_config_rewrite);
 
     nv_deletefile(NV_ROOTDIR . '/admin/settings/cdn.php');
     nv_deletefile(NV_ROOTDIR . '/admin/themes/change_layout.php');
@@ -476,6 +474,39 @@ function nv_up_sys4403()
     nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/treeitem-collapsed@2x.png');
     nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/treeitem-expanded.png');
     nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/treeitem-expanded@2x.png');
+
+    return $return;
+}
+
+/**
+ *
+ * @return number[]|string[]
+ */
+function nv_up_sys4404()
+{
+    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config;
+
+    $return = [
+        'status' => 1,
+        'complete' => 1,
+        'next' => 1,
+        'link' => 'NO',
+        'lang' => 'NO',
+        'message' => ''
+    ];
+
+    $sql = 'SELECT lang FROM ' . $db_config['prefix'] . '_setup_language WHERE setup=1 ORDER BY weight ASC';
+    $array_sitelangs = $db->query($sql)->fetchAll(PDO::FETCH_COLUMN);
+
+    foreach ($array_sitelangs as $lang) {
+        // Gỡ cấu hình các block QR-Code
+        try {
+            $db->query("UPDATE " . $db_config['prefix'] . "_" . $lang . "_blocks_groups SET config='' WHERE file_name='global.QR_code.php';");
+        } catch (PDOException $e) {
+            trigger_error(print_r($e, true));
+        }
+    }
+
     return $return;
 }
 
@@ -518,6 +549,17 @@ function nv_up_finish()
         'default',
         'mobile_default'
     ];
+
+    // Chạy lại .htaccess
+    $array_config_rewrite = [
+        'rewrite_enable' => $global_config['rewrite_enable'],
+        'rewrite_optional' => $global_config['rewrite_optional'],
+        'rewrite_endurl' => $global_config['rewrite_endurl'],
+        'rewrite_exturl' => $global_config['rewrite_exturl'],
+        'rewrite_op_mod' => $global_config['rewrite_op_mod'],
+        'ssl_https' => $global_config['ssl_https']
+    ];
+    nv_rewrite_change($array_config_rewrite);
 
     $db->query("UPDATE " . NV_CONFIG_GLOBALTABLE . " SET config_value='" . $nv_update_config['to_version'] . "' WHERE lang='sys' AND module='global' AND config_name='version'");
     $db->query("UPDATE " . $db_config['prefix'] . "_setup_extensions SET  version='" . $nv_update_config['to_version'] . " " . $nv_update_config['release_date'] . "' WHERE type='module' AND basename IN ('" . implode("', '", $array_modules) . "')");

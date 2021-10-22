@@ -9,6 +9,7 @@ Nếu phiên bản NukeViet 4 của bạn nhỏ hơn 4.4.00 bạn cần tìm hư
 - Backup toàn bộ CSDL và các file code, tránh tình trạng có vấn đề phát sinh site không hoạt động được sau update.
 - Nếu site của bạn đã tùy biến các thư mục bằng cách sửa file includes/constants.php hãy đưa về mặc định, sau nâng cấp tiến hành cấu hình trở lại.
 - Nếu bạn có cấu hình FTP trong quản trị, vui lòng kiểm tra lại các thông số cho đúng hoặc xóa cấu hình. Nếu cấu hình sai sẽ dẫn tới cập nhật thất bại.
+- Nếu bạn sử dụng giao diện không phải mặc định, trong giao diện đó có block themes/tên_theme/blocks/global.QR_code.php và đang sử dụng nó thì bạn hãy xóa block đó trước khi cập nhật.
 
 ### Bước 2: Thực hiện cập nhật:
 
@@ -35,8 +36,18 @@ Giải nén và Upload các file trong gói cập nhật với cấu trúc của
 - Nếu site có sử dụng các thư viện bên ngoài như `phpoffice/phpspreadsheet` thông qua composer, bạn cần khai báo để composer cập nhật lại
 - Truy cập phần Cấu hình => Thiết lập an ninh để thiết lập chức năng **Cross-Site** và **Giới hạn tên miền** theo nhu cầu.
 
-### Bước 4: Hướng dẫn nâng cấp module từ NukeViet 4.4.02 lên NukeViet 4.4.04
+### Bước 4: Nâng cấp module lên NukeViet 4.4.04
+
+> Lưu ý: Bước nâng cấp module không bắt buộc và chỉ nhằm mục đích tối ưu, bạn có thể thực hiện hoặc không thực hiện
 
 **Nếu site của bạn sử dụng module không phải mặc định thì thực hiện cập nhật theo hướng dẫn sau:**
 
 [Hướng dẫn nâng cấp module từ NukeViet 4.4.02 lên NukeViet 4.4.03](https://github.com/nukeviet/update/wiki/H%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-n%C3%A2ng-c%E1%BA%A5p-module-t%E1%BB%AB-NukeViet-4.4.02-l%C3%AAn-NukeViet-4.4.03)
+
+### Bước 5: Nâng cấp giao diện lên NukeViet 4.4.04
+
+> Lưu ý: Bước nâng cấp giao diện không bắt buộc và chỉ nhằm mục đích tối ưu, bạn có thể thực hiện hoặc không thực hiện
+
+Nếu site của bạn sử dụng giao diện không phải mặc định thì thực hiện theo hướng dẫn sau
+
+[Hướng dẫn nâng cấp giao diện tương thích từ NukeViet 4.4.02 lên NukeViet 4.4.04](https://github.com/nukeviet/update/wiki/H%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-n%C3%A2ng-c%E1%BA%A5p-giao-di%E1%BB%87n-t%C6%B0%C6%A1ng-th%C3%ADch-t%E1%BB%AB-NukeViet-4.4.02-l%C3%AAn-NukeViet-4.4.04)
