@@ -49,4 +49,4 @@ Giải nén và Upload các file trong gói cập nhật với cấu trúc của
 
 Nếu site của bạn sử dụng giao diện không phải mặc định thì thực hiện theo hướng dẫn sau
 
-[Hướng dẫn nâng cấp giao diện tương thích từ NukeViet 4.4.02 lên NukeViet 4.4.04](https://github.com/nukeviet/update/wiki/H%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-n%C3%A2ng-c%E1%BA%A5p-giao-di%E1%BB%87n-t%C6%B0%C6%A1ng-th%C3%ADch-t%E1%BB%AB-NukeViet-4.4.02-l%C3%AAn-NukeViet-4.4.04)
+[Hướng dẫn nâng cấp giao diện tương thích từ NukeViet 4.4.00 lên NukeViet 4.4.04](https://github.com/nukeviet/update/wiki/H%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-n%C3%A2ng-c%E1%BA%A5p-giao-di%E1%BB%87n-t%C6%B0%C6%A1ng-th%C3%ADch-t%E1%BB%AB-NukeViet-4.4.00-l%C3%AAn-NukeViet-4.4.04)
