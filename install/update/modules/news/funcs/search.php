@@ -113,6 +113,8 @@ $where = '';
 $tbl_src = '';
 if (empty($key) and ($catid == 0) and empty($from_date) and empty($to_date)) {
     $contents .= '<div class="alert alert-danger">' . $lang_module['empty_data_search'] . '</div>';
+} elseif (!empty($catid) and !isset($array_cat_search[$catid])) {
+    $contents .= '<div class="alert alert-danger">' . $lang_module['search_catid_error'] . '</div>';
 } else {
     $dbkey = $db_slave->dblikeescape($key);
     $dbkeyhtml = $db_slave->dblikeescape($keyhtml);

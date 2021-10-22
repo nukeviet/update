@@ -375,7 +375,7 @@ if (defined('NV_OPENID_ALLOWED') and $nv_Request->isset_request('server', 'get')
         if (!$check_seccode) {
             opidr([
                 'status' => 'error',
-                'mess' => $lang_module['securitycodeincorrect']
+                'mess' => ($global_config['captcha_type'] == 2 ? $lang_global['securitycodeincorrect1'] : $lang_global['securitycodeincorrect'])
             ]);
         }
 
@@ -389,7 +389,7 @@ if (defined('NV_OPENID_ALLOWED') and $nv_Request->isset_request('server', 'get')
         if (empty($nv_password)) {
             opidr([
                 'status' => 'error',
-                'mess' => $lang_module['password_empty']
+                'mess' => $lang_global['password_empty']
             ]);
         }
 

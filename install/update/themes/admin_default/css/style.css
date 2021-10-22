@@ -75,6 +75,15 @@ a.link:hover {
     text-decoration: none !important
 }
 
+.panel-primary .panel-heading a:hover,
+.panel-primary a.panel-heading:hover,
+.panel-primary .panel-heading a:active,
+.panel-primary a.panel-heading:active,
+.panel-primary .panel-heading a:focus,
+.panel-primary a.panel-heading:focus {
+ color: #fff;
+}
+
 .bg-gainsboro{
     background-color:#C0C0C0
 }
@@ -91,6 +100,10 @@ a.link:hover {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+}
+
+.d-block {
+    display: block !important;
 }
 
 .d-inline-block {
