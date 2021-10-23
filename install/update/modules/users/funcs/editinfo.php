@@ -45,12 +45,12 @@ function nv_check_username_change($login, $edit_userid)
         return sprintf($lang_module['account_deny_name'], $login);
     }
 
-    $sql = 'SELECT userid FROM ' . NV_MOD_TABLE . ' WHERE userid!=' . $edit_userid . ' AND (LOWER(username)=' . $db->quote(nv_strtolower($login)) . ' OR md5username=' . $db->quote(nv_md5safe($login)) . ')';
+    $sql = 'SELECT userid FROM ' . NV_MOD_TABLE . ' WHERE userid!=' . $edit_userid . ' AND (username LIKE ' . $db->quote($login) . ' OR md5username=' . $db->quote(nv_md5safe($login)) . ')';
     if ($db->query($sql)->fetchColumn()) {
         return sprintf($lang_module['account_registered_name'], $login);
     }
 
-    $sql = 'SELECT userid FROM ' . NV_MOD_TABLE . '_reg WHERE LOWER(username)=' . $db->quote(nv_strtolower($login)) . ' OR md5username=' . $db->quote(nv_md5safe($login));
+    $sql = 'SELECT userid FROM ' . NV_MOD_TABLE . '_reg WHERE username LIKE ' . $db->quote($login) . ' OR md5username=' . $db->quote(nv_md5safe($login));
     if ($db->query($sql)->fetchColumn()) {
         return sprintf($lang_module['account_registered_name'], $login);
     }
@@ -941,10 +941,7 @@ if ($checkss == $array_data['checkss'] and $array_data['type'] == 'basic') {
                                 $global_config['site_name'],
                                 $global_config['site_email']
                             ];
-                            $url_group = nv_url_rewrite(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=groups/' . $gid, true);
-                            if (!str_starts_with($url_group, NV_MY_DOMAIN)) {
-                                $url_group = NV_MY_DOMAIN . $url_group;
-                            }
+                            $url_group = NV_MY_DOMAIN . nv_url_rewrite(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=groups/' . $gid, true);
                             $message = sprintf($lang_module['group_join_queue_message'], $groups_list['all'][$gid]['title'], $user_info['full_name'], $groups_list['all'][$gid]['title'], $url_group);
                             @nv_sendmail($mail_from, $email, $lang_module['group_join_queue'], $message);
                         }

@@ -14,15 +14,18 @@
 
 <div class="clearfix">
     <ul class="nav nav-tabs setting-tabnav" role="tablist" id="settingTabs">
+        <!-- BEGIN: sys_tabs -->
         <li role="presentation" class="{TAB0_ACTIVE}"><a href="#settingBasic" aria-controls="settingBasic" aria-offsets="0" role="tab" data-toggle="tab" data-location="{FORM_ACTION}&amp;selectedtab=0">{LANG.security}</a></li>
         <li role="presentation" class="{TAB1_ACTIVE}"><a href="#settingFlood" aria-controls="settingFlood" aria-offsets="1" role="tab" data-toggle="tab" data-location="{FORM_ACTION}&amp;selectedtab=1">{LANG.flood_blocker}</a></li>
         <li role="presentation" class="{TAB2_ACTIVE}"><a href="#settingCaptcha" aria-controls="settingCaptcha" aria-offsets="2" role="tab" data-toggle="tab" data-location="{FORM_ACTION}&amp;selectedtab=2">{LANG.captcha}</a></li>
         <li role="presentation" class="{TAB3_ACTIVE}"><a href="#settingIp" aria-controls="settingIp" aria-offsets="3" role="tab" data-toggle="tab" data-location="{FORM_ACTION}&amp;selectedtab=3">{LANG.banip}</a></li>
         <li role="presentation" class="{TAB4_ACTIVE}"><a href="#settingCORS" aria-controls="settingCORS" aria-offsets="4" role="tab" data-toggle="tab" data-location="{FORM_ACTION}&amp;selectedtab=4">{LANG.cors}</a></li>
+        <!-- END: sys_tabs -->
         <li role="presentation" class="{TAB5_ACTIVE}"><a href="#settingCSP" aria-controls="settingCSP" aria-offsets="5" role="tab" data-toggle="tab" data-location="{FORM_ACTION}&amp;selectedtab=5">{LANG.csp}</a></li>
         <li role="presentation" class="{TAB6_ACTIVE}"><a href="#settingRP" aria-controls="settingRP" aria-offsets="6" role="tab" data-toggle="tab" data-location="{FORM_ACTION}&amp;selectedtab=6">{LANG.rp}</a></li>
     </ul>
     <div class="tab-content">
+        <!-- BEGIN: sys_contents -->
         <div role="tabpanel" class="tab-pane{TAB0_ACTIVE}" id="settingBasic">
             <div class="setting-tabcontent clearfix">
                 <form action="{FORM_ACTION}" method="post">
@@ -362,6 +365,115 @@
                     </div>
                     <input type="hidden" name="selectedtab" value="{SELECTEDTAB}"/>
                 </form>
+
+                <div class="row">
+                    <form action="{FORM_ACTION}" method="post" class="col-sm-12" data-recaptcha-sitekey="{RECAPTCHA_SITEKEY}" data-recaptcha-secretkey="{RECAPTCHA_SECRETKEY}">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><strong>{LANG.captcha_for_module}</strong></div>
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <td colspan="2" class="text-center">
+                                                <div class="m-bottom">{LANG.select_all_as}:</div>
+                                                <button type="button" class="btn btn-xs btn-default" onclick="selAllAs('', this.form)">{LANG.captcha_}</button>
+                                                <button type="button" class="btn btn-xs btn-default" onclick="selAllAs('captcha', this.form)">{LANG.captcha_captcha}</button>
+                                                <button type="button" class="btn btn-xs btn-default" onclick="selAllAs('recaptcha', this.form)">{LANG.captcha_recaptcha}</button>
+                                            </td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- BEGIN: mod -->
+                                        <tr>
+                                            <td>{MOD.custom_title}</td>
+                                            <td>
+                                                <select name="captcha_type[{MOD.title}]" class="form-control" style="margin-bottom:4px" onchange="noteShow(this, this.form)">
+                                                    <!-- BEGIN: opt -->
+                                                    <option value="{OPT.val}"{OPT.sel}>{OPT.title}</option>
+                                                    <!-- END: opt -->
+                                                </select>
+                                                <div class="small text-danger"<!-- BEGIN: dnone --> style="display:none"<!-- END: dnone -->><em>{LANG.captcha_type_recaptcha_note}</em></div>
+                                            </td>
+                                        </tr>
+                                        <!-- END: mod -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="panel-footer text-center">
+                                <input type="hidden" name="checkss" value="{CHECKSS}" />
+                                <input type="hidden" name="modcapt" value="1" />
+                                <input type="hidden" name="selectedtab" value="{SELECTEDTAB}"/>
+                                <input type="submit" class="btn btn-primary w100" value="{LANG.submit}" />
+                                <input type="reset" class="btn btn-default" value="{GLANG.reset}" />
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="col-sm-12">
+                        <form action="{FORM_ACTION}" method="post">
+                            <div class="panel panel-default">
+                                <div class="panel-heading"><strong>{LANG.captcha_area}</strong></div>
+                                <div class="panel-body">
+                                    <!-- BEGIN: captcha_area -->
+                                    <p>
+                                        <input type="checkbox" id="captcha_area{CAPTCHAAREA.key}" name="captcha_area[]" value="{CAPTCHAAREA.key}"{CAPTCHAAREA.checked}/>
+                                        <label for="captcha_area{CAPTCHAAREA.key}">{CAPTCHAAREA.title}</label>
+                                    </p>
+                                    <!-- END: captcha_area -->
+                                </div>
+                                <div class="panel-footer text-center">
+                                    <input type="hidden" name="checkss" value="{CHECKSS}" />
+                                    <input type="hidden" name="captarea" value="1" />
+                                    <input type="hidden" name="selectedtab" value="{SELECTEDTAB}"/>
+                                    <input type="submit" class="btn btn-primary w100" value="{LANG.submit}" />
+                                </div>
+                            </div>
+                        </form>
+                        <form action="{FORM_ACTION}" method="post">
+                            <div class="panel panel-default">
+                                <div class="panel-heading"><strong>{LANG.captcha_comm}</strong></div>
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <td colspan="2" class="text-center">
+                                                    <div class="m-bottom">{LANG.select_all_as}:</div>
+                                                    <select class="form-control d-inline-block" onchange="selAllCaptComm(this, this.form)" style="width:auto">
+                                                    <option value="-1">{LANG.captcha_comm_select}</option>
+                                                        <!-- BEGIN: optAll -->
+                                                        <option value="{OPTALL.val}">{OPTALL.title}</option>
+                                                        <!-- END: optAll -->
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- BEGIN: modcomm -->
+                                            <tr>
+                                                <td>{MOD.custom_title}</td>
+                                                <td>
+                                                    <select name="captcha_area_comm[{MOD.title}]" class="form-control">
+                                                        <!-- BEGIN: opt -->
+                                                        <option value="{OPT.val}"{OPT.sel}>{OPT.title}</option>
+                                                        <!-- END: opt -->
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <!-- END: modcomm -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="panel-footer text-center">
+                                    <input type="hidden" name="checkss" value="{CHECKSS}" />
+                                    <input type="hidden" name="captcommarea" value="1" />
+                                    <input type="hidden" name="selectedtab" value="{SELECTEDTAB}"/>
+                                    <input type="submit" class="btn btn-primary w100" value="{LANG.submit}" />
+                                    <input type="reset" class="btn btn-default" value="{GLANG.reset}" />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
         <div role="tabpanel" class="tab-pane{TAB3_ACTIVE}" id="settingIp">
@@ -580,6 +692,7 @@
                 </form>
             </div>
         </div>
+        <!-- END: sys_contents -->
         <div role="tabpanel" class="tab-pane{TAB5_ACTIVE}" id="settingCSP">
             <div class="setting-tabcontent clearfix">
                 <form action="{FORM_ACTION}" method="post">
@@ -633,7 +746,7 @@
                             {LANG.rp_desc} <a href="https://www.w3.org/TR/referrer-policy/" target="_blank">{LANG.rp_details}</a>.<br />
                             {LANG.rp_desc2}
                         </div>
-                        
+
                         <strong>{LANG.rp_directives}:</strong>
                         <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                             <!-- BEGIN: rp_directive -->
@@ -693,7 +806,31 @@
 </div>
 <input type="hidden" name="gselectedtab" value="{SELECTEDTAB}"/>
 <script type="text/javascript">
-//<![CDATA[
+function noteShow(obj, form) {
+    var val = $(obj).val(),
+        sitekey = $(form).data('recaptcha-sitekey'),
+        secretkey = $(form).data('recaptcha-secretkey');
+    if (val != 'recaptcha' || (val == 'recaptcha' && sitekey != '' && secretkey != '')) {
+        $(obj).next().hide()
+    } else {
+        $(obj).next().show()
+    }
+}
+
+function selAllAs(type, form) {
+    $('select', form).val(type);
+    $('[type=submit]', form).focus()
+}
+
+function selAllCaptComm(obj, form) {
+    var val = $(obj).val();
+    if (val != '-1') {
+        $('[name*=captcha_area_comm]', form).val(val);
+        $(obj).val('-1');
+        $('[type=submit]', form).focus()
+    }
+}
+
 var LANG = [];
 LANG.banip_delete_confirm = '{LANG.banip_delete_confirm}';
 LANG.banip_del_success = '{LANG.banip_del_success}';
@@ -725,6 +862,5 @@ $(document).ready(function() {
         }
     });
 });
-//]]>
 </script>
 <!-- END: main -->

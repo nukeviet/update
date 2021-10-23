@@ -101,10 +101,10 @@ $lang_module['forward'] = 'Transmis à l\'adresse: %s';
 $lang_module['forwarded'] = 'Transmis';
 $lang_module['error_mail_empty'] = 'Erreur: E-mail vide';
 
-$lang_module['config'] = 'Module config';
-$lang_module['config_sendcopymode'] = 'Who can send a copy to email';
-$lang_module['config_sendcopymode0'] = 'Users have authenticated email';
-$lang_module['config_sendcopymode1'] = 'All users';
+$lang_module['config'] = 'Configurer le module';
+$lang_module['config_sendcopymode'] = 'Le droit d\'envoyer une copie à l\'email';
+$lang_module['config_sendcopymode0'] = 'Les membres ont un email authentifié';
+$lang_module['config_sendcopymode1'] = 'Tous les utilisateurs';
 
 $lang_module['processed_by'] = 'La personne qui exécute: ';
 $lang_module['processed_time'] = 'Temps d\'exécution: ';
@@ -112,9 +112,4 @@ $lang_module['mark_as_processed'] = 'Marquer comme traité';
 $lang_module['mark_as_unprocess'] = 'Marquer non traité';
 $lang_module['tt3_row_title'] = 'Exécute';
 $lang_module['process'] = 'Exécute';
-$lang_module['captcha_type'] = 'Le type captcha lorsque l\'utilisateur soumet un contact';
-$lang_module['captcha_type_'] = 'Ne pas utiliser';
-$lang_module['captcha_type_captcha'] = 'Captcha-image';
-$lang_module['captcha_type_recaptcha'] = 'reCaptcha';
-$lang_module['captcha_type_recaptcha_note'] = 'Captcha ne fonctionnera pas tant que vous n\'aurez pas <a href="%s">configuré reCaptcha</a>';
 $lang_module['row_new'] = 'Nouveau courrier';

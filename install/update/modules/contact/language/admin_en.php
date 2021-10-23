@@ -101,10 +101,10 @@ $lang_module['forwarded'] = 'Forwarded';
 $lang_module['forward'] = 'Forward to: %s';
 $lang_module['error_mail_empty'] = 'Error: Empty email';
 
-$lang_module['config'] = 'Configurer le module';
-$lang_module['config_sendcopymode'] = 'Le droit d\'envoyer une copie à l\'email';
-$lang_module['config_sendcopymode0'] = 'Les membres ont un email authentifié';
-$lang_module['config_sendcopymode1'] = 'Tous les utilisateurs';
+$lang_module['config'] = 'Module config';
+$lang_module['config_sendcopymode'] = 'Who can send a copy to email';
+$lang_module['config_sendcopymode0'] = 'Users have authenticated email';
+$lang_module['config_sendcopymode1'] = 'All users';
 
 $lang_module['processed_by'] = 'Handler: ';
 $lang_module['processed_time'] = 'Processing Time: ';
@@ -112,9 +112,4 @@ $lang_module['mark_as_processed'] = 'Mark processed';
 $lang_module['mark_as_unprocess'] = 'Mark unprocess';
 $lang_module['tt3_row_title'] = 'Processed!';
 $lang_module['process'] = 'Processed!';
-$lang_module['captcha_type'] = 'Captcha type when the user submits a contact';
-$lang_module['captcha_type_'] = 'Do not use';
-$lang_module['captcha_type_captcha'] = 'Captcha-image';
-$lang_module['captcha_type_recaptcha'] = 'reCaptcha';
-$lang_module['captcha_type_recaptcha_note'] = 'Captcha won\'t run until you <a href="%s">configure reCaptcha</a>';
 $lang_module['row_new'] = 'New mail';
