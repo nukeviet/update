@@ -7,6 +7,7 @@
  * @License GNU/GPL version 2 or any later version
  * @Createdate Sat, 07 Mar 2015 03:43:56 GMT
  */
+
 if (!defined('NV_IS_UPDATE')) {
     die('Stop!!!');
 }
@@ -23,9 +24,9 @@ $nv_update_config['packageID'] = 'NVUD4501';
 $nv_update_config['formodule'] = '';
 
 // Thong tin phien ban, tac gia, ho tro
-$nv_update_config['release_date'] = 1627035500;
+$nv_update_config['release_date'] = 1635498000;
 $nv_update_config['author'] = 'VINADES.,JSC <contact@vinades.vn>';
-$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.5.00';
+$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.5.01';
 $nv_update_config['to_version'] = '4.5.01';
 $nv_update_config['allow_old_version'] = [
     '4.4.02',
@@ -43,6 +44,8 @@ $nv_update_config['lang']['vi'] = [];
 $nv_update_config['lang']['en'] = [];
 
 // Tiếng Việt
+$nv_update_config['lang']['vi']['nv_up_sys4403'] = 'Cập nhật hệ thống lên 4.4.03';
+$nv_update_config['lang']['vi']['nv_up_sys4404'] = 'Cập nhật hệ thống lên 4.4.04';
 $nv_update_config['lang']['vi']['nv_up_modbanners4500'] = 'Cập nhật module Banners lên 4.5.00';
 $nv_update_config['lang']['vi']['nv_up_modcontact4500'] = 'Cập nhật module Contact lên 4.5.00';
 $nv_update_config['lang']['vi']['nv_up_modnews4500'] = 'Cập nhật module News lên 4.5.00';
@@ -50,9 +53,12 @@ $nv_update_config['lang']['vi']['nv_up_modpage4500'] = 'Cập nhật module Page
 $nv_update_config['lang']['vi']['nv_up_modusers4500'] = 'Cập nhật module Users lên 4.5.00';
 $nv_update_config['lang']['vi']['nv_up_modvoting4500'] = 'Cập nhật module Voting lên 4.5.00';
 $nv_update_config['lang']['vi']['nv_up_sys4500'] = 'Cập nhật hệ thống lên 4.5.00';
+$nv_update_config['lang']['vi']['nv_up_sys4501'] = 'Cập nhật hệ thống lên 4.5.01';
 $nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản 4.5.01';
 
 // English
+$nv_update_config['lang']['en']['nv_up_sys4403'] = 'Update system to 4.4.03';
+$nv_update_config['lang']['en']['nv_up_sys4404'] = 'Update system to 4.4.04';
 $nv_update_config['lang']['en']['nv_up_modbanners4500'] = 'Update module Banners lên 4.5.00';
 $nv_update_config['lang']['en']['nv_up_modcontact4500'] = 'Update module Contact lên 4.5.00';
 $nv_update_config['lang']['en']['nv_up_modnews4500'] = 'Update module News lên 4.5.00';
@@ -60,38 +66,47 @@ $nv_update_config['lang']['en']['nv_up_modpage4500'] = 'Update module Page lên 
 $nv_update_config['lang']['en']['nv_up_modusers4500'] = 'Update module Users to 4.5.00';
 $nv_update_config['lang']['en']['nv_up_modvoting4500'] = 'Update module Voting to 4.5.00';
 $nv_update_config['lang']['en']['nv_up_sys4500'] = 'Update system to 4.5.00';
+$nv_update_config['lang']['en']['nv_up_sys4501'] = 'Update system to 4.5.01';
 $nv_update_config['lang']['en']['nv_up_finish'] = 'Update to new version 4.5.01';
 
 $nv_update_config['tasklist'] = [];
 
+$nv_update_config['tasklist'][] = [
+    'r' => '4.4.03',
+    'rq' => 2,
+    'l' => 'nv_up_sys4403',
+    'f' => 'nv_up_sys4403'
+];
+$nv_update_config['tasklist'][] = [
+    'r' => '4.4.04',
+    'rq' => 2,
+    'l' => 'nv_up_sys4404',
+    'f' => 'nv_up_sys4404'
+];
 $nv_update_config['tasklist'][] = [
     'r' => '4.5.00',
     'rq' => 2,
     'l' => 'nv_up_modbanners4500',
     'f' => 'nv_up_modbanners4500'
 ];
-
 $nv_update_config['tasklist'][] = [
     'r' => '4.5.00',
     'rq' => 2,
     'l' => 'nv_up_modcontact4500',
     'f' => 'nv_up_modcontact4500'
 ];
-
 $nv_update_config['tasklist'][] = [
     'r' => '4.5.00',
     'rq' => 2,
     'l' => 'nv_up_modnews4500',
     'f' => 'nv_up_modnews4500'
 ];
-
 $nv_update_config['tasklist'][] = [
     'r' => '4.5.00',
     'rq' => 2,
     'l' => 'nv_up_modpage4500',
     'f' => 'nv_up_modpage4500'
 ];
-
 $nv_update_config['tasklist'][] = [
     'r' => '4.5.00',
     'rq' => 2,
@@ -111,11 +126,213 @@ $nv_update_config['tasklist'][] = [
     'f' => 'nv_up_sys4500'
 ];
 $nv_update_config['tasklist'][] = [
+    'r' => '4.5.01',
+    'rq' => 2,
+    'l' => 'nv_up_sys4501',
+    'f' => 'nv_up_sys4501'
+];
+$nv_update_config['tasklist'][] = [
     'r' => $nv_update_config['to_version'],
     'rq' => 2,
     'l' => 'nv_up_finish',
     'f' => 'nv_up_finish'
 ];
+
+/**
+ * @return string
+ */
+function nv_get_captchaconfig()
+{
+    global $global_config;
+
+    $captcha = (!empty($global_config['recaptcha_sitekey']) and !empty($global_config['recaptcha_secretkey'])) ? 'recaptcha' : 'captcha';
+    $data = [
+        0 => '', // Không hiển thị
+        1 => $captcha, // Khi admin đăng nhập
+        2 => $captcha, // Khi thành viên đăng nhập
+        3 => $captcha, // Khi khách đăng ký
+        4 => $captcha, // Khi thành viên đăng nhập hoặc khách đăng ký
+        5 => $captcha, // Khi admin hoặc thành viên đăng nhập
+        6 => $captcha, // Khi admin đăng nhập hoặc khách đăng ký
+        7 => $captcha, // Hiển thị trong mọi trường hợp
+    ];
+
+    if (isset($global_config['gfx_chk'])) {
+        return (isset($data[$global_config['gfx_chk']]) ? $data[$global_config['gfx_chk']] : $captcha);
+    }
+
+    return $captcha;
+}
+
+/**
+ *
+ * @return number[]|string[]
+ */
+function nv_up_sys4403()
+{
+    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config;
+
+    $return = [
+        'status' => 1,
+        'complete' => 1,
+        'next' => 1,
+        'link' => 'NO',
+        'lang' => 'NO',
+        'message' => ''
+    ];
+
+    try {
+        $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'global', 'allow_null_origin', '0');");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+    try {
+        $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'global', 'ip_allow_null_origin', '');");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+    try {
+        $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'site', 'nv_csp', 'script-src &#039;self&#039; *.google.com *.google-analytics.com *.googletagmanager.com *.gstatic.com *.facebook.com *.facebook.net *.twitter.com *.zalo.me *.zaloapp.com &#039;unsafe-inline&#039; &#039;unsafe-eval&#039;;style-src &#039;self&#039; *.google.com &#039;unsafe-inline&#039;;frame-src &#039;self&#039; *.google.com *.youtube.com *.facebook.com *.facebook.net *.twitter.com *.zalo.me;base-uri &#039;self&#039;;');");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+    try {
+        $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'site', 'nv_csp_act', '1');");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+    try {
+        $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'site', 'nv_rp', 'no-referrer-when-downgrade, strict-origin-when-cross-origin');");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+    try {
+        $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'site', 'nv_rp_act', '1');");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+    try {
+        $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'global', 'cookie_SameSite', 'Lax');");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+
+    // Duyệt tất cả các ngôn ngữ của modusers
+    // Lấy tất cả ngôn ngữ đã cài đặt
+    $sql = 'SELECT lang FROM ' . $db_config['prefix'] . '_setup_language WHERE setup=1 ORDER BY weight ASC';
+    $array_sitelangs = $db->query($sql)->fetchAll(PDO::FETCH_COLUMN);
+
+    $_module_users = [];
+    foreach ($array_sitelangs as $lang) {
+        // Lấy tất cả các module và module ảo của nó
+        $mquery = $db->query('SELECT title, module_data FROM ' . $db_config['prefix'] . '_' . $lang . "_modules WHERE module_file='users'");
+        while (list ($mod, $mod_data) = $mquery->fetch(3)) {
+            if (!in_array($mod_data, $_module_users)) {
+                // mỗi module ảo chỉ chạy 1 lần
+                $_module_users[] = $mod_data;
+
+                try {
+                    $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $mod_data . "_field CHANGE COLUMN match_type match_type ENUM('none','alphanumeric','unicodename','email','url','regex','callback') NOT NULL DEFAULT 'none' AFTER sql_choices;");
+                } catch (PDOException $e) {
+                    trigger_error(print_r($e, true));
+                }
+                /**
+                 * @deprecated không ép cấu hình họ tên về tên người
+                 try {
+                 $db->query("UPDATE " . $db_config['prefix'] . "_" . $mod_data . "_field SET match_type='unicodename' WHERE  field IN ('first_name','last_name');");
+                 } catch (PDOException $e) {
+                 trigger_error(print_r($e, true));
+                 }
+                 */
+                try {
+                    $db->query('INSERT IGNORE INTO ' . $db_config['prefix'] . '_' . $mod_data . "_config (config, content, edit_time) VALUES ('auto_assign_oauthuser', '0', " . NV_CURRENTTIME . ')');
+                } catch (PDOException $e) {
+                    trigger_error(print_r($e, true));
+                }
+            }
+        }
+    }
+
+    //API
+    try {
+        $db->query("CREATE TABLE " . $db_config['prefix'] . "_authors_api_role (
+            role_id smallint(4) NOT NULL AUTO_INCREMENT,
+            role_title varchar(250) NOT NULL DEFAULT '',
+            role_description text NOT NULL,
+            role_data text NOT NULL,
+            addtime int(11) NOT NULL DEFAULT '0',
+            edittime int(11) NOT NULL DEFAULT '0',
+            PRIMARY KEY (role_id)
+        ) ENGINE = MYISAM COMMENT 'Bảng lưu quyền truy cập API'");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+
+    try {
+        $db->query("CREATE TABLE " . $db_config['prefix'] . "_authors_api_credential (
+            admin_id int(11) UNSIGNED NOT NULL,
+            credential_title varchar(255) NOT NULL DEFAULT '',
+            credential_ident varchar(50) NOT NULL DEFAULT '',
+            credential_secret varchar(250) NOT NULL DEFAULT '',
+            credential_ips varchar(255) NOT NULL DEFAULT '',
+            api_roles varchar(255) NOT NULL DEFAULT '',
+            addtime int(11) NOT NULL DEFAULT '0',
+            edittime int(11) NOT NULL DEFAULT '0',
+            last_access int(11) NOT NULL DEFAULT '0',
+            UNIQUE KEY credential_ident (credential_ident),
+            UNIQUE KEY credential_secret (credential_secret),
+            KEY admin_id (admin_id)
+        ) ENGINE = MYISAM COMMENT 'Bảng lưu key API của quản trị'");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+
+    try {
+        $db->query("INSERT INTO " . $db_config['prefix'] . "_config (lang, module, config_name, config_value) VALUES ('sys', 'global', 'remote_api_access', '0')");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+
+    try {
+        $db->query("INSERT INTO " . $db_config['prefix'] . "_config (lang, module, config_name, config_value) VALUES ('sys', 'global', 'remote_api_log', '1')");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+
+    return $return;
+}
+
+/**
+ *
+ * @return number[]|string[]
+ */
+function nv_up_sys4404()
+{
+    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config;
+
+    $return = [
+        'status' => 1,
+        'complete' => 1,
+        'next' => 1,
+        'link' => 'NO',
+        'lang' => 'NO',
+        'message' => ''
+    ];
+
+    $sql = 'SELECT lang FROM ' . $db_config['prefix'] . '_setup_language WHERE setup=1 ORDER BY weight ASC';
+    $array_sitelangs = $db->query($sql)->fetchAll(PDO::FETCH_COLUMN);
+
+    foreach ($array_sitelangs as $lang) {
+        // Gỡ cấu hình các block QR-Code
+        try {
+            $db->query("UPDATE " . $db_config['prefix'] . "_" . $lang . "_blocks_groups SET config='' WHERE file_name='global.QR_code.php';");
+        } catch (PDOException $e) {
+            trigger_error(print_r($e, true));
+        }
+    }
+
+    return $return;
+}
 
 /**
  * nv_up_modbanners4500()
@@ -135,8 +352,9 @@ function nv_up_modbanners4500()
         'message' => ''
     ];
 
+    // Cấu hình captcha banners
     try {
-        $db->query('INSERT INTO ' . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'banners', 'captcha_type', 'captcha');");
+        $db->query('INSERT INTO ' . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'banners', 'captcha_type', '" . nv_get_captchaconfig() . "');");
     } catch (PDOException $e) {
         trigger_error(print_r($e, true));
     }
@@ -172,8 +390,10 @@ function nv_up_modcontact4500()
             } catch (PDOException $e) {
                 trigger_error(print_r($e, true));
             }
+
+            // Captcha của module liên hệ
             try {
-                $db->query('INSERT INTO ' . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', '" . $mod . "', 'captcha_type', 'captcha');");
+                $db->query('INSERT INTO ' . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', '" . $mod . "', 'captcha_type', '" . nv_get_captchaconfig() . "');");
             } catch (PDOException $e) {
                 trigger_error(print_r($e, true));
             }
@@ -210,17 +430,17 @@ function nv_up_modnews4500()
                 trigger_error(print_r($e, true));
             }
             try {
-                $db->query('INSERT INTO ' . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', '" . $mod . "', 'ucaptcha_type', 'captcha');");
+                $db->query('INSERT INTO ' . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', '" . $mod . "', 'ucaptcha_type', '" . nv_get_captchaconfig() . "');");
             } catch (PDOException $e) {
                 trigger_error(print_r($e, true));
             }
             try {
-                $db->query('INSERT INTO ' . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', '" . $mod . "', 'scaptcha_type', 'captcha');");
+                $db->query('INSERT INTO ' . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', '" . $mod . "', 'scaptcha_type', '" . nv_get_captchaconfig() . "');");
             } catch (PDOException $e) {
                 trigger_error(print_r($e, true));
             }
             try {
-                $db->query('INSERT INTO ' . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', '" . $mod . "', 'captcha_type_comm', 'captcha');");
+                $db->query('INSERT INTO ' . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', '" . $mod . "', 'captcha_type_comm', '" . nv_get_captchaconfig() . "');");
             } catch (PDOException $e) {
                 trigger_error(print_r($e, true));
             }
@@ -244,33 +464,33 @@ function nv_up_modnews4500()
 
             try {
                 $db->query('CREATE TABLE ' . $db_config['prefix'] . '_' . $lang . '_' . $mod_data . "_author (
-                        id MEDIUMINT(8) UNSIGNED NOT NULL AUTO_INCREMENT,
-                        uid INT(11) UNSIGNED NOT NULL,
-                        alias VARCHAR(100) NOT NULL DEFAULT '',
-                        pseudonym VARCHAR(100) NOT NULL DEFAULT '',
-                        image VARCHAR(255) NULL DEFAULT '',
-                        description TEXT NULL DEFAULT NULL,
-                        add_time INT(11) UNSIGNED NOT NULL DEFAULT '0',
-                        edit_time INT(11) UNSIGNED NOT NULL DEFAULT '0',
-                        active TINYINT(1) UNSIGNED NOT NULL DEFAULT '1',
-                        numnews MEDIUMINT(8) NOT NULL DEFAULT '0',
-                        PRIMARY KEY (id),
-                        UNIQUE KEY uid (uid),
-                        UNIQUE KEY alias (alias)
-                    ) ENGINE=MyISAM;");
+                    id MEDIUMINT(8) UNSIGNED NOT NULL AUTO_INCREMENT,
+                    uid INT(11) UNSIGNED NOT NULL,
+                    alias VARCHAR(100) NOT NULL DEFAULT '',
+                    pseudonym VARCHAR(100) NOT NULL DEFAULT '',
+                    image VARCHAR(255) NULL DEFAULT '',
+                    description TEXT NULL DEFAULT NULL,
+                    add_time INT(11) UNSIGNED NOT NULL DEFAULT '0',
+                    edit_time INT(11) UNSIGNED NOT NULL DEFAULT '0',
+                    active TINYINT(1) UNSIGNED NOT NULL DEFAULT '1',
+                    numnews MEDIUMINT(8) NOT NULL DEFAULT '0',
+                    PRIMARY KEY (id),
+                    UNIQUE KEY uid (uid),
+                    UNIQUE KEY alias (alias)
+                ) ENGINE=MyISAM;");
             } catch (PDOException $e) {
                 trigger_error(print_r($e, true));
             }
             try {
                 $db->query('CREATE TABLE ' . $db_config['prefix'] . '_' . $lang . '_' . $mod_data . "_authorlist (
-                        id INT(11) NOT NULL,
-                        aid MEDIUMINT(8) NOT NULL,
-                        alias VARCHAR(100) NOT NULL DEFAULT '',
-                        pseudonym VARCHAR(100) NOT NULL DEFAULT '',
-                        UNIQUE KEY id_aid (id, aid),
-                        KEY aid (aid),
-                        KEY alias (alias)
-                        ) ENGINE=MyISAM;");
+                    id INT(11) NOT NULL,
+                    aid MEDIUMINT(8) NOT NULL,
+                    alias VARCHAR(100) NOT NULL DEFAULT '',
+                    pseudonym VARCHAR(100) NOT NULL DEFAULT '',
+                    UNIQUE KEY id_aid (id, aid),
+                    KEY aid (aid),
+                    KEY alias (alias)
+                ) ENGINE=MyISAM;");
             } catch (PDOException $e) {
                 trigger_error(print_r($e, true));
             }
@@ -314,7 +534,7 @@ function nv_up_modpage4500()
             }
 
             try {
-                $db->query('INSERT INTO ' . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', '" . $mod . "', 'captcha_type_comm', 'captcha');");
+                $db->query('INSERT INTO ' . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', '" . $mod . "', 'captcha_type_comm', '" . nv_get_captchaconfig() . "');");
             } catch (PDOException $e) {
                 trigger_error(print_r($e, true));
             }
@@ -356,13 +576,13 @@ function nv_up_modusers4500()
 
                 try {
                     $db->query('CREATE TABLE ' . $db_config['prefix'] . '_' . $mod_data . "_groups_detail (
-                            group_id SMALLINT(5) UNSIGNED NOT NULL DEFAULT '0',
-                            lang CHAR(2) NOT NULL DEFAULT '',
-                            title VARCHAR(240) NOT NULL,
-                            description VARCHAR(240) NOT NULL DEFAULT '',
-                            content TEXT,
-                            UNIQUE INDEX group_id_lang (lang, group_id)
-                        ) ENGINE=MyISAM;");
+                        group_id SMALLINT(5) UNSIGNED NOT NULL DEFAULT '0',
+                        lang CHAR(2) NOT NULL DEFAULT '',
+                        title VARCHAR(240) NOT NULL,
+                        description VARCHAR(240) NOT NULL DEFAULT '',
+                        content TEXT,
+                        UNIQUE INDEX group_id_lang (lang, group_id)
+                    ) ENGINE=MyISAM;");
 
                     $_query = $db->query('SELECT * FROM ' . $db_config['prefix'] . '_' . $mod_data . '_groups');
                     while ($_row = $_query->fetch()) {
@@ -375,21 +595,6 @@ function nv_up_modusers4500()
                     $db->query('ALTER TABLE ' . $db_config['prefix'] . '_' . $mod_data . '_groups ADD COLUMN alias VARCHAR(240) NOT NULL AFTER group_id');
                     $db->query('UPDATE ' . $db_config['prefix'] . '_' . $mod_data . "_groups SET alias = REPLACE(title, ' ', '-');");
                     $db->query('ALTER TABLE ' . $db_config['prefix'] . '_' . $mod_data . '_groups DROP COLUMN description, DROP COLUMN content, DROP INDEX ktitle, ADD UNIQUE INDEX kalias (alias, idsite);');
-                } catch (PDOException $e) {
-                    trigger_error(print_r($e, true));
-                }
-                try {
-                    $db->query('ALTER TABLE ' . $db_config['prefix'] . '_' . $mod_data . "_field CHANGE COLUMN match_type match_type ENUM('none','alphanumeric','unicodename','email','url','regex','callback') NOT NULL DEFAULT 'none' AFTER sql_choices;");
-                } catch (PDOException $e) {
-                    trigger_error(print_r($e, true));
-                }
-                try {
-                    $db->query('UPDATE ' . $db_config['prefix'] . '_' . $mod_data . "_field SET match_type='unicodename' WHERE  field IN ('first_name','last_name');");
-                } catch (PDOException $e) {
-                    trigger_error(print_r($e, true));
-                }
-                try {
-                    $db->query('INSERT IGNORE INTO ' . $db_config['prefix'] . '_' . $mod_data . "_config (config, content, edit_time) VALUES ('auto_assign_oauthuser', '0', " . NV_CURRENTTIME . ')');
                 } catch (PDOException $e) {
                     trigger_error(print_r($e, true));
                 }
@@ -434,7 +639,7 @@ function nv_up_modvoting4500()
             }
 
             try {
-                $db->query('INSERT INTO ' . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', '" . $mod . "', 'captcha_type', 'captcha');");
+                $db->query('INSERT INTO ' . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', '" . $mod . "', 'captcha_type', '" . nv_get_captchaconfig() . "');");
             } catch (PDOException $e) {
                 trigger_error(print_r($e, true));
             }
@@ -464,61 +669,9 @@ function nv_up_sys4500()
         'lang' => 'NO',
         'message' => ''
     ];
-    try {
-        $db->query("CREATE TABLE nv4_authors_api_credential (
-                        admin_id int(11) unsigned NOT NULL,
-                        credential_title varchar(255) NOT NULL DEFAULT '',
-                        credential_ident varchar(50) NOT NULL DEFAULT '',
-                        credential_secret varchar(250) NOT NULL DEFAULT '',
-                        credential_ips varchar(255) NOT NULL DEFAULT '',
-                        api_roles varchar(255) NOT NULL DEFAULT '',
-                        addtime int(11) NOT NULL DEFAULT '0',
-                        edittime int(11) NOT NULL DEFAULT '0',
-                        last_access int(11) NOT NULL DEFAULT '0',
-                        UNIQUE KEY credential_ident (credential_ident),
-                        UNIQUE KEY credential_secret (credential_secret),
-                        KEY admin_id (admin_id)
-                    ) ENGINE=MyISAM;");
-    } catch (PDOException $e) {
-        trigger_error(print_r($e, true));
-    }
-
-    try {
-        $db->query("CREATE TABLE nv4_authors_api_role (
-                        role_id smallint(4) NOT NULL AUTO_INCREMENT,
-                        role_title varchar(250) NOT NULL DEFAULT '',
-                        role_description text NOT NULL,
-                        role_data text NOT NULL,
-                        addtime int(11) NOT NULL DEFAULT '0',
-                        edittime int(11) NOT NULL DEFAULT '0',
-                        PRIMARY KEY (role_id)
-                    ) ENGINE=MyISAM;");
-    } catch (PDOException $e) {
-        trigger_error(print_r($e, true));
-    }
 
     try {
         $db->query('INSERT INTO ' . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'define', 'nv_mobile_mode_img', '480');");
-    } catch (PDOException $e) {
-        trigger_error(print_r($e, true));
-    }
-    try {
-        $db->query('INSERT INTO ' . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'global', 'remote_api_access', '0');");
-    } catch (PDOException $e) {
-        trigger_error(print_r($e, true));
-    }
-    try {
-        $db->query('INSERT INTO ' . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'global', 'remote_api_log', '1');");
-    } catch (PDOException $e) {
-        trigger_error(print_r($e, true));
-    }
-    try {
-        $db->query('INSERT INTO ' . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'global', 'allow_null_origin', '0');");
-    } catch (PDOException $e) {
-        trigger_error(print_r($e, true));
-    }
-    try {
-        $db->query('INSERT INTO ' . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'global', 'ip_allow_null_origin', '');");
     } catch (PDOException $e) {
         trigger_error(print_r($e, true));
     }
@@ -538,11 +691,6 @@ function nv_up_sys4500()
         trigger_error(print_r($e, true));
     }
     try {
-        $db->query('INSERT INTO ' . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'global', 'cookie_SameSite', 'Lax');");
-    } catch (PDOException $e) {
-        trigger_error(print_r($e, true));
-    }
-    try {
         $db->query('INSERT INTO ' . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'site', 'googleAnalytics4ID', '');");
     } catch (PDOException $e) {
         trigger_error(print_r($e, true));
@@ -557,13 +705,31 @@ function nv_up_sys4500()
     } catch (PDOException $e) {
         trigger_error(print_r($e, true));
     }
+
+    // Xác định khu vực captcha module users
+    $ucaptcha_area = 'r,m,p';
+    $data = [
+        0 => '', // Không hiển thị
+        1 => 'a,m,p', // Khi admin đăng nhập
+        2 => 'l,m,p', // Khi thành viên đăng nhập
+        3 => 'r,m,p', // Khi khách đăng ký
+        4 => 'l,r,m,p', // Khi thành viên đăng nhập hoặc khách đăng ký
+        5 => 'a,l,m,p', // Khi admin hoặc thành viên đăng nhập
+        6 => 'a,r,m,p', // Khi admin đăng nhập hoặc khách đăng ký
+        7 => 'a,l,r,m,p', // Hiển thị trong mọi trường hợp
+    ];
+    if (isset($global_config['gfx_chk'])) {
+        $ucaptcha_area = (isset($data[$global_config['gfx_chk']]) ? $data[$global_config['gfx_chk']] : $ucaptcha_area);
+    }
+
     try {
-        $db->query('INSERT INTO ' . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'site', 'ucaptcha_area', 'r,m,p');");
+        $db->query('INSERT INTO ' . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'site', 'ucaptcha_area', '" . $ucaptcha_area . "');");
     } catch (PDOException $e) {
         trigger_error(print_r($e, true));
     }
+
     try {
-        $db->query('INSERT INTO ' . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'site', 'ucaptcha_type', 'captcha');");
+        $db->query('INSERT INTO ' . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'site', 'ucaptcha_type', '" . nv_get_captchaconfig() . "');");
     } catch (PDOException $e) {
         trigger_error(print_r($e, true));
     }
@@ -578,27 +744,7 @@ function nv_up_sys4500()
         trigger_error(print_r($e, true));
     }
     try {
-        $db->query('INSERT INTO ' . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'site', 'nv_csp_act', '1');");
-    } catch (PDOException $e) {
-        trigger_error(print_r($e, true));
-    }
-    try {
-        $db->query('INSERT INTO ' . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'site', 'nv_csp', 'script-src &#039;self&#039; *.google.com *.google-analytics.com *.googletagmanager.com *.gstatic.com *.facebook.com *.facebook.net *.twitter.com *.zalo.me *.zaloapp.com &#039;unsafe-inline&#039; &#039;unsafe-eval&#039;;style-src &#039;self&#039; *.google.com &#039;unsafe-inline&#039;;frame-src &#039;self&#039; *.google.com *.youtube.com *.facebook.com *.facebook.net *.twitter.com *.zalo.me;base-uri &#039;self&#039;;');");
-    } catch (PDOException $e) {
-        trigger_error(print_r($e, true));
-    }
-    try {
         $db->query('INSERT INTO ' . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'site', 'ogp_image', '');");
-    } catch (PDOException $e) {
-        trigger_error(print_r($e, true));
-    }
-    try {
-        $db->query('INSERT INTO ' . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'site', 'nv_rp_act', '1');");
-    } catch (PDOException $e) {
-        trigger_error(print_r($e, true));
-    }
-    try {
-        $db->query('INSERT INTO ' . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'site', 'nv_rp', 'no-referrer-when-downgrade, strict-origin-when-cross-origin');");
     } catch (PDOException $e) {
         trigger_error(print_r($e, true));
     }
@@ -609,6 +755,78 @@ function nv_up_sys4500()
     }
     try {
         $db->query('DELETE FROM ' . NV_CONFIG_GLOBALTABLE . " WHERE  lang='sys' AND module='global' AND config_name IN ('captcha_type','gfx_chk');");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+
+    return $return;
+}
+
+
+/**
+ *
+ * @return number[]|string[]
+ */
+function nv_up_sys4501()
+{
+    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config;
+
+    $return = [
+        'status' => 1,
+        'complete' => 1,
+        'next' => 1,
+        'link' => 'NO',
+        'lang' => 'NO',
+        'message' => ''
+    ];
+
+    // Duyệt tất cả các ngôn ngữ
+    foreach ($global_config['allow_sitelangs'] as $lang) {
+        // Xóa cấu hình loại captcha bình luận
+        try {
+            $db->query("DELETE FROM " . NV_CONFIG_GLOBALTABLE . " WHERE lang='" . $lang . "' AND config_name='captcha_type_comm';");
+        } catch (PDOException $e) {
+            trigger_error(print_r($e, true));
+        }
+
+        // Lấy tất cả các module và module ảo của news
+        $mquery = $db->query('SELECT title, module_data FROM ' . $db_config['prefix'] . '_' . $lang . "_modules WHERE module_file = 'news'");
+        while (list ($mod, $mod_data) = $mquery->fetch(3)) {
+            // Xóa cấu hình captcha news
+            try {
+                $db->query("DELETE FROM " . NV_CONFIG_GLOBALTABLE . " WHERE lang='" . $lang . "' AND module='" . $mod . "' AND config_name='ucaptcha_type';");
+            } catch (PDOException $e) {
+                trigger_error(print_r($e, true));
+            }
+            try {
+                $db->query("DELETE FROM " . NV_CONFIG_GLOBALTABLE . " WHERE lang='" . $lang . "' AND module='" . $mod . "' AND config_name='scaptcha_type';");
+            } catch (PDOException $e) {
+                trigger_error(print_r($e, true));
+            }
+            // Bổ sung cấu hình captcha chung cho news
+            try {
+                $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', '" . $mod . "', 'captcha_type', '" . nv_get_captchaconfig() . "');");
+            } catch (PDOException $e) {
+                trigger_error(print_r($e, true));
+            }
+        }
+
+        // Bổ sung cấu hình captcha chung bình luận
+        try {
+            $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', 'comment', 'captcha_type', '" . nv_get_captchaconfig() . "');");
+        } catch (PDOException $e) {
+            trigger_error(print_r($e, true));
+        }
+    }
+
+    // Thay đổi key config của captcha
+    try {
+        $db->query("UPDATE " . NV_CONFIG_GLOBALTABLE . " SET config_name='captcha_type' WHERE lang='sys' AND module='site' AND config_name='ucaptcha_type';");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+    try {
+        $db->query("UPDATE " . NV_CONFIG_GLOBALTABLE . " SET config_name='captcha_area' WHERE lang='sys' AND module='site' AND config_name='ucaptcha_area';");
     } catch (PDOException $e) {
         trigger_error(print_r($e, true));
     }
