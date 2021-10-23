@@ -40,14 +40,17 @@ Giải nén và Upload các file trong gói cập nhật với cấu trúc của
 - Truy cập phần Cấu hình => Quản lý Modules click vào tên module Users và tất các module ảo của nó để hệ thống nhận diện chức năng mới. Nếu có nhiều ngôn ngữ cần xử lý lần lượt các ngôn ngữ. Ví dụ admin/index.php?language=vi&nv=modules&op=show&mod=users
 
 ### Bước 4: Điều chỉnh giao diện
-(Nếu bạn đã nâng cấp lên NukeViet 4.5.00 bỏ qua bước này)
+
+1. Nếu bạn có sử dụng giao diện không phải mặc định, chưa cập nhật lên 4.5.00 thì cập nhật theo hướng dẫn này [Hướng dẫn nâng cấp giao diện từ NukeViet 4.4.02 lên NukeViet 4.5.00](https://github.com/nukeviet/update/wiki/H%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-n%C3%A2ng-c%E1%BA%A5p-giao-di%E1%BB%87n-t%E1%BB%AB-NukeViet-4.4.02-l%C3%AAn-NukeViet-4.5.00). Nếu dùng giao diện mặc định hoặc đã cập nhật lên 4.5.00 trước đó thì bỏ qua bước 4.1 này.
+2. Nếu bạn có sử dụng giao diện không phải mặc định, chưa cập nhật lên 4.5.01 thì cập nhật theo hướng dẫn này [Hướng dẫn nâng cấp giao diện tương thích từ NukeViet 4.5.00 lên NukeViet 4.5.01](https://github.com/nukeviet/update/wiki/H%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-n%C3%A2ng-c%E1%BA%A5p-giao-di%E1%BB%87n-t%C6%B0%C6%A1ng-th%C3%ADch-t%E1%BB%AB-NukeViet-4.5.00-l%C3%AAn-NukeViet-4.5.01). Chú ý: Bước này cần thiết đối với giao diện của bạn có sử dụng block global.QR_code.php, trường hợp không sử dụng nó hoặc không có nó thì không cần thực hiện bước này.
 
 **Nếu site của bạn sử dụng giao diện không phải mặc định thì thực hiện cập nhật theo hướng dẫn sau:**
 
 [Hướng dẫn nâng cấp giao diện từ NukeViet 4.4.02 lên NukeViet 4.5.00](https://github.com/nukeviet/update/wiki/H%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-n%C3%A2ng-c%E1%BA%A5p-giao-di%E1%BB%87n-t%E1%BB%AB-NukeViet-4.4.02-l%C3%AAn-NukeViet-4.5.00)
 
 ### Bước 5: Hướng dẫn nâng cấp module từ NukeViet 4.4.02 lên NukeViet 4.5.00
-(Nếu bạn đã nâng cấp lên NukeViet 4.5.00 bỏ qua bước này)
+
+> Nếu bạn đã nâng cấp các module cài bên ngoài lên NukeViet 4.5.00 bỏ qua bước này.
 
 **Nếu site của bạn sử dụng module không phải mặc định thì thực hiện cập nhật theo hướng dẫn sau:**
 
