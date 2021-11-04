@@ -64,7 +64,7 @@ $xtpl = new XTemplate('user_oauth.tpl', NV_ROOTDIR . '/themes/' . $global_config
 $xtpl->assign('LANG', $lang_module);
 $xtpl->assign('USERID', $row['userid']);
 
-$sql = 'SELECT openid, opid, email FROM ' . NV_MOD_TABLE . '_openid WHERE userid=' . $row['userid'];
+$sql = 'SELECT openid, opid, id, email FROM ' . NV_MOD_TABLE . '_openid WHERE userid=' . $row['userid'];
 $array_oauth = $db->query($sql)->fetchAll();
 
 if (empty($array_oauth)) {
@@ -78,10 +78,24 @@ if (empty($array_oauth)) {
         }
 
         $opid = $nv_Request->get_title('opid', 'post', '');
-        if ($opid) {
+        $sql = 'SELECT * FROM ' . NV_MOD_TABLE . '_openid WHERE opid=' . $db->quote($opid) . ' AND userid=' . $row['userid'];
+        $openid = $db->query($sql)->fetch();
+
+        if (!empty($openid)) {
             $stmt = $db->prepare('DELETE FROM ' . NV_MOD_TABLE . '_openid WHERE opid= :opid AND userid=' . $row['userid']);
             $stmt->bindParam(':opid', $opid, PDO::PARAM_STR);
             $stmt->execute();
+
+            // Gửi email thông báo
+            if (!empty($global_users_config['admin_email'])) {
+                $url = NV_MY_DOMAIN . nv_url_rewrite(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=editinfo/openid', true);
+                $message = sprintf($lang_module['security_alert_openid_delete'], $openid['openid'], $row['username'], $url);
+                nv_sendmail([
+                    $global_config['site_name'],
+                    $global_config['site_email']
+                ], $row['email'], $lang_module['security_alert'], $message);
+            }
+
             nv_insert_logs(NV_LANG_DATA, $module_name, 'log_delete_one_openid', 'userid ' . $row['userid'], $admin_info['userid']);
             $nv_Cache->delMod($module_name);
             exit('OK');
@@ -98,6 +112,17 @@ if (empty($array_oauth)) {
 
         if ($db->exec('DELETE FROM ' . NV_MOD_TABLE . '_openid WHERE userid=' . $row['userid'])) {
             nv_insert_logs(NV_LANG_DATA, $module_name, 'log_delete_all_openid', 'userid ' . $row['userid'], $admin_info['userid']);
+
+            // Gửi email thông báo
+            if (!empty($global_users_config['admin_email'])) {
+                $url = NV_MY_DOMAIN . nv_url_rewrite(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=editinfo/openid', true);
+                $message = sprintf($lang_module['security_alert_openid_truncate'], $row['username'], $url);
+                nv_sendmail([
+                    $global_config['site_name'],
+                    $global_config['site_email']
+                ], $row['email'], $lang_module['security_alert'], $message);
+            }
+
             $nv_Cache->delMod($module_name);
             exit('OK');
         }
@@ -106,6 +131,7 @@ if (empty($array_oauth)) {
     }
 
     foreach ($array_oauth as $oauth) {
+        $oauth['email_or_id'] = !empty($oauth['email']) ? $oauth['email'] : $oauth['id'];
         $xtpl->assign('OAUTH', $oauth);
         $xtpl->parse('main.oauth');
     }

@@ -237,7 +237,6 @@
                     <td>{LANG.allow_change_email}</td>
                     <td><input name="allowmailchange" value="1" type="checkbox"{DATA.allowmailchange} /></td>
                 </tr>
-
                 <tr>
                     <td>{LANG.openid_servers}</td>
                     <td>
@@ -256,11 +255,9 @@
                 <tr>
                     <td>{LANG.openid_processing}</td>
                     <td>
-                        <select class="form-control" name="openid_processing">
-                            <!-- BEGIN: openid_processing -->
-                            <option value="{OPENID_PROCESSING.id}"{OPENID_PROCESSING.select}> {OPENID_PROCESSING.value}</option>
-                            <!-- END: openid_processing -->
-                        </select>
+                        <!-- BEGIN: openid_processing -->
+                        <input name="openid_processing[]" value="{OPENID_PROCESSING.key}" type="checkbox"{OPENID_PROCESSING.checked} /> {OPENID_PROCESSING.name}<br/>
+                        <!-- END: openid_processing -->
                     </td>
                 </tr>
                 <!-- BEGIN: deny_config -->
@@ -277,6 +274,14 @@
                     <td><textarea name="password_simple" rows="7" cols="70" class="form-control">{DATA.password_simple}</textarea></td>
                 </tr>
                 <!-- END: deny_config -->
+                <tr>
+                    <td>{LANG.user_config_admin_email}</td>
+                    <td>
+                        <label class="mb-0">
+                            <input type="checkbox" value="1" name="admin_email"{DATA.admin_email}/> <small>{LANG.user_config_admin_email1}</small>
+                        </label>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>

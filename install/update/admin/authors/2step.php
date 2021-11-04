@@ -86,6 +86,9 @@ if ($row['admin_id'] == $admin_info['admin_id']) {
     if (!empty($global_config['google_client_id']) and !empty($global_config['google_client_secret'])) {
         $server_allowed['google'] = 1;
     }
+    if (!empty($global_config['zaloOfficialAccountID']) and !empty($global_config['zaloAppID']) and !empty($global_config['zaloAppSecretKey'])) {
+        $server_allowed['zalo'] = 1;
+    }
 
     // Thêm mới tài khoản Oauth
     if (isset($server_allowed[($opt = $nv_Request->get_title('auth', 'get', ''))])) {
@@ -107,15 +110,19 @@ if ($row['admin_id'] == $admin_info['admin_id']) {
             if (empty($error)) {
                 // Thêm mới vào CSDL
                 $sql = 'INSERT INTO ' . NV_AUTHORS_GLOBALTABLE . '_oauth (
-                    admin_id, oauth_server, oauth_uid, oauth_email, addtime
+                    admin_id, oauth_server, oauth_uid, oauth_email, oauth_id, addtime
                 ) VALUES (
                     ' . $row['admin_id'] . ', ' . $db->quote($opt) . ', ' . $db->quote($attribs['full_identity']) . ',
-                    ' . $db->quote($attribs['email']) . ', ' . NV_CURRENTTIME . '
+                    ' . $db->quote($attribs['email']) . ', ' . $db->quote($attribs['identity']) . ', ' . NV_CURRENTTIME . '
                 )';
                 if (!$db->insert_id($sql, 'id')) {
                     $error = $lang_global['admin_oauth_error_savenew'];
                 } else {
-                    nv_insert_logs(NV_LANG_DATA, $module_name, 'LOG_ADD_OAUTH', $opt . ': ' . $attribs['email'], $admin_info['userid']);
+                    $oauthid = !empty($attribs['email']) ? $attribs['email'] : $attribs['identity'];
+                    $message = sprintf($lang_module['2step_oauth_add_mail_content'], $row_user['first_name'], $global_config['site_name'], $oauthid, ucfirst($opt));
+                    $checkSend = nv_sendmail([$global_config['site_name'], $global_config['site_email']], $row_user['email'], $lang_module['2step_oauth_add_mail_subject'], $message);
+
+                    nv_insert_logs(NV_LANG_DATA, $module_name, 'LOG_ADD_OAUTH', $opt . ': ' . $oauthid, $admin_info['userid']);
                     nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op);
                 }
             }
@@ -135,6 +142,10 @@ if ($row['admin_id'] == $admin_info['admin_id']) {
         $xtpl->assign('LINK_GOOGLE', NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=2step&amp;auth=google');
         $xtpl->parse('main.add_google');
     }
+    if (isset($server_allowed['zalo'])) {
+        $xtpl->assign('LINK_ZALO', NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=2step&amp;auth=zalo');
+        $xtpl->parse('main.add_zalo');
+    }
 } elseif ($manager_user_2step and !empty($row_user['active2step'])) {
     // Quản lý 2 bước của tài khoản khác đang bật xác thực
     $xtpl->assign('CODE_MANAGER', NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=users&amp;' . NV_OP_VARIABLE . '=edit_2step&amp;userid=' . $row_user['userid']);
@@ -143,10 +154,13 @@ if ($row['admin_id'] == $admin_info['admin_id']) {
 
 // Danh sách các cổng xác thực
 $array_oauth = [];
+$list_for_mail = [];
 $sql = 'SELECT * FROM ' . NV_AUTHORS_GLOBALTABLE . '_oauth WHERE admin_id=' . $row['admin_id'] . ' ORDER BY addtime DESC';
 $result = $db->query($sql);
 while ($_row = $result->fetch()) {
     $array_oauth[$_row['id']] = $_row;
+    $oauthid = !empty($_row['oauth_email']) ? $_row['oauth_email'] : $_row['oauth_id'];
+    $list_for_mail[] = $oauthid . '(' . ucfirst($_row['oauth_server']) . ')';
 }
 
 // Xóa tất cả
@@ -157,6 +171,10 @@ if ($nv_Request->get_title('delall', 'post', '') === NV_CHECK_SESSION) {
 
     $sql = 'DELETE FROM ' . NV_AUTHORS_GLOBALTABLE . '_oauth WHERE admin_id=' . $row['admin_id'];
     $db->query($sql);
+
+    $list_for_mail = implode(', ', $list_for_mail);
+    $message = sprintf($lang_module['2step_oauth_dels_mail_content'], $row_user['first_name'], $global_config['site_name'], $list_for_mail);
+    $checkSend = nv_sendmail([$global_config['site_name'], $global_config['site_email']], $row_user['email'], $lang_module['2step_oauth_del_mail_subject'], $message);
 
     nv_insert_logs(NV_LANG_DATA, $module_name, 'LOG_TRUNCATE_OAUTH', 'AID ' . $row['admin_id'], $admin_info['userid']);
     nv_htmlOutput('OK');
@@ -176,6 +194,10 @@ if ($nv_Request->get_title('del', 'post', '') === NV_CHECK_SESSION) {
     $sql = 'DELETE FROM ' . NV_AUTHORS_GLOBALTABLE . '_oauth WHERE admin_id=' . $row['admin_id'] . ' AND id=' . $id;
     $db->query($sql);
 
+    $oauthid = !empty($array_oauth[$id]['oauth_email']) ? $array_oauth[$id]['oauth_email'] : $array_oauth[$id]['oauth_id'];
+    $message = sprintf($lang_module['2step_oauth_del_mail_content'], $row_user['first_name'], $global_config['site_name'], $oauthid, ucfirst($array_oauth[$id]['oauth_server']));
+    $checkSend = nv_sendmail([$global_config['site_name'], $global_config['site_email']], $row_user['email'], $lang_module['2step_oauth_del_mail_subject'], $message);
+
     nv_insert_logs(NV_LANG_DATA, $module_name, 'LOG_DELETE_OAUTH', 'AID ' . $row['admin_id'] . ': ' . $array_oauth[$id]['oauth_server'] . '|' . $array_oauth[$id]['oauth_email'], $admin_info['userid']);
     nv_htmlOutput('OK');
 }
@@ -184,6 +206,7 @@ if (empty($array_oauth)) {
     $xtpl->parse('main.oauth_empty');
 } else {
     foreach ($array_oauth as $oauth) {
+        $oauth['email_or_id'] = !empty($oauth['oauth_email']) ? $oauth['oauth_email'] : $oauth['oauth_id'];
         $oauth['addtime'] = nv_date('H:i d/m/Y', $oauth['addtime']);
         $xtpl->assign('OAUTH', $oauth);
         $xtpl->parse('main.oauth_data.oauth');

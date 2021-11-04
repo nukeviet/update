@@ -24,7 +24,7 @@ $nv_update_config['packageID'] = 'NVUD4501';
 $nv_update_config['formodule'] = '';
 
 // Thong tin phien ban, tac gia, ho tro
-$nv_update_config['release_date'] = 1635498000;
+$nv_update_config['release_date'] = 1636189200;
 $nv_update_config['author'] = 'VINADES.,JSC <contact@vinades.vn>';
 $nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.5.01';
 $nv_update_config['to_version'] = '4.5.01';
@@ -53,6 +53,7 @@ $nv_update_config['lang']['vi']['nv_up_modpage4500'] = 'Cập nhật module Page
 $nv_update_config['lang']['vi']['nv_up_modusers4500'] = 'Cập nhật module Users lên 4.5.00';
 $nv_update_config['lang']['vi']['nv_up_modvoting4500'] = 'Cập nhật module Voting lên 4.5.00';
 $nv_update_config['lang']['vi']['nv_up_sys4500'] = 'Cập nhật hệ thống lên 4.5.00';
+$nv_update_config['lang']['vi']['nv_up_modusers4501'] = 'Cập nhật module Users lên 4.5.01';
 $nv_update_config['lang']['vi']['nv_up_sys4501'] = 'Cập nhật hệ thống lên 4.5.01';
 $nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản 4.5.01';
 
@@ -66,6 +67,7 @@ $nv_update_config['lang']['en']['nv_up_modpage4500'] = 'Update module Page lên 
 $nv_update_config['lang']['en']['nv_up_modusers4500'] = 'Update module Users to 4.5.00';
 $nv_update_config['lang']['en']['nv_up_modvoting4500'] = 'Update module Voting to 4.5.00';
 $nv_update_config['lang']['en']['nv_up_sys4500'] = 'Update system to 4.5.00';
+$nv_update_config['lang']['en']['nv_up_modusers4501'] = 'Update module Users to 4.5.01';
 $nv_update_config['lang']['en']['nv_up_sys4501'] = 'Update system to 4.5.01';
 $nv_update_config['lang']['en']['nv_up_finish'] = 'Update to new version 4.5.01';
 
@@ -124,6 +126,12 @@ $nv_update_config['tasklist'][] = [
     'rq' => 2,
     'l' => 'nv_up_sys4500',
     'f' => 'nv_up_sys4500'
+];
+$nv_update_config['tasklist'][] = [
+    'r' => '4.5.01',
+    'rq' => 2,
+    'l' => 'nv_up_modusers4501',
+    'f' => 'nv_up_modusers4501'
 ];
 $nv_update_config['tasklist'][] = [
     'r' => '4.5.01',
@@ -762,6 +770,58 @@ function nv_up_sys4500()
     return $return;
 }
 
+/**
+ *
+ * @return number[]|string[]
+ */
+function nv_up_modusers4501()
+{
+    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config;
+
+    // Lấy tất cả ngôn ngữ đã cài đặt
+    $sql = 'SELECT lang FROM ' . $db_config['prefix'] . '_setup_language WHERE setup=1 ORDER BY weight ASC';
+    $array_sitelangs = $db->query($sql)->fetchAll(PDO::FETCH_COLUMN);
+
+    $return = [
+        'status' => 1,
+        'complete' => 1,
+        'next' => 1,
+        'link' => 'NO',
+        'lang' => 'NO',
+        'message' => ''
+    ];
+
+    // Duyệt tất cả các ngôn ngữ đa
+    $_module_users = [];
+    foreach ($array_sitelangs as $lang) {
+        // Lấy tất cả các module và module ảo của nó
+        $mquery = $db->query('SELECT title, module_data FROM ' . $db_config['prefix'] . '_' . $lang . "_modules WHERE module_file='users'");
+        while (list ($mod, $mod_data) = $mquery->fetch(3)) {
+            if (!in_array($mod_data, $_module_users)) {
+                // mỗi module ảo chỉ chạy 1 lần
+                $_module_users[] = $mod_data;
+
+                try {
+                    $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $mod_data . "_openid DROP PRIMARY KEY,
+                    CHANGE COLUMN openid openid CHAR(50) NOT NULL DEFAULT '' AFTER userid,
+                    ADD COLUMN id CHAR(50) NOT NULL DEFAULT '' AFTER opid,
+                    ADD UNIQUE INDEX opid (openid, opid);");
+                } catch (PDOException $e) {
+                    trigger_error(print_r($e, true));
+                }
+
+                // Thêm cấu hình
+                try {
+                    $db->query("INSERT INTO " . $db_config['prefix'] . "_" . $mod_data . "_config (config, content, edit_time) VALUES ('admin_email', '0', '0');");
+                } catch (PDOException $e) {
+                    trigger_error(print_r($e, true));
+                }
+            }
+        }
+    }
+
+    return $return;
+}
 
 /**
  *
@@ -831,6 +891,55 @@ function nv_up_sys4501()
         trigger_error(print_r($e, true));
     }
 
+    // Thêm Zalo
+    try {
+        $sql = "SELECT COUNT(mid) FROM " . $db_config['prefix'] . "_authors_module";
+        $weight = intval($db->query($sql)->fetchColumn()) + 1;
+
+        $db->query("INSERT INTO " . $db_config['prefix'] . "_authors_module (module, lang_key, weight, act_1, act_2, act_3) VALUES ('zalo', 'mod_zalo', " . $weight . ", 1, 1, 0);");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+    try {
+        $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'site', 'zaloAppID', '');");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+    try {
+        $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'site', 'zaloAppSecretKey', '');");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+    try {
+        $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'site', 'zaloOAAccessToken', '');");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+    try {
+        $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'site', 'zaloOARefreshToken', '');");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+    try {
+        $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'site', 'zaloOAAccessTokenTime', '0');");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+
+    // Thêm field bảng oauth của admin
+    try {
+        $db->query("ALTER TABLE " . $db_config['prefix'] . "_authors_oauth ADD COLUMN oauth_id VARCHAR(50) NOT NULL DEFAULT '' AFTER oauth_email;");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+
+    // Thêm field bảng oauth của admin
+    try {
+        $db->query("UPDATE " . NV_CONFIG_GLOBALTABLE . " SET config_value='connect,create,auto' WHERE lang='sys' AND module='site' AND config_name='openid_processing';");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+
     return $return;
 }
 
@@ -861,6 +970,7 @@ function nv_up_finish()
     nv_deletefile(NV_ROOTDIR . '/themes/admin_default/modules/modules/change_site_title_theme.tpl');
     nv_deletefile(NV_ROOTDIR . '/themes/default/blocks/global.QR_code.ini');
     nv_deletefile(NV_ROOTDIR . '/themes/mobile_default/blocks/global.QR_code.ini');
+    nv_deletefile(NV_ROOTDIR . '/themes/mobile_default/modules/users/openid_administrator.tpl');
     nv_deletefile(NV_ROOTDIR . '/vendor/endroid', true);
     nv_deletefile(NV_ROOTDIR . '/vendor/symfony/options-resolver', true);
     nv_deletefile(NV_ROOTDIR . '/assets/fonts/fontawesome-webfont.eot');

@@ -79,12 +79,14 @@ if (preg_match('/^([a-z0-9\-\_]+)$/', $oauth_config, $m) and file_exists(NV_ROOT
         $array_config['allowuserreg'] = $nv_Request->get_int('allowuserreg', 'post', 0);
         $array_config['openid_servers'] = $nv_Request->get_typed_array('openid_servers', 'post', 'string');
         $array_config['openid_servers'] = !empty($array_config['openid_servers']) ? implode(',', $array_config['openid_servers']) : '';
-        $array_config['openid_processing'] = $nv_Request->get_int('openid_processing', 'post', 0);
         $array_config['user_check_pass_time'] = 60 * $nv_Request->get_int('user_check_pass_time', 'post');
         $array_config['auto_login_after_reg'] = $nv_Request->get_int('auto_login_after_reg', 'post', 0);
 
         $array_config['whoviewuser'] = $nv_Request->get_typed_array('whoviewuser', 'post', 'int', []);
         $array_config['whoviewuser'] = !empty($array_config['whoviewuser']) ? implode(',', nv_groups_post(array_intersect($array_config['whoviewuser'], array_keys($groups_list)))) : '';
+
+        $array_config['openid_processing'] = $nv_Request->get_typed_array('openid_processing', 'post', 'string', []);
+        $array_config['openid_processing'] = !empty($array_config['openid_processing']) ? implode(',', $array_config['openid_processing']) : '';
 
         if ($array_config['user_check_pass_time'] < 120) {
             $array_config['user_check_pass_time'] = 120;
@@ -106,6 +108,12 @@ if (preg_match('/^([a-z0-9\-\_]+)$/', $oauth_config, $m) and file_exists(NV_ROOT
         $array_config['auto_assign_oauthuser'] = (int) $nv_Request->get_bool('auto_assign_oauthuser', 'post', false);
         $stmt = $db->prepare('UPDATE ' . NV_MOD_TABLE . '_config SET content= :content, edit_time=' . NV_CURRENTTIME . " WHERE config='auto_assign_oauthuser'");
         $stmt->bindParam(':content', $array_config['auto_assign_oauthuser'], PDO::PARAM_STR);
+        $stmt->execute();
+
+        // Gửi email cho người dùng khi admin thao tác tới tài khoản
+        $array_config['admin_email'] = (int) $nv_Request->get_bool('admin_email', 'post', false);
+        $stmt = $db->prepare('UPDATE ' . NV_MOD_TABLE . '_config SET content= :content, edit_time=' . NV_CURRENTTIME . " WHERE config='admin_email'");
+        $stmt->bindParam(':content', $array_config['admin_email'], PDO::PARAM_STR);
         $stmt->execute();
 
         if (defined('NV_IS_GODADMIN') and empty($global_config['idsite'])) {
@@ -205,12 +213,13 @@ if (preg_match('/^([a-z0-9\-\_]+)$/', $oauth_config, $m) and file_exists(NV_ROOT
     $array_config['allowuserloginmulti'] = !empty($array_config['allowuserloginmulti']) ? ' checked="checked"' : '';
     $array_config['is_user_forum'] = !empty($array_config['is_user_forum']) ? ' checked="checked"' : '';
     $array_config['auto_login_after_reg'] = !empty($array_config['auto_login_after_reg']) ? ' checked="checked"' : '';
+    $array_config['openid_processing'] = !empty($array_config['openid_processing']) ? array_map('trim', explode(',', $array_config['openid_processing'])) : [];
 
     $sql = 'SELECT config, content FROM ' . NV_MOD_TABLE . "_config WHERE
         config='deny_email' OR config='deny_name' OR config='password_simple' OR
         config='avatar_width' OR config='avatar_height' OR config='active_group_newusers' OR
         config='active_editinfo_censor' OR config='active_user_logs' OR config='min_old_user' OR
-        config='auto_assign_oauthuser'
+        config='auto_assign_oauthuser' OR config='admin_email'
     ";
     $result = $db->query($sql);
     while (list($config, $content) = $result->fetch(3)) {
@@ -223,6 +232,7 @@ if (preg_match('/^([a-z0-9\-\_]+)$/', $oauth_config, $m) and file_exists(NV_ROOT
     $array_config['active_editinfo_censor'] = !empty($array_config['active_editinfo_censor']) ? ' checked="checked"' : '';
     $array_config['active_user_logs'] = !empty($array_config['active_user_logs']) ? ' checked="checked"' : '';
     $array_config['auto_assign_oauthuser'] = !empty($array_config['auto_assign_oauthuser']) ? ' checked="checked"' : '';
+    $array_config['admin_email'] = !empty($array_config['admin_email']) ? ' checked="checked"' : '';
 
     $array_name_show = [
         0 => $lang_module['lastname_firstname'],
@@ -236,9 +246,9 @@ if (preg_match('/^([a-z0-9\-\_]+)$/', $oauth_config, $m) and file_exists(NV_ROOT
         3 => $lang_module['active_admin_check']
     ];
     $array_openid_processing = [
-        0 => $lang_module['openid_processing_0'],
-        3 => $lang_module['openid_processing_3'],
-        4 => $lang_module['openid_processing_4']
+        'connect' => $lang_module['openid_processing_connect'],
+        'create' => $lang_module['openid_processing_create'],
+        'auto' => $lang_module['openid_processing_auto']
     ];
 
     $ignorefolders = [
@@ -375,14 +385,13 @@ if (preg_match('/^([a-z0-9\-\_]+)$/', $oauth_config, $m) and file_exists(NV_ROOT
         $xtpl->parse('main.whoviewlistuser');
     }
 
-    foreach ($array_openid_processing as $id => $titleregister) {
-        $select = ($array_config['openid_processing'] == $id) ? ' selected="selected"' : '';
-        $array = [
-            'id' => $id,
-            'select' => $select,
-            'value' => $titleregister
-        ];
-        $xtpl->assign('OPENID_PROCESSING', $array);
+    foreach ($array_openid_processing as $key => $name) {
+        $checked = (!empty($array_config['openid_processing']) and in_array((string) $key, $array_config['openid_processing'], true)) ? ' checked="checked"' : '';
+        $xtpl->assign('OPENID_PROCESSING', [
+            'key' => $key,
+            'checked' => $checked,
+            'name' => $name
+        ]);
         $xtpl->parse('main.openid_processing');
     }
 
@@ -400,19 +409,25 @@ if (preg_match('/^([a-z0-9\-\_]+)$/', $oauth_config, $m) and file_exists(NV_ROOT
                 $disabled = ' disabled="disabled" ';
             } elseif ($server == 'oauth-google.php' and (empty($global_config['google_client_id']) or empty($global_config['google_client_secret']))) {
                 $disabled = ' disabled="disabled" ';
+            } elseif ($server == 'oauth-zalo.php' and (empty($global_config['zaloOfficialAccountID']) or empty($global_config['zaloAppID']) or empty($global_config['zaloAppSecretKey']))) {
+                $disabled = ' disabled="disabled" ';
             }
 
+            $link_config = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $op . '&amp;oauth_config=' . $m[2];
+            if ($server == 'oauth-zalo.php') {
+                $link_config = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=zalo&amp;' . NV_OP_VARIABLE . '=settings';
+            }
             $openid_assign = [
                 'name' => $m[2],
                 'title' => $m[1] . ' ' . $m[2],
                 'checked' => $checked,
                 'disabled' => $disabled,
-                'link_config' => NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $op . '&amp;oauth_config=' . $m[2],
+                'link_config' => $link_config,
                 'note' => sprintf($lang_module['oauth_config'], $m[1] . ' ' . $m[2])
             ];
 
             $xtpl->assign('OPENID', $openid_assign);
-            if (file_exists(NV_ROOTDIR . '/modules/users/admin/config_' . $m[2] . '.php')) {
+            if ($server == 'oauth-zalo.php' or file_exists(NV_ROOTDIR . '/modules/users/admin/config_' . $m[2] . '.php')) {
                 $xtpl->parse('main.openid_servers.config');
             } else {
                 $xtpl->parse('main.openid_servers.noconfig');

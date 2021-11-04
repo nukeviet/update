@@ -237,10 +237,11 @@ $sql_create_module[] = 'CREATE TABLE IF NOT EXISTS ' . $db_config['prefix'] . '_
 
 $sql_create_module[] = 'CREATE TABLE IF NOT EXISTS ' . $db_config['prefix'] . '_' . $module_data . "_openid (
     userid mediumint(8) unsigned NOT NULL DEFAULT '0',
-    openid varchar(255) NOT NULL DEFAULT '',
-    opid varchar(50) NOT NULL DEFAULT '',
+    openid char(50) NOT NULL DEFAULT '',
+    opid char(50) NOT NULL DEFAULT '',
+    id char(50) NOT NULL DEFAULT '',
     email varchar(100) NOT NULL DEFAULT '',
-    PRIMARY KEY (opid),
+    UNIQUE KEY opid (openid, opid),
     KEY userid (userid),
     KEY email (email)
 ) ENGINE=MyISAM";
@@ -294,6 +295,7 @@ $sql_create_module[] = 'INSERT IGNORE INTO ' . $db_config['prefix'] . '_' . $mod
 $sql_create_module[] = 'INSERT IGNORE INTO ' . $db_config['prefix'] . '_' . $module_data . "_config (config, content, edit_time) VALUES ('min_old_user', '16', " . NV_CURRENTTIME . ')';
 $sql_create_module[] = 'INSERT IGNORE INTO ' . $db_config['prefix'] . '_' . $module_data . "_config (config, content, edit_time) VALUES ('register_active_time', '86400', " . NV_CURRENTTIME . ')';
 $sql_create_module[] = 'INSERT IGNORE INTO ' . $db_config['prefix'] . '_' . $module_data . "_config (config, content, edit_time) VALUES ('auto_assign_oauthuser', '0', " . NV_CURRENTTIME . ')';
+$sql_create_module[] = 'INSERT IGNORE INTO ' . $db_config['prefix'] . '_' . $module_data . "_config (config, content, edit_time) VALUES ('admin_email', '0', " . NV_CURRENTTIME . ')';
 
 $sql_create_module[] = 'INSERT IGNORE INTO ' . $db_config['prefix'] . '_' . $module_data . "_field (field, weight, field_type, field_choices, sql_choices, match_type, match_regex, func_callback, min_length, max_length, required, show_register, user_editable, show_profile, class, language, default_value, is_system) VALUES ('first_name', 1, 'textbox', '', '', 'none', '', '', 0, 100, 1, 1, 1, 1, 'input', '', '', 1)";
 $sql_create_module[] = 'INSERT IGNORE INTO ' . $db_config['prefix'] . '_' . $module_data . "_field (field, weight, field_type, field_choices, sql_choices, match_type, match_regex, func_callback, min_length, max_length, required, show_register, user_editable, show_profile, class, language, default_value, is_system) VALUES ('last_name', 2, 'textbox', '', '', 'none', '', '', 0, 100, 0, 1, 1, 1, 'input', '', '', 1)";
