@@ -896,7 +896,7 @@ function nv_up_sys4501()
         $sql = "SELECT COUNT(mid) FROM " . $db_config['prefix'] . "_authors_module";
         $weight = intval($db->query($sql)->fetchColumn()) + 1;
 
-        $db->query("INSERT INTO " . $db_config['prefix'] . "_authors_module (module, lang_key, weight, act_1, act_2, act_3) VALUES ('zalo', 'mod_zalo', " . $weight . ", 1, 1, 0);");
+        $db->query("INSERT INTO " . $db_config['prefix'] . "_authors_module (module, lang_key, weight, act_1, act_2, act_3) VALUES ('zalo', 'mod_zalo', " . $weight . ", 1, 0, 0);");
     } catch (PDOException $e) {
         trigger_error(print_r($e, true));
     }
