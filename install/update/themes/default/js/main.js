@@ -69,9 +69,11 @@ function timeoutsessrun() {
     }, 1E3);
 }
 
+// locationReplace
 function locationReplace(url) {
-    if (history.pushState) {
-        history.pushState(null, null, url);
+    var uri = window.location.href.substr(window.location.protocol.length + window.location.hostname.length + 2);
+    if (url != uri && history.pushState) {
+        history.pushState(null, null, url)
     }
 }
 
@@ -240,8 +242,7 @@ function ftipShow(a, b, callback) {
 };
 
 function openID_load(a) {
-    var s = $(this).attr("src");
-    nv_open_browse(a, "NVOPID", 550, 500, "resizable=no,scrollbars=1,toolbar=no,location=no,titlebar=no,menubar=0,location=no,status=no");
+    nv_open_browse($(a).attr("href"), "NVOPID", 550, 500, "resizable=no,scrollbars=1,toolbar=no,location=no,titlebar=no,menubar=0,location=no,status=no");
     return !1;
 }
 

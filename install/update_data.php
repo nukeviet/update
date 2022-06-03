@@ -7,6 +7,7 @@
  * @License GNU/GPL version 2 or any later version
  * @Createdate Sat, 07 Mar 2015 03:43:56 GMT
  */
+
 if (!defined('NV_IS_UPDATE')) {
     die('Stop!!!');
 }
@@ -17,22 +18,23 @@ $nv_update_config = [];
 $nv_update_config['type'] = 1;
 
 // ID goi cap nhat
-$nv_update_config['packageID'] = 'NVUD4404';
+$nv_update_config['packageID'] = 'NVUD4405';
 
 // Cap nhat cho module nao, de trong neu la cap nhat NukeViet, ten thu muc module neu la cap nhat module
 $nv_update_config['formodule'] = '';
 
 // Thong tin phien ban, tac gia, ho tro
-$nv_update_config['release_date'] = 1636189200;
+$nv_update_config['release_date'] = 1654938000;
 $nv_update_config['author'] = 'VINADES.,JSC <contact@vinades.vn>';
-$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.4.04';
-$nv_update_config['to_version'] = '4.4.04';
+$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.4.05';
+$nv_update_config['to_version'] = '4.4.05';
 $nv_update_config['allow_old_version'] = [
     '4.4.00',
     '4.4.01',
     '4.4.02',
     '4.4.03',
-    '4.4.04'
+    '4.4.04',
+    '4.4.05'
 ];
 
 // 0:Nang cap bang tay, 1:Nang cap tu dong, 2:Nang cap nua tu dong
@@ -47,6 +49,7 @@ $nv_update_config['lang']['vi']['nv_up_modusers4401'] = 'Cập nhật module use
 $nv_update_config['lang']['vi']['nv_up_sys4401'] = 'Cập nhật hệ thống lên 4.4.01';
 $nv_update_config['lang']['vi']['nv_up_sys4403'] = 'Cập nhật hệ thống lên 4.4.03';
 $nv_update_config['lang']['vi']['nv_up_sys4404'] = 'Cập nhật hệ thống lên 4.4.04';
+$nv_update_config['lang']['vi']['nv_up_sys4405'] = 'Cập nhật hệ thống lên 4.4.05';
 
 $nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản 4.4.04';
 
@@ -55,6 +58,7 @@ $nv_update_config['lang']['en']['nv_up_modusers4401'] = 'Update module users to 
 $nv_update_config['lang']['en']['nv_up_sys4401'] = 'Update system to 4.4.01';
 $nv_update_config['lang']['en']['nv_up_sys4403'] = 'Update system to 4.4.03';
 $nv_update_config['lang']['en']['nv_up_sys4404'] = 'Update system to 4.4.04';
+$nv_update_config['lang']['en']['nv_up_sys4405'] = 'Update system to 4.4.05';
 
 $nv_update_config['lang']['en']['nv_up_finish'] = 'Update to new version 4.4.04';
 
@@ -82,6 +86,12 @@ $nv_update_config['tasklist'][] = [
     'rq' => 2,
     'l' => 'nv_up_sys4404',
     'f' => 'nv_up_sys4404'
+];
+$nv_update_config['tasklist'][] = [
+    'r' => '4.4.05',
+    'rq' => 2,
+    'l' => 'nv_up_sys4405',
+    'f' => 'nv_up_sys4405'
 ];
 $nv_update_config['tasklist'][] = [
     'r' => $nv_update_config['to_version'],
@@ -506,6 +516,77 @@ function nv_up_sys4404()
             trigger_error(print_r($e, true));
         }
     }
+
+    return $return;
+}
+
+/**
+ *
+ * @return number[]|string[]
+ */
+function nv_up_sys4405()
+{
+    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config;
+
+    $return = [
+        'status' => 1,
+        'complete' => 1,
+        'next' => 1,
+        'link' => 'NO',
+        'lang' => 'NO',
+        'message' => ''
+    ];
+
+    $sql = 'SELECT lang FROM ' . $db_config['prefix'] . '_setup_language WHERE setup=1 ORDER BY weight ASC';
+    $array_sitelangs = $db->query($sql)->fetchAll(PDO::FETCH_COLUMN);
+
+    // Phương thức xác thực API
+    try {
+        $db->query("ALTER TABLE " . NV_AUTHORS_GLOBALTABLE . "_api_credential ADD auth_method ENUM('none','password_verify') NOT NULL DEFAULT 'password_verify' COMMENT 'Phương thức xác thực' AFTER credential_ips;");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+
+    // Fix Lỗi không thể tạo tài khoản tường lửa
+    try {
+        $db->query("ALTER TABLE " . NV_AUTHORS_GLOBALTABLE . "_config CHANGE COLUMN mask mask TINYINT(4) NOT NULL DEFAULT '0' AFTER keyname;");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+
+    // Thêm thiết lập an ninh: Lọc các mã HTML nguy hiểm
+    try {
+        $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'global', 'XSSsanitize', '1');");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+    try {
+        $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'global', 'admin_XSSsanitize', '1');");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+
+    // Mở rộng trường admins bảng module
+    foreach ($array_sitelangs as $lang) {
+        try {
+            $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_modules CHANGE admins admins VARCHAR(4000) NOT NULL DEFAULT '';");
+        } catch (PDOException $e) {
+            trigger_error(print_r($e, true));
+        }
+    }
+
+    // Mở rộng trường lưu kích thước file upload
+    try {
+        $db->query("ALTER TABLE " . $db_config['prefix'] . "_upload_file CHANGE filesize filesize DOUBLE NOT NULL DEFAULT '0';");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+
+    nv_deletefile(NV_ROOTDIR . '/' . NV_ASSETS_DIR . '/js/chart/Chart.bundle.min.js');
+    nv_deletefile(NV_ROOTDIR . '/' . NV_ASSETS_DIR . '/editors/ckeditor/plugins/flash', true);
+    nv_deletefile(NV_ROOTDIR . '/themes/mobile_default/modules/users/openid_administrator.tpl');
+    nv_deletefile(NV_ROOTDIR . '/vendor/endroid/qrcode', true);
+    nv_deletefile(NV_ROOTDIR . '/vendor/pclzip', true);
 
     return $return;
 }
