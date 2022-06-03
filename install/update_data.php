@@ -51,7 +51,7 @@ $nv_update_config['lang']['vi']['nv_up_sys4403'] = 'Cập nhật hệ thống l�
 $nv_update_config['lang']['vi']['nv_up_sys4404'] = 'Cập nhật hệ thống lên 4.4.04';
 $nv_update_config['lang']['vi']['nv_up_sys4405'] = 'Cập nhật hệ thống lên 4.4.05';
 
-$nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản 4.4.04';
+$nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản 4.4.05';
 
 // English
 $nv_update_config['lang']['en']['nv_up_modusers4401'] = 'Update module users to 4.4.01';
@@ -60,7 +60,7 @@ $nv_update_config['lang']['en']['nv_up_sys4403'] = 'Update system to 4.4.03';
 $nv_update_config['lang']['en']['nv_up_sys4404'] = 'Update system to 4.4.04';
 $nv_update_config['lang']['en']['nv_up_sys4405'] = 'Update system to 4.4.05';
 
-$nv_update_config['lang']['en']['nv_up_finish'] = 'Update to new version 4.4.04';
+$nv_update_config['lang']['en']['nv_up_finish'] = 'Update to new version 4.4.05';
 
 $nv_update_config['tasklist'] = [];
 $nv_update_config['tasklist'][] = [
