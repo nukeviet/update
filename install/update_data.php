@@ -18,22 +18,23 @@ $nv_update_config = [];
 $nv_update_config['type'] = 1;
 
 // ID goi cap nhat
-$nv_update_config['packageID'] = 'NVUD4501';
+$nv_update_config['packageID'] = 'NVUD4502';
 
 // Cap nhat cho module nao, de trong neu la cap nhat NukeViet, ten thu muc module neu la cap nhat module
 $nv_update_config['formodule'] = '';
 
 // Thong tin phien ban, tac gia, ho tro
-$nv_update_config['release_date'] = 1636189200;
+$nv_update_config['release_date'] = 1655715600;
 $nv_update_config['author'] = 'VINADES.,JSC <contact@vinades.vn>';
-$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.5.01';
-$nv_update_config['to_version'] = '4.5.01';
+$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.5.02';
+$nv_update_config['to_version'] = '4.5.02';
 $nv_update_config['allow_old_version'] = [
     '4.4.02',
     '4.4.03',
     '4.4.04',
     '4.5.00',
-    '4.5.01'
+    '4.5.01',
+    '4.5.02'
 ];
 
 // 0:Nang cap bang tay, 1:Nang cap tu dong, 2:Nang cap nua tu dong
@@ -55,7 +56,10 @@ $nv_update_config['lang']['vi']['nv_up_modvoting4500'] = 'Cập nhật module Vo
 $nv_update_config['lang']['vi']['nv_up_sys4500'] = 'Cập nhật hệ thống lên 4.5.00';
 $nv_update_config['lang']['vi']['nv_up_modusers4501'] = 'Cập nhật module Users lên 4.5.01';
 $nv_update_config['lang']['vi']['nv_up_sys4501'] = 'Cập nhật hệ thống lên 4.5.01';
-$nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản 4.5.01';
+$nv_update_config['lang']['vi']['nv_up_modnews4502'] = 'Cập nhật module News lên 4.5.02';
+$nv_update_config['lang']['vi']['nv_up_sys4502'] = 'Cập nhật hệ thống lên 4.5.02';
+
+$nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản 4.5.02';
 
 // English
 $nv_update_config['lang']['en']['nv_up_sys4403'] = 'Update system to 4.4.03';
@@ -69,7 +73,10 @@ $nv_update_config['lang']['en']['nv_up_modvoting4500'] = 'Update module Voting t
 $nv_update_config['lang']['en']['nv_up_sys4500'] = 'Update system to 4.5.00';
 $nv_update_config['lang']['en']['nv_up_modusers4501'] = 'Update module Users to 4.5.01';
 $nv_update_config['lang']['en']['nv_up_sys4501'] = 'Update system to 4.5.01';
-$nv_update_config['lang']['en']['nv_up_finish'] = 'Update to new version 4.5.01';
+$nv_update_config['lang']['en']['nv_up_modnews4502'] = 'Update module News lên 4.5.02';
+$nv_update_config['lang']['en']['nv_up_sys4501'] = 'Update system to 4.5.02';
+
+$nv_update_config['lang']['en']['nv_up_finish'] = 'Update to new version 4.5.02';
 
 $nv_update_config['tasklist'] = [];
 
@@ -139,6 +146,19 @@ $nv_update_config['tasklist'][] = [
     'l' => 'nv_up_sys4501',
     'f' => 'nv_up_sys4501'
 ];
+$nv_update_config['tasklist'][] = [
+    'r' => '4.5.02',
+    'rq' => 2,
+    'l' => 'nv_up_modnews4502',
+    'f' => 'nv_up_modnews4502'
+];
+$nv_update_config['tasklist'][] = [
+    'r' => '4.5.02',
+    'rq' => 2,
+    'l' => 'nv_up_sys4502',
+    'f' => 'nv_up_sys4502'
+];
+
 $nv_update_config['tasklist'][] = [
     'r' => $nv_update_config['to_version'],
     'rq' => 2,
@@ -936,6 +956,169 @@ function nv_up_sys4501()
     // Thêm field bảng oauth của admin
     try {
         $db->query("UPDATE " . NV_CONFIG_GLOBALTABLE . " SET config_value='connect,create,auto' WHERE lang='sys' AND module='site' AND config_name='openid_processing';");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+
+    return $return;
+}
+
+/**
+ * nv_up_modnews4502()
+ *
+ * @return
+ *
+ */
+function nv_up_modnews4502()
+{
+    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config;
+    $return = [
+        'status' => 1,
+        'complete' => 1,
+        'next' => 1,
+        'link' => 'NO',
+        'lang' => 'NO',
+        'message' => ''
+    ];
+    // Duyệt tất cả các ngôn ngữ
+    foreach ($global_config['allow_sitelangs'] as $lang) {
+        // Lấy tất cả các module và module ảo của nó
+        $mquery = $db->query('SELECT title, module_data FROM ' . $db_config['prefix'] . '_' . $lang . "_modules WHERE module_file = 'news'");
+        while (list ($mod, $mod_data) = $mquery->fetch(3)) {
+            // Chức năng lịch sử bài viết trong quản trị cho module news
+            try {
+                $db->query('INSERT INTO ' . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', '" . $mod . "', 'active_history', '0');");
+            } catch (PDOException $e) {
+                trigger_error(print_r($e, true));
+            }
+            try {
+                $db->query("CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . "_row_histories (
+                  id int(11) unsigned NOT NULL AUTO_INCREMENT,
+                  new_id int(11) unsigned NOT NULL DEFAULT '0',
+                  historytime int(11) unsigned NOT NULL DEFAULT '0',
+                  catid smallint(5) unsigned NOT NULL DEFAULT '0',
+                  listcatid varchar(255) NOT NULL DEFAULT '',
+                  topicid smallint(5) unsigned NOT NULL DEFAULT '0',
+                  admin_id mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT 'ID người đăng',
+                  author varchar(250) NOT NULL DEFAULT '',
+                  sourceid mediumint(8) unsigned NOT NULL DEFAULT '0',
+                  publtime int(11) unsigned NOT NULL DEFAULT '0',
+                  exptime int(11) unsigned NOT NULL DEFAULT '0',
+                  archive tinyint(1) unsigned NOT NULL DEFAULT '0',
+                  title varchar(250) NOT NULL DEFAULT '',
+                  alias varchar(250) NOT NULL DEFAULT '',
+                  hometext text NOT NULL,
+                  homeimgfile varchar(255) DEFAULT '',
+                  homeimgalt varchar(255) DEFAULT '',
+                  inhome tinyint(1) unsigned NOT NULL DEFAULT '0',
+                  allowed_comm varchar(255) DEFAULT '',
+                  allowed_rating tinyint(1) unsigned NOT NULL DEFAULT '0',
+                  external_link tinyint(1) unsigned NOT NULL DEFAULT '0',
+                  instant_active tinyint(1) NOT NULL DEFAULT '0',
+                  instant_template varchar(100) NOT NULL DEFAULT '',
+                  instant_creatauto tinyint(1) NOT NULL DEFAULT '0',
+                  titlesite varchar(255) NOT NULL DEFAULT '',
+                  description text NOT NULL,
+                  bodyhtml longtext NOT NULL,
+                  keywords varchar(255) default '',
+                  sourcetext varchar(255) default '',
+                  files TEXT NULL DEFAULT NULL,
+                  tags TEXT NULL DEFAULT NULL,
+                  internal_authors VARCHAR(255) NOT NULL DEFAULT '',
+                  imgposition tinyint(1) NOT NULL default '1',
+                  layout_func varchar(100) DEFAULT '',
+                  copyright tinyint(1) NOT NULL default '0',
+                  allowed_send tinyint(1) NOT NULL default '0',
+                  allowed_print tinyint(1) NOT NULL default '0',
+                  allowed_save tinyint(1) NOT NULL default '0',
+                  changed_fields text NOT NULL COMMENT 'Các field thay đổi',
+                  PRIMARY KEY (id),
+                  KEY new_id (new_id),
+                  KEY historytime (historytime),
+                  KEY admin_id (admin_id)
+                ) ENGINE=MyISAM COMMENT 'Lịch sử bài viết';");
+            } catch (PDOException $e) {
+                trigger_error(print_r($e, true));
+            }
+
+            // Bổ sung dữ liệu bảng log module news để thống kê
+            try {
+                $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . "_logs ADD log_key varchar(60) NOT NULL DEFAULT '' COMMENT 'Khóa loại log, tùy vào lập trình' AFTER userid, ADD INDEX log_key (log_key);");
+            } catch (PDOException $e) {
+                trigger_error(print_r($e, true));
+            }
+            try {
+                $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . "_logs ADD INDEX status (status);");
+            } catch (PDOException $e) {
+                trigger_error(print_r($e, true));
+            }
+            try {
+                $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . "_logs CHANGE note note varchar(255) NOT NULL DEFAULT '';");
+            } catch (PDOException $e) {
+                trigger_error(print_r($e, true));
+            }
+        }
+    }
+    return $return;
+}
+
+/**
+ *
+ * @return number[]|string[]
+ */
+function nv_up_sys4502()
+{
+    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config;
+
+    $return = [
+        'status' => 1,
+        'complete' => 1,
+        'next' => 1,
+        'link' => 'NO',
+        'lang' => 'NO',
+        'message' => ''
+    ];
+
+    // Phương thức xác thực API
+    try {
+        $db->query("ALTER TABLE " . NV_AUTHORS_GLOBALTABLE . "_api_credential ADD auth_method ENUM('none','password_verify') NOT NULL DEFAULT 'password_verify' COMMENT 'Phương thức xác thực' AFTER credential_ips;");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+
+    // Fix Lỗi không thể tạo tài khoản tường lửa
+    try {
+        $db->query("ALTER TABLE " . NV_AUTHORS_GLOBALTABLE . "_config CHANGE COLUMN mask mask TINYINT(4) NOT NULL DEFAULT '0' AFTER keyname;");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+
+    // Thêm thiết lập an ninh: Lọc các mã HTML nguy hiểm
+    try {
+        $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'global', 'XSSsanitize', '1');");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+    try {
+        $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'global', 'admin_XSSsanitize', '1');");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+
+    // Mở rộng trường admins bảng module
+    $sql = 'SELECT lang FROM ' . $db_config['prefix'] . '_setup_language WHERE setup=1 ORDER BY weight ASC';
+    $array_sitelangs = $db->query($sql)->fetchAll(PDO::FETCH_COLUMN);
+    foreach ($array_sitelangs as $lang) {
+        try {
+            $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_modules CHANGE admins admins VARCHAR(4000) NOT NULL DEFAULT '';");
+        } catch (PDOException $e) {
+            trigger_error(print_r($e, true));
+        }
+    }
+
+    // Mở rộng trường lưu kích thước file upload
+    try {
+        $db->query("ALTER TABLE " . NV_UPLOAD_GLOBALTABLE . "_file CHANGE filesize filesize DOUBLE NOT NULL DEFAULT '0';");
     } catch (PDOException $e) {
         trigger_error(print_r($e, true));
     }
