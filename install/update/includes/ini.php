@@ -17,12 +17,15 @@ if (headers_sent() or connection_status() != 0 or connection_aborted()) {
     trigger_error('Warning: Headers already sent', E_USER_WARNING);
 }
 
-$iniSaveTime = 0;
-$ini_list = ini_get_all(null, false);
-$ini_server = in_array(NV_SERVER_NAME, $global_config['my_domains'], true) ? NV_SERVER_NAME : $global_config['my_domains'][0];
-$config_ini_file = NV_ROOTDIR . '/' . NV_DATADIR . '/config_ini.' . preg_replace('/[^a-zA-Z0-9\.\_]/', '', $ini_server) . '.php';
-@include_once $config_ini_file;
-if ($iniSaveTime + 86400 < NV_CURRENTTIME) {
+/**
+ * set_ini_file()
+ * 
+ * @param array $sys_info 
+ */
+function set_ini_file(&$sys_info)
+{
+    global $config_ini_file, $ini_list, $global_config;
+
     $content_config = '<?php' . "\n\n";
     $content_config .= NV_FILEHEAD . "\n\n";
     $content_config .= "if (!defined('NV_MAINFILE')) {\n    exit('Stop!!!');\n}\n\n";
@@ -155,65 +158,15 @@ if ($iniSaveTime + 86400 < NV_CURRENTTIME) {
     }
     $content_config .= "\$sys_info['php_compress_methods'] = [" . $_compress_method . "];\n";
 
-    // server_headers
-    if ((isset($_SERVER['HTTPS']) and (strtolower($_SERVER['HTTPS']) == 'on' or $_SERVER['HTTPS'] == '1')) or $_SERVER['SERVER_PORT'] == 443) {
-        stream_context_set_default([
-            'ssl' => [
-                'verify_peer' => false,
-                'verify_peer_name' => false
-            ]
-        ]);
-    } else {
-        stream_context_set_default([
-            'http' => [
-                'method' => 'GET',
-                'header' => "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\nAccept-Encoding: gzip, deflate, br\r\nUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:54.0) Gecko/20100101 Firefox/54.0\r\n"
-            ]
-        ]);
-    }
-
-    $server_headers = get_headers(NV_MY_DOMAIN . NV_BASE_SITEURL . 'index.php?response_headers_detect=1', 1);
-    unset($server_headers[0], $server_headers['Date'], $server_headers['Expires'], $server_headers['Last-Modified'], $server_headers['Connection'], $server_headers['Set-Cookie'], $server_headers['X-Page-Speed']);
-    $sys_info['server_headers'] = [];
     $_temp = [];
-    foreach ($server_headers as $k => $v) {
-        $k = strtolower($k);
-        $sys_info['server_headers'][$k] = $v;
-        $_temp[] = "'" . addslashes($k) . "' => '" . addslashes($v) . "'";
+    if (!empty($sys_info['server_headers'])) {
+        foreach ($sys_info['server_headers'] as $key => $value) {
+            $_temp[] = "'" . addslashes($key) . "' => '" . addslashes($value) . "'";
+        }
     }
-    $_temp = implode(',', $_temp);
+    $_temp = !empty($_temp) ? implode(',', $_temp) : '';
     $content_config .= "\$sys_info['server_headers'] = [" . $_temp . "];\n";
-
-    // https_only and http_only
-    if ((isset($_SERVER['HTTPS']) and (strtolower($_SERVER['HTTPS']) == 'on' or $_SERVER['HTTPS'] == '1')) or $_SERVER['SERVER_PORT'] == 443) {
-        stream_context_set_default([
-            'http' => [
-                'method' => 'GET',
-                'header' => "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\nAccept-Encoding: gzip, deflate, br\r\nUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:54.0) Gecko/20100101 Firefox/54.0\r\n"
-            ]
-        ]);
-        $host = $nv_Server->getOriginalHost();
-        if (filter_var($host, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) !== false) {
-            $host = '[' . $host . ']';
-        }
-        $server_headers = get_headers('http://' . $host . NV_BASE_SITEURL . 'index.php?response_headers_detect=1', 1);
-        $sys_info['https_only'] = !empty($server_headers['x-is-http']) ? false : true;
-        $sys_info['http_only'] = false;
-    } else {
-        stream_context_set_default([
-            'ssl' => [
-                'verify_peer' => false,
-                'verify_peer_name' => false
-            ]
-        ]);
-        $host = $nv_Server->getOriginalHost();
-        if (filter_var($host, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) !== false) {
-            $host = '[' . $host . ']';
-        }
-        $server_headers = get_headers('https://' . $host . NV_BASE_SITEURL . 'index.php?response_headers_detect=1', 1);
-        $sys_info['http_only'] = !empty($server_headers['x-is-https']) ? false : true;
-        $sys_info['https_only'] = false;
-    }
+    $content_config .= "\$sys_info['is_http2'] = " . ($sys_info['is_http2'] ? "true" : "false") . ";\n";
     $content_config .= "\$sys_info['http_only'] = " . ($sys_info['http_only'] ? 'true' : 'false') . ";\n";
     $content_config .= "\$sys_info['https_only'] = " . ($sys_info['https_only'] ? 'true' : 'false') . ";\n";
 
@@ -280,41 +233,6 @@ if ($iniSaveTime + 86400 < NV_CURRENTTIME) {
         ini_set('auto_detect_line_endings', 0);
     }
 
-    //Neu he thong khong ho tro php se bao loi
-    if (version_compare(PHP_VERSION, '5.6.0') < 0) {
-        exit('You are running an unsupported PHP version. Please upgrade to PHP 5.6 or higher before trying to install Nukeviet Portal');
-    }
-
-    //Neu he thong khong ho tro opendir se bao loi
-    if (!(function_exists('opendir') and !in_array('opendir', $sys_info['disable_functions'], true))) {
-        exit('Opendir function is not supported');
-    }
-
-    //Neu he thong khong ho tro GD se bao loi
-    if (!(extension_loaded('gd'))) {
-        exit('GD not installed');
-    }
-
-    //Neu he thong khong ho tro json se bao loi
-    if (!extension_loaded('json')) {
-        exit('Json object not supported');
-    }
-
-    //Neu he thong khong ho tro xml se bao loi
-    if (!extension_loaded('xml')) {
-        exit('Xml library not supported');
-    }
-
-    //Neu he thong khong ho tro mcrypt library se bao loi
-    if (!function_exists('openssl_encrypt')) {
-        exit('Openssl library not available');
-    }
-
-    //Neu he thong khong ho tro session se bao loi
-    if (!extension_loaded('session') or empty($ini_list['session.save_handler']) or ($ini_list['session.save_handler'] != 'files' and empty($ini_list['session.save_path']))) {
-        exit('Session object not supported');
-    }
-
     $ini_list_new = ini_get_all(null, false);
 
     $diff = array_diff_assoc($ini_list_new, $ini_list);
@@ -326,6 +244,59 @@ if ($iniSaveTime + 86400 < NV_CURRENTTIME) {
     }
 
     $content_config .= "\n";
+    $content_config .= "\$serverInfoUpdated = false;\n";
     $content_config .= '$iniSaveTime = ' . NV_CURRENTTIME . ';';
+
     @file_put_contents($config_ini_file, $content_config . "\n", LOCK_EX);
+}
+
+$config_ini_file = NV_ROOTDIR . '/' . NV_DATADIR . '/config_ini.' . preg_replace('/[^a-zA-Z0-9\.\_]/', '', (in_array(NV_SERVER_NAME, $global_config['my_domains'], true) ? NV_SERVER_NAME : $global_config['my_domains'][0])) . '.php';
+$ini_list = ini_get_all(null, false);
+
+$sys_info['server_headers'] = [];
+$sys_info['is_http2'] = false;
+$sys_info['http_only'] = false;
+$sys_info['https_only'] = false;
+$serverInfoUpdated = false;
+$iniSaveTime = 0;
+
+@include_once $config_ini_file;
+
+if ($iniSaveTime + 86400 < NV_CURRENTTIME) {
+    set_ini_file($sys_info);
+}
+
+//Neu he thong khong ho tro php se bao loi
+if (version_compare(PHP_VERSION, '5.6.0') < 0) {
+    die('You are running an unsupported PHP version. Please upgrade to PHP 5.6 or higher before trying to install Nukeviet Portal');
+}
+
+//Neu he thong khong ho tro opendir se bao loi
+if (!(function_exists('opendir') and !in_array('opendir', $sys_info['disable_functions'], true))) {
+    die('Opendir function is not supported');
+}
+
+//Neu he thong khong ho tro GD se bao loi
+if (!(extension_loaded('gd'))) {
+    die('GD not installed');
+}
+
+//Neu he thong khong ho tro json se bao loi
+if (!extension_loaded('json')) {
+    die('Json object not supported');
+}
+
+//Neu he thong khong ho tro xml se bao loi
+if (!extension_loaded('xml')) {
+    die('Xml library not supported');
+}
+
+//Neu he thong khong ho tro mcrypt library se bao loi
+if (!function_exists('openssl_encrypt')) {
+    die('Openssl library not available');
+}
+
+//Neu he thong khong ho tro session se bao loi
+if (!extension_loaded('session') or empty($ini_list['session.save_handler']) or ($ini_list['session.save_handler'] != 'files' and empty($ini_list['session.save_path']))) {
+    die('Session object not supported');
 }

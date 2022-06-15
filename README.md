@@ -1,7 +1,6 @@
-# Hướng dẫn cập nhật từ NukeViet 4.4.02, 4.4.03, 4.4.04, 4.5.00, 4.5.01 lên NukeViet 4.5.02
+# Hướng dẫn cập nhật từ NukeViet 4.5.00, 4.5.01 lên NukeViet 4.5.02
 
-- Nếu phiên bản NukeViet 4 của bạn nhỏ hơn 4.4.02 bạn cần tìm hướng dẫn cập nhật lên phiên bản 4.4.02 trước khi tiến hành các bước tiếp theo.
-- Nếu website của bạn đang ở phiên bản 4.4, bạn cần kiểm tra xem các module, giao diện dùng bên ngoài có bản cập nhật lên 4.5 chưa trước khi quyết định thực hiện.
+- Nếu phiên bản NukeViet của bạn nhỏ hơn 4.5.00 bạn cần tìm hướng dẫn cập nhật lên tối thiểu phiên bản 4.5.00 trước khi tiến hành các bước tiếp theo.
 - Bạn nên cập nhật thử nghiệm trên máy tính cá nhân và kiểm tra kỹ trước khi cập nhật trên website.
 
 ## Cập nhật hệ thống:
@@ -27,8 +26,6 @@ Nếu thất bại hãy thử cách cập nhật thủ công bên dưới.
 
 Nếu trong quá trình cập nhật bị đẩy ra, bạn đăng nhập lại quản trị để làm theo hướng dẫn (Hệ thống báo Xóa gói cập nhật do không tương thích, Bạn hãy xóa để tiếp tục vânh hành site)
 
-> Lưu ý: Cách cập nhật tự động chỉ cập nhật được từ phiên bản >= 4.5.00 lên, nếu bạn đang dùng NukeViet 4.4 cần làm thủ công theo hướng dẫn bên dưới.
-
 #### Cập nhật thủ công:
 
 Download gói cập nhật tại: https://github.com/nukeviet/update/releases/download/to-4.5.02/update-to-4.5.02.zip
@@ -37,19 +34,18 @@ Giải nén và Upload các file trong gói cập nhật với cấu trúc của
 ### Bước 3: Cấu hình lại site.
 
 - Nếu site có sử dụng các thư viện bên ngoài như `phpoffice/phpspreadsheet` thông qua composer, bạn cần khai báo để composer cập nhật lại
-- Truy cập phần Cấu hình => Thiết lập an ninh để thiết lập chức năng **Cross-Site** và **Giới hạn tên miền** theo nhu cầu.
-- Truy cập phần Cấu hình => Quản lý Modules click vào tên module News và tất các module ảo của nó để hệ thống nhận diện chức năng mới. Nếu có nhiều ngôn ngữ cần xử lý lần lượt các ngôn ngữ. Ví dụ admin/index.php?language=vi&nv=modules&op=show&mod=news
-- Truy cập phần Cấu hình => Quản lý Modules click vào tên module Users và tất các module ảo của nó để hệ thống nhận diện chức năng mới. Nếu có nhiều ngôn ngữ cần xử lý lần lượt các ngôn ngữ. Ví dụ admin/index.php?language=vi&nv=modules&op=show&mod=users
+- Nếu sử dụng module tin tức hoặc các module ảo của nó, có thể vào cấu hình để bật chức năng lưu lịch sử bài viết nếu có nhu cầu.
 
 ### Bước 4: Điều chỉnh giao diện
 
-1. Nếu bạn có sử dụng giao diện không phải mặc định, chưa cập nhật lên 4.5.00 thì cập nhật theo hướng dẫn này [Hướng dẫn cập nhật giao diện từ NukeViet 4.4.02 lên NukeViet 4.5.00](https://github.com/nukeviet/update/wiki/H%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-n%C3%A2ng-c%E1%BA%A5p-giao-di%E1%BB%87n-t%E1%BB%AB-NukeViet-4.4.02-l%C3%AAn-NukeViet-4.5.00). Nếu dùng giao diện mặc định hoặc đã cập nhật lên 4.5.00 trước đó thì bỏ qua bước 4.1 này.
-2. Nếu bạn có sử dụng giao diện không phải mặc định, chưa cập nhật lên 4.5.01 thì cập nhật theo hướng dẫn này [Hướng dẫn cập nhật giao diện tương thích từ NukeViet 4.5.00 lên NukeViet 4.5.01](https://github.com/nukeviet/update/wiki/H%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-n%C3%A2ng-c%E1%BA%A5p-giao-di%E1%BB%87n-t%C6%B0%C6%A1ng-th%C3%ADch-t%E1%BB%AB-NukeViet-4.5.00-l%C3%AAn-NukeViet-4.5.01). Chú ý: Bước này cần thiết đối với giao diện của bạn có sử dụng block global.QR_code.php, trường hợp không sử dụng nó hoặc không có nó thì không cần thực hiện bước này.
+Nếu bạn có sử dụng giao diện không phải mặc định, chưa cập nhật lên 4.5.01 thì cập nhật theo hướng dẫn này [Hướng dẫn cập nhật giao diện tương thích từ NukeViet 4.5.00 lên NukeViet 4.5.01](https://github.com/nukeviet/update/wiki/H%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-n%C3%A2ng-c%E1%BA%A5p-giao-di%E1%BB%87n-t%C6%B0%C6%A1ng-th%C3%ADch-t%E1%BB%AB-NukeViet-4.5.00-l%C3%AAn-NukeViet-4.5.01). Chú ý: Bước này cần thiết đối với giao diện của bạn có sử dụng block global.QR_code.php, trường hợp không sử dụng nó hoặc không có nó thì không cần thực hiện bước này.
 
-### Bước 5: Hướng dẫn cập nhật module từ NukeViet 4.4.02 lên NukeViet 4.5.01
+Nếu bạn sử dụng giao diện bên ngoài và đã cập nhật lên 4.5.01 thì bỏ qua bước này
 
-> Nếu bạn đã cập nhật các module cài bên ngoài lên NukeViet 4.5.00 bỏ qua bước này.
+### Bước 5: Hướng dẫn cập nhật module từ NukeViet 4.5.00 lên NukeViet 4.5.02
 
 **Nếu site của bạn sử dụng module không phải mặc định thì thực hiện cập nhật theo hướng dẫn sau:**
 
-[Hướng dẫn cập nhật module từ NukeViet 4.4.02 lên NukeViet 4.5.00](https://github.com/nukeviet/update/wiki/H%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-n%C3%A2ng-c%E1%BA%A5p-module-t%E1%BB%AB-NukeViet-4.4.02-l%C3%AAn-NukeViet-4.5.00)
+[Hướng dẫn nâng cấp module từ NukeViet 4.5.00 lên NukeViet 4.5.02](https://github.com/nukeviet/update/wiki/H%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-n%C3%A2ng-c%E1%BA%A5p-module-t%E1%BB%AB-NukeViet-4.5.00-l%C3%AAn-NukeViet-4.5.02)
+
+> Lưu ý: Bước này không bắt buộc, nếu có thể bạn nên làm. Nếu không bạn cũng có thể bỏ qua
