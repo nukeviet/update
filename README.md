@@ -1,64 +1,37 @@
-> Chú ý: Hướng dẫn nâng cấp này chỉ áp dụng đối với các site đang sử dụng bản [NukeViet 4.0.10](https://github.com/nukeviet/nukeviet/releases/tag/4.0.10) và chỉ nâng cấp hệ thống cùng với các module hệ thống.
+# Hướng dẫn cập nhật từ NukeViet 4.0.13 lên NukeViet 4.0.23
 
-# Bước 1
+> Lưu ý: Đây là hướng dẫn thủ công hoàn toàn. Bạn cần có khả năng lập trình mới có thể làm được. Nếu không am hiểu hãy nhờ trợ giúp.
 
-Backup toàn bộ site và CSDL.
+Trước khi cập nhật hãy chắc chắn bạn đã sao lưu toàn bộ code và CSDL của site.
 
-Đăng nhập admin, vào cấu hình => cấu hình chung, tại chỗ kích hoạt chức năng tối ưu site chọn "không kích hoạt".
+- Vào quản lý giao diện, xóa thiết các thiết lập của giao diện modern, mobile_nukeviet và các giao diện của bạn nếu có. Kích hoạt sử dụng giao diện default
+- Xóa bằng tay các giao diện của bạn nếu có + modern + mobile_nukeviet. Vì giao diện sau nâng cấp buộc làm lại 100%
+- Vào phần mở rộng, tải về các module không phải module hệ thống. Lưu ý: vào thư mục modules kiểm tra cho đầy đủ danh sách
+- Chạy https://domain.com/update40134023.php
+- Xóa thư mục admin, cache, editors, images, includes, install, js, language, logs, modules, sess, tmp, themes
+- Xóa file .htaccess, CJzip.php, index.php, mainfile.php
+- Copy cất các file data/bpl_xxx.xml, data/config_global.php
+- Mở file config.php thêm xuống cuối `$global_config['hashprefix'] = '{SSHA}';`
+- Chép toàn bộ code NukeViet 4.0.23 từ bản cài đặt đè lên. Chú ý không đè file config.php
+- Chép đè lại file config_global.php và các file bpl_xxx.xml khi nãy vào thư mục data/config
+- Trong thư mục files xóa .htaccess sau đó di chuyển hết nội dung trong đó vào thư mục assets. Sau đó xóa thư mục files
+- Giải nén các module đã tải xuống lúc này. Xong nhớ xóa config.ini
+- Vào thư mục data/cache xóa hết các thư mục con trong đây nếu có
+- Nếu có module download mở siteinfo.php của nó lên sửa _comments thành _comment nếu không vào admin bị trang trắng.
+- Thử đăng nhập admin, nếu bị trang trắng thì mở file admin/index.php thêm lên đầu đoạn này
 
-# Bước 2
-Kiểm tra thư mục install trên website có tồn tại không, nếu không tồn tại, upload lại thư mục này từ bản cài đặt NukeViet 4.0.13.
-
-# Bước 3
-Download file thư mục install về giải nén và upload các thư mục giải nén được lên website.
-
-# Bước 4
-Đăng nhập admin, nhận được thông báo nâng cấp, nhấp vào link nâng cấp và thực hiện tiếp tục các công việc tại trang nâng cấp.
-
-# Bước 5
-
-Sửa dòng $fixthemes = 'default10'; ứng với theme của bạn để chương trình fix tự động các thay đổi giao diện
-
-Upload file toolfix_change.php
-
-Chạy file http://domain.my/toolfix_change.php
-
-# Bước 6
-Kiểm tra và chỉnh sửa giao diện:
-Copy lại hai file sau trong giao diện mặc định chuyển sang giao diện của bạn
-
-themes/default/modules/users/info.tpl
-
-themes/default/modules/users/register.tpl
-
-# Bước 7
-
-Thay lại đoạn code Breadcrumbs trong file /install/update/themes/default/theme.php thành đoạn code như sau
-```
-		// Breadcrumbs
-		if( $home != 1 )
-		{
-			if( $global_config['rewrite_op_mod'] != $module_name )
-			{
-				$arr_cat_title_i = array(
-					'catid' => 0,
-					'title' => $module_info['custom_title'],
-					'link' => NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name
-				);
-				array_unshift( $array_mod_title, $arr_cat_title_i );
-			}
-			if( ! empty( $array_mod_title ) )
-			{
-				foreach( $array_mod_title as $arr_cat_title_i )
-				{
-					$xtpl->assign( 'BREADCRUMBS', $arr_cat_title_i );
-					$xtpl->parse( 'main.breadcrumbs.loop' );
-				}
-				$xtpl->parse( 'main.breadcrumbs' );
-			}
-		}
+```php
+register_shutdown_function("fatal_handler");
+function fatal_handler()
+{
+    $error = error_get_last();
+    if ($error !== NULL) {
+        echo('<pre><code>' . print_r($error, true) . '</code></pre>');
+    }
+}
 ```
 
-Kiểm tra và ửa lại giao diện cho tương thích.
+Sau đó F5 lại xem lỗi gì, gửi lên nhóm để được trợ giúp
+- Dọn dẹp hệ thống
+- Vào cấu hình chung lưu lại 1 cái để hệ thống ghi file config_global
 
-Các lỗi trong quá trình nâng cấp vui lòng thảo luận tại diễn đàn NukeViet: http://forum.nukeviet.vn/viewtopic.php?f=171&t=35166
