@@ -38,7 +38,9 @@ Giải nén và Upload các file trong gói cập nhật với cấu trúc của
 
 ### Bước 4: Cập nhật giao diện
 
-Nếu bạn có sử dụng giao diện không phải mặc định, đọc các lưu ý và làm theo [hướng dẫn tại đây](https://github.com/nukeviet/update/wiki/H%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-n%C3%A2ng-c%E1%BA%A5p-giao-di%E1%BB%87n-t%C6%B0%C6%A1ng-th%C3%ADch-t%E1%BB%AB-NukeViet-4.5.00-l%C3%AAn-c%C3%A1c-phi%C3%AAn-b%E1%BA%A3n-4.5-cao-h%C6%A1n)
+Nếu bạn có sử dụng giao diện không phải mặc định, đọc các lưu ý và làm theo hướng dẫn sau:
+
+[Hướng dẫn nâng cấp giao diện tương thích từ NukeViet 4.5.00 lên các phiên bản 4.5 cao hơn](https://github.com/nukeviet/update/wiki/H%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-n%C3%A2ng-c%E1%BA%A5p-giao-di%E1%BB%87n-t%C6%B0%C6%A1ng-th%C3%ADch-t%E1%BB%AB-NukeViet-4.5.00-l%C3%AAn-c%C3%A1c-phi%C3%AAn-b%E1%BA%A3n-4.5-cao-h%C6%A1n)
 
 > Lưu ý: Bước này không bắt buộc, nếu có thể bạn nên làm. Nếu không bạn cũng có thể bỏ qua
 
