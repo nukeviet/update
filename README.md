@@ -1,4 +1,4 @@
-# Hướng dẫn cập nhật từ NukeViet 4.5.00, 4.5.01 lên NukeViet 4.5.02
+# Hướng dẫn cập nhật từ NukeViet 4.5.00, 4.5.01, 4.5.02 lên NukeViet 4.5.03
 
 - Nếu phiên bản NukeViet của bạn nhỏ hơn 4.5.00 bạn cần tìm hướng dẫn cập nhật lên tối thiểu phiên bản 4.5.00 trước khi tiến hành các bước tiếp theo.
 - Bạn nên cập nhật thử nghiệm trên máy tính cá nhân và kiểm tra kỹ trước khi cập nhật trên website.
@@ -28,7 +28,7 @@ Nếu trong quá trình cập nhật bị đẩy ra, bạn đăng nhập lại q
 
 #### Cập nhật thủ công:
 
-Download gói cập nhật tại: https://github.com/nukeviet/update/releases/download/to-4.5.02/update-to-4.5.02.zip
+Download gói cập nhật tại: https://github.com/nukeviet/update/releases/download/to-4.5.03/update-to-4.5.03.zip
 Giải nén và Upload các file trong gói cập nhật với cấu trúc của NukeViet, sau đó vào admin để tiến hành cập nhật.
 
 ### Bước 3: Cấu hình lại site.
@@ -36,16 +36,14 @@ Giải nén và Upload các file trong gói cập nhật với cấu trúc của
 - Nếu site có sử dụng các thư viện bên ngoài như `phpoffice/phpspreadsheet` thông qua composer, bạn cần khai báo để composer cập nhật lại
 - Nếu sử dụng module tin tức hoặc các module ảo của nó, có thể vào cấu hình để bật chức năng lưu lịch sử bài viết nếu có nhu cầu.
 
-### Bước 4: Điều chỉnh giao diện
+### Bước 4: Cập nhật giao diện
 
-Nếu bạn có sử dụng giao diện không phải mặc định, chưa cập nhật lên 4.5.01 thì cập nhật theo hướng dẫn này [Hướng dẫn cập nhật giao diện tương thích từ NukeViet 4.5.00 lên NukeViet 4.5.01](https://github.com/nukeviet/update/wiki/H%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-n%C3%A2ng-c%E1%BA%A5p-giao-di%E1%BB%87n-t%C6%B0%C6%A1ng-th%C3%ADch-t%E1%BB%AB-NukeViet-4.5.00-l%C3%AAn-NukeViet-4.5.01). Chú ý: Bước này cần thiết đối với giao diện của bạn có sử dụng block global.QR_code.php, trường hợp không sử dụng nó hoặc không có nó thì không cần thực hiện bước này.
+Nếu bạn có sử dụng giao diện không phải mặc định, đọc các lưu ý và làm theo [hướng dẫn tại đây](https://github.com/nukeviet/update/wiki/H%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-n%C3%A2ng-c%E1%BA%A5p-giao-di%E1%BB%87n-t%C6%B0%C6%A1ng-th%C3%ADch-t%E1%BB%AB-NukeViet-4.5.00-l%C3%AAn-c%C3%A1c-phi%C3%AAn-b%E1%BA%A3n-4.5-cao-h%C6%A1n)
 
-Nếu bạn sử dụng giao diện bên ngoài và đã cập nhật lên 4.5.01 thì bỏ qua bước này
-
-### Bước 5: Hướng dẫn cập nhật module từ NukeViet 4.5.00 lên NukeViet 4.5.02
+### Bước 5: Cập nhật module
 
 **Nếu site của bạn sử dụng module không phải mặc định thì thực hiện cập nhật theo hướng dẫn sau:**
 
-[Hướng dẫn nâng cấp module từ NukeViet 4.5.00 lên NukeViet 4.5.02](https://github.com/nukeviet/update/wiki/H%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-n%C3%A2ng-c%E1%BA%A5p-module-t%E1%BB%AB-NukeViet-4.5.00-l%C3%AAn-NukeViet-4.5.02)
+[Hướng dẫn nâng cấp module từ NukeViet 4.5.00 lên các bản 4.5 cao hơn](https://github.com/nukeviet/update/wiki/H%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-n%C3%A2ng-c%E1%BA%A5p-module-t%E1%BB%AB-NukeViet-4.5.00-l%C3%AAn-c%C3%A1c-b%E1%BA%A3n-4.5-cao-h%C6%A1n)
 
 > Lưu ý: Bước này không bắt buộc, nếu có thể bạn nên làm. Nếu không bạn cũng có thể bỏ qua
