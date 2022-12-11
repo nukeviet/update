@@ -34,11 +34,13 @@ Giải nén và Upload các file trong gói cập nhật với cấu trúc của
 ### Bước 3: Cấu hình lại site.
 
 - Nếu site có sử dụng các thư viện bên ngoài như `phpoffice/phpspreadsheet` thông qua composer, bạn cần khai báo để composer cập nhật lại
-- Nếu sử dụng module tin tức hoặc các module ảo của nó, có thể vào cấu hình để bật chức năng lưu lịch sử bài viết nếu có nhu cầu.
+- Nếu sử dụng module tin tức hoặc các module ảo của nó, có thể vào cấu hình để bật chức năng lưu lịch sử bài viết nếu có nhu cầu. Bạn cũng có thể sử dụng thêm tính năng thêm audio đọc báo ở module news
 
 ### Bước 4: Cập nhật giao diện
 
 Nếu bạn có sử dụng giao diện không phải mặc định, đọc các lưu ý và làm theo [hướng dẫn tại đây](https://github.com/nukeviet/update/wiki/H%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-n%C3%A2ng-c%E1%BA%A5p-giao-di%E1%BB%87n-t%C6%B0%C6%A1ng-th%C3%ADch-t%E1%BB%AB-NukeViet-4.5.00-l%C3%AAn-c%C3%A1c-phi%C3%AAn-b%E1%BA%A3n-4.5-cao-h%C6%A1n)
+
+> Lưu ý: Bước này không bắt buộc, nếu có thể bạn nên làm. Nếu không bạn cũng có thể bỏ qua
 
 ### Bước 5: Cập nhật module
 
