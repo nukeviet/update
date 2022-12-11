@@ -18,23 +18,24 @@ $nv_update_config = [];
 $nv_update_config['type'] = 1;
 
 // ID goi cap nhat
-$nv_update_config['packageID'] = 'NVUD4405';
+$nv_update_config['packageID'] = 'NVUD4406';
 
 // Cap nhat cho module nao, de trong neu la cap nhat NukeViet, ten thu muc module neu la cap nhat module
 $nv_update_config['formodule'] = '';
 
 // Thong tin phien ban, tac gia, ho tro
-$nv_update_config['release_date'] = 1655715600;
+$nv_update_config['release_date'] = 1671872400;
 $nv_update_config['author'] = 'VINADES.,JSC <contact@vinades.vn>';
-$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.4.05';
-$nv_update_config['to_version'] = '4.4.05';
+$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.4.06';
+$nv_update_config['to_version'] = '4.4.06';
 $nv_update_config['allow_old_version'] = [
     '4.4.00',
     '4.4.01',
     '4.4.02',
     '4.4.03',
     '4.4.04',
-    '4.4.05'
+    '4.4.05',
+    '4.4.06'
 ];
 
 // 0:Nang cap bang tay, 1:Nang cap tu dong, 2:Nang cap nua tu dong
@@ -50,8 +51,9 @@ $nv_update_config['lang']['vi']['nv_up_sys4401'] = 'Cập nhật hệ thống l�
 $nv_update_config['lang']['vi']['nv_up_sys4403'] = 'Cập nhật hệ thống lên 4.4.03';
 $nv_update_config['lang']['vi']['nv_up_sys4404'] = 'Cập nhật hệ thống lên 4.4.04';
 $nv_update_config['lang']['vi']['nv_up_sys4405'] = 'Cập nhật hệ thống lên 4.4.05';
+$nv_update_config['lang']['vi']['nv_up_news4406'] = 'Cập nhật module news lên 4.4.06';
 
-$nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản 4.4.05';
+$nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản 4.4.06';
 
 // English
 $nv_update_config['lang']['en']['nv_up_modusers4401'] = 'Update module users to 4.4.01';
@@ -59,8 +61,9 @@ $nv_update_config['lang']['en']['nv_up_sys4401'] = 'Update system to 4.4.01';
 $nv_update_config['lang']['en']['nv_up_sys4403'] = 'Update system to 4.4.03';
 $nv_update_config['lang']['en']['nv_up_sys4404'] = 'Update system to 4.4.04';
 $nv_update_config['lang']['en']['nv_up_sys4405'] = 'Update system to 4.4.05';
+$nv_update_config['lang']['en']['nv_up_news4406'] = 'Update module news to 4.4.06';
 
-$nv_update_config['lang']['en']['nv_up_finish'] = 'Update to new version 4.4.05';
+$nv_update_config['lang']['en']['nv_up_finish'] = 'Update to new version 4.4.06';
 
 $nv_update_config['tasklist'] = [];
 $nv_update_config['tasklist'][] = [
@@ -94,11 +97,21 @@ $nv_update_config['tasklist'][] = [
     'f' => 'nv_up_sys4405'
 ];
 $nv_update_config['tasklist'][] = [
+    'r' => '4.4.06',
+    'rq' => 2,
+    'l' => 'nv_up_news4406',
+    'f' => 'nv_up_news4406'
+];
+$nv_update_config['tasklist'][] = [
     'r' => $nv_update_config['to_version'],
     'rq' => 2,
     'l' => 'nv_up_finish',
     'f' => 'nv_up_finish'
 ];
+
+// Lấy tất cả ngôn ngữ đã cài đặt
+$sql = "SELECT lang FROM " . $db_config['prefix'] . "_setup_language WHERE setup=1 ORDER BY weight ASC";
+$array_sitelangs = $db->query($sql)->fetchAll(PDO::FETCH_COLUMN);
 
 /**
  *
@@ -106,11 +119,7 @@ $nv_update_config['tasklist'][] = [
  */
 function nv_up_modusers4401()
 {
-    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config;
-
-    // Lấy tất cả ngôn ngữ đã cài đặt
-    $sql = "SELECT lang FROM " . $db_config['prefix'] . "_setup_language WHERE setup=1 ORDER BY weight ASC";
-    $array_sitelangs = $db->query($sql)->fetchAll(PDO::FETCH_COLUMN);
+    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config, $array_sitelangs;
 
     $return = [
         'status' => 1,
@@ -166,7 +175,7 @@ function nv_up_modusers4401()
  */
 function nv_up_sys4401()
 {
-    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config;
+    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config, $array_sitelangs;
 
     $return = [
         'status' => 1,
@@ -277,7 +286,7 @@ function nv_up_sys4401()
  */
 function nv_up_sys4403()
 {
-    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config;
+    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config, $array_sitelangs;
 
     $return = [
         'status' => 1,
@@ -325,10 +334,6 @@ function nv_up_sys4403()
     }
 
     // Duyệt tất cả các ngôn ngữ của modusers
-    // Lấy tất cả ngôn ngữ đã cài đặt
-    $sql = 'SELECT lang FROM ' . $db_config['prefix'] . '_setup_language WHERE setup=1 ORDER BY weight ASC';
-    $array_sitelangs = $db->query($sql)->fetchAll(PDO::FETCH_COLUMN);
-
     $_module_users = [];
     foreach ($array_sitelangs as $lang) {
         // Lấy tất cả các module và module ảo của nó
@@ -494,7 +499,7 @@ function nv_up_sys4403()
  */
 function nv_up_sys4404()
 {
-    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config;
+    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config, $array_sitelangs;
 
     $return = [
         'status' => 1,
@@ -504,9 +509,6 @@ function nv_up_sys4404()
         'lang' => 'NO',
         'message' => ''
     ];
-
-    $sql = 'SELECT lang FROM ' . $db_config['prefix'] . '_setup_language WHERE setup=1 ORDER BY weight ASC';
-    $array_sitelangs = $db->query($sql)->fetchAll(PDO::FETCH_COLUMN);
 
     foreach ($array_sitelangs as $lang) {
         // Gỡ cấu hình các block QR-Code
@@ -526,7 +528,7 @@ function nv_up_sys4404()
  */
 function nv_up_sys4405()
 {
-    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config;
+    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config, $array_sitelangs;
 
     $return = [
         'status' => 1,
@@ -536,9 +538,6 @@ function nv_up_sys4405()
         'lang' => 'NO',
         'message' => ''
     ];
-
-    $sql = 'SELECT lang FROM ' . $db_config['prefix'] . '_setup_language WHERE setup=1 ORDER BY weight ASC';
-    $array_sitelangs = $db->query($sql)->fetchAll(PDO::FETCH_COLUMN);
 
     // Phương thức xác thực API
     try {
@@ -592,14 +591,61 @@ function nv_up_sys4405()
 }
 
 /**
- * nv_up_finish()
- *
+ * @return number[]|string[]
+ */
+function nv_up_news4406()
+{
+    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config, $array_sitelangs;
+    $return = [
+        'status' => 1,
+        'complete' => 1,
+        'next' => 1,
+        'link' => 'NO',
+        'lang' => 'NO',
+        'message' => ''
+    ];
+    // Duyệt tất cả các ngôn ngữ
+    foreach ($array_sitelangs as $lang) {
+        // Lấy tất cả các module và module ảo của nó
+        $mquery = $db->query('SELECT title, module_data FROM ' . $db_config['prefix'] . '_' . $lang . "_modules WHERE module_file = 'news'");
+        while (list ($mod, $mod_data) = $mquery->fetch(3)) {
+            // Thêm trường giọng đọc bảng detail
+            try {
+                $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . "_detail ADD voicedata text NULL DEFAULT NULL COMMENT 'Data giọng đọc json' AFTER bodyhtml;");
+            } catch (PDOException $e) {
+                trigger_error(print_r($e, true));
+            }
+
+            // Thêm bảng giọng đọc
+            try {
+                $db->query("CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . "_voices (
+                  id smallint(4) unsigned NOT NULL AUTO_INCREMENT,
+                  voice_key varchar(50) NOT NULL DEFAULT '' COMMENT 'Khóa dùng trong Api sau này',
+                  title varchar(250) NOT NULL DEFAULT '',
+                  description text NOT NULL,
+                  add_time int(11) unsigned NOT NULL DEFAULT '0',
+                  edit_time int(11) unsigned NOT NULL DEFAULT '0',
+                  weight smallint(4) unsigned NOT NULL DEFAULT '0',
+                  status tinyint(4) NOT NULL DEFAULT '1' COMMENT '0: Dừng, 1: Hoạt động',
+                  PRIMARY KEY (id),
+                  KEY weight (weight),
+                  KEY status (status),
+                  UNIQUE KEY title (title)
+                ) ENGINE=MyISAM;");
+            } catch (PDOException $e) {
+                trigger_error(print_r($e, true));
+            }
+        }
+    }
+    return $return;
+}
+
+/**
  * @return
- *
  */
 function nv_up_finish()
 {
-    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config;
+    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config, $array_sitelangs;
 
     $return = [
         'status' => 1,
