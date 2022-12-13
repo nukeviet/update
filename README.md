@@ -34,23 +34,20 @@ Giải nén và Upload các file trong gói cập nhật với cấu trúc của
 
 - Nếu site có sử dụng các thư viện bên ngoài như `phpoffice/phpspreadsheet` thông qua composer, bạn cần khai báo để composer cập nhật lại
 - Truy cập phần Cấu hình => Thiết lập an ninh để thiết lập chức năng **Cross-Site** và **Giới hạn tên miền** theo nhu cầu.
+- Bạn có thể cấu hình giọng đọc và gắn file audio cho bài viết ở module news.
 
-### Bước 4: Nâng cấp module lên NukeViet 4.4.06
+### Bước 4: Cập nhật giao diện
 
-> Lưu ý: Bước nâng cấp module không bắt buộc và chỉ nhằm mục đích tối ưu, bạn có thể thực hiện hoặc không thực hiện
+Nếu bạn có sử dụng giao diện không phải mặc định, đọc các lưu ý và làm theo hướng dẫn sau:
 
-**Nếu site của bạn sử dụng module không phải mặc định thì thực hiện cập nhật theo hướng dẫn sau:**
+[Hướng dẫn nâng cấp giao diện tương thích từ NukeViet 4.4.00 lên các phiên bản 4.4 cao hơn](https://github.com/nukeviet/update/wiki/H%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-n%C3%A2ng-c%E1%BA%A5p-giao-di%E1%BB%87n-t%C6%B0%C6%A1ng-th%C3%ADch-t%E1%BB%AB-NukeViet-4.4.00-l%C3%AAn-c%C3%A1c-phi%C3%AAn-b%E1%BA%A3n-4.4-cao-h%C6%A1n)
 
-[Hướng dẫn nâng cấp module từ NukeViet 4.4.02 lên NukeViet 4.4.03](https://github.com/nukeviet/update/wiki/H%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-n%C3%A2ng-c%E1%BA%A5p-module-t%E1%BB%AB-NukeViet-4.4.02-l%C3%AAn-NukeViet-4.4.03)
+> Lưu ý: Bước này không bắt buộc, nếu có thể bạn nên làm. Nếu không bạn cũng có thể bỏ qua
 
-[Hướng dẫn nâng cấp module từ NukeViet 4.4.03 lên NukeViet 4.4.05](https://github.com/nukeviet/update/wiki/H%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-n%C3%A2ng-c%E1%BA%A5p-module-t%E1%BB%AB-NukeViet-4.4.03-l%C3%AAn-NukeViet-4.4.05)
+### Bước 5: Cập nhật module
 
-### Bước 5: Nâng cấp giao diện lên NukeViet 4.4.06
+Nếu site của bạn sử dụng module không phải mặc định thì thực hiện cập nhật theo hướng dẫn sau:
 
-Nếu site của bạn trước khi nâng cấp đang ở 4.4.04 thì bỏ qua các bước dưới đây
+[Hướng dẫn nâng cấp module từ NukeViet 4.4.00 lên các bản 4.4 cao hơn](https://github.com/nukeviet/update/wiki/H%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-n%C3%A2ng-c%E1%BA%A5p-module-t%E1%BB%AB-NukeViet-4.4.00-l%C3%AAn-c%C3%A1c-b%E1%BA%A3n-4.4-cao-h%C6%A1n)
 
-> Lưu ý: Bước nâng cấp giao diện không bắt buộc và chỉ nhằm mục đích tối ưu, bạn có thể thực hiện hoặc không thực hiện. Riêng đối với trường hợp giao diện của bạn có và đang sử dụng block global.QR_code.php thì cần đọc hướng dẫn phần nâng cấp riêng cho block này ở link bên dưới. Nếu không làm theo hướng dẫn block này sẽ không hiển thị.
-
-Nếu site của bạn sử dụng giao diện không phải mặc định thì thực hiện theo hướng dẫn sau
-
-[Hướng dẫn nâng cấp giao diện tương thích từ NukeViet 4.4.00 lên NukeViet 4.4.04](https://github.com/nukeviet/update/wiki/H%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-n%C3%A2ng-c%E1%BA%A5p-giao-di%E1%BB%87n-t%C6%B0%C6%A1ng-th%C3%ADch-t%E1%BB%AB-NukeViet-4.4.00-l%C3%AAn-NukeViet-4.4.04)
+> Lưu ý: Bước này không bắt buộc, nếu có thể bạn nên làm. Nếu không bạn cũng có thể bỏ qua
