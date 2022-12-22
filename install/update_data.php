@@ -544,6 +544,57 @@ function nv_up_finish()
         'message' => ''
     ];
 
+    // Xóa file thừa bản 4.5.03
+    nv_deletefile(NV_ROOTDIR . '/' . NV_ASSETS_DIR . '/editors/ckeditor/plugins/autosave', true);
+    nv_deletefile(NV_ROOTDIR . '/vendor/endroid', true);
+    nv_deletefile(NV_ROOTDIR . '/vendor/symfony/options-resolver', true);
+
+    nv_deletefile(NV_ROOTDIR . '/admin/authors/.htaccess');
+    nv_deletefile(NV_ROOTDIR . '/admin/database/.htaccess');
+    nv_deletefile(NV_ROOTDIR . '/admin/extensions/.htaccess');
+    nv_deletefile(NV_ROOTDIR . '/admin/language/.htaccess');
+    nv_deletefile(NV_ROOTDIR . '/admin/modules/.htaccess');
+    nv_deletefile(NV_ROOTDIR . '/admin/seotools/.htaccess');
+    nv_deletefile(NV_ROOTDIR . '/admin/settings/.htaccess');
+    nv_deletefile(NV_ROOTDIR . '/admin/siteinfo/.htaccess');
+    nv_deletefile(NV_ROOTDIR . '/admin/themes/.htaccess');
+    nv_deletefile(NV_ROOTDIR . '/admin/upload/.htaccess');
+    nv_deletefile(NV_ROOTDIR . '/admin/webtools/.htaccess');
+    nv_deletefile(NV_ROOTDIR . '/assets/editors/.htaccess');
+    nv_deletefile(NV_ROOTDIR . '/assets/images/.htaccess');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/.htaccess');
+    nv_deletefile(NV_ROOTDIR . '/assets/tpl/.htaccess');
+    nv_deletefile(NV_ROOTDIR . '/assets/.htaccess');
+    nv_deletefile(NV_ROOTDIR . '/data/cache/.htaccess');
+    nv_deletefile(NV_ROOTDIR . '/data/ip/.htaccess');
+    nv_deletefile(NV_ROOTDIR . '/data/ip6/.htaccess');
+    nv_deletefile(NV_ROOTDIR . '/data/logs/.htaccess');
+    nv_deletefile(NV_ROOTDIR . '/data/.htaccess');
+    nv_deletefile(NV_ROOTDIR . '/includes/utf8/.htaccess');
+    nv_deletefile(NV_ROOTDIR . '/includes/.htaccess');
+    nv_deletefile(NV_ROOTDIR . '/modules/.htaccess');
+    nv_deletefile(NV_ROOTDIR . '/themes/.htaccess');
+    nv_deletefile(NV_ROOTDIR . '/uploads/.htaccess');
+    nv_deletefile(NV_ROOTDIR . '/vendor/.htaccess');
+
+    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/plugins/eqneditor/plugin.js');
+    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/plugins/googledocs/plugin.js');
+    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/plugins/video/plugin.js');
+    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/plugins/video/images/icon.png');
+
+    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/skins/moono/colorpanel.css');
+    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/skins/moono/elementspath.css');
+    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/skins/moono/index.html');
+    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/skins/moono/mainui.css');
+    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/skins/moono/menu.css');
+    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/skins/moono/notification.css');
+    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/skins/moono/panel.css');
+    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/skins/moono/presets.css');
+    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/skins/moono/richcombo.css');
+    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/skins/moono/toolbar.css');
+
+    nv_deletefile(NV_ROOTDIR . '/vendor/symfony/polyfill-mbstring/bootstrap80.php');
+
     // Cập nhật phiên bản
     $array_modules = [
         'banners',

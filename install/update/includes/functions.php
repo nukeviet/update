@@ -15,6 +15,20 @@ if (!defined('NV_MAINFILE')) {
     exit('Stop!!!');
 }
 
+// Dành cho các phiên bản php nhỏ hơn 8.1
+if (!function_exists('array_is_list')) {
+    /**
+     * array_is_list()
+     * Kiểm tra mảng có phải có dạng danh sách hay không (key từ 0 đến n)
+     *
+     * @param mixed $a
+     * @return bool
+     */
+    function array_is_list($a)
+    {
+        return is_array($a) && ($a === [] || (array_keys($a) === range(0, count($a) - 1)));
+    }
+}
 /**
  * nv_object2array()
  *
@@ -2343,7 +2357,7 @@ function nv_url_rewrite_callback($matches)
             unset($query_array[NV_OP_VARIABLE]);
         }
 
-        $rewrite_string = (defined('NV_IS_REWRITE_OBSOLUTE') ? NV_MY_DOMAIN : '') . NV_BASE_SITEURL . ($global_config['check_rewrite_file'] ? '' : 'index.php/') . implode('/', $op_rewrite) . ($op_rewrite_count ? $rewrite_end : '');
+        $rewrite_string = ((defined('NV_IS_REWRITE_OBSOLUTE') and defined('NV_ENABLE_REWRITE_OBSOLUTE')) ? NV_MY_DOMAIN : '') . NV_BASE_SITEURL . ($global_config['check_rewrite_file'] ? '' : 'index.php/') . implode('/', $op_rewrite) . ($op_rewrite_count ? $rewrite_end : '');
 
         if (!empty($query_array)) {
             $rewrite_string .= '?' . http_build_query($query_array, '', $is_amp ? '&amp;' : '&');
@@ -2947,12 +2961,12 @@ function nv_autoLinkDisable($text)
  * Make an asynchronous POST request
  * Thực hiện yêu cầu POST không đồng bộ trong nội bộ site mà không cần chờ phản hồi
  * => Không ảnh hưởng, không trì hoãn tiến trình đang chạy
- * 
+ *
  * post_async()
- * 
- * @param mixed $url 
- * @param mixed $params 
- * @param array $headers 
+ *
+ * @param mixed $url
+ * @param mixed $params
+ * @param array $headers
  */
 function post_async($url, $params, $headers = [])
 {
