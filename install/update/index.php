@@ -17,6 +17,19 @@ if (isset($_GET['response_headers_detect'])) {
     exit(0);
 }
 
+if (isset($_GET['rewritesupport'])) {
+    if ($_GET['rewritesupport'] == 'apache') {
+        exit('rewrite_mode_apache');
+    }
+    if ($_GET['rewritesupport'] == 'iis') {
+        exit('rewrite_mode_iis');
+    }
+    if ($_GET['rewritesupport'] == 'nginx') {
+        exit('nginx');
+    }
+    exit(0);
+}
+
 define('NV_SYSTEM', true);
 
 // Xac dinh thu muc goc cua site
@@ -152,6 +165,11 @@ if (preg_match($global_config['check_module'], $module_name)) {
                 $op = (isset($module_info['funcs'][$array_op[0]])) ? $array_op[0] : 'main';
             }
             $op_file = $op;
+
+            // Không cho truy cập trực tiếp vào /[lang]/[module-name]/sitemap/ chỉ truy cập vào /sitemap-[lang].[module-name].xml
+            if ($op_file == 'sitemap' and (empty($module_info['sitemap']) or !preg_match('/\.' . nv_preg_quote($module_name) . '[a-zA-Z0-9\-\.]*\.xml/', $nv_Request->request_uri))) {
+                nv_info_die($lang_global['error_404_title'], $lang_global['error_404_title'], $lang_global['error_404_content'], 404);
+            }
 
             // Xac dinh quyen dieu hanh module
             if ($module_info['is_modadmin']) {

@@ -25,7 +25,6 @@ define('NV_CURRENTTIME', isset($_SERVER['REQUEST_TIME']) ? $_SERVER['REQUEST_TIM
 $db_config = $global_config = $module_config = $client_info = $user_info = $admin_info = $sys_info = $lang_global = $lang_module = $rss = $nv_vertical_menu = $array_mod_title = $content_type = $submenu = $error_info = $countries = $loadScript = $headers = [];
 $page_title = $key_words = $page_url = $canonicalUrl = $prevPage = $nextPage = $mod_title = $editor_password = $my_head = $my_footer = $description = $contents = '';
 $editor = false;
-$isIndexFile = (substr($_SERVER['PHP_SELF'], -9, 9) === 'index.php');
 
 // Ket noi voi cac file constants, config
 require NV_ROOTDIR . '/includes/constants.php';
@@ -54,8 +53,18 @@ require NV_ROOTDIR . '/' . NV_DATADIR . '/config_global.php';
 if (empty($global_config['my_domains'])) {
     $global_config['my_domains'] = [NV_SERVER_NAME];
 } else {
-    $global_config['my_domains'] = array_map('trim', explode(',', $global_config['my_domains']));
-    $global_config['my_domains'] = array_map('strtolower', $global_config['my_domains']);
+    $global_config['my_domains'] = array_map('trim', explode(',', strtolower($global_config['my_domains'])));
+    // Nếu domain truy cập không đúng sẽ chuyển đến domain đúng (Báo mã 301)
+    if (!in_array(NV_SERVER_NAME, $global_config['my_domains'], true)) {
+        $location = $nv_Server->getOriginalProtocol() . '://' . $global_config['my_domains'][0] . $_SERVER['REQUEST_URI'];
+        if (in_array(substr(php_sapi_name(), 0, 3), ['cgi', 'fpm'], true)) {
+            header('Location: ' . $location);
+            header('Status: 301 Moved Permanently');
+        } else {
+            header('Location: ' . $location, true, 301);
+        }
+        exit(0);
+    }
 }
 
 require NV_ROOTDIR . '/includes/ini.php';
@@ -114,7 +123,7 @@ if ($global_config['proxy_blocker'] != 0) {
     }
 }
 
-if (defined('NV_SYSTEM') and $isIndexFile) {
+if (defined('NV_SYSTEM') and stripos($_SERVER['PHP_SELF'], 'index.php') !== false) {
     require NV_ROOTDIR . '/includes/request_uri.php';
 }
 

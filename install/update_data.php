@@ -18,16 +18,16 @@ $nv_update_config = [];
 $nv_update_config['type'] = 1;
 
 // ID goi cap nhat
-$nv_update_config['packageID'] = 'NVUD4406';
+$nv_update_config['packageID'] = 'NVUD4407';
 
 // Cap nhat cho module nao, de trong neu la cap nhat NukeViet, ten thu muc module neu la cap nhat module
 $nv_update_config['formodule'] = '';
 
 // Thong tin phien ban, tac gia, ho tro
-$nv_update_config['release_date'] = 1671872400;
+$nv_update_config['release_date'] = 1683277200; // Friday, May 5, 2023 4:00:00 PM GMT+07:00
 $nv_update_config['author'] = 'VINADES.,JSC <contact@vinades.vn>';
-$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.4.06';
-$nv_update_config['to_version'] = '4.4.06';
+$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.4.07';
+$nv_update_config['to_version'] = '4.4.07';
 $nv_update_config['allow_old_version'] = [
     '4.4.00',
     '4.4.01',
@@ -35,7 +35,8 @@ $nv_update_config['allow_old_version'] = [
     '4.4.03',
     '4.4.04',
     '4.4.05',
-    '4.4.06'
+    '4.4.06',
+    '4.4.07'
 ];
 
 // 0:Nang cap bang tay, 1:Nang cap tu dong, 2:Nang cap nua tu dong
@@ -52,8 +53,9 @@ $nv_update_config['lang']['vi']['nv_up_sys4403'] = 'Cập nhật hệ thống l�
 $nv_update_config['lang']['vi']['nv_up_sys4404'] = 'Cập nhật hệ thống lên 4.4.04';
 $nv_update_config['lang']['vi']['nv_up_sys4405'] = 'Cập nhật hệ thống lên 4.4.05';
 $nv_update_config['lang']['vi']['nv_up_news4406'] = 'Cập nhật module news lên 4.4.06';
+$nv_update_config['lang']['vi']['nv_up_sys4407'] = 'Cập nhật hệ thống lên 4.4.07';
 
-$nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản 4.4.06';
+$nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản ' . $nv_update_config['to_version'];
 
 // English
 $nv_update_config['lang']['en']['nv_up_modusers4401'] = 'Update module users to 4.4.01';
@@ -62,8 +64,9 @@ $nv_update_config['lang']['en']['nv_up_sys4403'] = 'Update system to 4.4.03';
 $nv_update_config['lang']['en']['nv_up_sys4404'] = 'Update system to 4.4.04';
 $nv_update_config['lang']['en']['nv_up_sys4405'] = 'Update system to 4.4.05';
 $nv_update_config['lang']['en']['nv_up_news4406'] = 'Update module news to 4.4.06';
+$nv_update_config['lang']['en']['nv_up_sys4407'] = 'Update system to 4.4.07';
 
-$nv_update_config['lang']['en']['nv_up_finish'] = 'Update to new version 4.4.06';
+$nv_update_config['lang']['en']['nv_up_finish'] = 'Update to new version ' . $nv_update_config['to_version'];
 
 $nv_update_config['tasklist'] = [];
 $nv_update_config['tasklist'][] = [
@@ -101,6 +104,12 @@ $nv_update_config['tasklist'][] = [
     'rq' => 2,
     'l' => 'nv_up_news4406',
     'f' => 'nv_up_news4406'
+];
+$nv_update_config['tasklist'][] = [
+    'r' => '4.4.07',
+    'rq' => 2,
+    'l' => 'nv_up_sys4407',
+    'f' => 'nv_up_sys4407'
 ];
 $nv_update_config['tasklist'][] = [
     'r' => $nv_update_config['to_version'],
@@ -411,84 +420,6 @@ function nv_up_sys4403()
         trigger_error(print_r($e, true));
     }
 
-    nv_deletefile(NV_ROOTDIR . '/admin/settings/cdn.php');
-    nv_deletefile(NV_ROOTDIR . '/admin/themes/change_layout.php');
-    nv_deletefile(NV_ROOTDIR . '/vendor/pclzip', true);
-    nv_deletefile(NV_ROOTDIR . '/assets/js/chart/Chart.min.css');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/chart/Chart.min.js');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/findbarButton-next-rtl.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/findbarButton-next-rtl@2x.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/findbarButton-next.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/findbarButton-next@2x.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/findbarButton-previous-rtl.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/findbarButton-previous-rtl@2x.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/findbarButton-previous.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/findbarButton-previous@2x.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/loading-small.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/loading-small@2x.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/secondaryToolbarButton-documentProperties.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/secondaryToolbarButton-documentProperties@2x.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/secondaryToolbarButton-firstPage.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/secondaryToolbarButton-firstPage@2x.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/secondaryToolbarButton-handTool.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/secondaryToolbarButton-handTool@2x.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/secondaryToolbarButton-lastPage.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/secondaryToolbarButton-lastPage@2x.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/secondaryToolbarButton-rotateCcw.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/secondaryToolbarButton-rotateCcw@2x.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/secondaryToolbarButton-rotateCw.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/secondaryToolbarButton-rotateCw@2x.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/secondaryToolbarButton-selectTool.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/secondaryToolbarButton-selectTool@2x.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/texture.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-bookmark.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-bookmark@2x.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-download.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-download@2x.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-menuArrows.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-menuArrows@2x.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-openFile.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-openFile@2x.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-pageDown-rtl.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-pageDown-rtl@2x.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-pageDown.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-pageDown@2x.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-pageUp-rtl.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-pageUp-rtl@2x.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-pageUp.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-pageUp@2x.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-presentationMode.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-presentationMode@2x.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-print.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-print@2x.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-search.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-search@2x.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-secondaryToolbarToggle-rtl.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-secondaryToolbarToggle-rtl@2x.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-secondaryToolbarToggle.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-secondaryToolbarToggle@2x.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-sidebarToggle-rtl.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-sidebarToggle-rtl@2x.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-sidebarToggle.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-sidebarToggle@2x.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-viewAttachments.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-viewAttachments@2x.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-viewOutline-rtl.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-viewOutline-rtl@2x.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-viewOutline.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-viewOutline@2x.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-viewThumbnail.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-viewThumbnail@2x.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-zoomIn.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-zoomIn@2x.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-zoomOut.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/toolbarButton-zoomOut@2x.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/treeitem-collapsed-rtl.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/treeitem-collapsed-rtl@2x.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/treeitem-collapsed.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/treeitem-collapsed@2x.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/treeitem-expanded.png');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/treeitem-expanded@2x.png');
 
     return $return;
 }
@@ -581,12 +512,6 @@ function nv_up_sys4405()
         trigger_error(print_r($e, true));
     }
 
-    nv_deletefile(NV_ROOTDIR . '/' . NV_ASSETS_DIR . '/js/chart/Chart.bundle.min.js');
-    nv_deletefile(NV_ROOTDIR . '/' . NV_ASSETS_DIR . '/editors/ckeditor/plugins/flash', true);
-    nv_deletefile(NV_ROOTDIR . '/themes/mobile_default/modules/users/openid_administrator.tpl');
-    nv_deletefile(NV_ROOTDIR . '/vendor/endroid/qrcode', true);
-    nv_deletefile(NV_ROOTDIR . '/vendor/pclzip', true);
-
     return $return;
 }
 
@@ -641,6 +566,33 @@ function nv_up_news4406()
 }
 
 /**
+ *
+ * @return number[]|string[]
+ */
+function nv_up_sys4407()
+{
+    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config, $array_sitelangs;
+
+    $return = [
+        'status' => 1,
+        'complete' => 1,
+        'next' => 1,
+        'link' => 'NO',
+        'lang' => 'NO',
+        'message' => ''
+    ];
+
+    // Chia sẻ cookie cho subdomain
+    try {
+        $db->query('INSERT INTO ' . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'global', 'cookie_share', '1')");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+
+    return $return;
+}
+
+/**
  * @return
  */
 function nv_up_finish()
@@ -656,59 +608,6 @@ function nv_up_finish()
         'message' => ''
     ];
 
-    // Xóa file thừa bản 4.4.06
-    nv_deletefile(NV_ROOTDIR . '/' . NV_ASSETS_DIR . '/editors/ckeditor/plugins/autosave', true);
-    nv_deletefile(NV_ROOTDIR . '/vendor/symfony/options-resolver', true);
-
-    nv_deletefile(NV_ROOTDIR . '/admin/authors/.htaccess');
-    nv_deletefile(NV_ROOTDIR . '/admin/database/.htaccess');
-    nv_deletefile(NV_ROOTDIR . '/admin/extensions/.htaccess');
-    nv_deletefile(NV_ROOTDIR . '/admin/language/.htaccess');
-    nv_deletefile(NV_ROOTDIR . '/admin/modules/.htaccess');
-    nv_deletefile(NV_ROOTDIR . '/admin/seotools/.htaccess');
-    nv_deletefile(NV_ROOTDIR . '/admin/settings/.htaccess');
-    nv_deletefile(NV_ROOTDIR . '/admin/siteinfo/.htaccess');
-    nv_deletefile(NV_ROOTDIR . '/admin/themes/.htaccess');
-    nv_deletefile(NV_ROOTDIR . '/admin/upload/.htaccess');
-    nv_deletefile(NV_ROOTDIR . '/admin/webtools/.htaccess');
-    nv_deletefile(NV_ROOTDIR . '/assets/editors/.htaccess');
-    nv_deletefile(NV_ROOTDIR . '/assets/images/.htaccess');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/.htaccess');
-    nv_deletefile(NV_ROOTDIR . '/assets/tpl/.htaccess');
-    nv_deletefile(NV_ROOTDIR . '/assets/.htaccess');
-    nv_deletefile(NV_ROOTDIR . '/data/cache/.htaccess');
-    nv_deletefile(NV_ROOTDIR . '/data/ip/.htaccess');
-    nv_deletefile(NV_ROOTDIR . '/data/ip6/.htaccess');
-    nv_deletefile(NV_ROOTDIR . '/data/logs/.htaccess');
-    nv_deletefile(NV_ROOTDIR . '/data/.htaccess');
-    nv_deletefile(NV_ROOTDIR . '/includes/utf8/.htaccess');
-    nv_deletefile(NV_ROOTDIR . '/includes/.htaccess');
-    nv_deletefile(NV_ROOTDIR . '/modules/.htaccess');
-    nv_deletefile(NV_ROOTDIR . '/themes/.htaccess');
-    nv_deletefile(NV_ROOTDIR . '/uploads/.htaccess');
-    nv_deletefile(NV_ROOTDIR . '/vendor/.htaccess');
-
-    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/plugins/eqneditor/plugin.js');
-    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/plugins/googledocs/plugin.js');
-    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/plugins/video/plugin.js');
-    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/plugins/video/images/icon.png');
-
-    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/skins/moono/colorpanel.css');
-    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/skins/moono/elementspath.css');
-    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/skins/moono/index.html');
-    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/skins/moono/mainui.css');
-    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/skins/moono/menu.css');
-    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/skins/moono/notification.css');
-    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/skins/moono/panel.css');
-    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/skins/moono/presets.css');
-    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/skins/moono/richcombo.css');
-    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/skins/moono/toolbar.css');
-
-    nv_deletefile(NV_ROOTDIR . '/modules/banners/admin/info_pl.php');
-
-    nv_deletefile(NV_ROOTDIR . '/themes/admin_default/modules/banners/info_pl.tpl');
-    nv_deletefile(NV_ROOTDIR . '/themes/default/blocks/global.QR_code.ini');
-    nv_deletefile(NV_ROOTDIR . '/themes/mobile_default/blocks/global.QR_code.ini');
 
     // Cập nhật phiên bản
     $array_modules = [
