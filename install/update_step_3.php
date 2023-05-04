@@ -159,4 +159,7 @@ nv_deletefile(NV_ROOTDIR . '/vendor/endroid', true);
 nv_deletefile(NV_ROOTDIR . '/vendor/pclzip', true);
 nv_deletefile(NV_ROOTDIR . '/vendor/symfony/options-resolver', true);
 
+// Tự xóa chính nó
+nv_deletefile(NV_ROOTDIR . '/install/update_step_3.php');
+
 // Sau dòng này hệ thống tự build lại config_global.php
