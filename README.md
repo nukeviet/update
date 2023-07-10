@@ -1,4 +1,4 @@
-# Hướng dẫn cập nhật từ NukeViet 4.5.00, 4.5.01, 4.5.02 lên NukeViet 4.5.03
+# Hướng dẫn cập nhật từ NukeViet 4.5.00, 4.5.01, 4.5.02, 4.5.03 lên NukeViet 4.5.04
 
 - Nếu phiên bản NukeViet của bạn nhỏ hơn 4.5.00 bạn cần tìm hướng dẫn cập nhật lên tối thiểu phiên bản 4.5.00 trước khi tiến hành các bước tiếp theo.
 - Bạn nên cập nhật thử nghiệm trên máy tính cá nhân và kiểm tra kỹ trước khi cập nhật trên website.
@@ -28,7 +28,7 @@ Nếu trong quá trình cập nhật bị đẩy ra, bạn đăng nhập lại q
 
 #### Cập nhật thủ công:
 
-Download gói cập nhật tại: https://github.com/nukeviet/update/releases/download/to-4.5.03/update-to-4.5.03.zip
+Download gói cập nhật tại: https://github.com/nukeviet/update/releases/download/to-4.5.04/update-to-4.5.04.zip
 Giải nén và Upload các file trong gói cập nhật với cấu trúc của NukeViet, sau đó vào admin để tiến hành cập nhật.
 
 ### Bước 3: Cấu hình lại site.

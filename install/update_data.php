@@ -18,21 +18,22 @@ $nv_update_config = [];
 $nv_update_config['type'] = 1;
 
 // ID goi cap nhat
-$nv_update_config['packageID'] = 'NVUD4503';
+$nv_update_config['packageID'] = 'NVUD4504';
 
 // Cap nhat cho module nao, de trong neu la cap nhat NukeViet, ten thu muc module neu la cap nhat module
 $nv_update_config['formodule'] = '';
 
 // Thong tin phien ban, tac gia, ho tro
-$nv_update_config['release_date'] = 1671872400;
+$nv_update_config['release_date'] = 1689930000;
 $nv_update_config['author'] = 'VINADES.,JSC <contact@vinades.vn>';
-$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.5.03';
-$nv_update_config['to_version'] = '4.5.03';
+$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.5.04';
+$nv_update_config['to_version'] = '4.5.04';
 $nv_update_config['allow_old_version'] = [
     '4.5.00',
     '4.5.01',
     '4.5.02',
-    '4.5.03'
+    '4.5.03',
+    '4.5.04'
 ];
 
 // 0:Nang cap bang tay, 1:Nang cap tu dong, 2:Nang cap nua tu dong
@@ -48,15 +49,17 @@ $nv_update_config['lang']['vi']['nv_up_sys4501'] = 'Cập nhật hệ thống l�
 $nv_update_config['lang']['vi']['nv_up_modnews4502'] = 'Cập nhật module News lên 4.5.02';
 $nv_update_config['lang']['vi']['nv_up_sys4502'] = 'Cập nhật hệ thống lên 4.5.02';
 $nv_update_config['lang']['vi']['nv_up_modnews4503'] = 'Cập nhật module News lên 4.5.03';
+$nv_update_config['lang']['vi']['nv_up_sys4504'] = 'Cập nhật hệ thống lên 4.5.04';
 
 $nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản ' . $nv_update_config['to_version'];
 
 // English
 $nv_update_config['lang']['en']['nv_up_modusers4501'] = 'Update module Users to 4.5.01';
 $nv_update_config['lang']['en']['nv_up_sys4501'] = 'Update system to 4.5.01';
-$nv_update_config['lang']['en']['nv_up_modnews4502'] = 'Update module News lên 4.5.02';
+$nv_update_config['lang']['en']['nv_up_modnews4502'] = 'Update module News to 4.5.02';
 $nv_update_config['lang']['en']['nv_up_sys4502'] = 'Update system to 4.5.02';
-$nv_update_config['lang']['en']['nv_up_modnews4503'] = 'Update module News lên 4.5.03';
+$nv_update_config['lang']['en']['nv_up_modnews4503'] = 'Update module News to 4.5.03';
+$nv_update_config['lang']['en']['nv_up_sys4504'] = 'Update system to 4.5.04';
 
 $nv_update_config['lang']['en']['nv_up_finish'] = 'Update to new version ' . $nv_update_config['to_version'];
 
@@ -91,6 +94,12 @@ $nv_update_config['tasklist'][] = [
     'rq' => 2,
     'l' => 'nv_up_modnews4503',
     'f' => 'nv_up_modnews4503'
+];
+$nv_update_config['tasklist'][] = [
+    'r' => '4.5.04',
+    'rq' => 2,
+    'l' => 'nv_up_sys4504',
+    'f' => 'nv_up_sys4504'
 ];
 
 $nv_update_config['tasklist'][] = [
@@ -529,6 +538,51 @@ function nv_up_modnews4503()
 }
 
 /**
+ *
+ * @return number[]|string[]
+ */
+function nv_up_sys4504()
+{
+    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config, $array_sitelangs;
+
+    $return = [
+        'status' => 1,
+        'complete' => 1,
+        'next' => 1,
+        'link' => 'NO',
+        'lang' => 'NO',
+        'message' => ''
+    ];
+
+    // Cấu hình dung lượng site
+    try {
+        $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'site', 'over_capacity', '0');");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+    // Dung lượng thư mục upload
+    try {
+        $db->query("ALTER TABLE " . $db_config['prefix'] . "_upload_dir ADD total_size DOUBLE UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Dung lượng thư mục' AFTER time;");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+    // Bật tắt hiển thị dung lượng thư mục
+    try {
+        $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'site', 'show_folder_size', '0');");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+    // Cấu hình chia sẻ cooike cho tên miền con
+    try {
+        $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'global', 'cookie_share', '1');");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+
+    return $return;
+}
+
+/**
  * @return
  */
 function nv_up_finish()
@@ -543,6 +597,9 @@ function nv_up_finish()
         'lang' => 'NO',
         'message' => ''
     ];
+
+    // Xóa file thừa bản 4.5.04
+    nv_deletefile(NV_ROOTDIR . '/' . NV_ASSETS_DIR . '/js/DOMPurify/purify.js');
 
     // Xóa file thừa bản 4.5.03
     nv_deletefile(NV_ROOTDIR . '/' . NV_ASSETS_DIR . '/editors/ckeditor/plugins/autosave', true);
