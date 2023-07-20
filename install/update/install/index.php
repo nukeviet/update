@@ -429,33 +429,33 @@ if ($step == 1) {
             '/^[\_]+/',
             '/[\_]+$/'
         ], [
-            '_',
-            '_',
-            '',
-            ''
-        ], $db_config['dbuname']);
+                '_',
+                '_',
+                '',
+                ''
+            ], $db_config['dbuname']);
         $db_config['dbname'] = preg_replace([
             '/[^a-z0-9]/i',
             '/[\_]+/',
             '/^[\_]+/',
             '/[\_]+$/'
         ], [
-            '_',
-            '_',
-            '',
-            ''
-        ], $db_config['dbname']);
+                '_',
+                '_',
+                '',
+                ''
+            ], $db_config['dbname']);
         $db_config['prefix'] = preg_replace([
             '/[^a-z0-9]/',
             '/[\_]+/',
             '/^[\_]+/',
             '/[\_]+$/'
         ], [
-            '_',
-            '_',
-            '',
-            ''
-        ], strtolower($db_config['prefix']));
+                '_',
+                '_',
+                '',
+                ''
+            ], strtolower($db_config['prefix']));
 
         if (substr($sys_info['os'], 0, 3) == 'WIN' and $db_config['dbhost'] == 'localhost') {
             $db_config['dbhost'] = '127.0.0.1';
@@ -894,9 +894,15 @@ if ($step == 1) {
                             'rewrite_op_mod' => $global_config['rewrite_op_mod'],
                             'ssl_https' => 0
                         ];
+                        $array_server_config = [
+                            'nv_anti_iframe' => NV_ANTI_IFRAME
+                        ];
                         $rewrite = nv_rewrite_change($array_config_rewrite);
+                        $server_config = nv_server_config_change($array_server_config);
                         if (empty($rewrite[0])) {
                             $error .= sprintf($lang_module['file_not_writable'], $rewrite[1]);
+                        } elseif (empty($server_config[0])) {
+                            $error .= sprintf($lang_module['file_not_writable'], $server_config[1]);
                         } elseif (nv_save_file_config_global()) {
                             // Nếu không có dữ liệu mẫu chuyển sang bước 8
                             $step += (empty($array_samples_data) ? 2 : 1);
@@ -925,6 +931,7 @@ if ($step == 1) {
                             $module_name = 'upload';
                             $lang_global['mod_upload'] = 'upload';
                             $global_config['upload_logo'] = '';
+                            $admin_info['userid'] = 1;
 
                             define('NV_UPLOAD_GLOBALTABLE', $db_config['prefix'] . '_upload');
                             define('SYSTEM_UPLOADS_DIR', NV_UPLOADS_DIR);
@@ -940,7 +947,15 @@ if ($step == 1) {
                                 } catch (PDOException $e) {
                                     trigger_error($e->getMessage());
                                 }
+
+                                // Quét các file upload có sẵn
+                                if (!empty($array_dirname[$dirname])) {
+                                    nv_filesListRefresh($dirname);
+                                }
                             }
+                            // Cập nhật lại dung lượng thư mục
+                            $global_config['show_folder_size'] = 1;
+                            nv_dirListRefreshSize();
 
                             // Data Counter
                             $db->query('INSERT INTO ' . $db_config['prefix'] . "_counter VALUES ('c_time', 'start', 0, 0, 0)");
@@ -1132,6 +1147,10 @@ if ($step == 1) {
                 $array_config_rewrite[$row['config_name']] = $row['config_value'];
             }
             nv_rewrite_change($array_config_rewrite);
+            $array_server_config = [
+                'nv_anti_iframe' => NV_ANTI_IFRAME
+            ];
+            nv_server_config_change($array_server_config);
         } catch (PDOException $e) {
             echo '<pre>';
             print_r($e);
