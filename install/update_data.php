@@ -49,6 +49,7 @@ $nv_update_config['lang']['vi']['nv_up_sys4501'] = 'Cập nhật hệ thống l�
 $nv_update_config['lang']['vi']['nv_up_modnews4502'] = 'Cập nhật module News lên 4.5.02';
 $nv_update_config['lang']['vi']['nv_up_sys4502'] = 'Cập nhật hệ thống lên 4.5.02';
 $nv_update_config['lang']['vi']['nv_up_modnews4503'] = 'Cập nhật module News lên 4.5.03';
+$nv_update_config['lang']['vi']['nv_up_modnews4504'] = 'Cập nhật module News lên 4.5.04';
 $nv_update_config['lang']['vi']['nv_up_sys4504'] = 'Cập nhật hệ thống lên 4.5.04';
 
 $nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản ' . $nv_update_config['to_version'];
@@ -59,6 +60,7 @@ $nv_update_config['lang']['en']['nv_up_sys4501'] = 'Update system to 4.5.01';
 $nv_update_config['lang']['en']['nv_up_modnews4502'] = 'Update module News to 4.5.02';
 $nv_update_config['lang']['en']['nv_up_sys4502'] = 'Update system to 4.5.02';
 $nv_update_config['lang']['en']['nv_up_modnews4503'] = 'Update module News to 4.5.03';
+$nv_update_config['lang']['en']['nv_up_modnews4504'] = 'Update module News to 4.5.04';
 $nv_update_config['lang']['en']['nv_up_sys4504'] = 'Update system to 4.5.04';
 
 $nv_update_config['lang']['en']['nv_up_finish'] = 'Update to new version ' . $nv_update_config['to_version'];
@@ -94,6 +96,12 @@ $nv_update_config['tasklist'][] = [
     'rq' => 2,
     'l' => 'nv_up_modnews4503',
     'f' => 'nv_up_modnews4503'
+];
+$nv_update_config['tasklist'][] = [
+    'r' => '4.5.04',
+    'rq' => 2,
+    'l' => 'nv_up_modnews4504',
+    'f' => 'nv_up_modnews4504'
 ];
 $nv_update_config['tasklist'][] = [
     'r' => '4.5.04',
@@ -529,6 +537,41 @@ function nv_up_modnews4503()
                   KEY status (status),
                   UNIQUE KEY title (title)
                 ) ENGINE=MyISAM;");
+            } catch (PDOException $e) {
+                trigger_error(print_r($e, true));
+            }
+        }
+    }
+    return $return;
+}
+
+/**
+ * @return number[]|string[]
+ */
+function nv_up_modnews4504()
+{
+    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config, $array_sitelangs;
+    $return = [
+        'status' => 1,
+        'complete' => 1,
+        'next' => 1,
+        'link' => 'NO',
+        'lang' => 'NO',
+        'message' => ''
+    ];
+    // Duyệt tất cả các ngôn ngữ
+    foreach ($array_sitelangs as $lang) {
+        // Lấy tất cả các module và module ảo của nó
+        $mquery = $db->query('SELECT title, module_data FROM ' . $db_config['prefix'] . '_' . $lang . "_modules WHERE module_file = 'news'");
+        while (list ($mod, $mod_data) = $mquery->fetch(3)) {
+            // Thêm cấu hình bật tắt hiển thị tác giả bên ngoài/bên trong module news
+            try {
+                $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', '" . $mod . "', 'hide_author', '0');");
+            } catch (PDOException $e) {
+                trigger_error(print_r($e, true));
+            }
+            try {
+                $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', '" . $mod . "', 'hide_inauthor', '0');");
             } catch (PDOException $e) {
                 trigger_error(print_r($e, true));
             }
