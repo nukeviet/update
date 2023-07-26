@@ -377,6 +377,11 @@ function nv_up_modusers4500()
                     trigger_error(print_r($e, true));
                 }
                 try {
+                    $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $mod_data . "_groups DROP title;");
+                } catch (PDOException $e) {
+                    trigger_error(print_r($e, true));
+                }
+                try {
                     $db->query('ALTER TABLE ' . $db_config['prefix'] . '_' . $mod_data . "_field CHANGE COLUMN match_type match_type ENUM('none','alphanumeric','unicodename','email','url','regex','callback') NOT NULL DEFAULT 'none' AFTER sql_choices;");
                 } catch (PDOException $e) {
                     trigger_error(print_r($e, true));
