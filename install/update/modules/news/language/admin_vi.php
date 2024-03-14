@@ -60,12 +60,15 @@ $lang_module['error_name'] = 'Lỗi:Bạn cần nhập Tiêu đề';
 $lang_module['weight'] = 'Vị trí';
 $lang_module['numsubcat'] = 'Số chuyên mục con';
 $lang_module['numlinks'] = 'Số liên kết';
+$lang_module['numresults'] = 'Số kết quả';
 $lang_module['numcomments'] = 'Số bình luận';
 $lang_module['numtags'] = 'Số tags';
 $lang_module['newday'] = 'Icon tin mới (ngày)';
 $lang_module['hitstotal'] = 'Số lượt xem';
 $lang_module['checkall'] = 'Chọn tất cả';
 $lang_module['uncheckall'] = 'Bỏ chọn tất cả';
+
+$lang_module['cat_layout'] = 'Bố cục cho chuyên mục';
 $lang_module['cat_instant_view'] = 'Xem URL nguồn cấp RSS bài viết tức thời';
 $lang_module['cat_instant_viewsimple'] = 'Xem URL RSS';
 $lang_module['cat_instant_title'] = 'URL nguồn cấp RSS tức thời';

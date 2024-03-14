@@ -18,22 +18,23 @@ $nv_update_config = [];
 $nv_update_config['type'] = 1;
 
 // ID goi cap nhat
-$nv_update_config['packageID'] = 'NVUD4504';
+$nv_update_config['packageID'] = 'NVUD4505';
 
 // Cap nhat cho module nao, de trong neu la cap nhat NukeViet, ten thu muc module neu la cap nhat module
 $nv_update_config['formodule'] = '';
 
 // Thong tin phien ban, tac gia, ho tro
-$nv_update_config['release_date'] = 1689930000;
+$nv_update_config['release_date'] = 1711098000;
 $nv_update_config['author'] = 'VINADES.,JSC <contact@vinades.vn>';
-$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.5.04';
-$nv_update_config['to_version'] = '4.5.04';
+$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.5.05';
+$nv_update_config['to_version'] = '4.5.05';
 $nv_update_config['allow_old_version'] = [
     '4.5.00',
     '4.5.01',
     '4.5.02',
     '4.5.03',
-    '4.5.04'
+    '4.5.04',
+    '4.5.05'
 ];
 
 // 0:Nang cap bang tay, 1:Nang cap tu dong, 2:Nang cap nua tu dong
@@ -51,6 +52,8 @@ $nv_update_config['lang']['vi']['nv_up_sys4502'] = 'Cập nhật hệ thống l�
 $nv_update_config['lang']['vi']['nv_up_modnews4503'] = 'Cập nhật module News lên 4.5.03';
 $nv_update_config['lang']['vi']['nv_up_modnews4504'] = 'Cập nhật module News lên 4.5.04';
 $nv_update_config['lang']['vi']['nv_up_sys4504'] = 'Cập nhật hệ thống lên 4.5.04';
+$nv_update_config['lang']['vi']['nv_up_modnews4505'] = 'Cập nhật module News lên 4.5.05';
+$nv_update_config['lang']['vi']['nv_up_sys4505'] = 'Cập nhật hệ thống lên 4.5.05';
 
 $nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản ' . $nv_update_config['to_version'];
 
@@ -62,6 +65,8 @@ $nv_update_config['lang']['en']['nv_up_sys4502'] = 'Update system to 4.5.02';
 $nv_update_config['lang']['en']['nv_up_modnews4503'] = 'Update module News to 4.5.03';
 $nv_update_config['lang']['en']['nv_up_modnews4504'] = 'Update module News to 4.5.04';
 $nv_update_config['lang']['en']['nv_up_sys4504'] = 'Update system to 4.5.04';
+$nv_update_config['lang']['en']['nv_up_modnews4505'] = 'Update module News to 4.5.05';
+$nv_update_config['lang']['en']['nv_up_sys4505'] = 'Update system to 4.5.05';
 
 $nv_update_config['lang']['en']['nv_up_finish'] = 'Update to new version ' . $nv_update_config['to_version'];
 
@@ -108,6 +113,18 @@ $nv_update_config['tasklist'][] = [
     'rq' => 2,
     'l' => 'nv_up_sys4504',
     'f' => 'nv_up_sys4504'
+];
+$nv_update_config['tasklist'][] = [
+    'r' => '4.5.05',
+    'rq' => 2,
+    'l' => 'nv_up_modnews4505',
+    'f' => 'nv_up_modnews4505'
+];
+$nv_update_config['tasklist'][] = [
+    'r' => '4.5.05',
+    'rq' => 2,
+    'l' => 'nv_up_sys4505',
+    'f' => 'nv_up_sys4505'
 ];
 
 $nv_update_config['tasklist'][] = [
@@ -626,6 +643,151 @@ function nv_up_sys4504()
 }
 
 /**
+ * @return number[]|string[]
+ */
+function nv_up_modnews4505()
+{
+    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config, $array_sitelangs;
+    $return = [
+        'status' => 1,
+        'complete' => 1,
+        'next' => 1,
+        'link' => 'NO',
+        'lang' => 'NO',
+        'message' => ''
+    ];
+    // Duyệt tất cả các ngôn ngữ
+    foreach ($array_sitelangs as $lang) {
+        // Lấy tất cả các module và module ảo của nó
+        $mquery = $db->query('SELECT title, module_data FROM ' . $db_config['prefix'] . '_' . $lang . "_modules WHERE module_file = 'news'");
+        while (list ($mod, $mod_data) = $mquery->fetch(3)) {
+            // Thêm cấu hình bật tắt hiển thị tác giả bên ngoài/bên trong module news
+            try {
+                $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . "_cat ADD layout_func varchar(100) NOT NULL DEFAULT '' COMMENT 'Layout khi xem chuyên mục' AFTER ad_block_cat;");
+            } catch (PDOException $e) {
+                trigger_error(print_r($e, true));
+            }
+        }
+    }
+    return $return;
+}
+
+/**
+ *
+ * @return number[]|string[]
+ */
+function nv_up_sys4505()
+{
+    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config, $array_sitelangs;
+
+    $return = [
+        'status' => 1,
+        'complete' => 1,
+        'next' => 1,
+        'link' => 'NO',
+        'lang' => 'NO',
+        'message' => ''
+    ];
+
+    // Thêm iframe live.com
+    try {
+        $domain = 'view.officeapps.live.com';
+        $sql = "SELECT config_value FROM " . NV_CONFIG_GLOBALTABLE . " WHERE module='global' AND lang='sys' AND config_name='domains_whitelist'";
+        $domains_whitelist = $db->query($sql)->fetchColumn();
+        $domains_whitelist = json_decode($domains_whitelist, true);
+        if (!is_array($domains_whitelist)) {
+            $domains_whitelist = [];
+        }
+        if (!in_array($domain, $domains_whitelist)) {
+            $domains_whitelist[] = $domain;
+        }
+        $domains_whitelist = json_encode($domains_whitelist);
+        $sql = "UPDATE " . NV_CONFIG_GLOBALTABLE . " SET config_value=" . $db->quote($domains_whitelist) . " WHERE module='global' AND lang='sys' AND config_name='domains_whitelist'";
+        $db->query($sql);
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+    try {
+        $sql = "SELECT config_value FROM " . NV_CONFIG_GLOBALTABLE . " WHERE module='site' AND lang='sys' AND config_name='nv_csp'";
+        $nv_csp = $db->query($sql)->fetchColumn();
+        if (!empty($nv_csp)) {
+            $nv_csp = nv_unhtmlspecialchars($nv_csp);
+
+            $matches = [];
+            preg_match_all("/([a-zA-Z0-9\-]+)[\s]+([^\;]+)/i", $nv_csp, $matches);
+            $directives = [];
+            foreach ($matches[1] as $key => $name) {
+                $directives[$name] = trim($matches[2][$key]);
+            }
+
+            $frame_src = empty($directives['frame-src']) ? "'self' *.google.com *.youtube.com *.facebook.com *.facebook.net *.twitter.com *.zalo.me" : $directives['frame-src'];
+            if (strpos($frame_src, '*.live.com') === false) {
+                $frame_src .= ' *.live.com';
+            }
+            $directives['frame-src'] = $frame_src;
+
+            $nv_csp = '';
+            foreach ($directives as $key => $directive) {
+                $directive = trim(strip_tags($directive));
+                if (!empty($directive)) {
+                    $directive = str_replace(["\r\n", "\r", "\n"], ' ', $directive);
+                    $nv_csp .= $key . ' ' . preg_replace('/[ ]+/', ' ', str_replace(["'", '"', '<', '>'], ['&#039;', '&quot;', '&lt;', '&gt;'], $directive)) . ';';
+                }
+            }
+
+            $sql = "UPDATE " . NV_CONFIG_GLOBALTABLE . " SET config_value=" . $db->quote($nv_csp) . " WHERE module='site' AND lang='sys' AND config_name='nv_csp'";
+            $db->query($sql);
+        }
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+
+    // Hỗ trợ thêm thẻ mark
+    try {
+        $sql = "SELECT config_value FROM " . NV_CONFIG_GLOBALTABLE . " WHERE module='define' AND lang='sys' AND config_name='nv_allowed_html_tags'";
+        $nv_allowed_html_tags = $db->query($sql)->fetchColumn();
+        $nv_allowed_html_tags = array_filter(array_unique(array_map('trim', explode(',', $nv_allowed_html_tags))));
+        if (!in_array('mark', $nv_allowed_html_tags)) {
+            $nv_allowed_html_tags[] = 'mark';
+        }
+        $nv_allowed_html_tags = implode(', ', $nv_allowed_html_tags);
+
+        $sql = "UPDATE " . NV_CONFIG_GLOBALTABLE . " SET config_value=" . $db->quote($nv_allowed_html_tags) . " WHERE module='define' AND lang='sys' AND config_name='nv_allowed_html_tags'";
+        $db->query($sql);
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+
+    // Thêm quản lý tiêu đề Permissions-Policy
+    try {
+        $sql = "INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'site', 'nv_pp', 'accelerometer=(self), autoplay=(self \"https://youtube.com\" \"https://www.youtube.com\" \"https://*.youtube.com\"), camera=(self), display-capture=(self), encrypted-media=(self), fullscreen=(self \"https://youtube.com\" \"https://www.youtube.com\" \"https://*.youtube.com\"), gamepad=(self), geolocation=(self), gyroscope=(self), hid=(self), identity-credentials-get=(self), idle-detection=(self), local-fonts=(self), magnetometer=(self), microphone=(self), midi=(self), otp-credentials=(self), payment=(self), picture-in-picture=(self \"https://youtube.com\" \"https://www.youtube.com\" \"https://*.youtube.com\"), publickey-credentials-get=(self), screen-wake-lock=(self), serial=(self), storage-access=(self), usb=(self), web-share=(self), window-management=(self), xr-spatial-tracking=(self)');";
+        $db->query($sql);
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+    try {
+        $sql = "INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'site', 'nv_pp_act', '1');";
+        $db->query($sql);
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+    try {
+        $sql = "INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'site', 'nv_fp', 'accelerometer \'self\'; autoplay \'self\' https://youtube.com https://www.youtube.com; camera \'self\'; display-capture \'self\'; encrypted-media \'self\'; fullscreen \'self\' https://youtube.com https://www.youtube.com; gamepad \'self\'; geolocation \'self\'; gyroscope \'self\'; hid \'self\'; identity-credentials-get \'self\'; idle-detection \'self\'; local-fonts \'self\'; magnetometer \'self\'; microphone \'self\'; midi \'self\'; otp-credentials \'self\'; payment \'self\'; picture-in-picture \'self\' https://youtube.com https://www.youtube.com; publickey-credentials-get \'self\'; screen-wake-lock \'self\'; serial \'self\'; storage-access \'self\'; usb \'self\'; web-share \'self\'; window-management \'self\'; xr-spatial-tracking \'self\'');";
+        $db->query($sql);
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+    try {
+        $sql = "INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'site', 'nv_fp_act', '1');";
+        $db->query($sql);
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+
+    return $return;
+}
+
+/**
  * @return
  */
 function nv_up_finish()
@@ -694,6 +856,9 @@ function nv_up_finish()
     nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/skins/moono/toolbar.css');
 
     nv_deletefile(NV_ROOTDIR . '/vendor/symfony/polyfill-mbstring/bootstrap80.php');
+
+    // Xóa file thừa bản 4.5.05
+    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/plugins/googledocs', true);
 
     // Cập nhật phiên bản
     $array_modules = [

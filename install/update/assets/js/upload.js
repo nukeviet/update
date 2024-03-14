@@ -67,18 +67,10 @@ function nv_filename_alt(fileAlt) {
         fileAlt = fileAlt.slice(0, -1);
     }
 
-    fileAlt = decodeURIComponent(htmlspecialchars_decode(fileAlt.replace(/^.*[\/\\]/g, '')));
-    fileAlt = fileAlt.split('.');
+    fileAlt = decodeURIComponent(htmlspecialchars_decode(fileAlt.replace(/^.*[\/\\]/g, '')).replace(/%([^\d].)/, "%25$1"));
+    fileAlt = fileAlt.split('.').slice(0, -1).join(' ');
+    fileAlt = fileAlt.replace(/[\_\-\s]+/gi, ' ');
 
-    if (fileAlt.length > 1) {
-        fileAlt[fileAlt.length - 1] = '';
-    }
-
-    fileAlt = fileAlt.join(' ');
-    fileAlt = fileAlt.split('_');
-    fileAlt = fileAlt.join(' ');
-    fileAlt = fileAlt.split('-');
-    fileAlt = fileAlt.join(' ');
     return trim(fileAlt);
 }
 
@@ -217,6 +209,13 @@ function insertvaluetofield() {
         }
         window.close();
     } else {
+        // Tùy biến xử lý cho các trình soạn thảo khác
+        if (window.NVFileManagerSelectCallback) {
+            NVFileManagerSelectCallback(fullPath, $("img[title='" + selFile + "']").attr("alt"));
+            return;
+        }
+
+        // Xử lý mặc định cho CKEditor 4
         if (window.opener === null) {
             return !1;
         }

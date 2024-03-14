@@ -7,7 +7,7 @@ CKEDITOR.editorConfig = function( config ) {
     config.enterMode = CKEDITOR.ENTER_BR;
     config.language = nv_lang_interface;
     config.allowedContent = true;
-    config.extraPlugins = 'video,eqneditor,switchbar,tbvdownload,cleanlink,googledocs';
+    config.extraPlugins = 'video,eqneditor,switchbar,tbvdownload,cleanlink,docviewer';
     config.entities = false;
     config.image2_altRequired = false;
     config.image2_alignClasses = ['image-left', 'image-center', 'image-right'];
@@ -18,6 +18,10 @@ CKEDITOR.editorConfig = function( config ) {
     config.youtube_privacy = false;
     config.youtube_autoplay = true;
     config.codeSnippet_theme = 'github';
+    config.iframe_attributes = {
+        sandbox: 'allow-scripts allow-same-origin allow-forms allow-presentation',
+        allow: 'autoplay'
+    };
     // Default setting.
 
     config.toolbarGroups = [
