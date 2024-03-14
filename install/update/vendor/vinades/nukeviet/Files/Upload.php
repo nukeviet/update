@@ -144,7 +144,7 @@ class Upload
             'Mozilla/4.8 [en] (Windows NT 6.0; U)',
             'Opera/9.25 (Windows NT 6.0; U; en)'
         ];
-        srand((float) microtime() * 10000000);
+        mt_srand(microtime(true) * 1000000);
         $rand = array_rand($userAgents);
         $this->user_agent = $userAgents[$rand];
 
@@ -394,7 +394,7 @@ class Upload
                 }
             }
 
-            if ($finfo !== false) {
+            if (!empty($finfo)) {
                 $mime = finfo_file($finfo, realpath($userfile['tmp_name']));
                 finfo_close($finfo);
                 $mime = preg_replace('/^([\.\-\w]+)\/([\.\-\w]+)(.*)$/i', '$1/$2', trim($mime));
@@ -1197,7 +1197,7 @@ class Upload
             ];
             $open_basedir = (ini_get('open_basedir') == '1' or strtolower(ini_get('open_basedir')) == 'on') ? 1 : 0;
 
-            srand((float) microtime() * 10000000);
+            mt_srand(microtime(true) * 1000000);
             $rand = array_rand($userAgents);
             $agent = $userAgents[$rand];
 

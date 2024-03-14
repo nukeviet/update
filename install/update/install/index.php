@@ -345,7 +345,6 @@ if ($step == 1) {
     $array_support['zlib_support'] = ($sys_info['zlib_support']) ? 1 : 0;
     $array_support['zip_support'] = (extension_loaded('zip')) ? 1 : 0;
     $array_support['mbstring_support'] = (extension_loaded('mbstring')) ? 1 : 0;
-    $array_support['curl_support'] = (extension_loaded('curl')) ? 1 : 0;
     foreach ($array_support as $_key => $_support) {
         $array_support['class_' . $_key] = ($_support) ? 'highlight_green' : 'highlight_red';
         $array_support[$_key] = ($_support) ? $lang_module['compatible'] : $lang_module['not_compatible'];
@@ -1333,6 +1332,7 @@ function nv_save_file_config()
         $content .= "\$global_config['cached'] = 'files';\n";
         $content .= "\$global_config['session_handler'] = 'files';\n";
         $content .= "\$global_config['extension_setup'] = 3; // 0: No, 1: Upload, 2: NukeViet Store, 3: Upload + NukeViet Store\n";
+        $content .= "\$global_config['nat_ports'] = [];\n";
         $content .= "// Readmore: https://wiki.nukeviet.vn/nukeviet4:advanced_setting:file_config";
 
         if ($step < 7) {
