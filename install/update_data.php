@@ -18,16 +18,16 @@ $nv_update_config = [];
 $nv_update_config['type'] = 1;
 
 // ID goi cap nhat
-$nv_update_config['packageID'] = 'NVUD4407';
+$nv_update_config['packageID'] = 'NVUD4408';
 
 // Cap nhat cho module nao, de trong neu la cap nhat NukeViet, ten thu muc module neu la cap nhat module
 $nv_update_config['formodule'] = '';
 
 // Thong tin phien ban, tac gia, ho tro
-$nv_update_config['release_date'] = 1683277200; // Friday, May 5, 2023 4:00:00 PM GMT+07:00
+$nv_update_config['release_date'] = 1710493200; // Friday, March 15, 2024 4:00:00 PM GMT+07:00
 $nv_update_config['author'] = 'VINADES.,JSC <contact@vinades.vn>';
-$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.4.07';
-$nv_update_config['to_version'] = '4.4.07';
+$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.4.08';
+$nv_update_config['to_version'] = '4.4.08';
 $nv_update_config['allow_old_version'] = [
     '4.4.00',
     '4.4.01',
@@ -36,7 +36,8 @@ $nv_update_config['allow_old_version'] = [
     '4.4.04',
     '4.4.05',
     '4.4.06',
-    '4.4.07'
+    '4.4.07',
+    '4.4.08'
 ];
 
 // 0:Nang cap bang tay, 1:Nang cap tu dong, 2:Nang cap nua tu dong
@@ -54,6 +55,7 @@ $nv_update_config['lang']['vi']['nv_up_sys4404'] = 'Cập nhật hệ thống l�
 $nv_update_config['lang']['vi']['nv_up_sys4405'] = 'Cập nhật hệ thống lên 4.4.05';
 $nv_update_config['lang']['vi']['nv_up_news4406'] = 'Cập nhật module news lên 4.4.06';
 $nv_update_config['lang']['vi']['nv_up_sys4407'] = 'Cập nhật hệ thống lên 4.4.07';
+$nv_update_config['lang']['vi']['nv_up_sys4408'] = 'Cập nhật hệ thống lên 4.4.08';
 
 $nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản ' . $nv_update_config['to_version'];
 
@@ -65,6 +67,7 @@ $nv_update_config['lang']['en']['nv_up_sys4404'] = 'Update system to 4.4.04';
 $nv_update_config['lang']['en']['nv_up_sys4405'] = 'Update system to 4.4.05';
 $nv_update_config['lang']['en']['nv_up_news4406'] = 'Update module news to 4.4.06';
 $nv_update_config['lang']['en']['nv_up_sys4407'] = 'Update system to 4.4.07';
+$nv_update_config['lang']['en']['nv_up_sys4408'] = 'Update system to 4.4.08';
 
 $nv_update_config['lang']['en']['nv_up_finish'] = 'Update to new version ' . $nv_update_config['to_version'];
 
@@ -110,6 +113,12 @@ $nv_update_config['tasklist'][] = [
     'rq' => 2,
     'l' => 'nv_up_sys4407',
     'f' => 'nv_up_sys4407'
+];
+$nv_update_config['tasklist'][] = [
+    'r' => '4.4.08',
+    'rq' => 2,
+    'l' => 'nv_up_sys4408',
+    'f' => 'nv_up_sys4408'
 ];
 $nv_update_config['tasklist'][] = [
     'r' => $nv_update_config['to_version'],
@@ -585,6 +594,106 @@ function nv_up_sys4407()
     // Chia sẻ cookie cho subdomain
     try {
         $db->query('INSERT INTO ' . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'global', 'cookie_share', '1')");
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+
+    return $return;
+}
+
+/**
+ *
+ * @return number[]|string[]
+ */
+function nv_up_sys4408()
+{
+    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config, $array_sitelangs;
+
+    $return = [
+        'status' => 1,
+        'complete' => 1,
+        'next' => 1,
+        'link' => 'NO',
+        'lang' => 'NO',
+        'message' => ''
+    ];
+
+    // Thêm iframe live.com
+    try {
+        $domain = 'view.officeapps.live.com';
+        $sql = "SELECT config_value FROM " . NV_CONFIG_GLOBALTABLE . " WHERE module='global' AND lang='sys' AND config_name='domains_whitelist'";
+        $domains_whitelist = $db->query($sql)->fetchColumn();
+        $domains_whitelist = json_decode($domains_whitelist, true);
+        if (!is_array($domains_whitelist)) {
+            $domains_whitelist = [];
+        }
+        if (!in_array($domain, $domains_whitelist)) {
+            $domains_whitelist[] = $domain;
+        }
+        $domains_whitelist = json_encode($domains_whitelist);
+        $sql = "UPDATE " . NV_CONFIG_GLOBALTABLE . " SET config_value=" . $db->quote($domains_whitelist) . " WHERE module='global' AND lang='sys' AND config_name='domains_whitelist'";
+        $db->query($sql);
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+
+    try {
+        $sql = "SELECT config_value FROM " . NV_CONFIG_GLOBALTABLE . " WHERE module='site' AND lang='sys' AND config_name='nv_csp'";
+        $nv_csp = $db->query($sql)->fetchColumn();
+        if (!empty($nv_csp)) {
+            $nv_csp = nv_unhtmlspecialchars($nv_csp);
+
+            $matches = [];
+            preg_match_all("/([a-zA-Z0-9\-]+)[\s]+([^\;]+)/i", $nv_csp, $matches);
+            $directives = [];
+            foreach ($matches[1] as $key => $name) {
+                $directives[$name] = trim($matches[2][$key]);
+            }
+
+            $frame_src = empty($directives['frame-src']) ? "'self' *.google.com *.youtube.com *.facebook.com *.facebook.net *.twitter.com *.zalo.me" : $directives['frame-src'];
+            if (strpos($frame_src, '*.live.com') === false) {
+                $frame_src .= ' *.live.com';
+            }
+            $directives['frame-src'] = $frame_src;
+
+            $nv_csp = '';
+            foreach ($directives as $key => $directive) {
+                $directive = trim(strip_tags($directive));
+                if (!empty($directive)) {
+                    $directive = str_replace(["\r\n", "\r", "\n"], ' ', $directive);
+                    $nv_csp .= $key . ' ' . preg_replace('/[ ]+/', ' ', str_replace(["'", '"', '<', '>'], ['&#039;', '&quot;', '&lt;', '&gt;'], $directive)) . ';';
+                }
+            }
+
+            $sql = "UPDATE " . NV_CONFIG_GLOBALTABLE . " SET config_value=" . $db->quote($nv_csp) . " WHERE module='site' AND lang='sys' AND config_name='nv_csp'";
+            $db->query($sql);
+        }
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+
+    // Thêm quản lý tiêu đề Permissions-Policy
+    try {
+        $sql = "INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'site', 'nv_pp', 'accelerometer=(self), autoplay=(self \"https://youtube.com\" \"https://www.youtube.com\" \"https://*.youtube.com\"), camera=(self), display-capture=(self), encrypted-media=(self), fullscreen=(self \"https://youtube.com\" \"https://www.youtube.com\" \"https://*.youtube.com\"), gamepad=(self), geolocation=(self), gyroscope=(self), hid=(self), identity-credentials-get=(self), idle-detection=(self), local-fonts=(self), magnetometer=(self), microphone=(self), midi=(self), otp-credentials=(self), payment=(self), picture-in-picture=(self \"https://youtube.com\" \"https://www.youtube.com\" \"https://*.youtube.com\"), publickey-credentials-get=(self), screen-wake-lock=(self), serial=(self), storage-access=(self), usb=(self), web-share=(self), window-management=(self), xr-spatial-tracking=(self)');";
+        $db->query($sql);
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+    try {
+        $sql = "INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'site', 'nv_pp_act', '1');";
+        $db->query($sql);
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+    try {
+        $sql = "INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'site', 'nv_fp', 'accelerometer \'self\'; autoplay \'self\' https://youtube.com https://www.youtube.com; camera \'self\'; display-capture \'self\'; encrypted-media \'self\'; fullscreen \'self\' https://youtube.com https://www.youtube.com; gamepad \'self\'; geolocation \'self\'; gyroscope \'self\'; hid \'self\'; identity-credentials-get \'self\'; idle-detection \'self\'; local-fonts \'self\'; magnetometer \'self\'; microphone \'self\'; midi \'self\'; otp-credentials \'self\'; payment \'self\'; picture-in-picture \'self\' https://youtube.com https://www.youtube.com; publickey-credentials-get \'self\'; screen-wake-lock \'self\'; serial \'self\'; storage-access \'self\'; usb \'self\'; web-share \'self\'; window-management \'self\'; xr-spatial-tracking \'self\'');";
+        $db->query($sql);
+    } catch (PDOException $e) {
+        trigger_error(print_r($e, true));
+    }
+    try {
+        $sql = "INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('sys', 'site', 'nv_fp_act', '1');";
+        $db->query($sql);
     } catch (PDOException $e) {
         trigger_error(print_r($e, true));
     }
