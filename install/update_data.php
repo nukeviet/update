@@ -859,6 +859,8 @@ function nv_up_finish()
 
     // Xóa file thừa bản 4.5.05
     nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/plugins/googledocs', true);
+    nv_deletefile(NV_ROOTDIR . '/admin/database/delfile.php');
+    nv_deletefile(NV_ROOTDIR . '/admin/database/getfile.php');
 
     // Cập nhật phiên bản
     $array_modules = [
