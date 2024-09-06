@@ -882,8 +882,6 @@ function nv_up_finish()
 
     nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/plugins/eqneditor/plugin.js');
     nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/plugins/googledocs/plugin.js');
-    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/plugins/video/plugin.js');
-    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/plugins/video/images/icon.png');
 
     nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/skins/moono/colorpanel.css');
     nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/skins/moono/elementspath.css');
