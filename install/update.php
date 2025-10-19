@@ -1052,14 +1052,13 @@ if ($nv_update_config['step'] == 1) {
 
             $type = $nv_Request->get_title('type', 'get', '');
 
-            $current_day = mktime(0, 0, 0, date('n', NV_CURRENTTIME), date('j', NV_CURRENTTIME), date('Y', NV_CURRENTTIME));
-
             $contents = [];
             $contents['savetype'] = ($type == 'sql') ? 'sql' : 'gz';
             $file_ext = ($contents['savetype'] == 'sql') ? 'sql' : 'sql.gz';
             $log_dir = NV_ROOTDIR . '/' . NV_LOGS_DIR . '/dump_backup';
 
-            $contents['filename'] = $log_dir . '/' . md5(nv_genpass(10) . NV_CHECK_SESSION) . '_' . $current_day . '.' . $file_ext;
+            $passphrase = nv_genpass(10);
+            $contents['filename'] = $log_dir . '/' . date('Y-m-d-H-i-s') . '_' . md5($passphrase . NV_CHECK_SESSION) . '.' . $file_ext;
 
             if (!file_exists($contents['filename'])) {
                 $contents['tables'] = [];
@@ -1087,7 +1086,7 @@ if ($nv_update_config['step'] == 1) {
                 $nv_update_config['updatelog']['data_backuped'] = NV_CURRENTTIME;
                 $NvUpdate->set_data_log($nv_update_config['updatelog']);
 
-                exit($lang_module['update_dump_ok'] . ' ' . nv_convertfromBytes($dump[1]) . '<br /><a href="' . NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=database&amp;' . NV_OP_VARIABLE . '=getfile&amp;filename=' . $file . '&amp;checkss=' . md5($file . NV_CHECK_SESSION) . '" title="' . $lang_module['update_dump_download'] . '">' . $lang_module['update_dump_download'] . '</a>');
+                exit($lang_module['update_dump_ok'] . ' ' . nv_convertfromBytes($dump[1]) . '<br /><a href="' . NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=database&amp;' . NV_OP_VARIABLE . '=file&amp;getbackup&amp;t=' . NV_CURRENTTIME . '&amp;p=' . $passphrase . '&amp;ext=' . $file_ext . '&amp;checkss=' . md5($file . NV_CHECK_SESSION) . '" title="' . $lang_module['update_dump_download'] . '">' . $lang_module['update_dump_download'] . '</a>');
             }
             exit($lang_module['update_dump_exist']);
         }

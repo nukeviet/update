@@ -18,16 +18,16 @@ $nv_update_config = [];
 $nv_update_config['type'] = 1;
 
 // ID goi cap nhat
-$nv_update_config['packageID'] = 'NVUD4506';
+$nv_update_config['packageID'] = 'NVUD4507';
 
 // Cap nhat cho module nao, de trong neu la cap nhat NukeViet, ten thu muc module neu la cap nhat module
 $nv_update_config['formodule'] = '';
 
 // Thong tin phien ban, tac gia, ho tro
-$nv_update_config['release_date'] = 1721466000;
+$nv_update_config['release_date'] = 1761296400;
 $nv_update_config['author'] = 'VINADES.,JSC <contact@vinades.vn>';
-$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.5.06';
-$nv_update_config['to_version'] = '4.5.06';
+$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.5.07';
+$nv_update_config['to_version'] = '4.5.07';
 $nv_update_config['allow_old_version'] = [
     '4.5.00',
     '4.5.01',
@@ -35,7 +35,8 @@ $nv_update_config['allow_old_version'] = [
     '4.5.03',
     '4.5.04',
     '4.5.05',
-    '4.5.06'
+    '4.5.06',
+    '4.5.07'
 ];
 
 // 0:Nang cap bang tay, 1:Nang cap tu dong, 2:Nang cap nua tu dong
@@ -56,6 +57,8 @@ $nv_update_config['lang']['vi']['nv_up_sys4504'] = 'Cập nhật hệ thống l�
 $nv_update_config['lang']['vi']['nv_up_modnews4505'] = 'Cập nhật module News lên 4.5.05';
 $nv_update_config['lang']['vi']['nv_up_sys4505'] = 'Cập nhật hệ thống lên 4.5.05';
 $nv_update_config['lang']['vi']['nv_up_sys4506'] = 'Cập nhật hệ thống lên 4.5.06';
+$nv_update_config['lang']['vi']['nv_up_modnews4507'] = 'Cập nhật module News lên 4.5.07';
+$nv_update_config['lang']['vi']['nv_up_sys4507'] = 'Cập nhật hệ thống lên 4.5.07';
 
 $nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản ' . $nv_update_config['to_version'];
 
@@ -70,6 +73,8 @@ $nv_update_config['lang']['en']['nv_up_sys4504'] = 'Update system to 4.5.04';
 $nv_update_config['lang']['en']['nv_up_modnews4505'] = 'Update module News to 4.5.05';
 $nv_update_config['lang']['en']['nv_up_sys4505'] = 'Update system to 4.5.05';
 $nv_update_config['lang']['en']['nv_up_sys4506'] = 'Update system to 4.5.06';
+$nv_update_config['lang']['en']['nv_up_modnews4507'] = 'Update module News to 4.5.07';
+$nv_update_config['lang']['en']['nv_up_sys4507'] = 'Update system to 4.5.07';
 
 $nv_update_config['lang']['en']['nv_up_finish'] = 'Update to new version ' . $nv_update_config['to_version'];
 
@@ -134,6 +139,18 @@ $nv_update_config['tasklist'][] = [
     'rq' => 2,
     'l' => 'nv_up_sys4506',
     'f' => 'nv_up_sys4506'
+];
+$nv_update_config['tasklist'][] = [
+    'r' => '4.5.07',
+    'rq' => 2,
+    'l' => 'nv_up_modnews4507',
+    'f' => 'nv_up_modnews4507'
+];
+$nv_update_config['tasklist'][] = [
+    'r' => '4.5.07',
+    'rq' => 2,
+    'l' => 'nv_up_sys4507',
+    'f' => 'nv_up_sys4507'
 ];
 
 $nv_update_config['tasklist'][] = [
@@ -824,6 +841,199 @@ function nv_up_sys4506()
 }
 
 /**
+ * @return number[]|string[]
+ */
+function nv_up_modnews4507()
+{
+    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config, $array_sitelangs;
+    $return = [
+        'status' => 1,
+        'complete' => 1,
+        'next' => 1,
+        'link' => 'NO',
+        'lang' => 'NO',
+        'message' => ''
+    ];
+    // Duyệt tất cả các ngôn ngữ
+    foreach ($array_sitelangs as $lang) {
+        // Lấy tất cả các module và module ảo của nó
+        $mquery = $db->query('SELECT title, module_data FROM ' . $db_config['prefix'] . '_' . $lang . "_modules WHERE module_file = 'news'");
+        while (list ($mod, $mod_data) = $mquery->fetch(3)) {
+            // Thêm công cụ từ chối duyệt bài, từ chối đăng bài
+            try {
+                $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . "_detail ADD reject_reason text NULL DEFAULT NULL COMMENT 'Nguyên nhân từ chối' AFTER files;");
+            } catch (PDOException $e) {
+                trigger_error(print_r($e, true));
+            }
+        }
+    }
+    return $return;
+}
+
+/**
+ *
+ * @return number[]|string[]
+ */
+function nv_up_sys4507()
+{
+    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config, $array_sitelangs;
+
+    $return = [
+        'status' => 1,
+        'complete' => 1,
+        'next' => 1,
+        'link' => 'NO',
+        'lang' => 'NO',
+        'message' => ''
+    ];
+
+    // Chức năng block tùy chỉnh trên tất cả các ngôn ngữ
+    foreach ($array_sitelangs as $lang) {
+        // Thêm bảng theo ngôn ngữ
+        try {
+            $db->query("CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_modblocks (
+                module_name varchar(50) NOT NULL COMMENT 'Tên module',
+                tag varchar(100) NOT NULL COMMENT 'Tag của khối block',
+                ini_tag varchar(160) NOT NULL COMMENT 'Tag tương đương trong config ini',
+                title varchar(250) NOT NULL DEFAULT '' COMMENT 'Tên gọi nếu có',
+                UNIQUE KEY modblock (module_name, tag),
+                KEY module_name (module_name),
+                KEY tag (tag)
+            ) ENGINE=MyISAM COMMENT 'Vị trí block tùy chỉnh theo từng module';");
+        } catch (PDOException $e) {
+            trigger_error(print_r($e, true));
+        }
+
+        // Lấy tất cả các module và module ảo của news
+        $mquery = $db->query('SELECT title, module_data FROM ' . $db_config['prefix'] . '_' . $lang . "_modules WHERE module_file = 'news'");
+        while (list ($mod, $mod_data) = $mquery->fetch(3)) {
+            // Đọc chuyên mục
+            $sql = "SELECT * FROM " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . "_cat";
+            $result = $db->query($sql);
+            while ($cat = $result->fetch()) {
+                $cat['ad_block_cat'] = array_filter(array_unique(array_map('intval', explode(',', $cat['ad_block_cat']))));
+
+                // Block top
+                if (in_array(1, $cat['ad_block_cat'])) {
+                    try {
+                        $tag = 'TCAT' . $cat['catid'];
+                        $ini_tag = '[CUSTOM_' . strtoupper($mod_data) . '_' . $tag . ']';
+                        $title = 'Top: ' . nv_substr($cat['title'], 0, 150);
+
+                        $sql = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_modblocks (
+                            module_name, tag, ini_tag, title
+                        ) VALUES (
+                            " . $db->quote($mod) . ",
+                            " . $db->quote($tag) . ",
+                            " . $db->quote($ini_tag) . ",
+                            " . $db->quote($title) . "
+                        )";
+                        $db->query($sql);
+                    } catch (Exception $e) {
+                        trigger_error(print_r($e, true));
+                    }
+                }
+
+                // Block bottom
+                if (in_array(2, $cat['ad_block_cat'])) {
+                    try {
+                        $tag = 'BCAT' . $cat['catid'];
+                        $ini_tag = '[CUSTOM_' . strtoupper($mod_data) . '_' . $tag . ']';
+                        $title = 'Bottom: ' . nv_substr($cat['title'], 0, 150);
+
+                        $sql = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_modblocks (
+                            module_name, tag, ini_tag, title
+                        ) VALUES (
+                            " . $db->quote($mod) . ",
+                            " . $db->quote($tag) . ",
+                            " . $db->quote($ini_tag) . ",
+                            " . $db->quote($title) . "
+                        )";
+                        $db->query($sql);
+                    } catch (Exception $e) {
+                        trigger_error(print_r($e, true));
+                    }
+                }
+            }
+            $result->closeCursor();
+        }
+    }
+
+    // Chép hết block sang
+    foreach ($array_sitelangs as $lang) {
+        $sql = "SELECT * FROM " . $db_config['prefix'] . "_" . $lang . "_blocks_groups";
+        $result = $db->query($sql);
+
+        while ($block = $result->fetch()) {
+            unset($m);
+            if (!preg_match('/^\[([a-zA-Z0-9\-\_]+)\_(BOTTOMCAT|TOPCAT)\_([0-9]+)\]$/', $block['position'], $m)) {
+                continue;
+            }
+            if ($m[2] == 'BOTTOMCAT') {
+                $position = '[CUSTOM_' . strtoupper(str_replace('-', '_', $m[1])) . '_BCAT' . $m[3] . ']';
+            } else {
+                $position = '[CUSTOM_' . strtoupper(str_replace('-', '_', $m[1])) . '_TCAT' . $m[3] . ']';
+            }
+
+            // Tạo block mới
+            try {
+                $sql = "SELECT MAX(weight) FROM " . $db_config['prefix'] . "_" . $lang . "_blocks_groups
+                WHERE position=" . $db->quote($position) . " AND theme=" . $db->quote($block['theme']);
+                $weight = $db->query($sql)->fetchColumn();
+                $weight = (int) $weight + 1;
+
+                $sql = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_blocks_groups(
+                    theme, module, file_name, title, link, template,
+                    position, exp_time, active, act, groups_view, all_func, weight, config
+                ) VALUES (
+                    " . $db->quote($block['theme']) . ",
+                    " . $db->quote($block['module']) . ",
+                    " . $db->quote($block['file_name']) . ",
+                    " . $db->quote($block['title']) . ",
+                    " . $db->quote($block['link']) . ",
+                    " . $db->quote($block['template']) . ",
+                    " . $db->quote($position) . ",
+                    " . $block['exp_time'] . ",
+                    " . $block['active'] . ",
+                    " . $block['act'] . ",
+                    " . $db->quote($block['groups_view']) . ",
+                    " . $block['all_func'] . ",
+                    " . $weight . ",
+                    " . $db->quote($block['config']) . "
+                )";
+                $bid = $db->insert_id($sql);
+                if (empty($bid)) {
+                    continue;
+                }
+
+                // Chép cấu hình đặt vào các funcs
+                $sql = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_blocks_weight(bid, func_id, weight)
+                SELECT " . $bid . ", func_id, weight
+                FROM " . $db_config['prefix'] . "_" . $lang . "_blocks_weight
+                WHERE bid=" . $block['bid'];
+                $db->query($sql);
+            } catch (Exception $e) {
+                trigger_error(print_r($e, true));
+            }
+        }
+        $result->closeCursor();
+
+        $db->query("OPTIMIZE TABLE " . $db_config['prefix'] . "_" . $lang . "_blocks_groups");
+        $db->query("OPTIMIZE TABLE " . $db_config['prefix'] . "_" . $lang . "_blocks_weight");
+    }
+
+    // Thay đổi trình soạn thảo CKEditor 4 sang CKEditor5 Classic
+    try {
+        $sql = "UPDATE " . NV_AUTHORS_GLOBALTABLE . " SET editor='ckeditor5-classic' WHERE editor='ckeditor';";
+        $db->query($sql);
+    } catch (Exception $e) {
+        trigger_error(print_r($e, true));
+    }
+
+    return $return;
+}
+
+/**
  * @return
  */
 function nv_up_finish()
@@ -838,6 +1048,18 @@ function nv_up_finish()
         'lang' => 'NO',
         'message' => ''
     ];
+
+    // Xóa file thừa bản 4.5.07
+    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor', true);
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/grab.cur');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/grabbing.cur');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/shadow.png');
+    nv_deletefile(NV_ROOTDIR . '/vendor/phpmailer/phpmailer/get_oauth_token.php');
+    nv_deletefile(NV_ROOTDIR . '/vendor/tecnickcom/tc-lib-barcode/src/Type/Linear/CodeOneTwoEight/CodeOneTwoEightA.php');
+    nv_deletefile(NV_ROOTDIR . '/vendor/tecnickcom/tc-lib-barcode/src/Type/Linear/CodeOneTwoEight/CodeOneTwoEightB.php');
+    nv_deletefile(NV_ROOTDIR . '/vendor/tecnickcom/tc-lib-barcode/src/Type/Linear/CodeOneTwoEight/CodeOneTwoEightC.php');
+    nv_deletefile(NV_ROOTDIR . '/vendor/tecnickcom/tc-lib-barcode/src/Type/Square/Aztec.php');
+    nv_deletefile(NV_ROOTDIR . '/vendor/tecnickcom/tc-lib-barcode/src/Type/Square/Aztec', true);
 
     // Xóa file thừa bản 4.5.05
     nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/plugins/googledocs', true);
