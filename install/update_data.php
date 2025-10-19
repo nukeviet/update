@@ -1030,6 +1030,42 @@ function nv_up_sys4507()
         trigger_error(print_r($e, true));
     }
 
+    // Bổ sung vào CSP
+    try {
+        $sql = "SELECT config_value FROM " . NV_CONFIG_GLOBALTABLE . " WHERE module='site' AND lang='sys' AND config_name='nv_csp'";
+        $nv_csp = $db->query($sql)->fetchColumn();
+        if (!empty($nv_csp)) {
+            $nv_csp = nv_unhtmlspecialchars($nv_csp);
+
+            $matches = [];
+            preg_match_all("/([a-zA-Z0-9\-]+)[\s]+([^\;]+)/i", $nv_csp, $matches);
+            $directives = [];
+            foreach ($matches[1] as $key => $name) {
+                $directives[$name] = trim($matches[2][$key]);
+            }
+
+            $connect_src = empty($directives['connect-src']) ? "'self' *.zalo.me *.tawk.to wss://*.tawk.to *.ckeditor.com" : $directives['connect-src'];
+            if (strpos($connect_src, '*.ckeditor.com') === false) {
+                $connect_src .= ' *.ckeditor.com';
+            }
+            $directives['connect-src'] = $connect_src;
+
+            $nv_csp = '';
+            foreach ($directives as $key => $directive) {
+                $directive = trim(strip_tags($directive));
+                if (!empty($directive)) {
+                    $directive = str_replace(["\r\n", "\r", "\n"], ' ', $directive);
+                    $nv_csp .= $key . ' ' . preg_replace('/[ ]+/', ' ', str_replace(["'", '"', '<', '>'], ['&#039;', '&quot;', '&lt;', '&gt;'], $directive)) . ';';
+                }
+            }
+
+            $sql = "UPDATE " . NV_CONFIG_GLOBALTABLE . " SET config_value=" . $db->quote($nv_csp) . " WHERE module='site' AND lang='sys' AND config_name='nv_csp'";
+            $db->query($sql);
+        }
+    } catch (Exception $e) {
+        trigger_error(print_r($e, true));
+    }
+
     return $return;
 }
 
