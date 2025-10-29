@@ -1066,6 +1066,14 @@ function nv_up_sys4507()
         trigger_error(print_r($e, true));
     }
 
+    // Cải tiến quyền sử dụng module Zalo
+    try {
+        $sql = "UPDATE " . $db_config['prefix'] . "_authors_module SET act_2=1 WHERE module='zalo';";
+        $db->query($sql);
+    } catch (Exception $e) {
+        trigger_error(print_r($e, true));
+    }
+
     return $return;
 }
 
