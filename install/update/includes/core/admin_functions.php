@@ -118,7 +118,9 @@ function nv_save_file_config_global()
     $sql = 'SELECT module, config_name, config_value FROM ' . NV_CONFIG_GLOBALTABLE . " WHERE lang='sys' AND (module='global' OR module='define') ORDER BY config_name ASC";
     $result = $db->query($sql);
 
-    while (list($c_module, $c_config_name, $c_config_value) = $result->fetch(3)) {
+    while ($_scratch = $result->fetch(3)) {
+        list($c_module, $c_config_name, $c_config_value) = $_scratch;
+        unset($_scratch);
         if ($c_module == 'define') {
             if (preg_match('/^\d+$/', $c_config_value)) {
                 $content_config .= "define('" . strtoupper($c_config_name) . "', " . $c_config_value . ");\n";
@@ -539,7 +541,7 @@ function nv_server_config_change($array_config)
         $config_contents .= "  </IfModule>\n\n";
         $config_contents .= "  RewriteEngine On\n";
         $config_contents .= "  RewriteBase " . NV_BASE_SITEURL . "\n";
-        $config_contents .= "  RewriteCond %{REQUEST_FILENAME} /(\.(.*)|composer\.json|default\.(htaccess\.txt|web\.config\.txt|php)|mainfile\.php|web\.config|config\.php)$ [NC]\n";
+        $config_contents .= "  RewriteCond %{REQUEST_FILENAME} /(\.(.*)|composer\.json|composer\.lock|default\.(htaccess\.txt|web\.config\.txt|php)|mainfile\.php|web\.config|config\.php)$ [NC]\n";
         $config_contents .= "  RewriteRule ^.* - [L,R=404]\n";
         $config_contents .= "  RewriteCond %{REQUEST_URI} ^/(data/ip6?|includes|install/tpl|vendor|assets/tpl|data/cache|data/certs|data/logs)/.* [NC]\n";
         $config_contents .= "  RewriteRule ^.* - [L,R=404]\n";
@@ -894,7 +896,9 @@ function nv_save_file_ips($type = 0)
     }
 
     $result = $db->query('SELECT ip, mask, area, begintime, endtime FROM ' . $db_config['prefix'] . '_ips WHERE type=' . $type);
-    while (list($dbip, $dbmask, $dbarea, $dbbegintime, $dbendtime) = $result->fetch(3)) {
+    while ($_scratch = $result->fetch(3)) {
+        list($dbip, $dbmask, $dbarea, $dbbegintime, $dbendtime) = $_scratch;
+        unset($_scratch);
         $dbendtime = (int) $dbendtime;
         $dbarea = (int) $dbarea;
 

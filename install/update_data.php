@@ -18,16 +18,16 @@ $nv_update_config = [];
 $nv_update_config['type'] = 1;
 
 // ID goi cap nhat
-$nv_update_config['packageID'] = 'NVUD4507';
+$nv_update_config['packageID'] = 'NVUD4508';
 
 // Cap nhat cho module nao, de trong neu la cap nhat NukeViet, ten thu muc module neu la cap nhat module
 $nv_update_config['formodule'] = '';
 
 // Thong tin phien ban, tac gia, ho tro
-$nv_update_config['release_date'] = 1761296400;
+$nv_update_config['release_date'] = 1778230800;
 $nv_update_config['author'] = 'VINADES.,JSC <contact@vinades.vn>';
-$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.5.07';
-$nv_update_config['to_version'] = '4.5.07';
+$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.5.08';
+$nv_update_config['to_version'] = '4.5.08';
 $nv_update_config['allow_old_version'] = [
     '4.5.00',
     '4.5.01',
@@ -36,7 +36,8 @@ $nv_update_config['allow_old_version'] = [
     '4.5.04',
     '4.5.05',
     '4.5.06',
-    '4.5.07'
+    '4.5.07',
+    '4.5.08'
 ];
 
 // 0:Nang cap bang tay, 1:Nang cap tu dong, 2:Nang cap nua tu dong
@@ -59,6 +60,7 @@ $nv_update_config['lang']['vi']['nv_up_sys4505'] = 'Cập nhật hệ thống l�
 $nv_update_config['lang']['vi']['nv_up_sys4506'] = 'Cập nhật hệ thống lên 4.5.06';
 $nv_update_config['lang']['vi']['nv_up_modnews4507'] = 'Cập nhật module News lên 4.5.07';
 $nv_update_config['lang']['vi']['nv_up_sys4507'] = 'Cập nhật hệ thống lên 4.5.07';
+$nv_update_config['lang']['vi']['nv_up_sys4508'] = 'Cập nhật hệ thống lên 4.5.08';
 
 $nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản ' . $nv_update_config['to_version'];
 
@@ -75,6 +77,7 @@ $nv_update_config['lang']['en']['nv_up_sys4505'] = 'Update system to 4.5.05';
 $nv_update_config['lang']['en']['nv_up_sys4506'] = 'Update system to 4.5.06';
 $nv_update_config['lang']['en']['nv_up_modnews4507'] = 'Update module News to 4.5.07';
 $nv_update_config['lang']['en']['nv_up_sys4507'] = 'Update system to 4.5.07';
+$nv_update_config['lang']['en']['nv_up_sys4508'] = 'Update system to 4.5.08';
 
 $nv_update_config['lang']['en']['nv_up_finish'] = 'Update to new version ' . $nv_update_config['to_version'];
 
@@ -151,6 +154,12 @@ $nv_update_config['tasklist'][] = [
     'rq' => 2,
     'l' => 'nv_up_sys4507',
     'f' => 'nv_up_sys4507'
+];
+$nv_update_config['tasklist'][] = [
+    'r' => '4.5.08',
+    'rq' => 2,
+    'l' => 'nv_up_sys4508',
+    'f' => 'nv_up_sys4508'
 ];
 
 $nv_update_config['tasklist'][] = [
@@ -1078,6 +1087,62 @@ function nv_up_sys4507()
 }
 
 /**
+ *
+ * @return number[]|string[]
+ */
+function nv_up_sys4508()
+{
+    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config, $array_sitelangs;
+
+    $return = [
+        'status' => 1,
+        'complete' => 1,
+        'next' => 1,
+        'link' => 'NO',
+        'lang' => 'NO',
+        'message' => ''
+    ];
+
+    // Bổ sung vào CSP
+    try {
+        $sql = "SELECT config_value FROM " . NV_CONFIG_GLOBALTABLE . " WHERE module='site' AND lang='sys' AND config_name='nv_csp'";
+        $nv_csp = $db->query($sql)->fetchColumn();
+        if (!empty($nv_csp)) {
+            $nv_csp = nv_unhtmlspecialchars($nv_csp);
+
+            $matches = [];
+            preg_match_all("/([a-zA-Z0-9\-]+)[\s]+([^\;]+)/i", $nv_csp, $matches);
+            $directives = [];
+            foreach ($matches[1] as $key => $name) {
+                $directives[$name] = trim($matches[2][$key]);
+            }
+
+            $connect_src = empty($directives['connect-src']) ? "'self' *.zalo.me *.tawk.to wss://*.tawk.to *.ckeditor.com cdn.plyr.io" : $directives['connect-src'];
+            if (strpos($connect_src, 'cdn.plyr.io') === false) {
+                $connect_src .= ' cdn.plyr.io';
+            }
+            $directives['connect-src'] = $connect_src;
+
+            $nv_csp = '';
+            foreach ($directives as $key => $directive) {
+                $directive = trim(strip_tags($directive));
+                if (!empty($directive)) {
+                    $directive = str_replace(["\r\n", "\r", "\n"], ' ', $directive);
+                    $nv_csp .= $key . ' ' . preg_replace('/[ ]+/', ' ', str_replace(["'", '"', '<', '>'], ['&#039;', '&quot;', '&lt;', '&gt;'], $directive)) . ';';
+                }
+            }
+
+            $sql = "UPDATE " . NV_CONFIG_GLOBALTABLE . " SET config_value=" . $db->quote($nv_csp) . " WHERE module='site' AND lang='sys' AND config_name='nv_csp'";
+            $db->query($sql);
+        }
+    } catch (Exception $e) {
+        trigger_error(print_r($e, true));
+    }
+
+    return $return;
+}
+
+/**
  * @return
  */
 function nv_up_finish()
@@ -1093,33 +1158,11 @@ function nv_up_finish()
         'message' => ''
     ];
 
-    // Xóa file thừa bản 4.5.07
-    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor', true);
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/grab.cur');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/grabbing.cur');
-    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/shadow.png');
-    nv_deletefile(NV_ROOTDIR . '/vendor/phpmailer/phpmailer/get_oauth_token.php');
-    nv_deletefile(NV_ROOTDIR . '/vendor/tecnickcom/tc-lib-barcode/src/Type/Linear/CodeOneTwoEight/CodeOneTwoEightA.php');
-    nv_deletefile(NV_ROOTDIR . '/vendor/tecnickcom/tc-lib-barcode/src/Type/Linear/CodeOneTwoEight/CodeOneTwoEightB.php');
-    nv_deletefile(NV_ROOTDIR . '/vendor/tecnickcom/tc-lib-barcode/src/Type/Linear/CodeOneTwoEight/CodeOneTwoEightC.php');
-    nv_deletefile(NV_ROOTDIR . '/vendor/tecnickcom/tc-lib-barcode/src/Type/Square/Aztec.php');
-    nv_deletefile(NV_ROOTDIR . '/vendor/tecnickcom/tc-lib-barcode/src/Type/Square/Aztec', true);
-
-    // Xóa file thừa bản 4.5.05
-    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/plugins/googledocs', true);
-    nv_deletefile(NV_ROOTDIR . '/admin/database/delfile.php');
-    nv_deletefile(NV_ROOTDIR . '/admin/database/getfile.php');
-
-    // Xóa file thừa bản 4.5.04
-    nv_deletefile(NV_ROOTDIR . '/' . NV_ASSETS_DIR . '/js/DOMPurify/purify.js');
-
-    // Xóa file thừa bản 4.5.03
-    nv_deletefile(NV_ROOTDIR . '/' . NV_ASSETS_DIR . '/editors/ckeditor/plugins/autosave', true);
-    nv_deletefile(NV_ROOTDIR . '/vendor/endroid', true);
-    nv_deletefile(NV_ROOTDIR . '/vendor/symfony/options-resolver', true);
-
+    // Xóa tệp thừa
     nv_deletefile(NV_ROOTDIR . '/admin/authors/.htaccess');
     nv_deletefile(NV_ROOTDIR . '/admin/database/.htaccess');
+    nv_deletefile(NV_ROOTDIR . '/admin/database/delfile.php');
+    nv_deletefile(NV_ROOTDIR . '/admin/database/getfile.php');
     nv_deletefile(NV_ROOTDIR . '/admin/extensions/.htaccess');
     nv_deletefile(NV_ROOTDIR . '/admin/language/.htaccess');
     nv_deletefile(NV_ROOTDIR . '/admin/modules/.htaccess');
@@ -1128,39 +1171,43 @@ function nv_up_finish()
     nv_deletefile(NV_ROOTDIR . '/admin/siteinfo/.htaccess');
     nv_deletefile(NV_ROOTDIR . '/admin/themes/.htaccess');
     nv_deletefile(NV_ROOTDIR . '/admin/upload/.htaccess');
+    nv_deletefile(NV_ROOTDIR . '/admin/upload/download.php');
     nv_deletefile(NV_ROOTDIR . '/admin/webtools/.htaccess');
+    nv_deletefile(NV_ROOTDIR . '/assets/.htaccess');
     nv_deletefile(NV_ROOTDIR . '/assets/editors/.htaccess');
+    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor', true);
     nv_deletefile(NV_ROOTDIR . '/assets/images/.htaccess');
     nv_deletefile(NV_ROOTDIR . '/assets/js/.htaccess');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/grab.cur');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/grabbing.cur');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/shadow.png');
     nv_deletefile(NV_ROOTDIR . '/assets/tpl/.htaccess');
-    nv_deletefile(NV_ROOTDIR . '/assets/.htaccess');
+    nv_deletefile(NV_ROOTDIR . '/data/.htaccess');
     nv_deletefile(NV_ROOTDIR . '/data/cache/.htaccess');
     nv_deletefile(NV_ROOTDIR . '/data/ip/.htaccess');
     nv_deletefile(NV_ROOTDIR . '/data/ip6/.htaccess');
     nv_deletefile(NV_ROOTDIR . '/data/logs/.htaccess');
-    nv_deletefile(NV_ROOTDIR . '/data/.htaccess');
-    nv_deletefile(NV_ROOTDIR . '/includes/utf8/.htaccess');
     nv_deletefile(NV_ROOTDIR . '/includes/.htaccess');
+    nv_deletefile(NV_ROOTDIR . '/includes/utf8/.htaccess');
     nv_deletefile(NV_ROOTDIR . '/modules/.htaccess');
+    nv_deletefile(NV_ROOTDIR . '/modules/banners/admin/info_pl.php');
+    nv_deletefile(NV_ROOTDIR . '/modules/banners/admin/setting.php');
     nv_deletefile(NV_ROOTDIR . '/themes/.htaccess');
+    nv_deletefile(NV_ROOTDIR . '/themes/admin_default/modules/banners/info_pl.tpl');
+    nv_deletefile(NV_ROOTDIR . '/themes/default/blocks/global.QR_code.ini');
+    nv_deletefile(NV_ROOTDIR . '/themes/mobile_default/blocks/global.QR_code.ini');
+    nv_deletefile(NV_ROOTDIR . '/themes/mobile_default/modules/users/openid_administrator.tpl');
     nv_deletefile(NV_ROOTDIR . '/uploads/.htaccess');
     nv_deletefile(NV_ROOTDIR . '/vendor/.htaccess');
-
-    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/plugins/eqneditor/plugin.js');
-    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/plugins/googledocs/plugin.js');
-
-    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/skins/moono/colorpanel.css');
-    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/skins/moono/elementspath.css');
-    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/skins/moono/index.html');
-    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/skins/moono/mainui.css');
-    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/skins/moono/menu.css');
-    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/skins/moono/notification.css');
-    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/skins/moono/panel.css');
-    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/skins/moono/presets.css');
-    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/skins/moono/richcombo.css');
-    nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor/skins/moono/toolbar.css');
-
+    nv_deletefile(NV_ROOTDIR . '/vendor/and', true);
+    nv_deletefile(NV_ROOTDIR . '/vendor/endroid', true);
+    nv_deletefile(NV_ROOTDIR . '/vendor/gregwar', true);
+    nv_deletefile(NV_ROOTDIR . '/vendor/kriswallsmith', true);
+    nv_deletefile(NV_ROOTDIR . '/vendor/league/url', true);
+    nv_deletefile(NV_ROOTDIR . '/vendor/phpmailer/phpmailer/get_oauth_token.php');
+    nv_deletefile(NV_ROOTDIR . '/vendor/symfony/options-resolver', true);
     nv_deletefile(NV_ROOTDIR . '/vendor/symfony/polyfill-mbstring/bootstrap80.php');
+    nv_deletefile(NV_ROOTDIR . '/vendor/true', true);
 
     // Cập nhật phiên bản
     $array_modules = [

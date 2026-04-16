@@ -350,7 +350,11 @@ if ($nv_Request->isset_request('extract', 'get')) {
                 }
 
                 if ($ftp_check_login > 0) {
-                    ftp_close($conn_id);
+                    if (version_compare(PHP_VERSION, '8.1.0', '<')) {
+                        ftp_close($conn_id);
+                    } else {
+                        unset($conn_id);
+                    }
                 }
 
                 if (!empty($no_extract)) {
@@ -429,7 +433,7 @@ if ($nv_Request->isset_request('uploaded', 'get')) {
     if (!file_exists($filename)) {
         $error = $lang_module['autoinstall_error_downloaded'];
     }
-} elseif ($global_config['extension_setup'] == 1 or $global_config['extension_setup'] == 3) {
+} elseif (($global_config['extension_setup'] == 1 or $global_config['extension_setup'] == 3) and in_array(NV_CLIENT_IP, ($global_config['extension_setup_ips'] ?? []), true)) {
     if (!isset($_FILES, $_FILES['extfile'], $_FILES['extfile']['tmp_name'])) {
         $error = $lang_module['autoinstall_error_downloaded'];
     } elseif (!$sys_info['zlib_support']) {
@@ -453,6 +457,8 @@ if ($nv_Request->isset_request('uploaded', 'get')) {
     } else {
         $error = $lang_module['autoinstall_error_downloaded'];
     }
+} else {
+    $error = 'Invalid upload permissions';
 }
 
 // Lay thong tin file tai len

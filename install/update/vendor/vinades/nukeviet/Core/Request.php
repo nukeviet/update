@@ -157,6 +157,12 @@ class Request
     ];
 
     /**
+     * Các attribute có giá trị là nội dung HTML (cần lọc đệ quy qua filterTags()).
+     * VD: srcdoc của <iframe> có thể chứa HTML với event handler nguy hiểm (XSS).
+     */
+    protected $htmlContentAttributes = ['srcdoc'];
+
+    /**
      * Các attr bị cấm, sẽ bị lọc bỏ.
      * - Tất cả các arrt bắt đầu bằng on
      * - Các attr bên dưới
@@ -170,7 +176,8 @@ class Request
         'allownetworking', // Control a SWF file’s access to network functionality by setting the allowNetworking parameter = internal
         'allowscriptaccess', // Loại bỏ điều khiển cho phép javascript trong embed, tự động đặt = never
         'fscommand', // attacker can use this when executed from within an embedded Flash object
-        'seeksegmenttime' // this is a method that locates the specified point on the element’s segment time line and begins playing from that point. The segment consists of one repetition of the time line including reverse play using the AUTOREVERSE attribute.
+        'seeksegmenttime', // this is a method that locates the specified point on the element’s segment time line and begins playing from that point. The segment consists of one repetition of the time line including reverse play using the AUTOREVERSE attribute.
+        'ping' // HTML5 <a ping> sends POST to arbitrary URL on click - SSRF/tracking vector
     ];
 
     private $disablecomannds = [
@@ -319,8 +326,7 @@ class Request
         }
 
         if ($ip2long == -1 or $ip2long === false) {
-            http_response_code(403);
-            trigger_error(Request::INCORRECT_IP, 256);
+            throw new \NukeViet\Http\HttpException(Request::INCORRECT_IP, 403);
         }
         $this->ip_addr = $ip2long;
 
@@ -503,8 +509,7 @@ class Request
                 $this->isIpValid = true;
             }
             if (!(($this->isRefererValid and (empty($this->origin) or $this->isOriginValid)) or $this->isIpValid)) {
-                http_response_code(403);
-                trigger_error(Request::REQUEST_BLOCKED, 256);
+                throw new \NukeViet\Http\HttpException(Request::REQUEST_BLOCKED, 403);
             }
         }
     }
@@ -547,8 +552,7 @@ class Request
                  * Nếu sai thì từ chối truy vấn
                  */
                 unset($_SERVER['HTTP_ORIGIN']);
-                http_response_code(403);
-                trigger_error(Request::INCORRECT_ORIGIN, 256);
+                throw new \NukeViet\Http\HttpException(Request::INCORRECT_ORIGIN, 403);
             }
         } else {
             $this->origin_key = 2;
@@ -565,6 +569,13 @@ class Request
         if (!empty($this->referer)) {
             $ref = parse_url($this->referer);
             if (isset($ref['scheme']) and in_array($ref['scheme'], ['http', 'https', 'ftp', 'gopher'], true) and isset($ref['host'])) {
+                $ref['host'] = preg_replace('/[^a-zA-Z0-9\-\.\[\]\:\x{0080}-\x{FFFF}]/u', '', $ref['host']);
+                if (empty($ref['host'])) {
+                    $this->referer_key = 0;
+                    $this->referer = '';
+                    unset($_SERVER['HTTP_REFERER']);
+                    return;
+                }
                 $ref_origin = ($ref['scheme'] . '://' . $ref['host'] . ((isset($ref['port']) and $ref['port'] != '80' and $ref['port'] != '443') ? (':' . $ref['port']) : ''));
                 // Server dạng IPv6 trực tiếp
                 if (substr($ref['host'], 0, 1) == '[' and substr($ref['host'], -1) == ']') {
@@ -639,8 +650,7 @@ class Request
     private function sessionStart($https_only)
     {
         if (headers_sent() or connection_status() != 0 or connection_aborted()) {
-            http_response_code(500);
-            trigger_error(Request::IS_HEADERS_SENT, 256);
+            throw new \NukeViet\Http\HttpException(Request::IS_HEADERS_SENT, 500);
         }
 
         $_secure = ($this->server_protocol == 'https' and $https_only) ? 1 : 0;
@@ -784,6 +794,21 @@ class Request
 
                 $value = $this->unhtmlentities($attrSubSet[1]);
 
+                /*
+                 * Lọc đệ quy attribute có giá trị là nội dung HTML (VD: srcdoc của iframe)
+                 */
+                if (in_array($attrSubSet[0], $this->htmlContentAttributes, true)) {
+                    $htmlValid = true;
+                    $decodedValue = html_entity_decode($value, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+                    $filteredHtml = $this->filterTags($decodedValue, $htmlValid);
+                    if (!$htmlValid) {
+                        $isvalid = false;
+                    }
+                    $attrSubSet[1] = htmlspecialchars($filteredHtml, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+                    $newSet[] = $attrSubSet[0] . '=[@{' . $attrSubSet[1] . '}@]';
+                    continue;
+                }
+
                 // Security check Data URLs
                 if (preg_match('/^[\r\n\s\t]*d\s*a\s*t\s*a\s*\:([^\,]*?)\;*[\r\n\s\t]*(base64)*?[\r\n\s\t]*\,[\r\n\s\t]*(.*?)[\r\n\s\t]*$/isu', $value, $m)) {
                     if (empty($m[2])) {
@@ -813,7 +838,8 @@ class Request
                     'write' => '/w\s*r\s*i\s*t\s*e/si',
                     'cookie' => '/c\s*o\s*o\s*k\s*i\s*e/si',
                     'window' => '/w\s*i\s*n\s*d\s*o\s*w/si',
-                    'data:' => '/d\s*a\s*t\s*a\s*\:/si'
+                    'data:' => '/d\s*a\s*t\s*a\s*\:/si',
+                    '@import' => '/@\s*i\s*m\s*p\s*o\s*r\s*t/si' // CSS injection via style attribute
                 ];
                 $value = preg_replace(array_values($search), array_keys($search), $value);
 
@@ -835,7 +861,7 @@ class Request
                 if ('param' == $tagName and 'name' == $attrSubSet[0] and preg_match('/^[\r\n\s\t]*(allowscriptaccess|allownetworking)/isu', strtolower($value))) {
                     return [];
                 }
-                if (preg_match('/(expression|javascript|behaviour|vbscript|mocha|livescript)(\:*)/', $value)) {
+                if (preg_match('/(expression|javascript|behaviour|vbscript|mocha|livescript)(\:*)/', $value) or preg_match('/@import/i', $value)) {
                     continue;
                 }
                 if (!empty($this->disablecomannds) and preg_match('#(' . implode('|', $this->disablecomannds) . ')(\s*)\((.*?)\)#si', $value)) {

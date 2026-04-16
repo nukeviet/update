@@ -10,6 +10,7 @@
  */
 
 use NukeViet\Api\Exception;
+use Symfony\Polyfill\Intl\Idn\Idn;
 
 if (!defined('NV_MAINFILE')) {
     exit('Stop!!!');
@@ -662,7 +663,7 @@ function nv_EncodeEmail($strEmail, $strDisplay = '', $blnCreateLink = true)
     $strlen = strlen($strEmail);
 
     for ($i = 0; $i < $strlen; ++$i) {
-        $strEncodedEmail .= '&#' . ord(substr($strEmail, $i)) . ';';
+        $strEncodedEmail .= '&#' . ord($strEmail[$i]) . ';';
     }
 
     $strDisplay = trim($strDisplay);
@@ -1990,12 +1991,7 @@ function nv_check_domain($domain)
         if (function_exists('idn_to_ascii')) {
             $domain = idn_to_ascii($domain, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46);
         } else {
-            $Punycode = new TrueBV\Punycode();
-            try {
-                $domain = $Punycode->encode($domain);
-            } catch (\Exception $e) {
-                $domain = '';
-            }
+            $domain = Idn::idn_to_ascii($domain, Idn::IDNA_DEFAULT, Idn::INTL_IDNA_VARIANT_UTS46);
         }
 
         if (preg_match('/^xn\-\-([a-z0-9\-\.]+)\.([a-z0-9\-]+)$/', $domain)) {
@@ -2222,7 +2218,11 @@ function nv_check_url($url, $isTriggerError = true, $is_200 = 0)
         curl_setopt($curl, CURLOPT_USERAGENT, $agent);
 
         $response = curl_exec($curl);
-        curl_close($curl);
+        if (version_compare(PHP_VERSION, '8.0.0', '<')) {
+            curl_close($curl);
+        } else {
+            unset($curl);
+        }
 
         if ($response === false) {
             if ($isTriggerError) {
