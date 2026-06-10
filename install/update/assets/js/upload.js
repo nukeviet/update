@@ -1167,7 +1167,7 @@ $("div#renamefolder").dialog({
             $.ajax({
                 type: "POST",
                 url: nv_module_url + "renamefolder&random=" + nv_randomNum(10),
-                data: "path=" + a + "&newname=" + b,
+                data: "path=" + a + "&newname=" + b + "&checkss=" + nv_check_pass,
                 success: function(h) {
                     var j = h.split("_");
                     if (j[0] == "ERROR") {
@@ -1378,7 +1378,7 @@ $("input[name=newPathOK]").click(function() {
         $.ajax({
             type: "POST",
             url: nv_module_url + "moveimg&num=" + nv_randomNum(10),
-            data: "path=" + currentFolder + "&newpath=" + newPath + "&file=" + selFile + "&mirror=" + mirrorFile,
+            data: "path=" + currentFolder + "&newpath=" + newPath + "&file=" + selFile + "&mirror=" + mirrorFile + "&checkss=" + nv_check_pass,
             success: function(e) {
                 var e = e.split("#");
 

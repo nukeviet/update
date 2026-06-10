@@ -169,6 +169,16 @@ class Request
      */
     private $disabledattributes = [
         'action',
+        'formaction',
+        'formmethod',
+        'formenctype',
+        'formtarget',
+        'formnovalidate',
+        'poster',
+        'usemap',
+        'data',
+        'classid',
+        'referrerpolicy',
         'background',
         'codebase',
         'dynsrc',
@@ -750,6 +760,21 @@ class Request
         $value = preg_replace('/%u0([a-z0-9]{3})/i', '&#x\\1;', $value);
         $value = preg_replace('/%([a-z0-9]{2})/i', '&#x\\1;', $value);
         $value = str_ireplace(['&#x53;&#x43;&#x52;&#x49;&#x50;&#x54;', '&#x26;&#x23;&#x78;&#x36;&#x41;&#x3B;&#x26;&#x23;&#x78;&#x36;&#x31;&#x3B;&#x26;&#x23;&#x78;&#x37;&#x36;&#x3B;&#x26;&#x23;&#x78;&#x36;&#x31;&#x3B;&#x26;&#x23;&#x78;&#x37;&#x33;&#x3B;&#x26;&#x23;&#x78;&#x36;&#x33;&#x3B;&#x26;&#x23;&#x78;&#x37;&#x32;&#x3B;&#x26;&#x23;&#x78;&#x36;&#x39;&#x3B;&#x26;&#x23;&#x78;&#x37;&#x30;&#x3B;&#x26;&#x23;&#x78;&#x37;&#x34;&#x3B;', '/*', '*/', '<!--', '-->', '<!-- -->', '&#x0A;', '&#x0D;', '&#x09;', ''], '', $value);
+
+        /*
+        * Loại bỏ các hex entity biểu diễn ký tự điều khiển ASCII (U+0000–U+001F),
+        * ví dụ: &#x9;, &#x09;, &#x1F;.
+        *
+        * Negative lookahead được dùng để bảo đảm chỉ khớp một entity hoàn chỉnh,
+        * tránh trường hợp khớp nhầm một phần của giá trị dài hơn (ví dụ: &#x3c;).
+        */
+        $value = preg_replace('/&#[xX]0*(?:1[0-9a-fA-F]|[0-9a-fA-F])(?![0-9a-fA-F]);?/i', '', $value);
+
+        /*
+        * Loại bỏ các decimal entity của ký tự điều khiển ASCII (0–31).
+        * Negative lookahead ngăn việc khớp một phần của entity dài hơn.
+        */
+        $value = preg_replace('/&#0*(?:3[01]|[12][0-9]|[0-9])(?![0-9]);?/', '', $value);
         $value = str_replace(['&colon;', '&lpar;', '&rpar;', '&Tab;', '&NewLine;'], [':', '(', ')', '', ''], $value);
 
         $search = '/&#[xX]0{0,8}(21|22|23|24|25|26|27|28|29|2a|2b|2d|2f|30|31|32|33|34|35|36|37|38|39|3a|3b|3d|3f|40|41|42|43|44|45|46|47|48|49|4a|4b|4c|4d|4e|4f|50|51|52|53|54|55|56|57|58|59|5a|5b|5c|5d|5e|5f|60|61|62|63|64|65|66|67|68|69|6a|6b|6c|6d|6e|6f|70|71|72|73|74|75|76|77|78|79|7a|7b|7c|7d|7e);?/i';
@@ -780,7 +805,19 @@ class Request
                 continue;
             }
             $attrSubSet = array_map('trim', explode('=', trim($attrSet[$i]), 2));
+
+            /*
+            * Chuẩn hóa tên thuộc tính bằng cách loại bỏ các entity hex/decimal của ký tự
+            * điều khiển ASCII (0–31), kể cả khi thiếu dấu ";" ở cuối. Sau đó giải mã các
+            * entity còn lại và loại bỏ các ký tự điều khiển thực trong chuỗi.
+            *
+            * Việc này giúp ngăn các kỹ thuật che giấu tên thuộc tính bằng ký tự điều khiển
+            * nhằm vượt qua cơ chế phát hiện các thuộc tính bắt đầu bằng "on".
+            */
             $attrSubSet[0] = strtolower($attrSubSet[0]);
+            $attrSubSet[0] = preg_replace('/&#[xX]0*(?:1[0-9a-fA-F]|[0-9a-fA-F])(?![0-9a-fA-F]);?/i', '', $attrSubSet[0]);
+            $attrSubSet[0] = preg_replace('/&#0*(?:3[01]|[12][0-9]|[0-9])(?![0-9]);?/', '', $attrSubSet[0]);
+            $attrSubSet[0] = preg_replace('/[\x00-\x20]/', '', html_entity_decode($attrSubSet[0], ENT_QUOTES | ENT_HTML5, 'UTF-8'));
 
             if (!preg_match('/[a-z]+/i', $attrSubSet[0]) or in_array($attrSubSet[0], $this->disabledattributes, true) or preg_match('/^on/i', $attrSubSet[0])) {
                 continue;
@@ -1120,31 +1157,60 @@ class Request
     }
 
     /**
-     * encodeCookie()
+     * encryptData()
      *
      * @param string $string
      * @return string
      */
-    private function encodeCookie($string)
+    private function encryptData($string)
     {
-        $iv = substr($this->cookie_key, 0, 16);
-        $string = openssl_encrypt($string, 'aes-256-cbc', $this->cookie_key, 0, $iv);
+        if (function_exists('random_bytes')) {
+            $iv = random_bytes(16);
+        } elseif (function_exists('openssl_random_pseudo_bytes')) {
+            $iv = openssl_random_pseudo_bytes(16, $crypto_strong);
+            if ($iv === false || !$crypto_strong) {
+                $iv = hash_hmac('sha256', uniqid(mt_rand(), true), $this->cookie_key, true);
+                $iv = substr($iv, 0, 16);
+            }
+        } else {
+            $iv = hash_hmac('sha256', uniqid(mt_rand(), true), $this->cookie_key, true);
+            $iv = substr($iv, 0, 16);
+        }
 
-        return strtr($string, '+/=', '-_,');
+        $ciphertext = openssl_encrypt($string, 'aes-256-cbc', $this->cookie_key, OPENSSL_RAW_DATA, $iv);
+        if ($ciphertext === false) {
+            return '';
+        }
+
+        $hmac = hash_hmac('sha256', $iv . $ciphertext, $this->cookie_key, true);
+        $packed = $hmac . $iv . $ciphertext;
+
+        return strtr(base64_encode($packed), '+/=', '-_,');
     }
 
     /**
-     * decodeCookie()
+     * decryptData()
      *
      * @param string $string
      * @return false|string
      */
-    private function decodeCookie($string)
+    private function decryptData($string)
     {
-        $string = strtr($string, '-_,', '+/=');
-        $iv = substr($this->cookie_key, 0, 16);
+        $packed = base64_decode(strtr($string, '-_,', '+/='));
+        if ($packed === false || strlen($packed) < 48) {
+            return false;
+        }
 
-        return openssl_decrypt($string, 'aes-256-cbc', $this->cookie_key, 0, $iv);
+        $hmac = substr($packed, 0, 32);
+        $iv = substr($packed, 32, 16);
+        $ciphertext = substr($packed, 48);
+
+        $calculated_hmac = hash_hmac('sha256', $iv . $ciphertext, $this->cookie_key, true);
+        if (!hash_equals($hmac, $calculated_hmac)) {
+            return false;
+        }
+
+        return openssl_decrypt($ciphertext, 'aes-256-cbc', $this->cookie_key, OPENSSL_RAW_DATA, $iv);
     }
 
     /**
@@ -1186,7 +1252,7 @@ class Request
                     if (array_key_exists($this->cookie_prefix . '_' . $name, $_COOKIE)) {
                         $value = $_COOKIE[$this->cookie_prefix . '_' . $name];
                         if ($decode) {
-                            $value = $this->decodeCookie($value);
+                            $value = $this->decryptData($value);
                         }
                         if (empty($value) or is_numeric($value)) {
                             return $value;
@@ -1199,7 +1265,7 @@ class Request
                     if (array_key_exists($this->session_prefix . '_' . $name, $_SESSION)) {
                         $value = $_SESSION[$this->session_prefix . '_' . $name];
                         if ($decode) {
-                            $value = $this->decodeCookie($value);
+                            $value = $this->decryptData($value);
                         }
                         if (empty($value) or is_numeric($value)) {
                             return $value;
@@ -1265,7 +1331,7 @@ class Request
         }
         $name = $this->cookie_prefix . '_' . $name;
         if ($encode) {
-            $value = $this->encodeCookie($value);
+            $value = $this->encryptData($value);
         }
         $expire = (int) $expire;
         if (!empty($expire)) {
@@ -1309,7 +1375,7 @@ class Request
             return false;
         }
         $name = $this->session_prefix . '_' . $name;
-        $value = $this->encodeCookie($value);
+        $value = $this->encryptData($value);
         $_SESSION[$name] = $value;
 
         return true;

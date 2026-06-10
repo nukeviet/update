@@ -27,7 +27,8 @@ $menu_top = [
 $allow_func = ['main', 'newest', 'popular', 'featured', 'downloaded', 'favorites', 'detail', 'login', 'update', 'manage'];
 
 // Cho phep upload ung dung
-if (!empty($global_config['extension_setup']) and in_array(NV_CLIENT_IP, ($global_config['extension_setup_ips'] ?? []), true)) {
+$ips_allowed = (!empty($global_config['extension_setup_ips']) and is_array($global_config['extension_setup_ips'])) ? $global_config['extension_setup_ips'] : [];
+if (!empty($global_config['extension_setup']) and in_array(NV_CLIENT_IP, $ips_allowed, true)) {
     $allow_func[] = 'upload';
 }
 
@@ -209,12 +210,74 @@ function nv_store_cookies($cookies = [], $currCookies = [])
  * @param mixed $extConfig
  * @return
  */
-function nv_check_ext_config_filecontent($extConfig)
+function nv_check_ext_config_filecontent(&$extConfig)
 {
     if (!isset($extConfig['extension']) or !isset($extConfig['author']) or !isset($extConfig['note']) or !isset($extConfig['extension']['id']) or !isset($extConfig['extension']['type']) or !isset($extConfig['extension']['name']) or !isset($extConfig['extension']['version']) or !isset($extConfig['author']['name']) or !isset($extConfig['author']['email']) or !isset($extConfig['note']['text'])) {
         return false;
     }
 
+    // Lọc bỏ HTML tags
+    $extConfig['extension']['name'] = strip_tags(trim($extConfig['extension']['name']));
+    $extConfig['extension']['type'] = strip_tags(trim($extConfig['extension']['type']));
+    $extConfig['extension']['version'] = strip_tags(trim($extConfig['extension']['version']));
+    $extConfig['author']['name'] = strip_tags(trim($extConfig['author']['name']));
+    $extConfig['author']['email'] = strip_tags(trim($extConfig['author']['email']));
+    $extConfig['note']['text'] = strip_tags(trim($extConfig['note']['text']));
+
+    // Kiểm tra kiểu dữ liệu và định dạng hợp lệ
+    if (!preg_match('/^[0-9]+$/', $extConfig['extension']['id'])) {
+        return false;
+    }
+
+    if (!preg_match('/^[a-z0-9]+$/i', $extConfig['extension']['type'])) {
+        return false;
+    }
+
+    if (!preg_match('/^[a-z0-9\.]+$/i', $extConfig['extension']['version'])) {
+        return false;
+    }
+
+    if (!filter_var($extConfig['author']['email'], FILTER_VALIDATE_EMAIL)) {
+        return false;
+    }
+
+    // Các trường còn lại không biết cấu trúc chính xác mới dùng nv_htmlspecialchars
+    $extConfig['extension']['name'] = nv_htmlspecialchars($extConfig['extension']['name']);
+    $extConfig['author']['name'] = nv_htmlspecialchars($extConfig['author']['name']);
+    $extConfig['note']['text'] = nv_htmlspecialchars($extConfig['note']['text']);
+
+    return true;
+}
+
+/**
+ * Kiểm đường dẫn của tệp tin trong gói ứng dụng hợp lệ:
+ * Không chứa path rỗng, absolute path, .., ., backslash traversal, drive path C:, mọi dấu :, null byte
+ *
+ * @param string $filename
+ * @return bool
+ */
+function nv_zip_validate_member_name($filename)
+{
+    if (!is_string($filename) || $filename === '') {
+        return false;
+    }
+    if (strpos($filename, "\0") !== false) {
+        return false;
+    }
+    if (strpos($filename, ':') !== false) {
+        return false;
+    }
+    if (strpos($filename, '\\') !== false) {
+        return false;
+    }
+    if ($filename[0] === '/') {
+        return false;
+    }
+    foreach (explode('/', $filename) as $part) {
+        if ($part === '..' || $part === '.') {
+            return false;
+        }
+    }
     return true;
 }
 
@@ -227,6 +290,10 @@ function nv_check_ext_config_filecontent($extConfig)
 function check_structure($fileinfo, $arraySysOption, $info)
 {
     $file_path = trim($fileinfo['filename']);
+
+    if (!nv_zip_validate_member_name($file_path)) {
+        return false;
+    }
     $folder = explode('/', $file_path);
     $lev_folder = sizeof($folder) - 1;
     $is_folder = $fileinfo['folder'];
@@ -270,7 +337,7 @@ function check_structure($fileinfo, $arraySysOption, $info)
         return false;
     }
 
-    // Trong assets và upload file không được chứa phần mở rộng bị cấm
+    // Trong assets và uploads file không được chứa phần mở rộng bị cấm
     if (($root_folder == 'assets' or $root_folder == 'uploads') and in_array(nv_getextension($file_path), $arraySysOption['forbidExt'])) {
         return false;
     }

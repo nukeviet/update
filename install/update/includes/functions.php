@@ -136,7 +136,7 @@ function nv_is_myreferer($referer = '')
         '/^[w]+\./'
     ], '', $referer);
 
-    if (preg_match('/^' . nv_preg_quote(NV_SERVER_NAME) . '/', $referer)) {
+    if (preg_match('/^' . nv_preg_quote(NV_SERVER_NAME) . '(\/|:|$)/', $referer)) {
         return 1;
     }
 
@@ -598,9 +598,8 @@ function nv_capcha_txt($seccode, $type = 'captcha')
 
         return false;
     }
-    mt_srand(microtime(true) * 1000000);
-    $maxran = 1000000;
-    $random = mt_rand(0, $maxran);
+
+    $random = (PHP_VERSION_ID >= 70000) ? random_int(0, 1000000) : mt_rand(0, 1000000);
 
     $seccode = strtoupper($seccode);
     $random_num = $nv_Request->get_string('random_num', 'session', 0);
@@ -783,6 +782,10 @@ function nv_user_in_groups($groups_view)
 function nv_groups_add_user($group_id, $userid, $approved = 1, $mod_data = 'users')
 {
     global $db, $db_config, $global_config;
+
+    $group_id = (int) $group_id;
+    $userid = (int) $userid;
+
     $_mod_table = ($mod_data == 'users') ? NV_USERS_GLOBALTABLE : $db_config['prefix'] . '_' . $mod_data;
     $query = $db->query('SELECT COUNT(*) FROM ' . $_mod_table . ' WHERE userid=' . $userid);
     if (!$query->fetchColumn()) {
@@ -846,6 +849,9 @@ function nv_groups_add_user($group_id, $userid, $approved = 1, $mod_data = 'user
 function nv_groups_del_user($group_id, $userid, $mod_data = 'users')
 {
     global $db, $db_config, $global_config;
+
+    $group_id = (int) $group_id;
+    $userid = (int) $userid;
 
     $_mod_table = ($mod_data == 'users') ? NV_USERS_GLOBALTABLE : $db_config['prefix'] . '_' . $mod_data;
     $row = $db->query('SELECT data, approved FROM ' . $_mod_table . '_groups_users WHERE group_id=' . $group_id . ' AND userid=' . $userid)->fetch();
@@ -1058,10 +1064,11 @@ function nv_unhtmlspecialchars($string)
 /**
  * nv_htmlspecialchars()
  *
- * @param string $string
- * @return string
+ * @param mixed  $string
+ * @param string $type   Hỗ trợ 'url', 'attribute', 'js' hoặc mặc định
+ * @return string|array
  */
-function nv_htmlspecialchars($string)
+function nv_htmlspecialchars($string, $type = '')
 {
     if (empty($string)) {
         return $string;
@@ -1071,8 +1078,14 @@ function nv_htmlspecialchars($string)
         $array_keys = array_keys($string);
 
         foreach ($array_keys as $key) {
-            $string[$key] = nv_htmlspecialchars($string[$key]);
+            $string[$key] = nv_htmlspecialchars($string[$key], $type);
         }
+    } elseif ($type === 'url') {
+        $string = htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
+    } elseif ($type === 'js') {
+        $string = json_encode($string, JSON_HEX_TAG | JSON_HEX_AMP | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+    } elseif ($type === 'attribute') {
+        $string = htmlspecialchars($string, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
     } else {
         $search = ['&', '\'', '"', '<', '>', '\\', '/', '(', ')', '*', '[', ']', '!', '=', '%', '^', ':', '{', '}', '`', '~'];
         $replace = ['&amp;', '&#039;', '&quot;', '&lt;', '&gt;', '&#x005C;', '&#x002F;', '&#40;', '&#41;', '&#42;', '&#91;', '&#93;', '&#33;', '&#x3D;', '&#x25;', '&#x5E;', '&#x3A;', '&#x7B;', '&#x7D;', '&#x60;', '&#x7E;'];
@@ -2205,7 +2218,9 @@ function nv_check_url($url, $isTriggerError = true, $is_200 = 0)
         curl_setopt($curl, CURLOPT_PORT, $port);
 
         if ($isHttps) {
-            curl_setopt($curl, CURLOPT_SSL_VERIFYSTATUS, false);
+            if (defined('CURLOPT_SSL_VERIFYSTATUS')) {
+                curl_setopt($curl, CURLOPT_SSL_VERIFYSTATUS, false);
+            }
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         }
 
@@ -2218,6 +2233,9 @@ function nv_check_url($url, $isTriggerError = true, $is_200 = 0)
         curl_setopt($curl, CURLOPT_USERAGENT, $agent);
 
         $response = curl_exec($curl);
+
+        $curlError = ($response === false) ? curl_error($curl) : '';
+
         if (version_compare(PHP_VERSION, '8.0.0', '<')) {
             curl_close($curl);
         } else {
@@ -2226,13 +2244,13 @@ function nv_check_url($url, $isTriggerError = true, $is_200 = 0)
 
         if ($response === false) {
             if ($isTriggerError) {
-                trigger_error(curl_error($curl), E_USER_WARNING);
+                trigger_error($curlError, E_USER_WARNING);
             }
 
             return false;
         }
         $res = explode(PHP_EOL, $response);
-    } elseif (nv_function_exists('get_headers') and $allow_url_fopen) {
+    } elseif (nv_function_exists('get_headers') and $allow_url_fopen and PHP_VERSION_ID >= 70100) {
         if ($isHttps) {
             $context = stream_context_create([
                 'ssl' => [
@@ -2671,7 +2689,7 @@ function nv_delete_notification($language, $module, $type, $obid)
             $sth->bindParam(':type', $type, PDO::PARAM_STR);
             $sth->execute();
         } catch (PDOException $e) {
-            trigger_error(print_r($e, true));
+            trigger_error($e);
         }
     }
 

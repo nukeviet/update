@@ -1344,6 +1344,10 @@ function nv_up_finish()
     nv_deletefile(NV_ROOTDIR . '/assets/editors/ckeditor', true);
     nv_deletefile(NV_ROOTDIR . '/assets/images/.htaccess');
     nv_deletefile(NV_ROOTDIR . '/assets/js/.htaccess');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/chart/chart.esm.js');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/chart/chart.js');
+    nv_deletefile(NV_ROOTDIR . '/assets/js/chart/chunks', true);
+    nv_deletefile(NV_ROOTDIR . '/assets/js/chart/helpers.esm.js');
     nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/grab.cur');
     nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/grabbing.cur');
     nv_deletefile(NV_ROOTDIR . '/assets/js/pdf.js/images/shadow.png');
@@ -1358,6 +1362,7 @@ function nv_up_finish()
     nv_deletefile(NV_ROOTDIR . '/modules/.htaccess');
     nv_deletefile(NV_ROOTDIR . '/modules/banners/admin/info_pl.php');
     nv_deletefile(NV_ROOTDIR . '/modules/banners/admin/setting.php');
+    nv_deletefile(NV_ROOTDIR . '/modules/news/funcs/instant-rss.php');
     nv_deletefile(NV_ROOTDIR . '/themes/.htaccess');
     nv_deletefile(NV_ROOTDIR . '/themes/admin_default/modules/banners/info_pl.tpl');
     nv_deletefile(NV_ROOTDIR . '/themes/default/blocks/global.QR_code.ini');
@@ -1374,6 +1379,7 @@ function nv_up_finish()
     nv_deletefile(NV_ROOTDIR . '/vendor/symfony/options-resolver', true);
     nv_deletefile(NV_ROOTDIR . '/vendor/symfony/polyfill-mbstring/bootstrap80.php');
     nv_deletefile(NV_ROOTDIR . '/vendor/true', true);
+    nv_deletefile(NV_ROOTDIR . '/vendor/vinades/nukeviet/Facebook', true);
 
     // Cập nhật phiên bản
     $array_modules = [

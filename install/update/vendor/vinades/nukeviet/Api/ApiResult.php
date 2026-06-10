@@ -47,7 +47,7 @@ class ApiResult
     const CODE_MISSING_IP = '0019';
     const CODE_MISSING_TIME = '0020';
 
-    private const CODE_PATTERN = '/^[0-9]{4}$/';
+    const CODE_PATTERN = '/^[0-9]{4}$/';
 
     private $result = [];
 
@@ -153,7 +153,7 @@ class ApiResult
      */
     public function getResult()
     {
-        return json_encode($this->result);
+        return json_encode($this->result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
     }
 
     /**

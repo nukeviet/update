@@ -272,15 +272,19 @@ function nv_get_viewImage($fileName, $refresh = 0)
 
         if (file_exists(NV_ROOTDIR . '/' . $viewFile)) {
             if ($refresh) {
-                @nv_deletefile(NV_ROOTDIR . '/' . $viewFile);
+                nv_deletefile(NV_ROOTDIR . '/' . $viewFile);
             } else {
-                $size = @getimagesize(NV_ROOTDIR . '/' . $viewFile);
+                $size = getimagesize(NV_ROOTDIR . '/' . $viewFile);
+                if (is_array($size)) {
+                    return [
+                        $viewFile,
+                        $size[0],
+                        $size[1]
+                    ];
+                }
 
-                return [
-                    $viewFile,
-                    $size[0],
-                    $size[1]
-                ];
+                // Thumbnail file bị hỏng, xóa để tạo lại
+                nv_deletefile(NV_ROOTDIR . '/' . $viewFile);
             }
         }
 
@@ -368,13 +372,12 @@ function nv_get_viewImage($fileName, $refresh = 0)
             return false;
         }
     } else {
-        $size = @getimagesize(NV_ROOTDIR . '/' . $fileName);
-
-        return [
+        $size = getimagesize(NV_ROOTDIR . '/' . $fileName);
+        return is_array($size) ? [
             $fileName,
             $size[0],
             $size[1]
-        ];
+        ] : false;
     }
 
     return false;
@@ -394,7 +397,9 @@ function nv_getFileInfo($pathimg, $file)
     clearstatcache();
 
     unset($matches);
-    preg_match("/([a-zA-Z0-9\.\-\_\\s\(\)]+)\.([a-zA-Z0-9]+)$/", $file, $matches);
+    if (!preg_match("/^([a-zA-Z0-9\.\-\_\\s\(\)]+)\.([a-zA-Z0-9]+)$/", $file, $matches)) {
+        return [];
+    }
 
     $info = [];
     $info['name'] = $file;
@@ -406,6 +411,9 @@ function nv_getFileInfo($pathimg, $file)
     $info['type'] = 'file';
 
     $stat = @stat(NV_ROOTDIR . '/' . $pathimg . '/' . $file);
+    if (!$stat) {
+        return [];
+    }
     $info['filesize'] = $stat['size'];
 
     $info['src'] = NV_ASSETS_DIR . '/images/file.gif';
@@ -416,28 +424,30 @@ function nv_getFileInfo($pathimg, $file)
 
     if (in_array($ext, $array_images, true)) {
         $size = @getimagesize(NV_ROOTDIR . '/' . $pathimg . '/' . $file);
-        $info['type'] = 'image';
-        $info['src'] = $pathimg . '/' . $file;
-        $info['srcwidth'] = (int) ($size[0]);
-        $info['srcheight'] = (int) ($size[1]);
-        $info['size'] = (int) ($size[0]) . '|' . (int) ($size[1]);
+        if ($size) {
+            $info['type'] = 'image';
+            $info['src'] = $pathimg . '/' . $file;
+            $info['srcwidth'] = (int) ($size[0]);
+            $info['srcheight'] = (int) ($size[1]);
+            $info['size'] = (int) ($size[0]) . '|' . (int) ($size[1]);
 
-        if (preg_match('/^' . nv_preg_quote(NV_UPLOADS_DIR) . '\/([a-z0-9\-\_\.\/]+)$/i', $pathimg . '/' . $file)) {
-            if (($thub_src = nv_get_viewImage($pathimg . '/' . $file)) !== false) {
-                $info['src'] = $thub_src[0];
-                $info['srcwidth'] = $thub_src[1];
-                $info['srcheight'] = $thub_src[2];
+            if (preg_match('/^' . nv_preg_quote(NV_UPLOADS_DIR) . '\/([a-z0-9\-\_\.\/]+)$/i', $pathimg . '/' . $file)) {
+                if (($thub_src = nv_get_viewImage($pathimg . '/' . $file)) !== false) {
+                    $info['src'] = $thub_src[0];
+                    $info['srcwidth'] = $thub_src[1];
+                    $info['srcheight'] = $thub_src[2];
+                }
             }
-        }
 
-        if ($info['srcwidth'] > 80) {
-            $info['srcheight'] = round(80 / $info['srcwidth'] * $info['srcheight']);
-            $info['srcwidth'] = 80;
-        }
+            if ($info['srcwidth'] > 80) {
+                $info['srcheight'] = round(80 / $info['srcwidth'] * $info['srcheight']);
+                $info['srcwidth'] = 80;
+            }
 
-        if ($info['srcheight'] > 80) {
-            $info['srcwidth'] = round(80 / $info['srcheight'] * $info['srcwidth']);
-            $info['srcheight'] = 80;
+            if ($info['srcheight'] > 80) {
+                $info['srcwidth'] = round(80 / $info['srcheight'] * $info['srcwidth']);
+                $info['srcheight'] = 80;
+            }
         }
     } elseif (in_array($ext, $array_flash, true)) {
         $info['type'] = 'flash';
@@ -463,40 +473,58 @@ function nv_getFileInfo($pathimg, $file)
         }
     } elseif ($ext == 'svg') {
         $info['type'] = 'image';
-        if (($xml = @simplexml_load_file(NV_ROOTDIR . '/' . $pathimg . '/' . $file)) !== false) {
-            $attr = $xml->attributes();
-            $maxWidth = $maxHeight = $width = $height = 0;
 
-            if (isset($attr['viewBox'])) {
-                $viewBox = explode(' ', (string) $attr['viewBox']);
-                if (isset($viewBox[3])) {
-                    $maxWidth = (int) ($viewBox[2]);
-                    $maxHeight = (int) ($viewBox[3]);
-                }
-            }
+        $dom = new \DOMDocument();
+        $prev_use_errors = libxml_use_internal_errors(true);
+        if (PHP_MAJOR_VERSION < 8) {
+            $prev_loader = libxml_disable_entity_loader(true);
+        }
+        $loaded = $dom->load(NV_ROOTDIR . '/' . $pathimg . '/' . $file, LIBXML_NONET);
+        if (PHP_MAJOR_VERSION < 8) {
+            libxml_disable_entity_loader($prev_loader);
+        }
+        libxml_clear_errors();
+        libxml_use_internal_errors($prev_use_errors);
 
-            if (isset($attr['width']) and isset($attr['height'])) {
-                $width = (int) ($attr['width']);
-                $height = (int) ($attr['height']);
-            } else {
-                $width = $maxWidth;
-                $height = $maxHeight;
-            }
+        if ($loaded) {
+            $root = $dom->documentElement;
+            if ($root and strtolower($root->localName) === 'svg') {
+                $width = $root->getAttribute('width');
+                $height = $root->getAttribute('height');
+                $viewBox = $root->getAttribute('viewBox');
 
-            if ($width > 0 and $height > 0) {
-                $info['src'] = $pathimg . '/' . $file;
-                $info['srcwidth'] = $width;
-                $info['srcheight'] = $height;
-                $info['size'] = (int) $width . '|' . (int) $height;
-
-                if ($info['srcwidth'] > 80) {
-                    $info['srcheight'] = round(80 / $info['srcwidth'] * $info['srcheight']);
-                    $info['srcwidth'] = 80;
+                $maxWidth = $maxHeight = 0;
+                if (!empty($viewBox)) {
+                    $parts = preg_split('/[\s,]+/', trim($viewBox));
+                    if (isset($parts[3])) {
+                        $maxWidth = (int) $parts[2];
+                        $maxHeight = (int) $parts[3];
+                    }
                 }
 
-                if ($info['srcheight'] > 80) {
-                    $info['srcwidth'] = round(80 / $info['srcheight'] * $info['srcwidth']);
-                    $info['srcheight'] = 80;
+                if (!empty($width) and !empty($height)) {
+                    $width = (int) $width;
+                    $height = (int) $height;
+                } else {
+                    $width = $maxWidth;
+                    $height = $maxHeight;
+                }
+
+                if ($width > 0 and $height > 0) {
+                    $info['src'] = $pathimg . '/' . $file;
+                    $info['srcwidth'] = $width;
+                    $info['srcheight'] = $height;
+                    $info['size'] = (int) $width . '|' . (int) $height;
+
+                    if ($info['srcwidth'] > 80) {
+                        $info['srcheight'] = round(80 / $info['srcwidth'] * $info['srcheight']);
+                        $info['srcwidth'] = 80;
+                    }
+
+                    if ($info['srcheight'] > 80) {
+                        $info['srcwidth'] = round(80 / $info['srcheight'] * $info['srcwidth']);
+                        $info['srcheight'] = 80;
+                    }
                 }
             }
         }
@@ -534,7 +562,7 @@ function nv_filesListRefresh($pathimg)
                     continue;
                 }
 
-                if (preg_match('/([a-zA-Z0-9\.\-\_\\s\(\)]+)\.([a-zA-Z0-9]+)$/', $title)) {
+                if (preg_match('/^([a-zA-Z0-9\.\-\_\\s\(\)]+)\.([a-zA-Z0-9]+)$/', $title)) {
                     $info = nv_getFileInfo($pathimg, $title);
                     $info['did'] = $did;
                     $info['title'] = $title;
@@ -546,7 +574,17 @@ function nv_filesListRefresh($pathimg)
                         $dif = array_diff_assoc($info, $results[$title]);
                         if (!empty($dif)) {
                             // Cập nhật CSDL file thay đổi
-                            $db->query('UPDATE ' . NV_UPLOAD_GLOBALTABLE . '_file SET filesize=' . (int) ($info['filesize']) . ", src='" . $info['src'] . "', srcwidth=" . (int) ($info['srcwidth']) . ', srcheight=' . (int) ($info['srcheight']) . ", sizes='" . $info['sizes'] . "', userid=" . $admin_info['userid'] . ', mtime=' . $info['mtime'] . ' WHERE did = ' . $did . ' AND title = ' . $db->quote($title));
+                            $sth_up = $db->prepare('UPDATE ' . NV_UPLOAD_GLOBALTABLE . '_file SET filesize = :filesize, src = :src, srcwidth = :srcwidth, srcheight = :srcheight, sizes = :sizes, userid = :userid, mtime = :mtime WHERE did = :did AND title = :title');
+                            $sth_up->bindValue(':filesize', $info['filesize'], PDO::PARAM_INT);
+                            $sth_up->bindValue(':src', $info['src'], PDO::PARAM_STR);
+                            $sth_up->bindValue(':srcwidth', $info['srcwidth'], PDO::PARAM_INT);
+                            $sth_up->bindValue(':srcheight', $info['srcheight'], PDO::PARAM_INT);
+                            $sth_up->bindValue(':sizes', $info['sizes'], PDO::PARAM_STR);
+                            $sth_up->bindValue(':userid', $admin_info['userid'], PDO::PARAM_INT);
+                            $sth_up->bindValue(':mtime', $info['mtime'], PDO::PARAM_INT);
+                            $sth_up->bindValue(':did', $did, PDO::PARAM_INT);
+                            $sth_up->bindValue(':title', $title, PDO::PARAM_STR);
+                            $sth_up->execute();
                         }
                         unset($results[$title]);
                     } else {
@@ -555,12 +593,22 @@ function nv_filesListRefresh($pathimg)
                         $newalt = str_replace('-', ' ', change_alias($newalt));
 
                         // Thêm file mới
-                        $sth = $db->prepare('INSERT INTO ' . NV_UPLOAD_GLOBALTABLE . "_file
+                        $sth = $db->prepare('INSERT INTO ' . NV_UPLOAD_GLOBALTABLE . '_file
                             (name, ext, type, filesize, src, srcwidth, srcheight, sizes, userid, mtime, did, title, alt)
-                            VALUES (:name, '" . $info['ext'] . "', '" . $info['type'] . "', " . (int) ($info['filesize']) . ", '" . $info['src'] . "', " . (int) ($info['srcwidth']) . ', ' . (int) ($info['srcheight']) . ", '" . $info['sizes'] . "', " . $info['userid'] . ', ' . $info['mtime'] . ', ' . $did . ', :title, :newalt)');
-                        $sth->bindParam(':name', $info['name'], PDO::PARAM_STR);
-                        $sth->bindParam(':title', $title, PDO::PARAM_STR);
-                        $sth->bindParam(':newalt', $newalt, PDO::PARAM_STR);
+                            VALUES (:name, :ext, :type, :filesize, :src, :srcwidth, :srcheight, :sizes, :userid, :mtime, :did, :title, :newalt)');
+                        $sth->bindValue(':name', $info['name'], PDO::PARAM_STR);
+                        $sth->bindValue(':ext', $info['ext'], PDO::PARAM_STR);
+                        $sth->bindValue(':type', $info['type'], PDO::PARAM_STR);
+                        $sth->bindValue(':filesize', $info['filesize'], PDO::PARAM_INT);
+                        $sth->bindValue(':src', $info['src'], PDO::PARAM_STR);
+                        $sth->bindValue(':srcwidth', $info['srcwidth'], PDO::PARAM_INT);
+                        $sth->bindValue(':srcheight', $info['srcheight'], PDO::PARAM_INT);
+                        $sth->bindValue(':sizes', $info['sizes'], PDO::PARAM_STR);
+                        $sth->bindValue(':userid', $info['userid'], PDO::PARAM_INT);
+                        $sth->bindValue(':mtime', $info['mtime'], PDO::PARAM_INT);
+                        $sth->bindValue(':did', $did, PDO::PARAM_INT);
+                        $sth->bindValue(':title', $title, PDO::PARAM_STR);
+                        $sth->bindValue(':newalt', $newalt, PDO::PARAM_STR);
                         $sth->execute();
                     }
                 }

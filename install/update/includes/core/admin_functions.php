@@ -21,12 +21,11 @@ if (!defined('NV_ADMIN') or !defined('NV_MAINFILE')) {
  */
 function nv_groups_list($mod_data = 'users')
 {
-    global $nv_Cache;
+    global $nv_Cache, $db, $db_config, $global_config, $lang_global;
     $cache_file = NV_LANG_DATA . '_groups_list_' . NV_CACHE_PREFIX . '.cache';
     if (($cache = $nv_Cache->getItem($mod_data, $cache_file)) != false) {
-        return unserialize($cache);
+        return (PHP_VERSION_ID >= 70000) ? unserialize($cache, ['allowed_classes' => false]) : unserialize($cache);
     }
-    global $db, $db_config, $global_config, $lang_global;
 
     $groups = [];
     $_mod_table = ($mod_data == 'users') ? NV_USERS_GLOBALTABLE : $db_config['prefix'] . '_' . $mod_data;
@@ -277,14 +276,14 @@ function nv_geVersion($updatetime = 3600)
                 'Referer' => NV_MY_DOMAIN,
             ],
             'body' => [
-                'lang' > NV_LANG_INTERFACE,
+                'lang' => NV_LANG_INTERFACE,
                 'basever' => $global_config['version'],
                 'mode' => 'getsysver'
             ]
         ];
 
         $array = $NV_Http->post(NUKEVIET_STORE_APIURL, $args);
-        $array = (is_array($array) and !empty($array['body'])) ? @unserialize($array['body']) : [];
+        $array = (is_array($array) and !empty($array['body'])) ? ((PHP_VERSION_ID >= 70000) ? @unserialize($array['body'], ['allowed_classes' => false]) : @unserialize($array['body'])) : [];
 
         $error = '';
         if (!empty(NukeViet\Http\Http::$error)) {
@@ -565,7 +564,7 @@ function nv_server_config_change($array_config)
         $config_contents .= "  </FilesMatch>\n";
         $config_contents .= "</IfModule>\n\n";
         $config_contents .= "<IfModule mod_headers.c>\n";
-        $config_contents .= "  <FilesMatch \"\.(js|css|xml|ttf|pdf)$\">\n";
+        $config_contents .= "  <FilesMatch \"\.(js|css|xml|ttf|pdf|svg)$\">\n";
         $config_contents .= "    Header append Vary Accept-Encoding\n";
         $config_contents .= "    Header set Access-Control-Allow-Origin \"*\"\n";
         if (!empty($array_config['nv_anti_iframe'])) {
@@ -753,7 +752,7 @@ function nv_getExtVersion($updatetime = 3600)
                     'Referer' => NV_MY_DOMAIN,
                 ],
                 'body' => [
-                    'lang' > NV_LANG_INTERFACE,
+                    'lang' => NV_LANG_INTERFACE,
                     'basever' => $global_config['version'],
                     'mode' => 'checkextver',
                     'ids' => implode(',', $array_ext_ids),
@@ -761,7 +760,7 @@ function nv_getExtVersion($updatetime = 3600)
             ];
 
             $apidata = $NV_Http->post(NUKEVIET_STORE_APIURL, $args);
-            $apidata = (is_array($apidata) and !empty($apidata['body'])) ? @unserialize($apidata['body']) : [];
+            $apidata = (is_array($apidata) and !empty($apidata['body'])) ? ((PHP_VERSION_ID >= 70000) ? @unserialize($apidata['body'], ['allowed_classes' => false]) : @unserialize($apidata['body'])) : [];
 
             $error = '';
             if (!empty(NukeViet\Http\Http::$error)) {
@@ -899,6 +898,9 @@ function nv_save_file_ips($type = 0)
     while ($_scratch = $result->fetch(3)) {
         list($dbip, $dbmask, $dbarea, $dbbegintime, $dbendtime) = $_scratch;
         unset($_scratch);
+        if (!filter_var($dbip, FILTER_VALIDATE_IP)) {
+            continue;
+        }
         $dbendtime = (int) $dbendtime;
         $dbarea = (int) $dbarea;
 
