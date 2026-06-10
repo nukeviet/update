@@ -18,16 +18,16 @@ $nv_update_config = [];
 $nv_update_config['type'] = 1;
 
 // ID goi cap nhat
-$nv_update_config['packageID'] = 'NVUD4508';
+$nv_update_config['packageID'] = 'NVUD4509';
 
 // Cap nhat cho module nao, de trong neu la cap nhat NukeViet, ten thu muc module neu la cap nhat module
 $nv_update_config['formodule'] = '';
 
 // Thong tin phien ban, tac gia, ho tro
-$nv_update_config['release_date'] = 1778230800;
+$nv_update_config['release_date'] = 1781686800;
 $nv_update_config['author'] = 'VINADES.,JSC <contact@vinades.vn>';
-$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.5.08';
-$nv_update_config['to_version'] = '4.5.08';
+$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.5.09';
+$nv_update_config['to_version'] = '4.5.09';
 $nv_update_config['allow_old_version'] = [
     '4.5.00',
     '4.5.01',
@@ -37,7 +37,8 @@ $nv_update_config['allow_old_version'] = [
     '4.5.05',
     '4.5.06',
     '4.5.07',
-    '4.5.08'
+    '4.5.08',
+    '4.5.09'
 ];
 
 // 0:Nang cap bang tay, 1:Nang cap tu dong, 2:Nang cap nua tu dong
@@ -61,6 +62,7 @@ $nv_update_config['lang']['vi']['nv_up_sys4506'] = 'Cập nhật hệ thống l�
 $nv_update_config['lang']['vi']['nv_up_modnews4507'] = 'Cập nhật module News lên 4.5.07';
 $nv_update_config['lang']['vi']['nv_up_sys4507'] = 'Cập nhật hệ thống lên 4.5.07';
 $nv_update_config['lang']['vi']['nv_up_sys4508'] = 'Cập nhật hệ thống lên 4.5.08';
+$nv_update_config['lang']['vi']['nv_up_modnews4509'] = 'Cập nhật module News lên 4.5.09';
 
 $nv_update_config['lang']['vi']['nv_up_finish'] = 'Cập nhật CSDL lên phiên bản ' . $nv_update_config['to_version'];
 
@@ -78,6 +80,7 @@ $nv_update_config['lang']['en']['nv_up_sys4506'] = 'Update system to 4.5.06';
 $nv_update_config['lang']['en']['nv_up_modnews4507'] = 'Update module News to 4.5.07';
 $nv_update_config['lang']['en']['nv_up_sys4507'] = 'Update system to 4.5.07';
 $nv_update_config['lang']['en']['nv_up_sys4508'] = 'Update system to 4.5.08';
+$nv_update_config['lang']['en']['nv_up_modnews4509'] = 'Update module News to 4.5.09';
 
 $nv_update_config['lang']['en']['nv_up_finish'] = 'Update to new version ' . $nv_update_config['to_version'];
 
@@ -161,6 +164,12 @@ $nv_update_config['tasklist'][] = [
     'l' => 'nv_up_sys4508',
     'f' => 'nv_up_sys4508'
 ];
+$nv_update_config['tasklist'][] = [
+    'r' => '4.5.09',
+    'rq' => 2,
+    'l' => 'nv_up_modnews4509',
+    'f' => 'nv_up_modnews4509'
+];
 
 $nv_update_config['tasklist'][] = [
     'r' => $nv_update_config['to_version'],
@@ -201,7 +210,7 @@ function nv_get_captchaconfig()
 
 /**
  *
- * @return number[]|string[]
+ * @return int[]|string[]
  */
 function nv_up_modusers4501()
 {
@@ -250,7 +259,7 @@ function nv_up_modusers4501()
 
 /**
  *
- * @return number[]|string[]
+ * @return int[]|string[]
  */
 function nv_up_sys4501()
 {
@@ -476,7 +485,7 @@ function nv_up_modnews4502()
 
 /**
  *
- * @return number[]|string[]
+ * @return int[]|string[]
  */
 function nv_up_sys4502()
 {
@@ -548,7 +557,7 @@ function nv_up_sys4502()
 }
 
 /**
- * @return number[]|string[]
+ * @return int[]|string[]
  */
 function nv_up_modnews4503()
 {
@@ -598,7 +607,7 @@ function nv_up_modnews4503()
 }
 
 /**
- * @return number[]|string[]
+ * @return int[]|string[]
  */
 function nv_up_modnews4504()
 {
@@ -634,7 +643,7 @@ function nv_up_modnews4504()
 
 /**
  *
- * @return number[]|string[]
+ * @return int[]|string[]
  */
 function nv_up_sys4504()
 {
@@ -678,7 +687,7 @@ function nv_up_sys4504()
 }
 
 /**
- * @return number[]|string[]
+ * @return int[]|string[]
  */
 function nv_up_modnews4505()
 {
@@ -709,7 +718,7 @@ function nv_up_modnews4505()
 
 /**
  *
- * @return number[]|string[]
+ * @return int[]|string[]
  */
 function nv_up_sys4505()
 {
@@ -824,7 +833,7 @@ function nv_up_sys4505()
 
 /**
  *
- * @return number[]|string[]
+ * @return int[]|string[]
  */
 function nv_up_sys4506()
 {
@@ -850,7 +859,7 @@ function nv_up_sys4506()
 }
 
 /**
- * @return number[]|string[]
+ * @return int[]|string[]
  */
 function nv_up_modnews4507()
 {
@@ -881,7 +890,7 @@ function nv_up_modnews4507()
 
 /**
  *
- * @return number[]|string[]
+ * @return int[]|string[]
  */
 function nv_up_sys4507()
 {
@@ -1088,7 +1097,7 @@ function nv_up_sys4507()
 
 /**
  *
- * @return number[]|string[]
+ * @return int[]|string[]
  */
 function nv_up_sys4508()
 {
@@ -1139,6 +1148,163 @@ function nv_up_sys4508()
         trigger_error(print_r($e, true));
     }
 
+    return $return;
+}
+
+/**
+ * @return int[]|string[]
+ */
+function nv_up_modnews4509()
+{
+    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $global_config, $nv_update_config, $array_sitelangs;
+    $return = [
+        'status' => 1,
+        'complete' => 1,
+        'next' => 1,
+        'link' => 'NO',
+        'lang' => 'NO',
+        'message' => ''
+    ];
+    // Duyệt tất cả các ngôn ngữ
+    foreach ($array_sitelangs as $lang) {
+        // Lấy tất cả các module và module ảo của nó
+        $mquery = $db->query('SELECT title, module_data FROM ' . $db_config['prefix'] . '_' . $lang . "_modules WHERE module_file = 'news'");
+        while (list ($mod, $mod_data) = $mquery->fetch(3)) {
+            // Xóa các cấu hình
+            try {
+                $db->query("DELETE FROM " . NV_CONFIG_GLOBALTABLE . " WHERE lang='" . $lang . "' AND module='" . $mod . "' AND config_name='instant_articles_active';");
+            } catch (PDOException $e) {
+                trigger_error(print_r($e, true));
+            }
+            try {
+                $db->query("DELETE FROM " . NV_CONFIG_GLOBALTABLE . " WHERE lang='" . $lang . "' AND module='" . $mod . "' AND config_name='instant_articles_template';");
+            } catch (PDOException $e) {
+                trigger_error(print_r($e, true));
+            }
+            try {
+                $db->query("DELETE FROM " . NV_CONFIG_GLOBALTABLE . " WHERE lang='" . $lang . "' AND module='" . $mod . "' AND config_name='instant_articles_httpauth';");
+            } catch (PDOException $e) {
+                trigger_error(print_r($e, true));
+            }
+            try {
+                $db->query("DELETE FROM " . NV_CONFIG_GLOBALTABLE . " WHERE lang='" . $lang . "' AND module='" . $mod . "' AND config_name='instant_articles_username';");
+            } catch (PDOException $e) {
+                trigger_error(print_r($e, true));
+            }
+            try {
+                $db->query("DELETE FROM " . NV_CONFIG_GLOBALTABLE . " WHERE lang='" . $lang . "' AND module='" . $mod . "' AND config_name='instant_articles_password';");
+            } catch (PDOException $e) {
+                trigger_error(print_r($e, true));
+            }
+            try {
+                $db->query("DELETE FROM " . NV_CONFIG_GLOBALTABLE . " WHERE lang='" . $lang . "' AND module='" . $mod . "' AND config_name='instant_articles_livetime';");
+            } catch (PDOException $e) {
+                trigger_error(print_r($e, true));
+            }
+            try {
+                $db->query("DELETE FROM " . NV_CONFIG_GLOBALTABLE . " WHERE lang='" . $lang . "' AND module='" . $mod . "' AND config_name='instant_articles_gettime';");
+            } catch (PDOException $e) {
+                trigger_error(print_r($e, true));
+            }
+            try {
+                $db->query("DELETE FROM " . NV_CONFIG_GLOBALTABLE . " WHERE lang='" . $lang . "' AND module='" . $mod . "' AND config_name='instant_articles_auto';");
+            } catch (PDOException $e) {
+                trigger_error(print_r($e, true));
+            }
+
+            // Xóa bảng history
+            try {
+                $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . "_row_histories DROP instant_active;");
+            } catch (PDOException $e) {
+                trigger_error(print_r($e, true));
+            }
+            try {
+                $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . "_row_histories DROP instant_template;");
+            } catch (PDOException $e) {
+                trigger_error(print_r($e, true));
+            }
+            try {
+                $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . "_row_histories DROP instant_creatauto;");
+            } catch (PDOException $e) {
+                trigger_error(print_r($e, true));
+            }
+
+            // Xóa modfuncs của module
+            try {
+                $db->query("DELETE FROM " . $db_config['prefix'] . "_" . $lang . "_modfuncs WHERE func_name='instant-rss' AND in_module='" . $mod . "';");
+            } catch (PDOException $e) {
+                trigger_error(print_r($e, true));
+            }
+
+            // Xóa hết trên các bảng cat
+            $sql = "SELECT catid FROM " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . "_cat";
+            $catids = $db->query($sql)->fetchAll(PDO::FETCH_COLUMN);
+
+            foreach ($catids as $catid) {
+                // Drop INDEX instant_active cat
+                try {
+                    $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . "_" . $catid . " DROP INDEX instant_active");
+                } catch (\Exception $e) {
+                    trigger_error(print_r($e, true));
+                }
+
+                // Drop INDEX instant_creatauto cat
+                try {
+                    $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . "_" . $catid . " DROP INDEX instant_creatauto");
+                } catch (\Exception $e) {
+                    trigger_error(print_r($e, true));
+                }
+
+                // Drop column instant_active cat
+                try {
+                    $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . "_" . $catid . " DROP instant_active");
+                } catch (\Exception $e) {
+                    trigger_error(print_r($e, true));
+                }
+
+                // Drop column instant_template cat
+                try {
+                    $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . "_" . $catid . " DROP instant_template");
+                } catch (\Exception $e) {
+                    trigger_error(print_r($e, true));
+                }
+
+                // Drop column instant_creatauto cat
+                try {
+                    $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . "_" . $catid . " DROP instant_creatauto");
+                } catch (\Exception $e) {
+                    trigger_error(print_r($e, true));
+                }
+            }
+
+            // Xóa trên bảng rows
+            try {
+                $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . "_rows DROP INDEX instant_active");
+            } catch (\Exception $e) {
+                trigger_error(print_r($e, true));
+            }
+            try {
+                $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . "_rows DROP INDEX instant_creatauto");
+            } catch (\Exception $e) {
+                trigger_error(print_r($e, true));
+            }
+            try {
+                $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . "_rows DROP instant_active");
+            } catch (\Exception $e) {
+                trigger_error(print_r($e, true));
+            }
+            try {
+                $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . "_rows DROP instant_template");
+            } catch (\Exception $e) {
+                trigger_error(print_r($e, true));
+            }
+            try {
+                $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . "_rows DROP instant_creatauto");
+            } catch (\Exception $e) {
+                trigger_error(print_r($e, true));
+            }
+        }
+    }
     return $return;
 }
 
