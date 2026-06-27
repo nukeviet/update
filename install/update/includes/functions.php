@@ -2005,6 +2005,24 @@ function nv_check_domain($domain)
             $domain = idn_to_ascii($domain, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46);
         } else {
             $domain = Idn::idn_to_ascii($domain, Idn::IDNA_DEFAULT, Idn::INTL_IDNA_VARIANT_UTS46);
+
+            /*
+             * CVE-2026-46644: polyfill-intl-idn (< 1.38.1) nhận nhầm các nhãn "xn--" có phần
+             * Punycode rỗng hoặc giải mã ra chuỗi chỉ gồm ASCII (vd: "xn--", "xn--kc1zs4-"),
+             * trong khi ext-intl gốc loại bỏ chúng. Tự loại để hai môi trường hành xử như nhau:
+             * mỗi nhãn "xn--" hợp lệ bắt buộc giải mã ra ít nhất một ký tự non-ASCII.
+             */
+            if (is_string($domain)) {
+                foreach (explode('.', $domain) as $label) {
+                    if (strncasecmp($label, 'xn--', 4) === 0 and !preg_match('/[^\x00-\x7F]/', (string) Idn::idn_to_utf8($label, Idn::IDNA_DEFAULT, Idn::INTL_IDNA_VARIANT_UTS46))) {
+                        return '';
+                    }
+                }
+            }
+        }
+
+        if ($domain === false) {
+            return '';
         }
 
         if (preg_match('/^xn\-\-([a-z0-9\-\.]+)\.([a-z0-9\-]+)$/', $domain)) {
@@ -2194,6 +2212,10 @@ function nv_check_url($url, $isTriggerError = true, $is_200 = 0)
 
     $allow_url_fopen = ini_get('allow_url_fopen') == '1' or strtolower(ini_get('allow_url_fopen')) == 'on';
     $isHttps = $url_info['scheme'] == 'https';
+    $cainfo = ini_get('curl.cainfo');
+    if (empty($cainfo)) {
+        $cainfo = NV_ROOTDIR . '/' . NV_CERTS_DIR . '/cacert.pem';
+    }
 
     if (nv_function_exists('curl_init') and nv_function_exists('curl_exec')) {
         $port = isset($url_info['port']) ? (int) $url_info['port'] : ($isHttps ? 443 : 80);
@@ -2221,7 +2243,11 @@ function nv_check_url($url, $isTriggerError = true, $is_200 = 0)
             if (defined('CURLOPT_SSL_VERIFYSTATUS')) {
                 curl_setopt($curl, CURLOPT_SSL_VERIFYSTATUS, false);
             }
-            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
+            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
+            if (!empty($cainfo)) {
+                curl_setopt($curl, CURLOPT_CAINFO, $cainfo);
+            }
         }
 
         if ($open_basedir) {
@@ -2252,11 +2278,15 @@ function nv_check_url($url, $isTriggerError = true, $is_200 = 0)
         $res = explode(PHP_EOL, $response);
     } elseif (nv_function_exists('get_headers') and $allow_url_fopen and PHP_VERSION_ID >= 70100) {
         if ($isHttps) {
+            $ssl_context = [
+                'verify_peer' => true,
+                'verify_peer_name' => true
+            ];
+            if (!empty($cainfo)) {
+                $ssl_context['cafile'] = $cainfo;
+            }
             $context = stream_context_create([
-                'ssl' => [
-                    'verify_peer' => false,
-                    'verify_peer_name' => false
-                ]
+                'ssl' => $ssl_context
             ]);
         } else {
             $context = stream_context_create([
@@ -2273,11 +2303,15 @@ function nv_check_url($url, $isTriggerError = true, $is_200 = 0)
         if ($isHttps) {
             $scheme = 'ssl://';
             $port = isset($url_info['port']) ? (int) $url_info['port'] : 443;
+            $ssl_context = [
+                'verify_peer' => true,
+                'verify_peer_name' => true
+            ];
+            if (!empty($cainfo)) {
+                $ssl_context['cafile'] = $cainfo;
+            }
             $context = stream_context_create([
-                'ssl' => [
-                    'verify_peer' => false,
-                    'verify_peer_name' => false
-                ]
+                'ssl' => $ssl_context
             ]);
         } else {
             $scheme = '';
