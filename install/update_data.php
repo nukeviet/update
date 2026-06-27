@@ -84,6 +84,11 @@ $nv_update_config['lang']['en']['nv_up_modnews4509'] = 'Update module News to 4.
 
 $nv_update_config['lang']['en']['nv_up_finish'] = 'Update to new version ' . $nv_update_config['to_version'];
 
+$nv_update_config['note_move_file'] = [
+    'vi' => 'Lưu ý: Sau khi thực hiện di chuyển file, bạn sẽ bị thoát khỏi tài khoản quản trị. Vui lòng đăng nhập lại và thực hiện lại quá trình cập nhật.',
+    'en' => 'Note: After moving the files, you will be logged out of the admin account. Please log in again and continue the update process.',
+];
+
 $nv_update_config['tasklist'] = [];
 
 $nv_update_config['tasklist'][] = [
