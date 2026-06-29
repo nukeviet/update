@@ -38,7 +38,8 @@ $nv_update_config['allow_old_version'] = [
     '4.5.06',
     '4.5.07',
     '4.5.08',
-    '4.5.09'
+    '4.5.09',
+    '4.6.00'
 ];
 
 // 0:Nang cap bang tay, 1:Nang cap tu dong, 2:Nang cap nua tu dong
