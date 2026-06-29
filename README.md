@@ -25,7 +25,12 @@ Do hệ thống không hỗ trợ nâng cấp tự động từ 4.5 lên 4.6 b�
 #### Cập nhật thủ công:
 
 Download gói cập nhật tại: https://github.com/nukeviet/update/releases/download/to-4.6.00/update-to-4.6.00.zip
-Giải nén và Upload các file trong gói cập nhật với cấu trúc của NukeViet, sau đó vào admin để tiến hành cập nhật.
+Giải nén và upload các tệp tin/thư mục trong gói cập nhật đúng cấu trúc của NukeViet: trong gói cập nhật tải về sẽ có một thư mục install, bạn hãy chép đè nó vào chính thư mục install trên máy chủ. Trong trường hợp bạn đã xóa thư mục install trên máy chủ, hãy upload nó lại từ gói cài đặt. Sau khi upload, bạn đăng nhập vào quản trị bằng tài khoản quản trị tối cao để nhận được thông báo cập nhật và tiến hành cập nhật.
+
+Nếu đăng nhập quản trị bằng tài khoản tối cao xong bạn vẫn không thấy thông báo cập nhật, hãy kiểm tra lần lượt các trường hợp sau:
+- Module được chọn làm trang chính trong quản trị không phải là "Thông tin" (siteinfo). Trường hợp này hãy vào `/admin/index.php?language=vi&nv=siteinfo`
+- Bạn upload gói cập nhật lên không đúng vị trí. Trường hợp này hãy kiểm tra lại cẩn thận đã upload lên đúng chưa.
+- Bạn chỉnh sửa giao diện mặc định hoặc chọn một giao diện khác thiếu tính năng thông báo cập nhật. Trường hợp này hãy thử trả lại code gốc của giao diện admin_default và chọn admin_default làm giao diện trong quản trị.
 
 ### Bước 3: Cấu hình lại site.
 
