@@ -74,7 +74,7 @@ function nv_blocks_content($sitecontent)
     $blocks = [];
 
     if (($cache = $nv_Cache->getItem('themes', $cache_file)) !== false) {
-        $cache = unserialize($cache);
+        $cache = unserialize($cache, NV_UNSERIALIZE_SAFE);
         if (isset($cache[$module_info['funcs'][$op]['func_id']])) {
             $blocks = $cache[$module_info['funcs'][$op]['func_id']];
         }
@@ -99,7 +99,7 @@ function nv_blocks_content($sitecontent)
 
         while ($_row = $_result->fetch()) {
             // Cau hinh block
-            $block_config = (!empty($_row['config'])) ? unserialize($_row['config']) : [];
+            $block_config = (!empty($_row['config'])) ? unserialize($_row['config'], NV_UNSERIALIZE_SAFE) : [];
             $block_config['bid'] = $_row['bid'];
             $block_config['module'] = $_row['module'];
             $block_config['title'] = $_row['title'];
@@ -400,12 +400,12 @@ function nv_html_meta_tags($html = true)
     /*
      * Đọc kỹ giấy phép trước khi thay đổi giá trị này
      *
-     * @link https://github.com/nukeviet/nukeviet/blob/nukeviet4.5/LICENSE
+     * @link https://github.com/nukeviet/nukeviet/blob/nukeviet4.6/LICENSE
      */
     $return[] = [
         'name' => 'name',
         'value' => 'generator',
-        'content' => 'NukeViet v4.5'
+        'content' => 'NukeViet v4.6'
     ];
 
     if (defined('NV_IS_ADMIN')) {

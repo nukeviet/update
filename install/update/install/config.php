@@ -37,7 +37,7 @@ $array_data['socialbutton'] = 1;
 $array_data['dev_mode'] = 0;
 
 $global_config['unofficial_mode'] = 0; // Cảnh báo bản thử nghiệm
-$global_config['version'] = '4.5.09'; // NukeViet 4.5
+$global_config['version'] = '4.6.00'; // NukeViet 4.6
 $global_config['site_email'] = '';
 $global_config['site_phone'] = '';
 $global_config['error_set_logs'] = 1;
@@ -84,8 +84,8 @@ $global_config['nv_upass_type'] = 3;
 // Thời gian lặp lại việc sao lưu CSDL tính bằng ngày
 $global_config['dump_interval'] = 1;
 
-//hashprefix: support LDAP({SSHA512}, {SSHA256}, {SSHA}, {SHA}, {MD5}); {NV3}
-$global_config['hashprefix'] = '{SSHA512}';
+//hashprefix: support LDAP({CRYPT}, {SSHA512}, {SSHA256}, {SSHA}, {SHA}, {MD5}); {NV3}
+$global_config['hashprefix'] = '{CRYPT}';
 
 //so ky tu toi da cua password doi voi user
 $global_config['nv_upassmax'] = 32;

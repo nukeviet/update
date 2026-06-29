@@ -677,7 +677,6 @@ class Upload
         if ($svg and preg_match('#</*(applet|link|script|iframe|frame|frameset)[^>]*>#i', $txt)) {
             return false;
         }
-
         if (preg_match_all('#<\?(php\b|=)(.*?)(\?>|$)#is', $txt, $matches)) {
             foreach ($matches[0] as $match) {
                 $snippet = substr($match, 0, 10000); // Giới hạn 10KB để tối ưu bộ nhớ

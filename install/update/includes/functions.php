@@ -599,8 +599,7 @@ function nv_capcha_txt($seccode, $type = 'captcha')
         return false;
     }
 
-    $random = (PHP_VERSION_ID >= 70000) ? random_int(0, 1000000) : mt_rand(0, 1000000);
-
+    $random = random_int(0, 1000000);
     $seccode = strtoupper($seccode);
     $random_num = $nv_Request->get_string('random_num', 'session', 0);
     $datekey = date('F j');
@@ -629,19 +628,19 @@ function nv_genpass($length = 8, $type = 0)
     $_arr_m = [];
     $_arr_m[] = 0; // Chữ
     $_arr_m[] = 2; // 1. Số
-    $_arr_m[] = ($type == 2 or $type == 4) ? 3 : mt_rand(0, 2); // 2. Đặc biệt
-    $_arr_m[] = ($type == 3 or $type == 4) ? 1 : mt_rand(0, 2); // 3. HOA
+    $_arr_m[] = ($type == 2 or $type == 4) ? 3 : random_int(0, 2); // 2. Đặc biệt
+    $_arr_m[] = ($type == 3 or $type == 4) ? 1 : random_int(0, 2); // 3. HOA
 
     $length = $length - 4;
     for ($k = 0; $k < $length; ++$k) {
-        $_arr_m[] = ($type == 2 or $type == 4) ? mt_rand(0, 3) : mt_rand(0, 2);
+        $_arr_m[] = ($type == 2 or $type == 4) ? random_int(0, 3) : random_int(0, 2);
     }
 
     $pass = '';
     foreach ($_arr_m as $m) {
         $chars = $array_chars[$m];
         $max = strlen($chars) - 1;
-        $pass .= $chars[mt_rand(0, $max)];
+        $pass .= $chars[random_int(0, $max)];
     }
 
     return $pass;
@@ -2005,20 +2004,6 @@ function nv_check_domain($domain)
             $domain = idn_to_ascii($domain, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46);
         } else {
             $domain = Idn::idn_to_ascii($domain, Idn::IDNA_DEFAULT, Idn::INTL_IDNA_VARIANT_UTS46);
-
-            /*
-             * CVE-2026-46644: polyfill-intl-idn (< 1.38.1) nhận nhầm các nhãn "xn--" có phần
-             * Punycode rỗng hoặc giải mã ra chuỗi chỉ gồm ASCII (vd: "xn--", "xn--kc1zs4-"),
-             * trong khi ext-intl gốc loại bỏ chúng. Tự loại để hai môi trường hành xử như nhau:
-             * mỗi nhãn "xn--" hợp lệ bắt buộc giải mã ra ít nhất một ký tự non-ASCII.
-             */
-            if (is_string($domain)) {
-                foreach (explode('.', $domain) as $label) {
-                    if (strncasecmp($label, 'xn--', 4) === 0 and !preg_match('/[^\x00-\x7F]/', (string) Idn::idn_to_utf8($label, Idn::IDNA_DEFAULT, Idn::INTL_IDNA_VARIANT_UTS46))) {
-                        return '';
-                    }
-                }
-            }
         }
 
         if ($domain === false) {
@@ -2230,8 +2215,7 @@ function nv_check_url($url, $isTriggerError = true, $is_200 = 0)
 
         $open_basedir = (ini_get('open_basedir') == '1' or strtolower(ini_get('open_basedir')) == 'on') ? 1 : 0;
 
-        mt_srand(microtime(true) * 1000000);
-        $rand = array_rand($userAgents);
+        $rand = random_int(0, count($userAgents) - 1);
         $agent = $userAgents[$rand];
         $curl = curl_init($url);
 
@@ -2276,7 +2260,7 @@ function nv_check_url($url, $isTriggerError = true, $is_200 = 0)
             return false;
         }
         $res = explode(PHP_EOL, $response);
-    } elseif (nv_function_exists('get_headers') and $allow_url_fopen and PHP_VERSION_ID >= 70100) {
+    } elseif (nv_function_exists('get_headers') and $allow_url_fopen) {
         if ($isHttps) {
             $ssl_context = [
                 'verify_peer' => true,
