@@ -18,16 +18,16 @@ $nv_update_config = [];
 $nv_update_config['type'] = 1;
 
 // ID goi cap nhat
-$nv_update_config['packageID'] = 'NVUD4509';
+$nv_update_config['packageID'] = 'NVUD4510';
 
 // Cap nhat cho module nao, de trong neu la cap nhat NukeViet, ten thu muc module neu la cap nhat module
 $nv_update_config['formodule'] = '';
 
 // Thong tin phien ban, tac gia, ho tro
-$nv_update_config['release_date'] = 1781686800;
+$nv_update_config['release_date'] = 1786093200;
 $nv_update_config['author'] = 'VINADES.,JSC <contact@vinades.vn>';
-$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.5.09';
-$nv_update_config['to_version'] = '4.5.09';
+$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.5.10';
+$nv_update_config['to_version'] = '4.5.10';
 $nv_update_config['allow_old_version'] = [
     '4.5.00',
     '4.5.01',
@@ -38,7 +38,8 @@ $nv_update_config['allow_old_version'] = [
     '4.5.06',
     '4.5.07',
     '4.5.08',
-    '4.5.09'
+    '4.5.09',
+    '4.5.10',
 ];
 
 // 0:Nang cap bang tay, 1:Nang cap tu dong, 2:Nang cap nua tu dong
