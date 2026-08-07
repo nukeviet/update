@@ -143,11 +143,6 @@ $lang_module['current_time'] = 'Current time: %s';
 $lang_module['date_pattern'] = 'Date format';
 $lang_module['time_pattern'] = 'Time display format';
 $lang_module['gzip_method'] = 'Activate gzip';
-$lang_module['proxy_blocker'] = 'Block proxy';
-$lang_module['proxy_blocker_0'] = 'Don\'t check';
-$lang_module['proxy_blocker_1'] = 'Low';
-$lang_module['proxy_blocker_2'] = 'Medium';
-$lang_module['proxy_blocker_3'] = 'High';
 $lang_module['str_referer_blocker'] = 'Activate block referers';
 $lang_module['my_domains'] = 'Domains';
 $lang_module['searchEngineUniqueID'] = 'Google search Engine ID<br />(format 000329275761967753447:sr7yxqgv294 , <a href="https://nukeviet.vn/vi/faq/Su-dung-Google-Custom-Search-tren-NukeViet/" target="_blank">view details</a>)';
@@ -340,6 +335,7 @@ $lang_module['smime_download_passphrase'] = 'Generate a new password for unlocki
 $lang_module['smime_pkcs12_ext_error'] = 'The certificate file must have a pfx or p12 extension';
 $lang_module['smime_pkcs12_cannot_be_read'] = 'The certificate cannot be read';
 $lang_module['smime_pkcs12_smimesign_error'] = 'Certificate does not support S/MIME email signature';
+$lang_module['smime_pkcs12_cn_invalid'] = 'Error: The certificate Common Name (CN) is not a valid email address';
 $lang_module['smime_pkcs12_overwrite'] = 'The certificate is already on the server. Do you want to overwrite it with this new certificate file?';
 $lang_module['smime_note'] = 'The S/MIME digital signature will be sent along with the message if the sender\'s email has a certificate file stored on the server.';
 $lang_module['DKIM_signature'] = 'Domain Keys Identified Mail DKIM';
@@ -442,3 +438,17 @@ $lang_module['pp_window_management'] = 'Controls whether or not the current docu
 $lang_module['pp_xr_spatial_tracking'] = 'Controls whether or not the current document is allowed to use the WebXR Device API to interact with a WebXR session.';
 
 $lang_module['fp_act'] = 'Active FP';
+
+// Trusted proxies
+$lang_module['trusted_proxy'] = 'Trusted proxies';
+$lang_module['trusted_proxy_note'] = 'When the website sits behind a reverse proxy or CDN (Cloudflare, Nginx...), the visitor\'s real IP is carried in headers such as X-Forwarded-For or CF-Connecting-IP. These headers are only trusted when the direct connecting IP (REMOTE_ADDR) belongs to the trusted proxy list below; otherwise an attacker could spoof the IP to bypass rate limiting and brute-force protection.';
+$lang_module['trusted_proxy_note_strip'] = 'If the website sits behind an internal proxy or a provider other than Cloudflare, configure the proxy to overwrite or strip client-supplied IP headers; otherwise an attacker can still spoof the IP by sending a forged CF-Connecting-IP header. Example for Nginx: proxy_set_header CF-Connecting-IP ""; and proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;';
+$lang_module['trusted_proxy_enable'] = 'Enable';
+$lang_module['trusted_proxy_enable_des'] = 'Only trust proxy IP headers when this option is enabled';
+$lang_module['trusted_proxy_list'] = 'Trusted proxy list';
+$lang_module['trusted_proxy_list_des'] = 'One IP address or CIDR range per line (IPv4 and IPv6 supported). Example: 127.0.0.1, 10.0.0.0/8, 173.245.48.0/20, 2400:cb00::/32.';
+$lang_module['trusted_proxy_fetch_cf'] = 'Fetch Cloudflare ranges';
+$lang_module['trusted_proxy_cf_loaded'] = 'Cloudflare ranges added to the list. Click Save to apply.';
+$lang_module['trusted_proxy_cf_error'] = 'Could not fetch ranges from Cloudflare. Please try again or enter them manually.';
+$lang_module['trusted_proxy_invalid'] = 'The following entries are not valid IP addresses or CIDR ranges: %s';
+$lang_module['trusted_proxy_empty_list'] = 'You enabled trust proxy but the list is empty. Please enter at least one trusted proxy range.';

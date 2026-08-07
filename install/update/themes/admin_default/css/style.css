@@ -172,6 +172,10 @@ a.text-white {
     margin-top: 15px!important;
 }
 
+.mt-1 {
+    margin-top: 5px!important;
+}
+
 .mt-0 {
     margin-top: 0!important;
 }
@@ -1187,4 +1191,9 @@ div.radio [type='radio'] {
     --ck-content-font-size: 13px;
     --ck-content-font-color: #333;
     --ck-content-line-height: 1.42857143;
+}
+
+/* Fix trình soạn thảo nằm trong table-responsive bị tràn */
+.table-responsive .ck.ck-editor__editable_inline {
+    white-space: normal;
 }
