@@ -160,9 +160,6 @@ function nv_up_finish()
     $db->query('UPDATE ' . $db_config['prefix'] . "_setup_extensions SET  version='" . $nv_update_config['to_version'] . ' ' . $nv_update_config['release_date'] . "' WHERE type='module' AND basename IN ('" . implode("', '", $array_modules) . "')");
     $db->query('UPDATE ' . $db_config['prefix'] . "_setup_extensions SET  version='" . $nv_update_config['to_version'] . ' ' . $nv_update_config['release_date'] . "' WHERE type='theme' AND basename IN ('" . implode("', '", $array_themes) . "')");
 
-    // Tao lai config_global.php
-    nv_save_file_config_global();
-
     // Chay lai .htaccess
     $array_config_rewrite = [
         'rewrite_enable' => $global_config['rewrite_enable'],
