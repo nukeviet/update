@@ -113,6 +113,46 @@ function nv_up_sys4601()
         trigger_error(print_r($e, true));
     }
 
+    // Thêm nukeviet.vn và đổi static.nukeviet.vn thành *.nukeviet.vn trong CSP
+    try {
+        $sql = "SELECT config_value FROM " . NV_CONFIG_GLOBALTABLE . " WHERE module='site' AND lang='sys' AND config_name='nv_csp'";
+        $nv_csp = $db->query($sql)->fetchColumn();
+        if (!empty($nv_csp)) {
+            $nv_csp = nv_unhtmlspecialchars($nv_csp);
+
+            $matches = [];
+            preg_match_all("/([a-zA-Z0-9\-]+)[\s]+([^\;]+)/i", $nv_csp, $matches);
+            $directives = [];
+            foreach ($matches[1] as $key => $name) {
+                $directives[$name] = trim($matches[2][$key]);
+            }
+
+            $img_src = empty($directives['img-src']) ? "'self' data: *.twitter.com *.google.com *.googleapis.com *.gstatic.com *.facebook.com tawk.link *.tawk.to nukeviet.vn *.nukeviet.vn" : $directives['img-src'];
+            if (strpos($img_src, ' nukeviet.vn') === false) {
+                $img_src .= ' nukeviet.vn';
+            }
+            if (strpos($img_src, ' static.nukeviet.vn') === false) {
+                $img_src .= ' static.nukeviet.vn';
+            }
+            $img_src = str_replace(' static.nukeviet.vn', ' *.nukeviet.vn', $img_src);
+            $directives['img-src'] = $img_src;
+
+            $nv_csp = '';
+            foreach ($directives as $key => $directive) {
+                $directive = trim(strip_tags($directive));
+                if (!empty($directive)) {
+                    $directive = str_replace(["\r\n", "\r", "\n"], ' ', $directive);
+                    $nv_csp .= $key . ' ' . preg_replace('/[ ]+/', ' ', str_replace(["'", '"', '<', '>'], ['&#039;', '&quot;', '&lt;', '&gt;'], $directive)) . ';';
+                }
+            }
+
+            $sql = "UPDATE " . NV_CONFIG_GLOBALTABLE . " SET config_value=" . $db->quote($nv_csp) . " WHERE module='site' AND lang='sys' AND config_name='nv_csp'";
+            $db->query($sql);
+        }
+    } catch (Throwable $e) {
+        trigger_error(print_r($e, true));
+    }
+
     return $return;
 }
 
