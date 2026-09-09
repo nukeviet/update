@@ -50,10 +50,10 @@ $nv_update_config['lang']['en']['nv_up_sys4601'] = 'Update system to 4.6.01';
 
 $nv_update_config['lang']['en']['nv_up_finish'] = 'Update to new version ' . $nv_update_config['to_version'];
 
-// $nv_update_config['note_move_file'] = [
-//     'vi' => '',
-//     'en' => '',
-// ];
+$nv_update_config['note_move_file'] = [
+    'vi' => 'Xin lưu ý: Dòng phiên bản 4.6 chứa các cập nhật bảo mật quan trọng. Nếu bạn đang thực hiện cập nhật bằng công cụ kiểm tra phiên bản, hãy đảm bảo bỏ thời gian đọc kỹ các thông báo phát hành tương ứng <a href="https://nukeviet.vn/vi/news/phat-hanh/" target="_blank">tại đây</a> để thực hiện các công việc quan trọng khác.',
+    'en' => 'Please note: The 4.6 version series contains important security updates. If you are updating using the version check tool, make sure to take the time to carefully read the corresponding release notes <a href="https://nukeviet.vn/vi/news/phat-hanh/" target="_blank">here</a> to carry out other important tasks.',
+];
 
 $nv_update_config['tasklist'] = [];
 
