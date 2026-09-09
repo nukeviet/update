@@ -18,7 +18,7 @@ $nv_update_config = [];
 $nv_update_config['type'] = 1;
 
 // ID goi cap nhat
-$nv_update_config['packageID'] = 'NVUD4510';
+$nv_update_config['packageID'] = 'NVUD4511';
 
 // Cap nhat cho module nao, de trong neu la cap nhat NukeViet, ten thu muc module neu la cap nhat module
 $nv_update_config['formodule'] = '';
@@ -26,8 +26,8 @@ $nv_update_config['formodule'] = '';
 // Thong tin phien ban, tac gia, ho tro
 $nv_update_config['release_date'] = 1786093200;
 $nv_update_config['author'] = 'VINADES.,JSC <contact@vinades.vn>';
-$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.5.10';
-$nv_update_config['to_version'] = '4.5.10';
+$nv_update_config['support_website'] = 'https://github.com/nukeviet/update/tree/to-4.5.11';
+$nv_update_config['to_version'] = '4.5.11';
 $nv_update_config['allow_old_version'] = [
     '4.5.00',
     '4.5.01',
@@ -40,6 +40,7 @@ $nv_update_config['allow_old_version'] = [
     '4.5.08',
     '4.5.09',
     '4.5.10',
+    '4.5.11',
 ];
 
 // 0:Nang cap bang tay, 1:Nang cap tu dong, 2:Nang cap nua tu dong
@@ -86,8 +87,8 @@ $nv_update_config['lang']['en']['nv_up_modnews4509'] = 'Update module News to 4.
 $nv_update_config['lang']['en']['nv_up_finish'] = 'Update to new version ' . $nv_update_config['to_version'];
 
 $nv_update_config['note_move_file'] = [
-    'vi' => 'Lưu ý: Sau khi thực hiện di chuyển file, bạn sẽ bị thoát khỏi tài khoản quản trị. Vui lòng đăng nhập lại và thực hiện lại quá trình cập nhật.',
-    'en' => 'Note: After moving the files, you will be logged out of the admin account. Please log in again and continue the update process.',
+    'vi' => 'Lưu ý: Sau khi thực hiện di chuyển file, bạn sẽ bị thoát khỏi tài khoản quản trị. Vui lòng đăng nhập lại và thực hiện lại quá trình cập nhật. Dòng phiên bản 4.5 chứa các cập nhật bảo mật quan trọng. Nếu bạn đang thực hiện cập nhật bằng công cụ kiểm tra phiên bản, hãy đảm bảo bỏ thời gian đọc kỹ các hướng dẫn <a href="https://github.com/nukeviet/update/blob/to-' . $nv_update_config['to_version'] . '/README.md#b%C6%B0%E1%BB%9Bc-3-quan-tr%E1%BB%8Dng-r%C3%A0-so%C3%A1t-m%E1%BB%99t-s%E1%BB%91-v%E1%BA%A5n-%C4%91%E1%BB%81-b%E1%BA%A3o-m%E1%BA%ADt" target="_blank">tại đây</a> để thực hiện các công việc quan trọng khác.',
+    'en' => 'Note: After moving the files, you will be logged out of the admin account. Please log in again and continue the update process. The 4.5 version line contains important security updates. If you are using the version check tool to perform the update, please make sure to spend time reading the instructions <a href="https://github.com/nukeviet/update/blob/to-' . $nv_update_config['to_version'] . '/README.md#b%C6%B0%E1%BB%9Bc-3-quan-tr%E1%BB%8Dng-r%C3%A0-so%C3%A1t-m%E1%BB%99t-s%E1%BB%91-v%E1%BA%A5n-%C4%91%E1%BB%81-b%E1%BA%A3o-m%E1%BA%ADt" target="_blank">here</a> to complete other important tasks.',
 ];
 
 $nv_update_config['tasklist'] = [];
