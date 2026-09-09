@@ -31,19 +31,24 @@ Nếu trong quá trình cập nhật bị đẩy ra, bạn đăng nhập lại q
 Download gói cập nhật tại: https://github.com/nukeviet/update/releases/download/to-4.5.11/update-to-4.5.11.zip
 Giải nén và Upload các file trong gói cập nhật với cấu trúc của NukeViet, sau đó vào admin để tiến hành cập nhật.
 
-### Bước 3: Cấu hình lại site.
+### Bước 3 (Quan trọng): Rà soát một số vấn đề bảo mật
+
+Đăng nhập quản trị bằng tài khoản quản trị tối sao sau đó rà soát những việc sau:
+- Vào khu vực tùy biến dữ liệu của users (/admin/index.php?language=vi&nv=users&op=fields) tiến hành sửa tất cả các trường dữ liệu. Với mỗi trường dữ liệu, tại mục "Các tùy chọn cho khác" (hoặc "Các tùy chọn khác") => "Yêu cầu kiểm tra với giá trị" nếu đang chọn là "Sử dụng hàm" thì hãy kiểm tra rà soát tên các hàm nguy hại nếu có và xóa bỏ. Bạn cũng có thể chỉ cần sửa và ấn lưu hệ thống sẽ tự loại bỏ toàn bộ các hàm.
+
+### Bước 4: Cấu hình lại site.
 
 - Nếu site có sử dụng các thư viện bên ngoài như `phpoffice/phpspreadsheet` thông qua composer, bạn cần khai báo để composer cập nhật lại
 - Nếu sử dụng module tin tức hoặc các module ảo của nó, có thể vào cấu hình để bật chức năng lưu lịch sử bài viết nếu có nhu cầu. Bạn cũng có thể sử dụng thêm tính năng thêm audio đọc báo ở module news
 - Theo dõi các [thông báo phát hành](https://nukeviet.vn/vi/news/phat-hanh/), file [CHANGELOG.txt](https://github.com/nukeviet/nukeviet/blob/nukeviet4.5/CHANGELOG.txt) để biết thêm các tính năng mới.
 
-### Bước 4: Cập nhật giao diện
+### Bước 5: Cập nhật giao diện
 
 Nếu bạn có sử dụng giao diện không phải mặc định, đọc các lưu ý và làm theo hướng dẫn sau:
 
 [Hướng dẫn nâng cấp giao diện tương thích từ NukeViet 4.5.00 lên các phiên bản 4.5 cao hơn](https://github.com/nukeviet/update/wiki/H%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-n%C3%A2ng-c%E1%BA%A5p-giao-di%E1%BB%87n-t%C6%B0%C6%A1ng-th%C3%ADch-t%E1%BB%AB-NukeViet-4.5.00-l%C3%AAn-c%C3%A1c-phi%C3%AAn-b%E1%BA%A3n-4.5-cao-h%C6%A1n)
 
-### Bước 5: Cập nhật module
+### Bước 6: Cập nhật module
 
 **Nếu site của bạn sử dụng module không phải mặc định thì thực hiện cập nhật theo hướng dẫn sau:**
 
