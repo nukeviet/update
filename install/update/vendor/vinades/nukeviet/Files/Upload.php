@@ -677,9 +677,16 @@ class Upload
         if ($svg and preg_match('#</*(applet|link|script|iframe|frame|frameset)[^>]*>#i', $txt)) {
             return false;
         }
-        if (preg_match_all('#<\?(php\b|=)(.*?)(\?>|$)#is', $txt, $matches)) {
+        if (preg_match_all('#<\?(php\b|=|\s)(.*?)(\?>|$)#is', $txt, $matches)) {
             foreach ($matches[0] as $match) {
                 $snippet = substr($match, 0, 10000); // Giới hạn 10KB để tối ưu bộ nhớ
+
+                /**
+                 * Chuẩn hóa đoạn mở php từ short tag thành "<?php " để token_get_all luôn phân tích đúng
+                 * Có tỷ lệ chặn nhầm đối với các file ảnh chứa dữ liệu nhị phân giống mã PHP
+                 * tuy nhiên tỷ lệ này rất thấp và chấp nhận đặt biện pháp bảo mật lên cao hơn
+                 */
+                $snippet = preg_replace('/^<\?(?!php\b|=)/i', '<?php ', $snippet);
                 $tokens = @token_get_all($snippet);
                 $is_bad = true; // Giả định đoạn text này là mã độc PHP hợp lệ
                 foreach ($tokens as $token) {
@@ -836,12 +843,17 @@ class Upload
     {
         $this->img_info = [];
 
+        $content = file_get_contents($tmp_name);
+        if ($content === false) {
+            return $this->lang['error_upload_not_image'];
+        }
+
         $dom = new \DOMDocument();
         $prev_use_errors = libxml_use_internal_errors(true);
         if (PHP_MAJOR_VERSION < 8) {
             $prev_loader = libxml_disable_entity_loader(true);
         }
-        $loaded = $dom->load($tmp_name, LIBXML_NONET);
+        $loaded = $dom->loadXML($content, LIBXML_NONET);
         if (PHP_MAJOR_VERSION < 8) {
             libxml_disable_entity_loader($prev_loader);
         }
@@ -850,6 +862,14 @@ class Upload
 
         if (!$loaded) {
             return $this->lang['error_upload_not_image'];
+        }
+
+        /**
+         * Từ chối mọi SVG có khai báo DOCTYPE,
+         * trong này chứa các thực thể có thể gây nguy hiểm không kiểm soát được
+         */
+        if ($dom->doctype !== null) {
+            return $this->lang['error_upload_image_failed'];
         }
 
         $root = $dom->documentElement;
@@ -887,6 +907,17 @@ class Upload
         }
 
         if (!$this->sanitize_svg_dom($dom)) {
+            return $this->lang['error_upload_image_failed'];
+        }
+
+        // Ghi lại DOM đã được chuẩn hóa
+        $clean = $dom->saveXML();
+        if ($clean === false or file_put_contents($tmp_name, $clean) === false) {
+            return $this->lang['error_upload_image_failed'];
+        }
+
+        // Kiểm lại lần nữa
+        if (!$this->verify_image($tmp_name, true)) {
             return $this->lang['error_upload_image_failed'];
         }
 
@@ -1045,7 +1076,13 @@ class Upload
         }
 
         $word = rawurldecode($word);
-        $word = preg_replace('/[^a-z0-9\.\-\_ ]/i', '', $word);
+
+        /**
+         * Cấm dấu chấm trong tên file tránh việc sinh ra file dạng .php.ext bị Apache với config cũ
+         * kiểu AddHandler application/x-httpd-php .php nhận là tệp thực thi php
+         */
+        $word = preg_replace('/[^a-z0-9\-\_ ]/i', '', $word);
+
         $word = preg_replace('/^\W+|\W+$/', '', $word);
         $word = preg_replace('/[ ]+/', '-', $word);
 
@@ -1345,7 +1382,7 @@ class Upload
             return true;
         }
 
-        return (bool) filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE);
+        return \NukeViet\Core\Ips::is_safe_public_ip($ip);
     }
 
     /**
