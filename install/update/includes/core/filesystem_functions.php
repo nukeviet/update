@@ -339,12 +339,14 @@ function nv_get_allowed_ext($allowed_filetypes, $forbid_extensions, $forbid_mime
  * nv_string_to_filename()
  *
  * @param string $word
+ * @param bool   $keep_dots
  * @return string
  */
-function nv_string_to_filename($word)
+function nv_string_to_filename($word, $keep_dots = true)
 {
     $word = nv_EncString($word);
-    $word = preg_replace('/[^a-z0-9\.\-\_ ]/i', '', $word);
+    $pattern = $keep_dots ? '/[^a-z0-9\.\-\_ ]/i' : '/[^a-z0-9\-\_ ]/i';
+    $word = preg_replace($pattern, '', $word);
     $word = preg_replace('/^\W+|\W+$/', '', $word);
     $word = preg_replace('/[ ]+/', '-', $word);
 
@@ -743,7 +745,7 @@ function nv_is_image($img)
             $imageinfo['mime'] = $file['mime'];
             $imageinfo['type'] = $typeflag[$file[2]]['type'];
             $imageinfo['ext'] = $typeflag[$file[2]]['ext'];
-            $imageinfo['bits'] = $file['bits'];
+            $imageinfo['bits'] = isset($file['bits']) ? (int) ($file['bits']) : 0;
             $imageinfo['channels'] = isset($file['channels']) ? (int) ($file['channels']) : 0;
         }
     }
