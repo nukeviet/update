@@ -1,4 +1,4 @@
-# Hướng dẫn cập nhật từ NukeViet 4.6.00 đến 4.6.01 lên NukeViet 4.6.02
+# Hướng dẫn cập nhật từ NukeViet 4.6.00 đến 4.6.02 lên NukeViet 4.6.03
 
 - Nếu phiên bản NukeViet của bạn nhỏ hơn 4.6.00 bạn cần tìm [hướng dẫn cập nhật](https://github.com/nukeviet/update/branches/all) lên tối thiểu phiên bản 4.6.00 trước khi tiến hành các bước tiếp theo.
 - Bạn nên cập nhật thử nghiệm trên máy tính cá nhân và kiểm tra kỹ trước khi cập nhật trên website.
@@ -26,7 +26,7 @@ Nếu thất bại hãy thử cách cập nhật thủ công bên dưới.
 
 #### Cập nhật thủ công:
 
-Download gói cập nhật tại: https://github.com/nukeviet/update/releases/download/to-4.6.02/update-to-4.6.02.zip
+Download gói cập nhật tại: https://github.com/nukeviet/update/releases/download/to-4.6.03/update-to-4.6.03.zip
 Giải nén và upload các tệp tin/thư mục trong gói cập nhật đúng cấu trúc của NukeViet: trong gói cập nhật tải về sẽ có một thư mục install, bạn hãy chép đè nó vào chính thư mục install trên máy chủ. Trong trường hợp bạn đã xóa thư mục install trên máy chủ, hãy upload nó lại từ gói cài đặt. Sau khi upload, bạn đăng nhập vào quản trị bằng tài khoản quản trị tối cao để nhận được thông báo cập nhật và tiến hành cập nhật.
 
 Nếu đăng nhập quản trị bằng tài khoản tối cao xong bạn vẫn không thấy thông báo cập nhật, hãy kiểm tra lần lượt các trường hợp sau:
@@ -38,3 +38,15 @@ Nếu đăng nhập quản trị bằng tài khoản tối cao xong bạn vẫn 
 
 - Nếu site có sử dụng các thư viện bên ngoài như `phpoffice/phpspreadsheet` thông qua composer, bạn cần khai báo để composer cập nhật lại
 - Theo dõi các [thông báo phát hành](https://nukeviet.vn/vi/news/phat-hanh/), file [CHANGELOG.txt](https://github.com/nukeviet/nukeviet/blob/nukeviet4.6/CHANGELOG.txt) để biết thêm các tính năng mới.
+
+### Bước 4: Cập nhật giao diện
+
+Nếu bạn có sử dụng giao diện không phải mặc định, đọc các lưu ý và làm theo hướng dẫn sau:
+
+[Hướng dẫn nâng cấp giao diện tương thích từ NukeViet 4.6.00 lên các phiên bản 4.6 cao hơn](https://github.com/nukeviet/update/wiki/Hướng-dẫn-nâng-cấp-giao-diện-tương-thích-từ-NukeViet-4.6.00-lên-các-phiên-bản-4.6-cao-hơn)
+
+### Bước 5: Cập nhật module
+
+**Nếu site của bạn sử dụng module không phải mặc định thì thực hiện cập nhật theo hướng dẫn sau:**
+
+[Hướng dẫn nâng cấp module từ NukeViet 4.6.00 lên các bản 4.6 cao hơn](https://github.com/nukeviet/update/wiki/Hướng-dẫn-nâng-cấp-module-từ-NukeViet-4.6.00-lên-các-bản-4.6-cao-hơn)
