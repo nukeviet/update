@@ -175,7 +175,9 @@ function nv_up_finish()
     ];
 
     // Xóa tệp thừa
-    // Không có
+    nv_deletefile(NV_ROOTDIR . '/assets/css/rss.xsl');
+    nv_deletefile(NV_ROOTDIR . '/assets/css/sitemap.xsl');
+    nv_deletefile(NV_ROOTDIR . '/assets/css/sitemapindex.xsl');
 
     // Cập nhật phiên bản
     $array_modules = [
